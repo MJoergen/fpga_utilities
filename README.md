@@ -30,7 +30,6 @@ when "LAST" is not asserted the "BYTES" field is ignored, and hence it is implic
 
 
 ## Modules
-* [axis\_fifo\_sync.vhd](axis_fifo_sync.vhd)
-This is a simple synchronuous FIFO (i.e. input and output have same clock).
+* [axis\_fifo\_sync.vhd](src/axis_fifo_sync.vhd): This is a simple synchronuous FIFO (i.e. input and output have same clock).
 
 
