@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 1
+bmc: mode bmc
+bmc: depth 12
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_RAM_DEPTH=4 -gG_DATA_SIZE=4 axis_fifo_sync.vhd axis_fifo_sync.psl -e axis_fifo_sync
+prep -top axis_fifo_sync
+
+[files]
+axis_fifo_sync.psl
+../src/axis_fifo_sync.vhd
+
