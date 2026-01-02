@@ -47,5 +47,6 @@ that all bytes in "DATA" are valid.
 
 ## Modules
 * [axis\_fifo\_sync.vhd](src/axis_fifo_sync.vhd): This is a simple synchronuous FIFO (i.e. input and output have same clock).
-
+* [axis\_arbiter.vhd](src/axis_arbiter.vhd): This arbitrates (merges) two AXI streaming interfaces into one.
+* [axis\_distributor.vhd](src/axis_distributor.vhd): This distribues a single AXI streaming interface into too.
 

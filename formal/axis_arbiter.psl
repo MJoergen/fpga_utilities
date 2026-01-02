@@ -1,0 +1,72 @@
+vunit axis_arbiter_inst(axis_arbiter(synthesis))
+{
+   -- set all declarations to run on clk
+   default clock is rising_edge(clk_i);
+
+   signal f_sampled_in0 : boolean := false;
+   signal f_sampled_in1 : boolean := false;
+   signal f_sampled_out : boolean := false;
+
+   signal f_value : std_logic_vector(G_DATA_SIZE-1 downto 0);
+   attribute anyconst : boolean;
+   attribute anyconst of f_value : signal is true;
+
+   signal f_request0_active : boolean := false;
+   signal f_request1_active : boolean := false;
+   signal f_requestm_active : boolean := false;
+
+   sampled_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if s0_valid_i = '1' and s0_ready_o = '1' and s0_data_i = f_value then
+         f_sampled_in0 <= true;
+       end if;
+       if s1_valid_i = '1' and s1_ready_o = '1' and s1_data_i = f_value then
+         f_sampled_in1 <= true;
+       end if;
+       if m_valid_o = '1' and m_ready_i = '1' and m_data_o = f_value then
+         f_sampled_out <= true;
+       end if;
+
+       if rst_i = '1' then
+         f_sampled_in0 <= false;
+         f_sampled_in1 <= false;
+         f_sampled_out <= false;
+       end if;
+     end if;
+   end process sampled_proc;
+
+
+   ------------------------------------------------
+   -- PROPERTIES OF THE WISHBONE MASTER INTERFACE
+   ------------------------------------------------
+
+   -- AXI streaming output: Clear all requests after a reset
+   f_axis_master_reset : assert always {rst_i} |=> {not m_valid_o};
+
+   -- AXI streaming output: Outputs must be stable during request
+   f_axis_master_stable : assert always {m_valid_o and not m_ready_i and not rst_i} |=> {stable(m_valid_o) and stable(m_data_o)};
+
+   -- AXI streaming output: Verify ordering
+   f_axis_master_ordering : assert always {f_sampled_out} |-> {f_sampled_in0 or f_sampled_in1};
+
+   -- AXI streaming input: Not both slaves may be active at the same time
+   f_axis_master_contention : assert always {not rst_i} |-> {s0_ready_o = '0' or s1_ready_o = '0'};
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   -- AXI streaming output is asserted and then not asserted.
+   f_wbus_request : cover {m_valid_o and not rst_i; not m_valid_o};
+
+} -- vunit axis_arbiter_inst(axis_arbiter(synthesis))
+
