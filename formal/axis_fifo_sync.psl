@@ -76,5 +76,7 @@ vunit axis_fifo_sync_inst(axis_fifo_sync(synthesis))
 -- COVER STATEMENTS TO VERIFY REACHABILITY
 --------------------------------------------
 
+   f_fifo_full : cover {not rst_i and not s_ready_o and m_ready_i};
+
 } -- vunit axis_fifo_sync_inst(axis_fifo_sync(synthesis))
 

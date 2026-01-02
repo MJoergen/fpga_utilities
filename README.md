@@ -10,7 +10,7 @@ These models are tested using [simulation testbenches](sim) and [formal verifica
 The modules make use of a small consistent set of interfaces:
 
 * AXI streaming
-* AXI streaming, packet oriented.
+* AXI packet
 * AXI Lite
 * Wishbone memory map
 * Avalon memory map
@@ -29,10 +29,10 @@ interface are:
 
 It is required that the sender, while waiting for the receiver, keeps "VALID" asserted and the "DATA" unchanged.
 
-### AXI streaming, packet oriented
-AXI streaming, packet oriented, is used when data has a natural packet structure. i.e. when there is a beginning and an
-end to each packet. Alternatively, this is used when the blob of data cannot be transferred in a single clock cycle.
-Signals used in this interface are:
+### AXI packet
+AXI packet is used when data has a natural packet structure. i.e. when there is a beginning and an end to each packet.
+Alternatively, this is used when the blob of data cannot be transferred in a single clock cycle.  Signals used in this
+interface are:
 
 * "READY"
 * "VALID"
