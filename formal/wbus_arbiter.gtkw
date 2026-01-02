@@ -1,0 +1,82 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Thu Oct  9 12:00:19 2025
+[*]
+[dumpfile] "/home/mfj/git/Weibel/pcb1036/main/formal/wbus_arbiter_bmc/engine_0/trace.vcd"
+[dumpfile_mtime] "Thu Oct  9 11:58:18 2025"
+[dumpfile_size] 7001
+[savefile] "/home/mfj/git/Weibel/pcb1036/main/formal/wbus_arbiter.gtkw"
+[timestart] 0
+[size] 1644 1063
+[pos] -1 -1
+*-4.315845 25 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] wbus_arbiter.
+[sst_width] 249
+[signals_width] 352
+[sst_expanded] 1
+[sst_vpaned_height] 304
+@28
+wbus_arbiter.clk_i
+wbus_arbiter.rst_i
+wbus_arbiter.s0_wbus_cyc_i
+wbus_arbiter.s0_wbus_stall_o
+[color] 2
+wbus_arbiter.s0_wbus_stb_i
+@22
+wbus_arbiter.s0_wbus_addr_i[3:0]
+@28
+wbus_arbiter.s0_wbus_we_i
+@22
+wbus_arbiter.s0_wbus_wrdat_i[31:0]
+@28
+[color] 7
+wbus_arbiter.s0_wbus_ack_o
+@22
+wbus_arbiter.s0_wbus_rddat_o[31:0]
+@200
+-
+@28
+wbus_arbiter.s1_wbus_cyc_i
+wbus_arbiter.s1_wbus_stall_o
+[color] 2
+wbus_arbiter.s1_wbus_stb_i
+@22
+wbus_arbiter.s1_wbus_addr_i[3:0]
+@28
+wbus_arbiter.s0_wbus_we_i
+@22
+wbus_arbiter.s1_wbus_wrdat_i[31:0]
+@28
+[color] 7
+wbus_arbiter.s1_wbus_ack_o
+@22
+wbus_arbiter.s1_wbus_rddat_o[31:0]
+@200
+-
+@28
+wbus_arbiter.m_wbus_cyc_o
+wbus_arbiter.m_wbus_stall_i
+[color] 2
+wbus_arbiter.m_wbus_stb_o
+@22
+wbus_arbiter.m_wbus_addr_o[3:0]
+@28
+wbus_arbiter.m_wbus_we_o
+@22
+wbus_arbiter.m_wbus_wrdat_o[31:0]
+@28
+[color] 7
+wbus_arbiter.m_wbus_ack_i
+@22
+wbus_arbiter.m_wbus_rddat_i[31:0]
+@200
+-
+@28
+wbus_arbiter.state[1:0]
+wbus_arbiter.wbus_arbiter_inst.f_request0_active
+wbus_arbiter.wbus_arbiter_inst.f_request1_active
+wbus_arbiter.wbus_arbiter_inst.f_requestm_active
+@29
+wbus_arbiter.s1_wbus_cyc
+[pattern_trace] 1
+[pattern_trace] 0

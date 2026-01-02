@@ -9,11 +9,13 @@ These models are tested using [simulation testbenches](sim) and [formal verifica
 ## Interfaces
 The modules make use of a small consistent set of interfaces:
 
-* AXI streaming
-* AXI packet
-* AXI Lite
-* Wishbone memory map
-* Avalon memory map
+* Uni-directional
+    - AXI streaming
+    - AXI packet
+* Bi-directional (transation based)
+    - AXI Lite
+    - Wishbone
+    - Avalon
 
 So, when are the different interfaces used? Below I'll give a brief summary of each interface.
 
@@ -27,7 +29,8 @@ interface are:
 * "VALID"
 * "DATA".
 
-It is required that the sender, while waiting for the receiver, keeps "VALID" asserted and the "DATA" unchanged.
+It is required that the sender, while waiting for the receiver, keeps "VALID" asserted and the "DATA" unchanged. Note
+that this interface is uni-directional.
 
 ### AXI packet
 AXI packet is used when data has a natural packet structure. i.e. when there is a beginning and an end to each packet.
@@ -37,20 +40,54 @@ interface are:
 * "READY"
 * "VALID"
 * "DATA"
-* "BYTES"
-* "LAST".
+* "LAST"
+* "BYTES".
 
 It is assumed that the data comes in byte-sized chunks. The "BYTES" field indicates the number of valid bytes in this
 particular clock cycle. The "DATA" field is left-justifed, i.e. first byte in the data is in the 8 most significant bits
 of the "DATA" field. Furthermore, when "LAST" is not asserted the "BYTES" field is ignored, and hence it is implicit
-that all bytes in "DATA" are valid.
+that all bytes in "DATA" are valid. Note that this interface is uni-directional.
+
+### AXI lite
+Note that this interface is bi-directional.
+
+### Wishbone
+
+* "CYC"
+* "STALL"
+* "STB"
+* "ADDR"
+* "WE"
+* "WRDAT"
+* "ACK"
+* "RDDAT"
+
+Note that this interface is bi-directional.
+
+### Avalon
+Note that this interface is bi-directional.
 
 ## Modules
+
+### AXI streaming
+
 * [axis\_fifo\_sync.vhd](src/axis_fifo_sync.vhd): This is a simple synchronuous AXI streaming FIFO (i.e. input and output have same clock).
 * [axis\_arbiter.vhd](src/axis_arbiter.vhd): This arbitrates (merges) two AXI streaming interfaces into one.
 * [axis\_distributor.vhd](src/axis_distributor.vhd): This distribues a single AXI streaming interface into too.
 * [axis\_insert\_fixed\_header.vhd](src/axis_insert_fixed_header.vhd): This inserts a fixed-size header in front of an AXI packet.
 * [axis\_remove\_fixed\_header.vhd](src/axis_remove_fixed_header.vhd): This removes a fixed-size header from the front of an AXI packet.
 
+### AXI packet
+
 * [axip\_fifo\_sync.vhd](src/axip_fifo_sync.vhd): This is a simple synchronuous AXI packet FIFO (i.e. input and output have same clock).
+
+### Wishbone
+
+* [wbus\_arbiter.vhd](src/wbus_arbiter.vhd): The arbitrates (merges) two Wishbone interfaces into one.
+* [wbus\_arbiter\_general.vhd](src/wbus_arbiter_general.vhd): The arbitrates (merges) several Wishbone interfaces into one.
+
+### Conversion between interfaces
+
+* [axip\_to\_axis.vhd](src/axip_to_axis.vhd): Convert from an AXI packet interface to an AXI streaming interface.
+* [axis\_to\_axip.vhd](src/axis_to_axip.vhd): Convert from an AXI streaming interface to an AXI packet interface.
 

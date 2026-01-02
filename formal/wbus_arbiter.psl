@@ -1,0 +1,150 @@
+vunit wbus_arbiter_inst(wbus_arbiter(synthesis))
+{
+   -- set all declarations to run on clk
+   default clock is rising_edge(clk_i);
+
+   signal f_sampled_in0 : boolean := false;
+   signal f_sampled_in1 : boolean := false;
+   signal f_sampled_out : boolean := false;
+
+   signal f_value : std_logic_vector(G_ADDR_SIZE-1 downto 0);
+   attribute anyconst : boolean;
+   attribute anyconst of f_value : signal is true;
+
+   signal f_request0_active : boolean := false;
+   signal f_request1_active : boolean := false;
+   signal f_requestm_active : boolean := false;
+
+   sampled_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if s0_wbus_cyc_i = '1' and s0_wbus_stb_i = '1' and s0_wbus_addr_i = f_value then
+         f_sampled_in0 <= true;
+       end if;
+       if s1_wbus_cyc_i = '1' and s1_wbus_stb_i = '1' and s1_wbus_addr_i = f_value then
+         f_sampled_in1 <= true;
+       end if;
+       if m_wbus_cyc_o = '1' and m_wbus_stb_o = '1' and m_wbus_addr_o = f_value then
+         f_sampled_out <= true;
+       end if;
+
+       if rst_i = '1' then
+         f_sampled_in0 <= false;
+         f_sampled_in1 <= false;
+         f_sampled_out <= false;
+       end if;
+     end if;
+   end process sampled_proc;
+
+   f_request0_active_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if s0_wbus_cyc_i and s0_wbus_stb_i and not s0_wbus_stall_o then
+         f_request0_active <= true;
+       end if;
+       if s0_wbus_ack_o or not s0_wbus_cyc_i then
+         f_request0_active <= false;
+       end if;
+       if rst_i = '1' then
+         f_request0_active <= false;
+       end if;
+     end if;
+   end process f_request0_active_proc;
+
+   f_request1_active_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if s1_wbus_cyc_i and s1_wbus_stb_i and not s1_wbus_stall_o then
+         f_request1_active <= true;
+       end if;
+       if s1_wbus_ack_o or not s1_wbus_cyc_i then
+         f_request1_active <= false;
+       end if;
+       if rst_i = '1' then
+         f_request1_active <= false;
+       end if;
+     end if;
+   end process f_request1_active_proc;
+
+   f_requestm_active_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if m_wbus_cyc_o and m_wbus_stb_o and not m_wbus_stall_i then
+         f_requestm_active <= true;
+       end if;
+       if m_wbus_ack_i or not m_wbus_cyc_o then
+         f_requestm_active <= false;
+       end if;
+       if rst_i = '1' then
+         f_requestm_active <= false;
+       end if;
+     end if;
+   end process f_requestm_active_proc;
+
+
+   ------------------------------------------------
+   -- PROPERTIES OF THE WISHBONE MASTER INTERFACE
+   ------------------------------------------------
+
+   -- WISHBONE MASTER: Clear all requests after a reset
+   f_wbus_master_reset : assert always {rst_i} |=> {not m_wbus_cyc_o and not m_wbus_stb_o};
+
+   -- WISHBONE MASTER: STB must be low when CYC is low.
+   f_wbus_master_stb_low : assert always {not m_wbus_cyc_o and not rst_i} |-> {not m_wbus_stb_o};
+
+   -- WISHBONE MASTER: Outputs must be stable during request
+   f_wbus_master_stable : assert always {m_wbus_stb_o and not m_wbus_ack_i and not rst_i} |=> {m_wbus_cyc_o = '0' or
+   (stable(m_wbus_addr_o) and stable(m_wbus_wrdat_o) and stable(m_wbus_we_o))};
+
+   -- WISHBONE MASTER: Outputs must be stable during stall
+   f_wbus_master_stall : assert always {m_wbus_cyc_o and m_wbus_stb_o and m_wbus_stall_i and not rst_i} |=>
+     {m_wbus_cyc_o = '0' or (stable(m_wbus_stb_o) and stable(m_wbus_addr_o) and stable(m_wbus_wrdat_o) and stable(m_wbus_we_o))};
+
+   f_wbus_slave_0_stall : assert always {f_request0_active} |-> s0_wbus_stall_o;
+   f_wbus_slave_1_stall : assert always {f_request1_active} |-> s1_wbus_stall_o;
+
+   -- WISHBONE MASTER: Verify ordering
+   f_wbus_master_ordering : assert always {f_sampled_out} |-> {f_sampled_in0 or f_sampled_in1};
+
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   f_wbus_slave_0_stable : assume always {(s0_wbus_stb_i or f_request0_active) and not s0_wbus_ack_o} |=>
+     {stable(s0_wbus_addr_i) and stable(s0_wbus_we_i) and stable(s0_wbus_wrdat_i)};
+
+   f_wbus_slave_1_stable : assume always {(s1_wbus_stb_i or f_request1_active) and not s1_wbus_ack_o} |=>
+     {stable(s1_wbus_addr_i) and stable(s1_wbus_we_i) and stable(s1_wbus_wrdat_i)};
+
+   f_wbus_slave_0_request : assume always {s0_wbus_stb_i and not s0_wbus_stall_o} |-> not f_request0_active;
+
+   f_wbus_slave_1_request : assume always {s1_wbus_stb_i and not s1_wbus_stall_o} |-> not f_request1_active;
+
+   f_wbus_slave_m_request : assume always {m_wbus_ack_i} |-> f_requestm_active;
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   -- A request is generated and accepted
+   f_wbus_request : cover {m_wbus_stb_o and not rst_i; not m_wbus_stb_o};
+
+
+   ----------------------------------------------
+   -- ADDITIONAL ASSUMES HELPFUL WHEN DEBUGGING
+   ----------------------------------------------
+
+   -- Assume no reset after the first clock cycle
+--   f_reset2 : assume always {not rst_i} |=> {not rst_i};
+
+   -- Assume the WISHBONE slave responds on the exact following cycle.
+--   f_wbus_response : assume always {wbus_stb_o and not rst_i} |=> {wbus_ack_i};
+
+
+} -- vunit wbus_arbiter_inst(cmd(synthesis))
+

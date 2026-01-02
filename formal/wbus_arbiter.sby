@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 1
+bmc: mode bmc
+bmc: depth 12
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_ADDR_SIZE=4 wbus_arbiter.vhd wbus_arbiter.psl -e wbus_arbiter
+prep -top wbus_arbiter
+
+[files]
+wbus_arbiter.psl
+../src/wbus_arbiter.vhd
+
