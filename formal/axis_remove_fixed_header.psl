@@ -1,0 +1,183 @@
+vunit axis_remove_fixed_header_inst(axis_remove_fixed_header(synthesis))
+{
+-- set all declarations to run on clk_i
+   default clock is rising_edge(clk_i);
+
+
+   ----------------------------------------------
+   -- Process packet data
+   ----------------------------------------------
+
+   signal f_data : std_logic_vector(7 downto 0);
+   signal f_header : std_logic_vector(7 downto 0);
+   attribute anyconst : boolean;
+   attribute anyconst of f_data : signal is true;
+   attribute anyconst of f_header : signal is true;
+
+   signal f_s_first    : std_logic;
+   signal f_data_in    : boolean;
+   signal f_data_out   : boolean;
+   signal f_header_in  : boolean;
+   signal f_header_out : boolean;
+
+   f_data_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if s_valid_i = '1' and s_ready_o = '1' then
+         f_s_first <= s_last_i;
+       end if;
+
+       if s_valid_i = '1' and s_ready_o = '1' then
+         for i in 0 to G_DATA_BYTES - 1 loop
+           if i < s_bytes_i then
+             if s_data_i(8 * (G_DATA_BYTES-1-i) + 7 downto 8 * (G_DATA_BYTES-1-i)) = f_data then
+               f_data_in <= true;
+             end if;
+           end if;
+         end loop;
+       end if;
+
+       if m_valid_o = '1' and m_ready_i = '1' then
+         for i in 0 to G_DATA_BYTES - 1 loop
+           if i < m_bytes_o then
+             if m_data_o(8 * (G_DATA_BYTES-1-i) + 7 downto 8 * (G_DATA_BYTES-1-i)) = f_data then
+               f_data_out <= true;
+             end if;
+           end if;
+         end loop;
+       end if;
+
+       if s_valid_i = '1' and s_ready_o = '1' and f_s_first = '1' then
+         for i in 0 to G_HEADER_BYTES - 1 loop
+           if s_data_i(8 * (G_DATA_BYTES-1-i) + 7 downto 8 * (G_DATA_BYTES-1-i)) = f_header then
+             f_header_in <= true;
+           end if;
+         end loop;
+       end if;
+
+       if h_valid_o = '1' and h_ready_i = '1' then
+         for i in 0 to G_HEADER_BYTES - 1 loop
+           if h_data_o(8 * (G_HEADER_BYTES-1-i) + 7 downto 8 * (G_HEADER_BYTES-1-i)) = f_header then
+             f_header_out <= true;
+           end if;
+         end loop;
+       end if;
+
+       if rst_i = '1' then
+         f_s_first <= '1';
+         f_data_in    <= false;
+         f_data_out   <= false;
+         f_header_in  <= false;
+         f_header_out <= false;
+       end if;
+     end if;
+   end process f_data_proc;
+
+
+   ----------------------------------------------
+   -- Process packet length
+   ----------------------------------------------
+
+   signal f_s_bytes      : natural range 0 to 1000;
+   signal f_m_bytes      : natural range 0 to 1000;
+   signal f_s_length     : natural range 0 to 1000;
+   signal f_m_length     : natural range 0 to 1000;
+   signal f_s_cnt : natural range 0 to 9;
+   signal f_m_cnt : natural range 0 to 9;
+
+   f_bytes_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if s_valid_i = '1' and s_ready_o = '1' then
+         if s_last_i = '1' then
+           f_s_length <= f_s_bytes + s_bytes_i;
+           f_s_cnt <= f_s_cnt + 1;
+           f_s_bytes <= 0;
+         else
+           f_s_bytes <= f_s_bytes + s_bytes_i;
+         end if;
+       end if;
+
+       if m_valid_o = '1' and m_ready_i = '1' then
+         if m_last_o = '1' then
+           f_m_length <= f_m_bytes + m_bytes_o;
+           f_m_cnt <= f_m_cnt + 1;
+           f_m_bytes <= 0;
+         else
+           f_m_bytes <= f_m_bytes + m_bytes_o;
+         end if;
+       end if;
+
+       if rst_i = '1' then
+         f_s_bytes <= 0;
+         f_m_bytes <= 0;
+         f_s_length <= 0;
+         f_m_length <= 0;
+         f_s_cnt <= 0;
+         f_m_cnt <= 0;
+       end if;
+
+     end if;
+   end process f_bytes_proc;
+
+
+-----------------------------
+-- ASSERTIONS ABOUT OUTPUTS
+-----------------------------
+
+-- Master must be empty after reset
+   f_master_after_reset_empty : assert always {rst_i} |=> {not m_valid_o};
+
+-- Slave must be ready after reset
+   f_slave_after_reset_ready : assert always {rst_i} |=> {s_ready_o};
+
+-- Master must be stable
+   f_master_stable : assert always {m_valid_o = '1' and m_ready_i = '0' and rst_i = '0'} |=>
+     {stable(m_valid_o) and stable(m_data_o) and stable(m_last_o) and stable(m_bytes_o)};
+
+-- Master must be stable
+   f_header_stable : assert always {h_valid_o = '1' and h_ready_i = '0' and rst_i = '0'} |=>
+     {stable(h_valid_o) and stable(h_data_o)};
+
+-- Data on master must have been from slave
+   f_master_data_seen : assert always {f_data_out and rst_i = '0'} |-> {f_data_in};
+
+-- Data on header must have been from slave
+   f_master_header_seen : assert always {f_header_out and rst_i = '0'} |-> {f_header_in};
+
+-- Packet length must be valid
+   f_master_length_valid : assert always {rst_i = '0'} |-> {m_bytes_o <= G_DATA_BYTES};
+
+-- Output buffer full always valid
+   f_master_buffer_full : assert always {rst_i = '0'} |-> {m_bytes_o = 0 or m_valid_o = '1'};
+
+-- Packet length must match
+   f_master_length : assert always {f_s_cnt = f_m_cnt and f_s_cnt > 0 and rst_i = '0'} |->
+     {f_s_length = f_m_length + G_HEADER_BYTES};
+
+
+-----------------------------
+-- ASSUMPTIONS ABOUT INPUTS
+-----------------------------
+
+-- Require reset at startup.
+   f_reset : assume {rst_i};
+
+-- Input bytes must be a valid number.
+   f_slave_bytes_range : assume always {s_bytes_i <= G_DATA_BYTES};
+
+-- Input bytes must be a valid number.
+   f_slave_bytes_valid : assume always {s_last_i = '0'} |-> {s_bytes_i = G_DATA_BYTES};
+
+-- Input bytes must be a valid number.
+   f_slave_bytes_header : assume always {f_s_first = '1'} |-> {s_bytes_i >= G_HEADER_BYTES};
+
+
+--------------------------------------------
+-- COVER STATEMENTS TO VERIFY REACHABILITY
+--------------------------------------------
+
+   f_slave_full : cover {m_ready_i and not s_ready_o and not rst_i};
+
+} -- vunit axis_remove_fixed_header_inst(axis_remove_fixed_header(synthesis))
+

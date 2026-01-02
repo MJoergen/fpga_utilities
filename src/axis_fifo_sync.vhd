@@ -18,6 +18,7 @@ entity axis_fifo_sync is
   port (
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
+    fill_o    : out   natural range 0 to G_RAM_DEPTH - 1;
 
     -- AXI stream input interface
     s_ready_o : out   std_logic;
@@ -73,6 +74,9 @@ architecture synthesis of axis_fifo_sync is
   end function next_index;
 
 begin
+
+  fill_o <= head - tail when head >= tail else
+            G_RAM_DEPTH - (tail - head);
 
   head_proc : process (clk_i)
   begin

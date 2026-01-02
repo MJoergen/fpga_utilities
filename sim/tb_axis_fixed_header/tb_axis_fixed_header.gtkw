@@ -1,0 +1,84 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Wed Dec 31 08:26:44 2025
+[*]
+[dumpfile] "/home/mike/git/MJoergen/tcp/sim/tb_axis_fixed_header/tb_axis_fixed_header.ghw"
+[dumpfile_mtime] "Wed Dec 31 08:25:18 2025"
+[dumpfile_size] 4597586
+[savefile] "/home/mike/git/MJoergen/tcp/sim/tb_axis_fixed_header/tb_axis_fixed_header.gtkw"
+[timestart] 0
+[size] 1156 698
+[pos] -1 -1
+*-33.673069 79100000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_axis_fixed_header.
+[sst_width] 239
+[signals_width] 295
+[sst_expanded] 1
+[sst_vpaned_height] 193
+@800200
+-TB
+@28
+top.tb_axis_fixed_header.clk
+top.tb_axis_fixed_header.rst
+[color] 6
+top.tb_axis_fixed_header.tb_m_ready
+[color] 2
+top.tb_axis_fixed_header.tb_m_valid
+@22
+#{top.tb_axis_fixed_header.tb_m_data[63:0]} top.tb_axis_fixed_header.tb_m_data[63] top.tb_axis_fixed_header.tb_m_data[62] top.tb_axis_fixed_header.tb_m_data[61] top.tb_axis_fixed_header.tb_m_data[60] top.tb_axis_fixed_header.tb_m_data[59] top.tb_axis_fixed_header.tb_m_data[58] top.tb_axis_fixed_header.tb_m_data[57] top.tb_axis_fixed_header.tb_m_data[56] top.tb_axis_fixed_header.tb_m_data[55] top.tb_axis_fixed_header.tb_m_data[54] top.tb_axis_fixed_header.tb_m_data[53] top.tb_axis_fixed_header.tb_m_data[52] top.tb_axis_fixed_header.tb_m_data[51] top.tb_axis_fixed_header.tb_m_data[50] top.tb_axis_fixed_header.tb_m_data[49] top.tb_axis_fixed_header.tb_m_data[48] top.tb_axis_fixed_header.tb_m_data[47] top.tb_axis_fixed_header.tb_m_data[46] top.tb_axis_fixed_header.tb_m_data[45] top.tb_axis_fixed_header.tb_m_data[44] top.tb_axis_fixed_header.tb_m_data[43] top.tb_axis_fixed_header.tb_m_data[42] top.tb_axis_fixed_header.tb_m_data[41] top.tb_axis_fixed_header.tb_m_data[40] top.tb_axis_fixed_header.tb_m_data[39] top.tb_axis_fixed_header.tb_m_data[38] top.tb_axis_fixed_header.tb_m_data[37] top.tb_axis_fixed_header.tb_m_data[36] top.tb_axis_fixed_header.tb_m_data[35] top.tb_axis_fixed_header.tb_m_data[34] top.tb_axis_fixed_header.tb_m_data[33] top.tb_axis_fixed_header.tb_m_data[32] top.tb_axis_fixed_header.tb_m_data[31] top.tb_axis_fixed_header.tb_m_data[30] top.tb_axis_fixed_header.tb_m_data[29] top.tb_axis_fixed_header.tb_m_data[28] top.tb_axis_fixed_header.tb_m_data[27] top.tb_axis_fixed_header.tb_m_data[26] top.tb_axis_fixed_header.tb_m_data[25] top.tb_axis_fixed_header.tb_m_data[24] top.tb_axis_fixed_header.tb_m_data[23] top.tb_axis_fixed_header.tb_m_data[22] top.tb_axis_fixed_header.tb_m_data[21] top.tb_axis_fixed_header.tb_m_data[20] top.tb_axis_fixed_header.tb_m_data[19] top.tb_axis_fixed_header.tb_m_data[18] top.tb_axis_fixed_header.tb_m_data[17] top.tb_axis_fixed_header.tb_m_data[16] top.tb_axis_fixed_header.tb_m_data[15] top.tb_axis_fixed_header.tb_m_data[14] top.tb_axis_fixed_header.tb_m_data[13] top.tb_axis_fixed_header.tb_m_data[12] top.tb_axis_fixed_header.tb_m_data[11] top.tb_axis_fixed_header.tb_m_data[10] top.tb_axis_fixed_header.tb_m_data[9] top.tb_axis_fixed_header.tb_m_data[8] top.tb_axis_fixed_header.tb_m_data[7] top.tb_axis_fixed_header.tb_m_data[6] top.tb_axis_fixed_header.tb_m_data[5] top.tb_axis_fixed_header.tb_m_data[4] top.tb_axis_fixed_header.tb_m_data[3] top.tb_axis_fixed_header.tb_m_data[2] top.tb_axis_fixed_header.tb_m_data[1] top.tb_axis_fixed_header.tb_m_data[0]
+@28
+top.tb_axis_fixed_header.tb_m_last
+@420
+top.tb_axis_fixed_header.tb_m_bytes
+@28
+[color] 6
+top.tb_axis_fixed_header.tb_s_ready
+[color] 2
+top.tb_axis_fixed_header.tb_s_valid
+@22
+#{top.tb_axis_fixed_header.tb_s_data[63:0]} top.tb_axis_fixed_header.tb_s_data[63] top.tb_axis_fixed_header.tb_s_data[62] top.tb_axis_fixed_header.tb_s_data[61] top.tb_axis_fixed_header.tb_s_data[60] top.tb_axis_fixed_header.tb_s_data[59] top.tb_axis_fixed_header.tb_s_data[58] top.tb_axis_fixed_header.tb_s_data[57] top.tb_axis_fixed_header.tb_s_data[56] top.tb_axis_fixed_header.tb_s_data[55] top.tb_axis_fixed_header.tb_s_data[54] top.tb_axis_fixed_header.tb_s_data[53] top.tb_axis_fixed_header.tb_s_data[52] top.tb_axis_fixed_header.tb_s_data[51] top.tb_axis_fixed_header.tb_s_data[50] top.tb_axis_fixed_header.tb_s_data[49] top.tb_axis_fixed_header.tb_s_data[48] top.tb_axis_fixed_header.tb_s_data[47] top.tb_axis_fixed_header.tb_s_data[46] top.tb_axis_fixed_header.tb_s_data[45] top.tb_axis_fixed_header.tb_s_data[44] top.tb_axis_fixed_header.tb_s_data[43] top.tb_axis_fixed_header.tb_s_data[42] top.tb_axis_fixed_header.tb_s_data[41] top.tb_axis_fixed_header.tb_s_data[40] top.tb_axis_fixed_header.tb_s_data[39] top.tb_axis_fixed_header.tb_s_data[38] top.tb_axis_fixed_header.tb_s_data[37] top.tb_axis_fixed_header.tb_s_data[36] top.tb_axis_fixed_header.tb_s_data[35] top.tb_axis_fixed_header.tb_s_data[34] top.tb_axis_fixed_header.tb_s_data[33] top.tb_axis_fixed_header.tb_s_data[32] top.tb_axis_fixed_header.tb_s_data[31] top.tb_axis_fixed_header.tb_s_data[30] top.tb_axis_fixed_header.tb_s_data[29] top.tb_axis_fixed_header.tb_s_data[28] top.tb_axis_fixed_header.tb_s_data[27] top.tb_axis_fixed_header.tb_s_data[26] top.tb_axis_fixed_header.tb_s_data[25] top.tb_axis_fixed_header.tb_s_data[24] top.tb_axis_fixed_header.tb_s_data[23] top.tb_axis_fixed_header.tb_s_data[22] top.tb_axis_fixed_header.tb_s_data[21] top.tb_axis_fixed_header.tb_s_data[20] top.tb_axis_fixed_header.tb_s_data[19] top.tb_axis_fixed_header.tb_s_data[18] top.tb_axis_fixed_header.tb_s_data[17] top.tb_axis_fixed_header.tb_s_data[16] top.tb_axis_fixed_header.tb_s_data[15] top.tb_axis_fixed_header.tb_s_data[14] top.tb_axis_fixed_header.tb_s_data[13] top.tb_axis_fixed_header.tb_s_data[12] top.tb_axis_fixed_header.tb_s_data[11] top.tb_axis_fixed_header.tb_s_data[10] top.tb_axis_fixed_header.tb_s_data[9] top.tb_axis_fixed_header.tb_s_data[8] top.tb_axis_fixed_header.tb_s_data[7] top.tb_axis_fixed_header.tb_s_data[6] top.tb_axis_fixed_header.tb_s_data[5] top.tb_axis_fixed_header.tb_s_data[4] top.tb_axis_fixed_header.tb_s_data[3] top.tb_axis_fixed_header.tb_s_data[2] top.tb_axis_fixed_header.tb_s_data[1] top.tb_axis_fixed_header.tb_s_data[0]
+@28
+top.tb_axis_fixed_header.tb_s_last
+@420
+top.tb_axis_fixed_header.tb_s_bytes
+@28
+[color] 6
+top.tb_axis_fixed_header.h_ready
+[color] 2
+top.tb_axis_fixed_header.h_valid
+@22
+#{top.tb_axis_fixed_header.h_data[15:0]} top.tb_axis_fixed_header.h_data[15] top.tb_axis_fixed_header.h_data[14] top.tb_axis_fixed_header.h_data[13] top.tb_axis_fixed_header.h_data[12] top.tb_axis_fixed_header.h_data[11] top.tb_axis_fixed_header.h_data[10] top.tb_axis_fixed_header.h_data[9] top.tb_axis_fixed_header.h_data[8] top.tb_axis_fixed_header.h_data[7] top.tb_axis_fixed_header.h_data[6] top.tb_axis_fixed_header.h_data[5] top.tb_axis_fixed_header.h_data[4] top.tb_axis_fixed_header.h_data[3] top.tb_axis_fixed_header.h_data[2] top.tb_axis_fixed_header.h_data[1] top.tb_axis_fixed_header.h_data[0]
+@28
+[color] 6
+top.tb_axis_fixed_header.d_ready
+[color] 2
+top.tb_axis_fixed_header.d_valid
+@22
+#{top.tb_axis_fixed_header.d_data[63:0]} top.tb_axis_fixed_header.d_data[63] top.tb_axis_fixed_header.d_data[62] top.tb_axis_fixed_header.d_data[61] top.tb_axis_fixed_header.d_data[60] top.tb_axis_fixed_header.d_data[59] top.tb_axis_fixed_header.d_data[58] top.tb_axis_fixed_header.d_data[57] top.tb_axis_fixed_header.d_data[56] top.tb_axis_fixed_header.d_data[55] top.tb_axis_fixed_header.d_data[54] top.tb_axis_fixed_header.d_data[53] top.tb_axis_fixed_header.d_data[52] top.tb_axis_fixed_header.d_data[51] top.tb_axis_fixed_header.d_data[50] top.tb_axis_fixed_header.d_data[49] top.tb_axis_fixed_header.d_data[48] top.tb_axis_fixed_header.d_data[47] top.tb_axis_fixed_header.d_data[46] top.tb_axis_fixed_header.d_data[45] top.tb_axis_fixed_header.d_data[44] top.tb_axis_fixed_header.d_data[43] top.tb_axis_fixed_header.d_data[42] top.tb_axis_fixed_header.d_data[41] top.tb_axis_fixed_header.d_data[40] top.tb_axis_fixed_header.d_data[39] top.tb_axis_fixed_header.d_data[38] top.tb_axis_fixed_header.d_data[37] top.tb_axis_fixed_header.d_data[36] top.tb_axis_fixed_header.d_data[35] top.tb_axis_fixed_header.d_data[34] top.tb_axis_fixed_header.d_data[33] top.tb_axis_fixed_header.d_data[32] top.tb_axis_fixed_header.d_data[31] top.tb_axis_fixed_header.d_data[30] top.tb_axis_fixed_header.d_data[29] top.tb_axis_fixed_header.d_data[28] top.tb_axis_fixed_header.d_data[27] top.tb_axis_fixed_header.d_data[26] top.tb_axis_fixed_header.d_data[25] top.tb_axis_fixed_header.d_data[24] top.tb_axis_fixed_header.d_data[23] top.tb_axis_fixed_header.d_data[22] top.tb_axis_fixed_header.d_data[21] top.tb_axis_fixed_header.d_data[20] top.tb_axis_fixed_header.d_data[19] top.tb_axis_fixed_header.d_data[18] top.tb_axis_fixed_header.d_data[17] top.tb_axis_fixed_header.d_data[16] top.tb_axis_fixed_header.d_data[15] top.tb_axis_fixed_header.d_data[14] top.tb_axis_fixed_header.d_data[13] top.tb_axis_fixed_header.d_data[12] top.tb_axis_fixed_header.d_data[11] top.tb_axis_fixed_header.d_data[10] top.tb_axis_fixed_header.d_data[9] top.tb_axis_fixed_header.d_data[8] top.tb_axis_fixed_header.d_data[7] top.tb_axis_fixed_header.d_data[6] top.tb_axis_fixed_header.d_data[5] top.tb_axis_fixed_header.d_data[4] top.tb_axis_fixed_header.d_data[3] top.tb_axis_fixed_header.d_data[2] top.tb_axis_fixed_header.d_data[1] top.tb_axis_fixed_header.d_data[0]
+@28
+top.tb_axis_fixed_header.d_last
+@420
+top.tb_axis_fixed_header.d_bytes
+@28
+[color] 6
+top.tb_axis_fixed_header.h_pause_ready
+[color] 2
+top.tb_axis_fixed_header.h_pause_valid
+@22
+#{top.tb_axis_fixed_header.h_pause_data[15:0]} top.tb_axis_fixed_header.h_pause_data[15] top.tb_axis_fixed_header.h_pause_data[14] top.tb_axis_fixed_header.h_pause_data[13] top.tb_axis_fixed_header.h_pause_data[12] top.tb_axis_fixed_header.h_pause_data[11] top.tb_axis_fixed_header.h_pause_data[10] top.tb_axis_fixed_header.h_pause_data[9] top.tb_axis_fixed_header.h_pause_data[8] top.tb_axis_fixed_header.h_pause_data[7] top.tb_axis_fixed_header.h_pause_data[6] top.tb_axis_fixed_header.h_pause_data[5] top.tb_axis_fixed_header.h_pause_data[4] top.tb_axis_fixed_header.h_pause_data[3] top.tb_axis_fixed_header.h_pause_data[2] top.tb_axis_fixed_header.h_pause_data[1] top.tb_axis_fixed_header.h_pause_data[0]
+@28
+[color] 6
+top.tb_axis_fixed_header.d_pause_ready
+[color] 2
+top.tb_axis_fixed_header.d_pause_valid
+@22
+#{top.tb_axis_fixed_header.d_pause_data[63:0]} top.tb_axis_fixed_header.d_pause_data[63] top.tb_axis_fixed_header.d_pause_data[62] top.tb_axis_fixed_header.d_pause_data[61] top.tb_axis_fixed_header.d_pause_data[60] top.tb_axis_fixed_header.d_pause_data[59] top.tb_axis_fixed_header.d_pause_data[58] top.tb_axis_fixed_header.d_pause_data[57] top.tb_axis_fixed_header.d_pause_data[56] top.tb_axis_fixed_header.d_pause_data[55] top.tb_axis_fixed_header.d_pause_data[54] top.tb_axis_fixed_header.d_pause_data[53] top.tb_axis_fixed_header.d_pause_data[52] top.tb_axis_fixed_header.d_pause_data[51] top.tb_axis_fixed_header.d_pause_data[50] top.tb_axis_fixed_header.d_pause_data[49] top.tb_axis_fixed_header.d_pause_data[48] top.tb_axis_fixed_header.d_pause_data[47] top.tb_axis_fixed_header.d_pause_data[46] top.tb_axis_fixed_header.d_pause_data[45] top.tb_axis_fixed_header.d_pause_data[44] top.tb_axis_fixed_header.d_pause_data[43] top.tb_axis_fixed_header.d_pause_data[42] top.tb_axis_fixed_header.d_pause_data[41] top.tb_axis_fixed_header.d_pause_data[40] top.tb_axis_fixed_header.d_pause_data[39] top.tb_axis_fixed_header.d_pause_data[38] top.tb_axis_fixed_header.d_pause_data[37] top.tb_axis_fixed_header.d_pause_data[36] top.tb_axis_fixed_header.d_pause_data[35] top.tb_axis_fixed_header.d_pause_data[34] top.tb_axis_fixed_header.d_pause_data[33] top.tb_axis_fixed_header.d_pause_data[32] top.tb_axis_fixed_header.d_pause_data[31] top.tb_axis_fixed_header.d_pause_data[30] top.tb_axis_fixed_header.d_pause_data[29] top.tb_axis_fixed_header.d_pause_data[28] top.tb_axis_fixed_header.d_pause_data[27] top.tb_axis_fixed_header.d_pause_data[26] top.tb_axis_fixed_header.d_pause_data[25] top.tb_axis_fixed_header.d_pause_data[24] top.tb_axis_fixed_header.d_pause_data[23] top.tb_axis_fixed_header.d_pause_data[22] top.tb_axis_fixed_header.d_pause_data[21] top.tb_axis_fixed_header.d_pause_data[20] top.tb_axis_fixed_header.d_pause_data[19] top.tb_axis_fixed_header.d_pause_data[18] top.tb_axis_fixed_header.d_pause_data[17] top.tb_axis_fixed_header.d_pause_data[16] top.tb_axis_fixed_header.d_pause_data[15] top.tb_axis_fixed_header.d_pause_data[14] top.tb_axis_fixed_header.d_pause_data[13] top.tb_axis_fixed_header.d_pause_data[12] top.tb_axis_fixed_header.d_pause_data[11] top.tb_axis_fixed_header.d_pause_data[10] top.tb_axis_fixed_header.d_pause_data[9] top.tb_axis_fixed_header.d_pause_data[8] top.tb_axis_fixed_header.d_pause_data[7] top.tb_axis_fixed_header.d_pause_data[6] top.tb_axis_fixed_header.d_pause_data[5] top.tb_axis_fixed_header.d_pause_data[4] top.tb_axis_fixed_header.d_pause_data[3] top.tb_axis_fixed_header.d_pause_data[2] top.tb_axis_fixed_header.d_pause_data[1] top.tb_axis_fixed_header.d_pause_data[0]
+@28
+top.tb_axis_fixed_header.d_pause_last
+@421
+top.tb_axis_fixed_header.d_pause_bytes
+@1000200
+-TB
+[pattern_trace] 1
+[pattern_trace] 0

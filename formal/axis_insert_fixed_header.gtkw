@@ -1,0 +1,77 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Wed Dec 31 08:42:03 2025
+[*]
+[dumpfile] "/home/mike/git/MJoergen/tcp/formal/axis_insert_fixed_header_bmc/engine_0/trace.vcd"
+[dumpfile_mtime] "Wed Dec 31 08:40:59 2025"
+[dumpfile_size] 5697
+[savefile] "/home/mike/git/MJoergen/tcp/formal/axis_insert_fixed_header.gtkw"
+[timestart] 0
+[size] 1276 825
+[pos] 0 45
+*-4.143427 18 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] axis_insert_fixed_header.
+[sst_width] 239
+[signals_width] 271
+[sst_expanded] 1
+[sst_vpaned_height] 233
+@800200
+-DUT
+@28
+axis_insert_fixed_header.clk_i
+axis_insert_fixed_header.rst_i
+[color] 6
+axis_insert_fixed_header.h_ready_o
+[color] 2
+axis_insert_fixed_header.h_valid_i
+@22
+axis_insert_fixed_header.h_data_i[15:0]
+@28
+[color] 6
+axis_insert_fixed_header.s_ready_o
+[color] 2
+axis_insert_fixed_header.s_valid_i
+@22
+axis_insert_fixed_header.s_data_i[39:0]
+@28
+axis_insert_fixed_header.s_last_i
+@24
+axis_insert_fixed_header.s_bytes_i[2:0]
+@28
+[color] 6
+axis_insert_fixed_header.m_ready_i
+[color] 2
+axis_insert_fixed_header.m_valid_o
+@22
+axis_insert_fixed_header.m_data_o[39:0]
+@28
+axis_insert_fixed_header.m_last_o
+@24
+axis_insert_fixed_header.m_bytes_o[2:0]
+@22
+axis_insert_fixed_header.s_data[39:0]
+@24
+axis_insert_fixed_header.s_bytes[2:0]
+@28
+axis_insert_fixed_header.state[2:0]
+@1000200
+-DUT
+@28
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_m_first
+@22
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_data[7:0]
+@28
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_data_in
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_data_out
+@22
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_header[7:0]
+@28
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_header_in
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_header_out
+@24
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_s_length[9:0]
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_m_length[9:0]
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_s_cnt[3:0]
+axis_insert_fixed_header.axis_insert_fixed_header_inst.f_m_cnt[3:0]
+[pattern_trace] 1
+[pattern_trace] 0
