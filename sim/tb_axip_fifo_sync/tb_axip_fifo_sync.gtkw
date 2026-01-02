@@ -1,0 +1,52 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Fri Jan  2 09:18:59 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axip_fifo_sync/tb_axip_fifo_sync.ghw"
+[dumpfile_mtime] "Fri Jan  2 09:17:47 2026"
+[dumpfile_size] 886110
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axip_fifo_sync/tb_axip_fifo_sync.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-32.977440 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_axip_fifo_sync.
+[treeopen] top.tb_axip_fifo_sync.axip_fifo_sync_inst.
+[sst_width] 239
+[signals_width] 262
+[sst_expanded] 1
+[sst_vpaned_height] 159
+@800200
+-axip_fifo_sync
+@28
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.clk_i
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.rst_i
+@420
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.fill_o
+@28
+[color] 6
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_ready_o
+[color] 2
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_valid_i
+@22
+#{top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[23:0]} top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[23] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[22] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[21] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[20] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[19] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[18] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[17] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[16] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[15] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[14] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[13] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[12] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[11] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[10] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[9] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[8] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[7] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[6] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[5] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[4] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[3] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[2] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[1] top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_data_i[0]
+@28
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_last_i
+@420
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.s_bytes_i
+@28
+[color] 6
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_ready_i
+[color] 2
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_valid_o
+@22
+#{top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[23:0]} top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[23] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[22] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[21] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[20] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[19] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[18] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[17] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[16] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[15] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[14] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[13] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[12] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[11] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[10] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[9] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[8] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[7] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[6] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[5] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[4] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[3] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[2] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[1] top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_data_o[0]
+@28
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_last_o
+@420
+top.tb_axip_fifo_sync.axip_fifo_sync_inst.m_bytes_o
+@1000200
+-axip_fifo_sync
+[pattern_trace] 1
+[pattern_trace] 0
