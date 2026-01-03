@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 1
+bmc: mode bmc
+bmc: depth 8
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_DATA_BYTES=5 -gG_HEADER_BYTES=2 axip_remove_fixed_header.vhd axip_remove_fixed_header.psl -e axip_remove_fixed_header
+prep -top axip_remove_fixed_header
+
+[files]
+axip_remove_fixed_header.psl
+../src/axip_remove_fixed_header.vhd
+

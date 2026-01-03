@@ -5,7 +5,7 @@ library ieee;
 library std;
   use std.env.stop;
 
-entity tb_axis_insert_fixed_header is
+entity tb_axip_insert_fixed_header is
   generic (
     G_DEBUG        : boolean;
     G_MAX_LENGTH   : natural;
@@ -15,9 +15,9 @@ entity tb_axis_insert_fixed_header is
     G_DATA_BYTES   : natural;
     G_HEADER_BYTES : natural
   );
-end entity tb_axis_insert_fixed_header;
+end entity tb_axip_insert_fixed_header;
 
-architecture simulation of tb_axis_insert_fixed_header is
+architecture simulation of tb_axip_insert_fixed_header is
 
   signal   clk : std_logic                 := '1';
   signal   rst : std_logic                 := '1';
@@ -109,7 +109,7 @@ begin
   -- Instantiate DUT
   --------------------------------------------
 
-  axis_insert_fixed_header_inst : entity work.axis_insert_fixed_header
+  axip_insert_fixed_header_inst : entity work.axip_insert_fixed_header
     generic map (
       G_DATA_BYTES   => G_DATA_BYTES,
       G_HEADER_BYTES => G_HEADER_BYTES
@@ -130,7 +130,7 @@ begin
       m_data_o  => m_data,
       m_last_o  => m_last,
       m_bytes_o => m_bytes
-    ); -- axis_insert_fixed_header_inst : entity work.axis_insert_fixed_header
+    ); -- axip_insert_fixed_header_inst : entity work.axip_insert_fixed_header
 
 
   --------------------------------------------

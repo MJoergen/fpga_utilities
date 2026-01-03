@@ -4,8 +4,8 @@
 
 # List of source files
 SRC += $(SRC_DIR)/axis_fifo_sync.vhd
-SRC += $(SRC_DIR)/axis_insert_fixed_header.vhd
-SRC += $(SRC_DIR)/axis_remove_fixed_header.vhd
+SRC += $(SRC_DIR)/axip_insert_fixed_header.vhd
+SRC += $(SRC_DIR)/axip_remove_fixed_header.vhd
 
 # List of test specific simulation files
 SRC += $(SIM_SRC_DIR)/axis_pause.vhd
@@ -13,10 +13,10 @@ SRC += $(SIM_SRC_DIR)/axip_pause.vhd
 SRC += $(SIM_SRC_DIR)/axip_sim.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
-SRC += tb_axis_fixed_header.vhd
+SRC += tb_axip_fixed_header.vhd
 
 # Top level entity
-DUT = axis_fixed_header
+DUT = axip_fixed_header
 
 # Test duration
 STOP_TIME = 100us

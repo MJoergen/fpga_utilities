@@ -3,8 +3,8 @@
 
 DUTS += axis_arbiter
 DUTS += axis_fifo_sync
-DUTS += axis_insert_fixed_header
-DUTS += axis_remove_fixed_header
+DUTS += axip_insert_fixed_header
+DUTS += axip_remove_fixed_header
 
 BMC        = $(patsubst %,%_bmc,$(DUTS))
 COVER      = $(patsubst %,%_cover,$(DUTS))

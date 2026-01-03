@@ -13,7 +13,7 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity axis_remove_fixed_header is
+entity axip_remove_fixed_header is
   generic (
     G_DATA_BYTES   : natural;
     G_HEADER_BYTES : natural
@@ -38,9 +38,9 @@ entity axis_remove_fixed_header is
     h_valid_o : out   std_logic;
     h_data_o  : out   std_logic_vector(G_HEADER_BYTES * 8 - 1 downto 0)
   );
-end entity axis_remove_fixed_header;
+end entity axip_remove_fixed_header;
 
-architecture synthesis of axis_remove_fixed_header is
+architecture synthesis of axip_remove_fixed_header is
 
   type     state_type is (IDLE_ST, BUSY_ST, LAST_ST);
   signal   state   : state_type                                          := IDLE_ST;

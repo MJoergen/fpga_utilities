@@ -74,12 +74,12 @@ Note that this interface is bi-directional.
 * [axis\_fifo\_sync.vhd](src/axis_fifo_sync.vhd): This is a simple synchronuous AXI streaming FIFO (i.e. input and output have same clock).
 * [axis\_arbiter.vhd](src/axis_arbiter.vhd): This arbitrates (merges) two AXI streaming interfaces into one.
 * [axis\_distributor.vhd](src/axis_distributor.vhd): This distribues a single AXI streaming interface into too.
-* [axis\_insert\_fixed\_header.vhd](src/axis_insert_fixed_header.vhd): This inserts a fixed-size header in front of an AXI packet.
-* [axis\_remove\_fixed\_header.vhd](src/axis_remove_fixed_header.vhd): This removes a fixed-size header from the front of an AXI packet.
 
 ### AXI packet
 
 * [axip\_fifo\_sync.vhd](src/axip_fifo_sync.vhd): This is a simple synchronuous AXI packet FIFO (i.e. input and output have same clock).
+* [axip\_insert\_fixed\_header.vhd](src/axip_insert_fixed_header.vhd): This inserts a fixed-size header in front of an AXI packet.
+* [axip\_remove\_fixed\_header.vhd](src/axip_remove_fixed_header.vhd): This removes a fixed-size header from the front of an AXI packet.
 
 ### Wishbone
 

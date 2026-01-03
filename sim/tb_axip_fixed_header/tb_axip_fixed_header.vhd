@@ -5,7 +5,7 @@ library ieee;
 library std;
   use std.env.stop;
 
-entity tb_axis_fixed_header is
+entity tb_axip_fixed_header is
   generic (
     G_PAUSE_SIZE   : natural;
     G_DEBUG        : boolean;
@@ -16,9 +16,9 @@ entity tb_axis_fixed_header is
     G_DATA_BYTES   : natural;
     G_HEADER_BYTES : natural
   );
-end entity tb_axis_fixed_header;
+end entity tb_axip_fixed_header;
 
-architecture simulation of tb_axis_fixed_header is
+architecture simulation of tb_axip_fixed_header is
 
   signal   clk : std_logic  := '1';
   signal   rst : std_logic  := '1';
@@ -69,7 +69,7 @@ begin
   -- Instantiate first DUT
   --------------------------------------------
 
-  axis_remove_fixed_header_inst : entity work.axis_remove_fixed_header
+  axip_remove_fixed_header_inst : entity work.axip_remove_fixed_header
     generic map (
       G_DATA_BYTES   => G_DATA_BYTES,
       G_HEADER_BYTES => G_HEADER_BYTES
@@ -90,7 +90,7 @@ begin
       h_ready_i => h_ready,
       h_valid_o => h_valid,
       h_data_o  => h_data
-    ); -- axis_remove_fixed_header_inst : entity work.axis_remove_fixed_header
+    ); -- axip_remove_fixed_header_inst : entity work.axip_remove_fixed_header
 
 
   --------------------------------------------
@@ -140,7 +140,7 @@ begin
   -- Instantiate second DUT
   --------------------------------------------
 
-  axis_insert_fixed_header_inst : entity work.axis_insert_fixed_header
+  axip_insert_fixed_header_inst : entity work.axip_insert_fixed_header
     generic map (
       G_DATA_BYTES   => G_DATA_BYTES,
       G_HEADER_BYTES => G_HEADER_BYTES
@@ -161,7 +161,7 @@ begin
       m_data_o  => tb_s_data,
       m_last_o  => tb_s_last,
       m_bytes_o => tb_s_bytes
-    ); -- axis_insert_fixed_header_inst : entity work.axis_insert_fixed_header
+    ); -- axip_insert_fixed_header_inst : entity work.axip_insert_fixed_header
 
 
   --------------------------------------------

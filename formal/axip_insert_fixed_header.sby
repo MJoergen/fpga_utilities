@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 1
+bmc: mode bmc
+bmc: depth 8
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_DATA_BYTES=5 -gG_HEADER_BYTES=2 axip_insert_fixed_header.vhd axip_insert_fixed_header.psl -e axip_insert_fixed_header
+prep -top axip_insert_fixed_header
+
+[files]
+axip_insert_fixed_header.psl
+../src/axip_insert_fixed_header.vhd
+
