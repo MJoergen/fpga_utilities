@@ -91,3 +91,16 @@ Note that this interface is bi-directional.
 * [axip\_to\_axis.vhd](src/axip_to_axis.vhd): Convert from an AXI packet interface to an AXI streaming interface.
 * [axis\_to\_axip.vhd](src/axis_to_axip.vhd): Convert from an AXI streaming interface to an AXI packet interface.
 
+### Simulation modules
+
+* [axis\_sim.vhd](sim/src/axis_sim.vhd) : Simulate an AXI streaming Master and Slave
+* [axis\_pause.vhd](sim/src/axis_pause.vhd) : Inserts empty clock cycles in an AXI streaming interface
+
+* [axip\_sim.vhd](sim/src/axip_sim.vhd) : Simulate an AXI packet Master and Slave
+* [axip\_pause.vhd](sim/src/axip_pause.vhd) : Inserts empty clock cycles in an AXI packet interface
+
+* [axil\_sim.vhd](sim/src/axil_sim.vhd) : Simulate an AXI lite Master and Slave
+* [axil\_master\_sim.vhd](sim/src/axil_master_sim.vhd) : Simulate an AXI lite Master
+* [axil\_slave\_sim.vhd](sim/src/axil_slave_sim.vhd) : Simulate an AXI lite Slave
+* [axil\_pause.vhd](sim/src/axil_pause.vhd) : Inserts empty clock cycles in an AXI lite interface
+

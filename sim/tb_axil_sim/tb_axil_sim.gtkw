@@ -1,0 +1,166 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Jan  3 11:08:31 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axil_sim/tb_axil_sim.ghw"
+[dumpfile_mtime] "Sat Jan  3 11:05:25 2026"
+[dumpfile_size] 65605
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axil_sim/tb_axil_sim.gtkw"
+[timestart] 0
+[size] 1447 997
+[pos] -1756 16
+*-26.124239 333100000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_axil_sim.
+[treeopen] top.tb_axil_sim.axil_sim_inst.
+[treeopen] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.
+[sst_width] 239
+[signals_width] 208
+[sst_expanded] 1
+[sst_vpaned_height] 356
+@c00200
+-axil_sim
+@28
+top.tb_axil_sim.axil_sim_inst.clk_i
+top.tb_axil_sim.axil_sim_inst.rst_i
+@200
+-
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.m_awready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.m_awvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.m_awaddr_o[7:0]} top.tb_axil_sim.axil_sim_inst.m_awaddr_o[7] top.tb_axil_sim.axil_sim_inst.m_awaddr_o[6] top.tb_axil_sim.axil_sim_inst.m_awaddr_o[5] top.tb_axil_sim.axil_sim_inst.m_awaddr_o[4] top.tb_axil_sim.axil_sim_inst.m_awaddr_o[3] top.tb_axil_sim.axil_sim_inst.m_awaddr_o[2] top.tb_axil_sim.axil_sim_inst.m_awaddr_o[1] top.tb_axil_sim.axil_sim_inst.m_awaddr_o[0]
+#{top.tb_axil_sim.axil_sim_inst.m_awid_o[7:0]} top.tb_axil_sim.axil_sim_inst.m_awid_o[7] top.tb_axil_sim.axil_sim_inst.m_awid_o[6] top.tb_axil_sim.axil_sim_inst.m_awid_o[5] top.tb_axil_sim.axil_sim_inst.m_awid_o[4] top.tb_axil_sim.axil_sim_inst.m_awid_o[3] top.tb_axil_sim.axil_sim_inst.m_awid_o[2] top.tb_axil_sim.axil_sim_inst.m_awid_o[1] top.tb_axil_sim.axil_sim_inst.m_awid_o[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.m_wready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.m_wvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.m_wdata_o[15:0]} top.tb_axil_sim.axil_sim_inst.m_wdata_o[15] top.tb_axil_sim.axil_sim_inst.m_wdata_o[14] top.tb_axil_sim.axil_sim_inst.m_wdata_o[13] top.tb_axil_sim.axil_sim_inst.m_wdata_o[12] top.tb_axil_sim.axil_sim_inst.m_wdata_o[11] top.tb_axil_sim.axil_sim_inst.m_wdata_o[10] top.tb_axil_sim.axil_sim_inst.m_wdata_o[9] top.tb_axil_sim.axil_sim_inst.m_wdata_o[8] top.tb_axil_sim.axil_sim_inst.m_wdata_o[7] top.tb_axil_sim.axil_sim_inst.m_wdata_o[6] top.tb_axil_sim.axil_sim_inst.m_wdata_o[5] top.tb_axil_sim.axil_sim_inst.m_wdata_o[4] top.tb_axil_sim.axil_sim_inst.m_wdata_o[3] top.tb_axil_sim.axil_sim_inst.m_wdata_o[2] top.tb_axil_sim.axil_sim_inst.m_wdata_o[1] top.tb_axil_sim.axil_sim_inst.m_wdata_o[0]
+@28
+#{top.tb_axil_sim.axil_sim_inst.m_wstrb_o[1:0]} top.tb_axil_sim.axil_sim_inst.m_wstrb_o[1] top.tb_axil_sim.axil_sim_inst.m_wstrb_o[0]
+[color] 6
+top.tb_axil_sim.axil_sim_inst.m_bready_o
+[color] 2
+top.tb_axil_sim.axil_sim_inst.m_bvalid_i
+@22
+#{top.tb_axil_sim.axil_sim_inst.m_bid_i[7:0]} top.tb_axil_sim.axil_sim_inst.m_bid_i[7] top.tb_axil_sim.axil_sim_inst.m_bid_i[6] top.tb_axil_sim.axil_sim_inst.m_bid_i[5] top.tb_axil_sim.axil_sim_inst.m_bid_i[4] top.tb_axil_sim.axil_sim_inst.m_bid_i[3] top.tb_axil_sim.axil_sim_inst.m_bid_i[2] top.tb_axil_sim.axil_sim_inst.m_bid_i[1] top.tb_axil_sim.axil_sim_inst.m_bid_i[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.m_arready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.m_arvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.m_araddr_o[7:0]} top.tb_axil_sim.axil_sim_inst.m_araddr_o[7] top.tb_axil_sim.axil_sim_inst.m_araddr_o[6] top.tb_axil_sim.axil_sim_inst.m_araddr_o[5] top.tb_axil_sim.axil_sim_inst.m_araddr_o[4] top.tb_axil_sim.axil_sim_inst.m_araddr_o[3] top.tb_axil_sim.axil_sim_inst.m_araddr_o[2] top.tb_axil_sim.axil_sim_inst.m_araddr_o[1] top.tb_axil_sim.axil_sim_inst.m_araddr_o[0]
+#{top.tb_axil_sim.axil_sim_inst.m_arid_o[7:0]} top.tb_axil_sim.axil_sim_inst.m_arid_o[7] top.tb_axil_sim.axil_sim_inst.m_arid_o[6] top.tb_axil_sim.axil_sim_inst.m_arid_o[5] top.tb_axil_sim.axil_sim_inst.m_arid_o[4] top.tb_axil_sim.axil_sim_inst.m_arid_o[3] top.tb_axil_sim.axil_sim_inst.m_arid_o[2] top.tb_axil_sim.axil_sim_inst.m_arid_o[1] top.tb_axil_sim.axil_sim_inst.m_arid_o[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.m_rready_o
+[color] 2
+top.tb_axil_sim.axil_sim_inst.m_rvalid_i
+@22
+#{top.tb_axil_sim.axil_sim_inst.m_rdata_i[15:0]} top.tb_axil_sim.axil_sim_inst.m_rdata_i[15] top.tb_axil_sim.axil_sim_inst.m_rdata_i[14] top.tb_axil_sim.axil_sim_inst.m_rdata_i[13] top.tb_axil_sim.axil_sim_inst.m_rdata_i[12] top.tb_axil_sim.axil_sim_inst.m_rdata_i[11] top.tb_axil_sim.axil_sim_inst.m_rdata_i[10] top.tb_axil_sim.axil_sim_inst.m_rdata_i[9] top.tb_axil_sim.axil_sim_inst.m_rdata_i[8] top.tb_axil_sim.axil_sim_inst.m_rdata_i[7] top.tb_axil_sim.axil_sim_inst.m_rdata_i[6] top.tb_axil_sim.axil_sim_inst.m_rdata_i[5] top.tb_axil_sim.axil_sim_inst.m_rdata_i[4] top.tb_axil_sim.axil_sim_inst.m_rdata_i[3] top.tb_axil_sim.axil_sim_inst.m_rdata_i[2] top.tb_axil_sim.axil_sim_inst.m_rdata_i[1] top.tb_axil_sim.axil_sim_inst.m_rdata_i[0]
+#{top.tb_axil_sim.axil_sim_inst.m_rid_i[7:0]} top.tb_axil_sim.axil_sim_inst.m_rid_i[7] top.tb_axil_sim.axil_sim_inst.m_rid_i[6] top.tb_axil_sim.axil_sim_inst.m_rid_i[5] top.tb_axil_sim.axil_sim_inst.m_rid_i[4] top.tb_axil_sim.axil_sim_inst.m_rid_i[3] top.tb_axil_sim.axil_sim_inst.m_rid_i[2] top.tb_axil_sim.axil_sim_inst.m_rid_i[1] top.tb_axil_sim.axil_sim_inst.m_rid_i[0]
+@200
+-
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.s_awready_o
+[color] 2
+top.tb_axil_sim.axil_sim_inst.s_awvalid_i
+@22
+#{top.tb_axil_sim.axil_sim_inst.s_awaddr_i[7:0]} top.tb_axil_sim.axil_sim_inst.s_awaddr_i[7] top.tb_axil_sim.axil_sim_inst.s_awaddr_i[6] top.tb_axil_sim.axil_sim_inst.s_awaddr_i[5] top.tb_axil_sim.axil_sim_inst.s_awaddr_i[4] top.tb_axil_sim.axil_sim_inst.s_awaddr_i[3] top.tb_axil_sim.axil_sim_inst.s_awaddr_i[2] top.tb_axil_sim.axil_sim_inst.s_awaddr_i[1] top.tb_axil_sim.axil_sim_inst.s_awaddr_i[0]
+#{top.tb_axil_sim.axil_sim_inst.s_awid_i[7:0]} top.tb_axil_sim.axil_sim_inst.s_awid_i[7] top.tb_axil_sim.axil_sim_inst.s_awid_i[6] top.tb_axil_sim.axil_sim_inst.s_awid_i[5] top.tb_axil_sim.axil_sim_inst.s_awid_i[4] top.tb_axil_sim.axil_sim_inst.s_awid_i[3] top.tb_axil_sim.axil_sim_inst.s_awid_i[2] top.tb_axil_sim.axil_sim_inst.s_awid_i[1] top.tb_axil_sim.axil_sim_inst.s_awid_i[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.s_wready_o
+[color] 2
+top.tb_axil_sim.axil_sim_inst.s_wvalid_i
+@22
+#{top.tb_axil_sim.axil_sim_inst.s_wdata_i[15:0]} top.tb_axil_sim.axil_sim_inst.s_wdata_i[15] top.tb_axil_sim.axil_sim_inst.s_wdata_i[14] top.tb_axil_sim.axil_sim_inst.s_wdata_i[13] top.tb_axil_sim.axil_sim_inst.s_wdata_i[12] top.tb_axil_sim.axil_sim_inst.s_wdata_i[11] top.tb_axil_sim.axil_sim_inst.s_wdata_i[10] top.tb_axil_sim.axil_sim_inst.s_wdata_i[9] top.tb_axil_sim.axil_sim_inst.s_wdata_i[8] top.tb_axil_sim.axil_sim_inst.s_wdata_i[7] top.tb_axil_sim.axil_sim_inst.s_wdata_i[6] top.tb_axil_sim.axil_sim_inst.s_wdata_i[5] top.tb_axil_sim.axil_sim_inst.s_wdata_i[4] top.tb_axil_sim.axil_sim_inst.s_wdata_i[3] top.tb_axil_sim.axil_sim_inst.s_wdata_i[2] top.tb_axil_sim.axil_sim_inst.s_wdata_i[1] top.tb_axil_sim.axil_sim_inst.s_wdata_i[0]
+@28
+#{top.tb_axil_sim.axil_sim_inst.s_wstrb_i[1:0]} top.tb_axil_sim.axil_sim_inst.s_wstrb_i[1] top.tb_axil_sim.axil_sim_inst.s_wstrb_i[0]
+[color] 6
+top.tb_axil_sim.axil_sim_inst.s_bready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.s_bvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.s_bid_o[7:0]} top.tb_axil_sim.axil_sim_inst.s_bid_o[7] top.tb_axil_sim.axil_sim_inst.s_bid_o[6] top.tb_axil_sim.axil_sim_inst.s_bid_o[5] top.tb_axil_sim.axil_sim_inst.s_bid_o[4] top.tb_axil_sim.axil_sim_inst.s_bid_o[3] top.tb_axil_sim.axil_sim_inst.s_bid_o[2] top.tb_axil_sim.axil_sim_inst.s_bid_o[1] top.tb_axil_sim.axil_sim_inst.s_bid_o[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.s_arready_o
+[color] 2
+top.tb_axil_sim.axil_sim_inst.s_arvalid_i
+@22
+#{top.tb_axil_sim.axil_sim_inst.s_araddr_i[7:0]} top.tb_axil_sim.axil_sim_inst.s_araddr_i[7] top.tb_axil_sim.axil_sim_inst.s_araddr_i[6] top.tb_axil_sim.axil_sim_inst.s_araddr_i[5] top.tb_axil_sim.axil_sim_inst.s_araddr_i[4] top.tb_axil_sim.axil_sim_inst.s_araddr_i[3] top.tb_axil_sim.axil_sim_inst.s_araddr_i[2] top.tb_axil_sim.axil_sim_inst.s_araddr_i[1] top.tb_axil_sim.axil_sim_inst.s_araddr_i[0]
+#{top.tb_axil_sim.axil_sim_inst.s_arid_i[7:0]} top.tb_axil_sim.axil_sim_inst.s_arid_i[7] top.tb_axil_sim.axil_sim_inst.s_arid_i[6] top.tb_axil_sim.axil_sim_inst.s_arid_i[5] top.tb_axil_sim.axil_sim_inst.s_arid_i[4] top.tb_axil_sim.axil_sim_inst.s_arid_i[3] top.tb_axil_sim.axil_sim_inst.s_arid_i[2] top.tb_axil_sim.axil_sim_inst.s_arid_i[1] top.tb_axil_sim.axil_sim_inst.s_arid_i[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.s_rready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.s_rvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.s_rdata_o[15:0]} top.tb_axil_sim.axil_sim_inst.s_rdata_o[15] top.tb_axil_sim.axil_sim_inst.s_rdata_o[14] top.tb_axil_sim.axil_sim_inst.s_rdata_o[13] top.tb_axil_sim.axil_sim_inst.s_rdata_o[12] top.tb_axil_sim.axil_sim_inst.s_rdata_o[11] top.tb_axil_sim.axil_sim_inst.s_rdata_o[10] top.tb_axil_sim.axil_sim_inst.s_rdata_o[9] top.tb_axil_sim.axil_sim_inst.s_rdata_o[8] top.tb_axil_sim.axil_sim_inst.s_rdata_o[7] top.tb_axil_sim.axil_sim_inst.s_rdata_o[6] top.tb_axil_sim.axil_sim_inst.s_rdata_o[5] top.tb_axil_sim.axil_sim_inst.s_rdata_o[4] top.tb_axil_sim.axil_sim_inst.s_rdata_o[3] top.tb_axil_sim.axil_sim_inst.s_rdata_o[2] top.tb_axil_sim.axil_sim_inst.s_rdata_o[1] top.tb_axil_sim.axil_sim_inst.s_rdata_o[0]
+#{top.tb_axil_sim.axil_sim_inst.s_rid_o[7:0]} top.tb_axil_sim.axil_sim_inst.s_rid_o[7] top.tb_axil_sim.axil_sim_inst.s_rid_o[6] top.tb_axil_sim.axil_sim_inst.s_rid_o[5] top.tb_axil_sim.axil_sim_inst.s_rid_o[4] top.tb_axil_sim.axil_sim_inst.s_rid_o[3] top.tb_axil_sim.axil_sim_inst.s_rid_o[2] top.tb_axil_sim.axil_sim_inst.s_rid_o[1] top.tb_axil_sim.axil_sim_inst.s_rid_o[0]
+@200
+-
+@1401200
+-axil_sim
+@800200
+-axil_master_sim
+@28
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.clk_i
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rst_i
+[color] 6
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awaddr_o[0]
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_awid_o[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[15:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[15] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[14] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[13] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[12] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[11] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[10] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[9] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[8] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wdata_o[0]
+@28
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wstrb_o[1:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wstrb_o[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_wstrb_o[0]
+[color] 6
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bready_o
+[color] 2
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bvalid_i
+@22
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_bid_i[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arready_i
+[color] 2
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arvalid_o
+@22
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_araddr_o[0]
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_arid_o[0]
+@28
+[color] 6
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rready_o
+[color] 2
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rvalid_i
+@22
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[15:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[15] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[14] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[13] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[12] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[11] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[10] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[9] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[8] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rdata_i[0]
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.m_rid_i[0]
+@28
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.do_write
+top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.do_read
+@22
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_stim[0]
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_stim[0]
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.wr_ptr_resp[0]
+#{top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[7:0]} top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[7] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[6] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[5] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[4] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[3] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[2] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[1] top.tb_axil_sim.axil_sim_inst.axil_master_sim_inst.rd_ptr_resp[0]
+@1000200
+-axil_master_sim
+[pattern_trace] 1
+[pattern_trace] 0
