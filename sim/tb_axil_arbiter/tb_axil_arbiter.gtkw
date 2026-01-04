@@ -1,25 +1,22 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Sat Jan  3 12:17:44 2026
+[*] Sun Jan  4 13:39:26 2026
 [*]
 [dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axil_arbiter/tb_axil_arbiter.ghw"
-[dumpfile_mtime] "Sat Jan  3 12:13:34 2026"
-[dumpfile_size] 30906
+[dumpfile_mtime] "Sun Jan  4 13:37:54 2026"
+[dumpfile_size] 277829
 [savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axil_arbiter/tb_axil_arbiter.gtkw"
 [timestart] 0
 [size] 1530 875
-[pos] 0 48
-*-25.960627 272900000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] 2010 27
+*-25.960627 96300000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.tb_axil_arbiter.
-[treeopen] top.tb_axil_arbiter.axil_arbiter_inst.
-[treeopen] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.
-[treeopen] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.
 [sst_width] 239
 [signals_width] 239
 [sst_expanded] 1
 [sst_vpaned_height] 292
-@800200
+@c00200
 -axil_master_sim_0
 @28
 top.tb_axil_arbiter.axil_master_sim_0_inst.clk_i
@@ -44,6 +41,7 @@ top.tb_axil_arbiter.axil_master_sim_0_inst.m_wvalid_o
 top.tb_axil_arbiter.axil_master_sim_0_inst.m_bready_o
 [color] 2
 top.tb_axil_arbiter.axil_master_sim_0_inst.m_bvalid_i
+#{top.tb_axil_arbiter.axil_master_sim_0_inst.m_bresp_i[1:0]} top.tb_axil_arbiter.axil_master_sim_0_inst.m_bresp_i[1] top.tb_axil_arbiter.axil_master_sim_0_inst.m_bresp_i[0]
 @22
 #{top.tb_axil_arbiter.axil_master_sim_0_inst.m_bid_i[7:0]} top.tb_axil_arbiter.axil_master_sim_0_inst.m_bid_i[3] top.tb_axil_arbiter.axil_master_sim_0_inst.m_bid_i[2] top.tb_axil_arbiter.axil_master_sim_0_inst.m_bid_i[1] top.tb_axil_arbiter.axil_master_sim_0_inst.m_bid_i[0]
 @28
@@ -61,8 +59,11 @@ top.tb_axil_arbiter.axil_master_sim_0_inst.m_rready_o
 top.tb_axil_arbiter.axil_master_sim_0_inst.m_rvalid_i
 @22
 #{top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[15:0]} top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[15] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[14] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[13] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[12] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[11] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[10] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[9] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[8] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[7] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[6] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[5] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[4] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[3] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[2] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[1] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rdata_i[0]
+@28
+#{top.tb_axil_arbiter.axil_master_sim_0_inst.m_rresp_i[1:0]} top.tb_axil_arbiter.axil_master_sim_0_inst.m_rresp_i[1] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rresp_i[0]
+@22
 #{top.tb_axil_arbiter.axil_master_sim_0_inst.m_rid_i[7:0]} top.tb_axil_arbiter.axil_master_sim_0_inst.m_rid_i[3] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rid_i[2] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rid_i[1] top.tb_axil_arbiter.axil_master_sim_0_inst.m_rid_i[0]
-@1000200
+@1401200
 -axil_master_sim_0
 @c00200
 -axil_master_sim_1
@@ -89,6 +90,7 @@ top.tb_axil_arbiter.axil_master_sim_1_inst.m_wvalid_o
 top.tb_axil_arbiter.axil_master_sim_1_inst.m_bready_o
 [color] 2
 top.tb_axil_arbiter.axil_master_sim_1_inst.m_bvalid_i
+#{top.tb_axil_arbiter.axil_master_sim_1_inst.m_bresp_i[1:0]} top.tb_axil_arbiter.axil_master_sim_1_inst.m_bresp_i[1] top.tb_axil_arbiter.axil_master_sim_1_inst.m_bresp_i[0]
 @22
 #{top.tb_axil_arbiter.axil_master_sim_1_inst.m_bid_i[3:0]} top.tb_axil_arbiter.axil_master_sim_1_inst.m_bid_i[3] top.tb_axil_arbiter.axil_master_sim_1_inst.m_bid_i[2] top.tb_axil_arbiter.axil_master_sim_1_inst.m_bid_i[1] top.tb_axil_arbiter.axil_master_sim_1_inst.m_bid_i[0]
 @28
@@ -106,10 +108,13 @@ top.tb_axil_arbiter.axil_master_sim_1_inst.m_rready_o
 top.tb_axil_arbiter.axil_master_sim_1_inst.m_rvalid_i
 @22
 #{top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[15:0]} top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[15] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[14] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[13] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[12] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[11] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[10] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[9] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[8] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[7] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[6] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[5] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[4] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[3] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[2] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[1] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rdata_i[0]
+@28
+#{top.tb_axil_arbiter.axil_master_sim_1_inst.m_rresp_i[1:0]} top.tb_axil_arbiter.axil_master_sim_1_inst.m_rresp_i[1] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rresp_i[0]
+@22
 #{top.tb_axil_arbiter.axil_master_sim_1_inst.m_rid_i[3:0]} top.tb_axil_arbiter.axil_master_sim_1_inst.m_rid_i[3] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rid_i[2] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rid_i[1] top.tb_axil_arbiter.axil_master_sim_1_inst.m_rid_i[0]
 @1401200
 -axil_master_sim_1
-@c00200
+@800200
 -axil_slave_sim
 @28
 top.tb_axil_arbiter.axil_slave_sim_inst.clk_i
@@ -134,6 +139,7 @@ top.tb_axil_arbiter.axil_slave_sim_inst.s_wvalid_i
 top.tb_axil_arbiter.axil_slave_sim_inst.s_bready_i
 [color] 2
 top.tb_axil_arbiter.axil_slave_sim_inst.s_bvalid_o
+#{top.tb_axil_arbiter.axil_slave_sim_inst.s_bresp_o[1:0]} top.tb_axil_arbiter.axil_slave_sim_inst.s_bresp_o[1] top.tb_axil_arbiter.axil_slave_sim_inst.s_bresp_o[0]
 @22
 #{top.tb_axil_arbiter.axil_slave_sim_inst.s_bid_o[4:0]} top.tb_axil_arbiter.axil_slave_sim_inst.s_bid_o[4] top.tb_axil_arbiter.axil_slave_sim_inst.s_bid_o[3] top.tb_axil_arbiter.axil_slave_sim_inst.s_bid_o[2] top.tb_axil_arbiter.axil_slave_sim_inst.s_bid_o[1] top.tb_axil_arbiter.axil_slave_sim_inst.s_bid_o[0]
 @28
@@ -151,8 +157,11 @@ top.tb_axil_arbiter.axil_slave_sim_inst.s_rready_i
 top.tb_axil_arbiter.axil_slave_sim_inst.s_rvalid_o
 @22
 #{top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[15:0]} top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[15] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[14] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[13] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[12] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[11] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[10] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[9] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[8] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[7] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[6] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[5] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[4] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[3] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[2] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[1] top.tb_axil_arbiter.axil_slave_sim_inst.s_rdata_o[0]
+@28
+#{top.tb_axil_arbiter.axil_slave_sim_inst.s_rresp_o[1:0]} top.tb_axil_arbiter.axil_slave_sim_inst.s_rresp_o[1] top.tb_axil_arbiter.axil_slave_sim_inst.s_rresp_o[0]
+@22
 #{top.tb_axil_arbiter.axil_slave_sim_inst.s_rid_o[4:0]} top.tb_axil_arbiter.axil_slave_sim_inst.s_rid_o[4] top.tb_axil_arbiter.axil_slave_sim_inst.s_rid_o[3] top.tb_axil_arbiter.axil_slave_sim_inst.s_rid_o[2] top.tb_axil_arbiter.axil_slave_sim_inst.s_rid_o[1] top.tb_axil_arbiter.axil_slave_sim_inst.s_rid_o[0]
-@1401200
+@1000200
 -axil_slave_sim
 @c00200
 -axis_distributor_r
@@ -182,7 +191,7 @@ top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_valid_o
 #{top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[19:0]} top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[19] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[18] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[17] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[16] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[15] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[14] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[13] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[12] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[11] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[10] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[9] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[8] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[7] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[6] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[5] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[4] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[3] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[2] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[1] top.tb_axil_arbiter.axil_arbiter_inst.axis_distributor_r_inst.m1_data_o[0]
 @1401200
 -axis_distributor_r
-@800200
+@c00200
 -axis_arbiter_ar
 @28
 top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.clk_i
@@ -207,7 +216,7 @@ top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_ready_i
 top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_valid_o
 @22
 #{top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[13:0]} top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[13] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[12] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[11] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[10] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[9] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[8] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[7] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[6] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[5] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[4] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[3] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[2] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[1] top.tb_axil_arbiter.axil_arbiter_inst.axis_arbiter_ar_inst.m_data_o[0]
-@1000200
+@1401200
 -axis_arbiter_ar
 [pattern_trace] 1
 [pattern_trace] 0

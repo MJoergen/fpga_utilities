@@ -2,7 +2,7 @@
 -- Title      : Main FPGA
 -- Project    : XENTA, RCU, PCB1036 Board
 -- ----------------------------------------------------------------------------
--- File       : byte2wide.vhd
+-- File       : axis_to_axip.vhd
 -- Author     : Michael Jørgensen
 -- Company    : Weibel Scientific
 -- Created    : 2025-05-19
@@ -10,7 +10,7 @@
 -- ----------------------------------------------------------------------------
 -- Description:
 -- This module converts a stream of bytes into a wider bus interface.
--- The first byte received is placed in MSB, i.e.  m_data_o(G_BYTES*8-1 downto G_BYTES*8-8);
+-- The first byte received is placed in MSB, i.e.  m_data_o(G_DATA_BYTES*8-1 downto G_DATA_BYTES*8-8);
 -- ----------------------------------------------------------------------------
 
 library ieee;
@@ -28,8 +28,8 @@ entity axis_to_axip is
     -- Input interface (byte oriented data bus).
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_last_i  : in    std_logic;
     s_data_i  : in    std_logic_vector(7 downto 0);
+    s_last_i  : in    std_logic;
 
     -- Output interface (wide data bus).
     m_ready_i : in    std_logic;
@@ -92,7 +92,7 @@ begin
               m_bytes_o <= m_bytes_o + 1;
             end if;
 
-            -- If G_BYTES received, forward them.
+            -- If G_DATA_BYTES received, forward them.
             if m_bytes_o = G_DATA_BYTES - 1 then
               m_valid_o <= '1';
             end if;

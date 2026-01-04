@@ -4,13 +4,13 @@
 -------------------------------------------------------------------------------
 -- Description:
 -- This module generates empty cycles in an AXI stream by deasserting
--- m_tready_o and s_tvalid_o at random intervals. The period between the empty
+-- s_ready_o and m_valid_o at random intervals. The period between the empty
 -- cycles can be controlled by the generic G_PAUSE_SIZE:
 -- * Setting it to 0 disables the empty cycles.
 -- * Setting it to 10 inserts empty cycles approximately every tenth cycle, i.e. 90 % throughput.
 -- * Setting it to -10 inserts empty cycles except approximately every tenth cycle, i.e. 10 % throughput.
 -- * Etc.
--------------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -27,13 +27,13 @@ entity axis_pause is
     rst_i     : in    std_logic;
 
     -- AXI streaming Input
-    s_valid_i : in    std_logic;
     s_ready_o : out   std_logic;
+    s_valid_i : in    std_logic;
     s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
     -- AXI streaming Output
-    m_valid_o : out   std_logic;
     m_ready_i : in    std_logic;
+    m_valid_o : out   std_logic;
     m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
   );
 end entity axis_pause;

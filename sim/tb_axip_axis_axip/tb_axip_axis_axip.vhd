@@ -1,3 +1,10 @@
+-- ----------------------------------------------------------------------------
+-- Author     : Michael Jørgensen
+-- Platform   : AMD Artix 7
+-- ----------------------------------------------------------------------------
+-- Description:
+-- A simple testbench to verify the two converts: wide2byte.vhd and byte2wide.vhd.
+-- ----------------------------------------------------------------------------
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;

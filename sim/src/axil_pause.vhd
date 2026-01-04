@@ -32,6 +32,7 @@ entity axil_pause is
     s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s_bready_i  : in    std_logic;
     s_bvalid_o  : out   std_logic;
+    s_bresp_o   : out   std_logic_vector(1 downto 0);
     s_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_arready_o : out   std_logic;
     s_arvalid_i : in    std_logic;
@@ -40,6 +41,7 @@ entity axil_pause is
     s_rready_i  : in    std_logic;
     s_rvalid_o  : out   std_logic;
     s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_rresp_o   : out   std_logic_vector(1 downto 0);
     s_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
 
     -- Output
@@ -53,6 +55,7 @@ entity axil_pause is
     m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
+    m_bresp_i   : in    std_logic_vector(1 downto 0);
     m_bid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
@@ -61,6 +64,7 @@ entity axil_pause is
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
     m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rresp_i   : in    std_logic_vector(1 downto 0);
     m_rid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0)
   );
 end entity axil_pause;
@@ -76,8 +80,11 @@ architecture simulation of axil_pause is
   signal s_w_in  : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
   signal m_w_out : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
 
-  signal m_r_in  : std_logic_vector(G_DATA_SIZE + G_ID_SIZE - 1 downto 0);
-  signal s_r_out : std_logic_vector(G_DATA_SIZE + G_ID_SIZE - 1 downto 0);
+  signal m_r_in  : std_logic_vector(G_DATA_SIZE + G_ID_SIZE + 1 downto 0);
+  signal s_r_out : std_logic_vector(G_DATA_SIZE + G_ID_SIZE + 1 downto 0);
+
+  signal m_b_in  : std_logic_vector(G_ID_SIZE + 1 downto 0);
+  signal s_b_out : std_logic_vector(G_ID_SIZE + 1 downto 0);
 
 begin
 
@@ -147,7 +154,7 @@ begin
   axis_pause_b_inst : entity work.axis_pause
     generic map (
       G_SEED       => G_SEED xor X"4BABECAFEDEAD234",
-      G_DATA_SIZE  => G_ID_SIZE,
+      G_DATA_SIZE  => G_ID_SIZE + 2,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -155,17 +162,19 @@ begin
       rst_i     => rst_i,
       s_valid_i => m_bvalid_i,
       s_ready_o => m_bready_o,
-      s_data_i  => m_bid_i,
+      s_data_i  => m_b_in,
       m_valid_o => s_bvalid_o,
       m_ready_i => s_bready_i,
-      m_data_o  => s_bid_o
+      m_data_o  => s_b_out
     ); -- axis_pause_b_inst : entity work.axis_pause
 
+  m_b_in               <= m_bresp_i & m_bid_i;
+  (s_bresp_o, s_bid_o) <= s_b_out;
 
   axis_pause_r_inst : entity work.axis_pause
     generic map (
       G_SEED       => G_SEED xor X"BABECAFEDEAD2345",
-      G_DATA_SIZE  => G_DATA_SIZE + G_ID_SIZE,
+      G_DATA_SIZE  => G_DATA_SIZE + G_ID_SIZE + 2,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -179,8 +188,8 @@ begin
       m_data_o  => s_r_out
     ); -- axis_pause_r_inst : entity work.axis_pause
 
-  m_r_in                <= m_rid_i & m_rdata_i;
-  (s_rid_o , s_rdata_o) <= s_r_out;
+  m_r_in                          <= m_rresp_i & m_rid_i & m_rdata_i;
+  (s_rresp_o, s_rid_o, s_rdata_o) <= s_r_out;
 
 end architecture simulation;
 

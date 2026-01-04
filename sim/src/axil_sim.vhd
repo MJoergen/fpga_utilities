@@ -38,6 +38,7 @@ entity axil_sim is
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
     m_bid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
+    m_bresp_i   : in    std_logic_vector(1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
     m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
@@ -45,6 +46,7 @@ entity axil_sim is
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
     m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rresp_i   : in    std_logic_vector(1 downto 0);
     m_rid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
 
     -- Response
@@ -58,6 +60,7 @@ entity axil_sim is
     s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s_bready_i  : in    std_logic;
     s_bvalid_o  : out   std_logic;
+    s_bresp_o   : out   std_logic_vector(1 downto 0);
     s_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_arready_o : out   std_logic;
     s_arvalid_i : in    std_logic;
@@ -66,6 +69,7 @@ entity axil_sim is
     s_rready_i  : in    std_logic;
     s_rvalid_o  : out   std_logic;
     s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_rresp_o   : out   std_logic_vector(1 downto 0);
     s_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0)
   );
 end entity axil_sim;
@@ -98,6 +102,7 @@ begin
       m_wstrb_o   => m_wstrb_o,
       m_bready_o  => m_bready_o,
       m_bvalid_i  => m_bvalid_i,
+      m_bresp_i   => m_bresp_i,
       m_bid_i     => m_bid_i,
       m_arready_i => m_arready_i,
       m_arvalid_o => m_arvalid_o,
@@ -106,6 +111,7 @@ begin
       m_rready_o  => m_rready_o,
       m_rvalid_i  => m_rvalid_i,
       m_rdata_i   => m_rdata_i,
+      m_rresp_i   => m_rresp_i,
       m_rid_i     => m_rid_i
     ); -- axil_master_sim_inst : entity work.axil_master_sim
 
@@ -130,6 +136,7 @@ begin
       s_wstrb_i   => s_wstrb_i,
       s_bready_i  => s_bready_i,
       s_bvalid_o  => s_bvalid_o,
+      s_bresp_o   => s_bresp_o,
       s_bid_o     => s_bid_o,
       s_arready_o => s_arready_o,
       s_arvalid_i => s_arvalid_i,
@@ -138,6 +145,7 @@ begin
       s_rready_i  => s_rready_i,
       s_rvalid_o  => s_rvalid_o,
       s_rdata_o   => s_rdata_o,
+      s_rresp_o   => s_rresp_o,
       s_rid_o     => s_rid_o
     ); -- axil_slave_sim_inst : entity work.axil_slave_sim
 

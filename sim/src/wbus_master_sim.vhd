@@ -25,14 +25,14 @@ entity wbus_master_sim is
   port (
     clk_i          : in    std_logic;
     rst_i          : in    std_logic;
-    m_wbus_cyc_o   : out   std_logic;
+    m_wbus_cyc_o   : out   std_logic;                                  -- Valid bus cycle
     m_wbus_stall_i : in    std_logic;
-    m_wbus_stb_o   : out   std_logic;
-    m_wbus_addr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_wbus_we_o    : out   std_logic;
-    m_wbus_wrdat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_wbus_ack_i   : in    std_logic;
-    m_wbus_rddat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_wbus_stb_o   : out   std_logic;                                  -- Strobe signals / core select signal
+    m_wbus_addr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0); -- lower address bits
+    m_wbus_we_o    : out   std_logic;                                  -- Write enable
+    m_wbus_wrdat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Write Databus
+    m_wbus_ack_i   : in    std_logic;                                  -- Bus cycle acknowledge
+    m_wbus_rddat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)  -- Read Databus
   );
 end entity wbus_master_sim;
 

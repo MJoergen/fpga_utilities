@@ -32,6 +32,7 @@ architecture simulation of tb_axil_arbiter is
   signal s0_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
   signal s0_bready  : std_logic;
   signal s0_bvalid  : std_logic;
+  signal s0_bresp   : std_logic_vector(1 downto 0);
   signal s0_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal s0_arready : std_logic;
   signal s0_arvalid : std_logic;
@@ -40,6 +41,7 @@ architecture simulation of tb_axil_arbiter is
   signal s0_rready  : std_logic;
   signal s0_rvalid  : std_logic;
   signal s0_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s0_rresp   : std_logic_vector(1 downto 0);
   signal s0_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
 
   signal s1_awready : std_logic;
@@ -52,6 +54,7 @@ architecture simulation of tb_axil_arbiter is
   signal s1_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
   signal s1_bready  : std_logic;
   signal s1_bvalid  : std_logic;
+  signal s1_bresp   : std_logic_vector(1 downto 0);
   signal s1_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal s1_arready : std_logic;
   signal s1_arvalid : std_logic;
@@ -60,6 +63,7 @@ architecture simulation of tb_axil_arbiter is
   signal s1_rready  : std_logic;
   signal s1_rvalid  : std_logic;
   signal s1_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s1_rresp   : std_logic_vector(1 downto 0);
   signal s1_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
 
   signal p0_awready : std_logic;
@@ -72,6 +76,7 @@ architecture simulation of tb_axil_arbiter is
   signal p0_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
   signal p0_bready  : std_logic;
   signal p0_bvalid  : std_logic;
+  signal p0_bresp   : std_logic_vector(1 downto 0);
   signal p0_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal p0_arready : std_logic;
   signal p0_arvalid : std_logic;
@@ -80,6 +85,7 @@ architecture simulation of tb_axil_arbiter is
   signal p0_rready  : std_logic;
   signal p0_rvalid  : std_logic;
   signal p0_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal p0_rresp   : std_logic_vector(1 downto 0);
   signal p0_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
 
   signal p1_awready : std_logic;
@@ -92,6 +98,7 @@ architecture simulation of tb_axil_arbiter is
   signal p1_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
   signal p1_bready  : std_logic;
   signal p1_bvalid  : std_logic;
+  signal p1_bresp   : std_logic_vector(1 downto 0);
   signal p1_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal p1_arready : std_logic;
   signal p1_arvalid : std_logic;
@@ -100,6 +107,7 @@ architecture simulation of tb_axil_arbiter is
   signal p1_rready  : std_logic;
   signal p1_rvalid  : std_logic;
   signal p1_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal p1_rresp   : std_logic_vector(1 downto 0);
   signal p1_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
 
   signal d_awready : std_logic;
@@ -112,6 +120,7 @@ architecture simulation of tb_axil_arbiter is
   signal d_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
   signal d_bready  : std_logic;
   signal d_bvalid  : std_logic;
+  signal d_bresp   : std_logic_vector(1 downto 0);
   signal d_bid     : std_logic_vector(G_ID_SIZE downto 0);
   signal d_arready : std_logic;
   signal d_arvalid : std_logic;
@@ -120,6 +129,7 @@ architecture simulation of tb_axil_arbiter is
   signal d_rready  : std_logic;
   signal d_rvalid  : std_logic;
   signal d_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal d_rresp   : std_logic_vector(1 downto 0);
   signal d_rid     : std_logic_vector(G_ID_SIZE downto 0);
 
   signal p_awready : std_logic;
@@ -132,6 +142,7 @@ architecture simulation of tb_axil_arbiter is
   signal p_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
   signal p_bready  : std_logic;
   signal p_bvalid  : std_logic;
+  signal p_bresp   : std_logic_vector(1 downto 0);
   signal p_bid     : std_logic_vector(G_ID_SIZE downto 0);
   signal p_arready : std_logic;
   signal p_arvalid : std_logic;
@@ -140,47 +151,8 @@ architecture simulation of tb_axil_arbiter is
   signal p_rready  : std_logic;
   signal p_rvalid  : std_logic;
   signal p_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal p_rresp   : std_logic_vector(1 downto 0);
   signal p_rid     : std_logic_vector(G_ID_SIZE downto 0);
-
-  signal m0_awready : std_logic;
-  signal m0_awvalid : std_logic;
-  signal m0_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m0_awid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
-  signal m0_wready  : std_logic;
-  signal m0_wvalid  : std_logic;
-  signal m0_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m0_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal m0_bready  : std_logic;
-  signal m0_bvalid  : std_logic;
-  signal m0_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
-  signal m0_arready : std_logic;
-  signal m0_arvalid : std_logic;
-  signal m0_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m0_arid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
-  signal m0_rready  : std_logic;
-  signal m0_rvalid  : std_logic;
-  signal m0_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m0_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
-
-  signal m1_awready : std_logic;
-  signal m1_awvalid : std_logic;
-  signal m1_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m1_awid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
-  signal m1_wready  : std_logic;
-  signal m1_wvalid  : std_logic;
-  signal m1_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m1_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal m1_bready  : std_logic;
-  signal m1_bvalid  : std_logic;
-  signal m1_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
-  signal m1_arready : std_logic;
-  signal m1_arvalid : std_logic;
-  signal m1_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m1_arid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
-  signal m1_rready  : std_logic;
-  signal m1_rvalid  : std_logic;
-  signal m1_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m1_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
 
   signal s0_busy : std_logic;
   signal s1_busy : std_logic;
@@ -218,6 +190,7 @@ begin
       s0_wstrb_i   => p0_wstrb,
       s0_bready_i  => p0_bready,
       s0_bvalid_o  => p0_bvalid,
+      s0_bresp_o   => p0_bresp,
       s0_bid_o     => p0_bid,
       s0_arready_o => p0_arready,
       s0_arvalid_i => p0_arvalid,
@@ -226,6 +199,7 @@ begin
       s0_rready_i  => p0_rready,
       s0_rvalid_o  => p0_rvalid,
       s0_rdata_o   => p0_rdata,
+      s0_rresp_o   => p0_rresp,
       s0_rid_o     => p0_rid,
       s1_awready_o => p1_awready,
       s1_awvalid_i => p1_awvalid,
@@ -237,6 +211,7 @@ begin
       s1_wstrb_i   => p1_wstrb,
       s1_bready_i  => p1_bready,
       s1_bvalid_o  => p1_bvalid,
+      s1_bresp_o   => p1_bresp,
       s1_bid_o     => p1_bid,
       s1_arready_o => p1_arready,
       s1_arvalid_i => p1_arvalid,
@@ -245,6 +220,7 @@ begin
       s1_rready_i  => p1_rready,
       s1_rvalid_o  => p1_rvalid,
       s1_rdata_o   => p1_rdata,
+      s1_rresp_o   => p1_rresp,
       s1_rid_o     => p1_rid,
       m_awready_i  => d_awready,
       m_awvalid_o  => d_awvalid,
@@ -256,6 +232,7 @@ begin
       m_wstrb_o    => d_wstrb,
       m_bready_o   => d_bready,
       m_bvalid_i   => d_bvalid,
+      m_bresp_i    => d_bresp,
       m_bid_i      => d_bid,
       m_arready_i  => d_arready,
       m_arvalid_o  => d_arvalid,
@@ -264,6 +241,7 @@ begin
       m_rready_o   => d_rready,
       m_rvalid_i   => d_rvalid,
       m_rdata_i    => d_rdata,
+      m_rresp_i    => d_rresp,
       m_rid_i      => d_rid
     ); -- axil_arbiter_inst : entity work.axil_arbiter
 
@@ -296,6 +274,7 @@ begin
       m_wstrb_o   => s0_wstrb,
       m_bready_o  => s0_bready,
       m_bvalid_i  => s0_bvalid,
+      m_bresp_i   => s0_bresp,
       m_bid_i     => s0_bid,
       m_arready_i => s0_arready,
       m_arvalid_o => s0_arvalid,
@@ -304,6 +283,7 @@ begin
       m_rready_o  => s0_rready,
       m_rvalid_i  => s0_rvalid,
       m_rdata_i   => s0_rdata,
+      m_rresp_i   => s0_rresp,
       m_rid_i     => s0_rid
     ); -- axil_master_sim_0_inst : entity work.axil_master_sim
 
@@ -331,6 +311,7 @@ begin
       m_wstrb_o   => s1_wstrb,
       m_bready_o  => s1_bready,
       m_bvalid_i  => s1_bvalid,
+      m_bresp_i   => s1_bresp,
       m_bid_i     => s1_bid,
       m_arready_i => s1_arready,
       m_arvalid_o => s1_arvalid,
@@ -339,6 +320,7 @@ begin
       m_rready_o  => s1_rready,
       m_rvalid_i  => s1_rvalid,
       m_rdata_i   => s1_rdata,
+      m_rresp_i   => s1_rresp,
       m_rid_i     => s1_rid
     ); -- axil_master_sim_1_inst : entity work.axil_master_sim
 
@@ -368,6 +350,7 @@ begin
       s_wstrb_i   => s0_wstrb,
       s_bready_i  => s0_bready,
       s_bvalid_o  => s0_bvalid,
+      s_bresp_o   => s0_bresp,
       s_bid_o     => s0_bid,
       s_arready_o => s0_arready,
       s_arvalid_i => s0_arvalid,
@@ -376,6 +359,7 @@ begin
       s_rready_i  => s0_rready,
       s_rvalid_o  => s0_rvalid,
       s_rdata_o   => s0_rdata,
+      s_rresp_o   => s0_rresp,
       s_rid_o     => s0_rid,
       m_awready_i => p0_awready,
       m_awvalid_o => p0_awvalid,
@@ -387,6 +371,7 @@ begin
       m_wstrb_o   => p0_wstrb,
       m_bready_o  => p0_bready,
       m_bvalid_i  => p0_bvalid,
+      m_bresp_i   => p0_bresp,
       m_bid_i     => p0_bid,
       m_arready_i => p0_arready,
       m_arvalid_o => p0_arvalid,
@@ -395,6 +380,7 @@ begin
       m_rready_o  => p0_rready,
       m_rvalid_i  => p0_rvalid,
       m_rdata_i   => p0_rdata,
+      m_rresp_i   => p0_rresp,
       m_rid_i     => p0_rid
     ); -- axil_pause_0_inst : entity work.axil_pause
 
@@ -419,6 +405,7 @@ begin
       s_wstrb_i   => s1_wstrb,
       s_bready_i  => s1_bready,
       s_bvalid_o  => s1_bvalid,
+      s_bresp_o   => s1_bresp,
       s_bid_o     => s1_bid,
       s_arready_o => s1_arready,
       s_arvalid_i => s1_arvalid,
@@ -427,6 +414,7 @@ begin
       s_rready_i  => s1_rready,
       s_rvalid_o  => s1_rvalid,
       s_rdata_o   => s1_rdata,
+      s_rresp_o   => s1_rresp,
       s_rid_o     => s1_rid,
       m_awready_i => p1_awready,
       m_awvalid_o => p1_awvalid,
@@ -438,6 +426,7 @@ begin
       m_wstrb_o   => p1_wstrb,
       m_bready_o  => p1_bready,
       m_bvalid_i  => p1_bvalid,
+      m_bresp_i   => p1_bresp,
       m_bid_i     => p1_bid,
       m_arready_i => p1_arready,
       m_arvalid_o => p1_arvalid,
@@ -446,6 +435,7 @@ begin
       m_rready_o  => p1_rready,
       m_rvalid_i  => p1_rvalid,
       m_rdata_i   => p1_rdata,
+      m_rresp_i   => p1_rresp,
       m_rid_i     => p1_rid
     ); -- axil_pause_1_inst : entity work.axil_pause
 
@@ -470,6 +460,7 @@ begin
       s_wstrb_i   => d_wstrb,
       s_bready_i  => d_bready,
       s_bvalid_o  => d_bvalid,
+      s_bresp_o   => d_bresp,
       s_bid_o     => d_bid,
       s_arready_o => d_arready,
       s_arvalid_i => d_arvalid,
@@ -478,6 +469,7 @@ begin
       s_rready_i  => d_rready,
       s_rvalid_o  => d_rvalid,
       s_rdata_o   => d_rdata,
+      s_rresp_o   => d_rresp,
       s_rid_o     => d_rid,
       m_awready_i => p_awready,
       m_awvalid_o => p_awvalid,
@@ -489,6 +481,7 @@ begin
       m_wstrb_o   => p_wstrb,
       m_bready_o  => p_bready,
       m_bvalid_i  => p_bvalid,
+      m_bresp_i   => p_bresp,
       m_bid_i     => p_bid,
       m_arready_i => p_arready,
       m_arvalid_o => p_arvalid,
@@ -497,6 +490,7 @@ begin
       m_rready_o  => p_rready,
       m_rvalid_i  => p_rvalid,
       m_rdata_i   => p_rdata,
+      m_rresp_i   => p_rresp,
       m_rid_i     => p_rid
     ); -- axil_pause_d_inst : entity work.axil_pause
 
@@ -526,6 +520,7 @@ begin
       s_wstrb_i   => p_wstrb,
       s_bready_i  => p_bready,
       s_bvalid_o  => p_bvalid,
+      s_bresp_o   => p_bresp,
       s_bid_o     => p_bid,
       s_arready_o => p_arready,
       s_arvalid_i => p_arvalid,
@@ -534,6 +529,7 @@ begin
       s_rready_i  => p_rready,
       s_rvalid_o  => p_rvalid,
       s_rdata_o   => p_rdata,
+      s_rresp_o   => p_rresp,
       s_rid_o     => p_rid
     ); -- axil_slave_sim_inst : entity work.axil_slave_sim
 

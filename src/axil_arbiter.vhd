@@ -34,6 +34,7 @@ entity axil_arbiter is
     s0_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s0_bready_i  : in    std_logic;
     s0_bvalid_o  : out   std_logic;
+    s0_bresp_o   : out   std_logic_vector(1 downto 0);
     s0_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     s0_arready_o : out   std_logic;
     s0_arvalid_i : in    std_logic;
@@ -42,6 +43,7 @@ entity axil_arbiter is
     s0_rready_i  : in    std_logic;
     s0_rvalid_o  : out   std_logic;
     s0_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s0_rresp_o   : out   std_logic_vector(1 downto 0);
     s0_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
 
     s1_awready_o : out   std_logic;
@@ -54,6 +56,7 @@ entity axil_arbiter is
     s1_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s1_bready_i  : in    std_logic;
     s1_bvalid_o  : out   std_logic;
+    s1_bresp_o   : out   std_logic_vector(1 downto 0);
     s1_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     s1_arready_o : out   std_logic;
     s1_arvalid_i : in    std_logic;
@@ -62,6 +65,7 @@ entity axil_arbiter is
     s1_rready_i  : in    std_logic;
     s1_rvalid_o  : out   std_logic;
     s1_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s1_rresp_o   : out   std_logic_vector(1 downto 0);
     s1_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
 
     -- Output
@@ -75,6 +79,7 @@ entity axil_arbiter is
     m_wstrb_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_bready_o   : out   std_logic;
     m_bvalid_i   : in    std_logic;
+    m_bresp_i    : in    std_logic_vector(1 downto 0);
     m_bid_i      : in    std_logic_vector(G_ID_SIZE downto 0);
     m_arready_i  : in    std_logic;
     m_arvalid_o  : out   std_logic;
@@ -83,6 +88,7 @@ entity axil_arbiter is
     m_rready_o   : out   std_logic;
     m_rvalid_i   : in    std_logic;
     m_rdata_i    : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rresp_i    : in    std_logic_vector(1 downto 0);
     m_rid_i      : in    std_logic_vector(G_ID_SIZE downto 0)
   );
 end entity axil_arbiter;
@@ -101,9 +107,13 @@ architecture synthesis of axil_arbiter is
   signal s1_w_data : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 downto 0);
   signal m_w_data  : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 downto 0);
 
-  signal s0_r_data : std_logic_vector(G_DATA_SIZE + G_ID_SIZE - 1 downto 0);
-  signal s1_r_data : std_logic_vector(G_DATA_SIZE + G_ID_SIZE - 1 downto 0);
-  signal m_r_data  : std_logic_vector(G_DATA_SIZE + G_ID_SIZE - 1 downto 0);
+  signal s0_b_data : std_logic_vector(G_ID_SIZE + 1 downto 0);
+  signal s1_b_data : std_logic_vector(G_ID_SIZE + 1 downto 0);
+  signal m_b_data  : std_logic_vector(G_ID_SIZE + 1 downto 0);
+
+  signal s0_r_data : std_logic_vector(G_DATA_SIZE + G_ID_SIZE + 1 downto 0);
+  signal s1_r_data : std_logic_vector(G_DATA_SIZE + G_ID_SIZE + 1 downto 0);
+  signal m_r_data  : std_logic_vector(G_DATA_SIZE + G_ID_SIZE + 1 downto 0);
 
   -- This is only used for debugging
   signal m_wid : std_logic;
@@ -174,26 +184,30 @@ begin
 
   axis_distributor_b_inst : entity work.axis_distributor
     generic map (
-      G_DATA_SIZE => G_ID_SIZE
+      G_DATA_SIZE => G_ID_SIZE + 2
     )
     port map (
       clk_i      => clk_i,
       rst_i      => rst_i,
       s_ready_o  => m_bready_o,
       s_valid_i  => m_bvalid_i,
-      s_data_i   => m_bid_i(G_ID_SIZE - 1 downto 0),
+      s_data_i   => m_b_data,
       s_dst_i    => m_bid_i(G_ID_SIZE),
       m0_ready_i => s0_bready_i,
       m0_valid_o => s0_bvalid_o,
-      m0_data_o  => s0_bid_o,
+      m0_data_o  => s0_b_data,
       m1_ready_i => s1_bready_i,
       m1_valid_o => s1_bvalid_o,
-      m1_data_o  => s1_bid_o
+      m1_data_o  => s1_b_data
     ); -- axis_distributor_b_inst : entity work.axis_distributor
+
+  m_b_data                <= m_bresp_i & m_bid_i(G_ID_SIZE - 1 downto 0);
+  (s0_bresp_o, s0_bid_o) <= s0_b_data;
+  (s1_bresp_o, s1_bid_o) <= s1_b_data;
 
   axis_distributor_r_inst : entity work.axis_distributor
     generic map (
-      G_DATA_SIZE => G_DATA_SIZE + G_ID_SIZE
+      G_DATA_SIZE => G_DATA_SIZE + G_ID_SIZE + 2
     )
     port map (
       clk_i      => clk_i,
@@ -210,9 +224,9 @@ begin
       m1_data_o  => s1_r_data
     ); -- axis_distributor_b_inst : entity work.axis_distributor
 
-  m_r_data                <= m_rid_i(G_ID_SIZE - 1 downto 0) & m_rdata_i;
-  (s0_rid_o , s0_rdata_o) <= s0_r_data;
-  (s1_rid_o , s1_rdata_o) <= s1_r_data;
+  m_r_data                <= m_rresp_i & m_rid_i(G_ID_SIZE - 1 downto 0) & m_rdata_i;
+  (s0_rresp_o, s0_rid_o , s0_rdata_o) <= s0_r_data;
+  (s1_rresp_o, s1_rid_o , s1_rdata_o) <= s1_r_data;
 
 end architecture synthesis;
 

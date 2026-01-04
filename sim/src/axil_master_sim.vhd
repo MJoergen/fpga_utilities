@@ -37,6 +37,7 @@ entity axil_master_sim is
     m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
+    m_bresp_i   : in    std_logic_vector(1 downto 0);
     m_bid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
@@ -45,6 +46,7 @@ entity axil_master_sim is
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
     m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rresp_i   : in    std_logic_vector(1 downto 0);
     m_rid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0)
   );
 end entity axil_master_sim;
@@ -143,7 +145,7 @@ begin
           m_wstrb_o   <= (others => '1');
           wr_ptr_stim <= wr_ptr_stim + 1;
           if G_DEBUG then
-            report "axil_sim: STIMULI: Write: " & to_hstring(wr_ptr_stim) & " (" & to_hstring(addr_to_id(wr_ptr_stim)) &
+            report "axil_master_sim: STIMULI: Write: " & to_hstring(wr_ptr_stim) & " (" & to_hstring(addr_to_id(wr_ptr_stim)) &
                    ") <- " & to_hstring(addr_to_data(wr_ptr_stim));
           end if;
         end if;
@@ -151,8 +153,10 @@ begin
 
       -- Receive write response
       if m_bvalid_i = '1' and m_bready_o = '1' then
+        assert m_bresp_i = "00"
+          report "axil_master_sim: Incorrect m_bresp_i";
         assert m_bid_i = addr_to_id(wr_ptr_resp)
-          report "axil_sim: Write response failure from address " & to_hstring(wr_ptr_resp) &
+          report "axil_master_sim: Write response failure from address " & to_hstring(wr_ptr_resp) &
                  ". Got " & to_hstring(m_bid_i) &
                  ", expected " & to_hstring(addr_to_id(wr_ptr_resp));
         wr_ptr_resp <= wr_ptr_resp + 1;
@@ -163,7 +167,7 @@ begin
          and rd_ptr_stim < wr_ptr_resp
          and ((G_FAST and m_arready_i = '1') or m_arvalid_o = '0') then
         if G_DEBUG then
-          report "axil_sim: STIMULI: Read: " & to_hstring(rd_ptr_stim) & " (" & to_hstring(not addr_to_id(rd_ptr_stim)) & ")";
+          report "axil_master_sim: STIMULI: Read: " & to_hstring(rd_ptr_stim) & " (" & to_hstring(not addr_to_id(rd_ptr_stim)) & ")";
         end if;
         m_arvalid_o <= '1';
         m_araddr_o  <= rd_ptr_stim;
@@ -173,12 +177,14 @@ begin
 
       -- Receive read response
       if m_rvalid_i = '1' and m_rready_o = '1' then
+        assert m_rresp_i = "00"
+          report "axil_master_sim: Incorrect m_rresp_i";
         assert m_rdata_i = addr_to_data(rd_ptr_resp)
-          report "axil_sim: Read failure from address " & to_hstring(rd_ptr_resp) &
+          report "axil_master_sim: Read failure from address " & to_hstring(rd_ptr_resp) &
                  ". Got " & to_hstring(m_rdata_i) &
                  ", expected " & to_hstring(addr_to_data(rd_ptr_resp));
         assert m_rid_i = not addr_to_id(rd_ptr_resp)
-          report "axil_sim: Read response failure from address " & to_hstring(rd_ptr_resp) &
+          report "axil_master_sim: Read response failure from address " & to_hstring(rd_ptr_resp) &
                  ". Got " & to_hstring(m_rid_i) &
                  ", expected " & to_hstring(not addr_to_id(rd_ptr_resp));
         rd_ptr_resp <= rd_ptr_resp + 1;
