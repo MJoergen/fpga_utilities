@@ -55,7 +55,7 @@ end entity wbus_to_axil;
 
 architecture synthesis of wbus_to_axil is
 
-  type   state_type is (IDLE_ST, WRITING_ST, READING_ST);
+  type   state_type is (IDLE_ST, WRITING_ST, READING_ST, ABORTING_ST);
   signal state : state_type := IDLE_ST;
 
 begin
@@ -101,20 +101,32 @@ begin
 
         when WRITING_ST =>
           if m_axil_bvalid_i = '1' and m_axil_bready_o = '1' then
-            s_wbus_ack_o <= '1';
+            s_wbus_ack_o <= s_wbus_cyc_i;
             state        <= IDLE_ST;
+          elsif s_wbus_cyc_i = '0' then
+            state <= ABORTING_ST;
           end if;
 
         when READING_ST =>
           if m_axil_rvalid_i = '1' and m_axil_rready_o = '1' then
             s_wbus_rddat_o <= m_axil_rdata_i;
-            s_wbus_ack_o   <= '1';
+            s_wbus_ack_o   <= s_wbus_cyc_i;
             state          <= IDLE_ST;
+          elsif s_wbus_cyc_i = '0' then
+            state <= ABORTING_ST;
+          end if;
+
+        when ABORTING_ST =>
+          if m_axil_bvalid_i = '1' and m_axil_bready_o = '1' then
+            state <= IDLE_ST;
+          end if;
+          if m_axil_rvalid_i = '1' and m_axil_rready_o = '1' then
+            state <= IDLE_ST;
           end if;
 
       end case;
 
-      if rst_i = '1' or s_wbus_cyc_i = '0' then
+      if rst_i = '1' then
         state            <= IDLE_ST;
         s_wbus_ack_o     <= '0';
         m_axil_awvalid_o <= '0';

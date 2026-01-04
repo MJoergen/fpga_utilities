@@ -14,8 +14,8 @@ all:
 	make -C tb_axis_fifo_sync
 	make -C tb_axis_sim
 	make -C tb_wbus_arbiter
-	make -C tb_wbus_to_axil
 	make -C tb_wbus_master
+	make -C tb_wbus_to_axil
 
 clean:
 	make -C tb_axil_arbiter clean
@@ -29,6 +29,6 @@ clean:
 	make -C tb_axis_fifo_sync clean
 	make -C tb_axis_sim clean
 	make -C tb_wbus_arbiter clean
-	make -C tb_wbus_to_axil clean
 	make -C tb_wbus_master clean
+	make -C tb_wbus_to_axil clean
 

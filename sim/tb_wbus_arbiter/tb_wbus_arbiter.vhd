@@ -5,6 +5,7 @@ library ieee;
 entity tb_wbus_arbiter is
   generic (
     G_DEBUG      : boolean;
+    G_DO_ABORT   : boolean;
     G_ADDR_SIZE  : natural;
     G_DATA_SIZE  : natural
   );
@@ -100,6 +101,7 @@ begin
     generic map (
       G_SEED      => X"1234567812345678",
       G_OFFSET    => 1234,
+      G_DO_ABORT  => G_DO_ABORT,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )
@@ -120,6 +122,7 @@ begin
     generic map (
       G_SEED      => X"1122334455667788",
       G_OFFSET    => 4321,
+      G_DO_ABORT  => G_DO_ABORT,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )

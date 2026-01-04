@@ -18,10 +18,11 @@ SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
 DUT = wbus_arbiter
 
 # Test duration
-STOP_TIME = 1100us
+STOP_TIME = 1200us
 
 # Test bench configuration
 GENERIC += -gG_DEBUG=false
+GENERIC += -gG_DO_ABORT=true
 GENERIC += -gG_ADDR_SIZE=12
 GENERIC += -gG_DATA_SIZE=16
 

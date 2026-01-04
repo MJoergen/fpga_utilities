@@ -112,6 +112,12 @@ begin
             s0_wbus_ack_o   <= '1';
             state           <= SLAVE_1_IDLE_ST;
           end if;
+          if s0_wbus_cyc_i = '0' then
+            m_wbus_cyc_o  <= '0';
+            m_wbus_stb_o  <= '0';
+            s0_wbus_ack_o <= '0';
+            state         <= SLAVE_1_IDLE_ST;
+          end if;
 
         when SLAVE_1_BUSY_ST =>
           if m_wbus_ack_i = '1' then
@@ -119,6 +125,12 @@ begin
               s1_wbus_rddat_o <= m_wbus_rddat_i;
             end if;
             s1_wbus_ack_o   <= '1';
+            state         <= SLAVE_0_IDLE_ST;
+          end if;
+          if s1_wbus_cyc_i = '0' then
+            m_wbus_cyc_o  <= '0';
+            m_wbus_stb_o  <= '0';
+            s1_wbus_ack_o <= '0';
             state           <= SLAVE_0_IDLE_ST;
           end if;
 

@@ -4,6 +4,7 @@ library ieee;
 
 entity tb_wbus_to_axil is
   generic (
+    G_DO_ABORT   : boolean;
     G_PAUSE_SIZE : natural;
     G_ID_SIZE    : natural;
     G_ADDR_SIZE  : natural;
@@ -237,6 +238,7 @@ begin
     generic map (
       G_DEBUG     => false,
       G_OFFSET    => 1234,
+      G_DO_ABORT  => G_DO_ABORT,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )

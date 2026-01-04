@@ -21,6 +21,7 @@ SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
 DUT = wbus_to_axil
 
 # Test bench configuration
+GENERIC += -gG_DO_ABORT=true
 GENERIC += -gG_PAUSE_SIZE=3
 GENERIC += -gG_ID_SIZE=4
 GENERIC += -gG_ADDR_SIZE=12

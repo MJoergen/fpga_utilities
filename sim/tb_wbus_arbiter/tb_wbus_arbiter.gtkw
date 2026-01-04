@@ -1,18 +1,18 @@
 [*]
 [*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Fri Jan  2 10:28:54 2026
+[*] Sun Jan  4 14:18:17 2026
 [*]
 [dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_wbus_arbiter/tb_wbus_arbiter.ghw"
-[dumpfile_mtime] "Fri Jan  2 10:27:13 2026"
-[dumpfile_size] 708701
+[dumpfile_mtime] "Sun Jan  4 14:16:29 2026"
+[dumpfile_size] 1083402
 [savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_wbus_arbiter/tb_wbus_arbiter.gtkw"
-[timestart] 0
+[timestart] 4936100000
 [size] 1686 871
-[pos] 0 5
-*-27.761490 211000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] 163 26
+*-27.258463 5630000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.tb_wbus_arbiter.
-[treeopen] top.tb_wbus_arbiter.wbus_master_sim_1_inst.
+[treeopen] top.tb_wbus_arbiter.wbus_slave_sim_inst.
 [sst_width] 445
 [signals_width] 336
 [sst_expanded] 1
@@ -105,6 +105,7 @@ top.tb_wbus_arbiter.wbus_master_sim_0_inst.state
 @28
 top.tb_wbus_arbiter.wbus_master_sim_0_inst.do_read
 top.tb_wbus_arbiter.wbus_master_sim_0_inst.do_write
+top.tb_wbus_arbiter.wbus_master_sim_0_inst.do_abort
 top.tb_wbus_arbiter.wbus_master_sim_0_inst.req_active
 @420
 top.tb_wbus_arbiter.wbus_master_sim_0_inst.timeout_cnt
@@ -113,7 +114,7 @@ top.tb_wbus_arbiter.wbus_master_sim_0_inst.timeout_cnt
 #{top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[11:0]} top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[11] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[10] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[9] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[8] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[7] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[6] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[5] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[4] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[3] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[2] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[1] top.tb_wbus_arbiter.wbus_master_sim_0_inst.rd_ptr[0]
 @1401200
 -wbus_master_sim_0
-@800200
+@c00200
 -wbus_master_sim_1
 @28
 top.tb_wbus_arbiter.wbus_master_sim_1_inst.clk_i
@@ -136,13 +137,36 @@ top.tb_wbus_arbiter.wbus_master_sim_1_inst.state
 @28
 top.tb_wbus_arbiter.wbus_master_sim_1_inst.do_read
 top.tb_wbus_arbiter.wbus_master_sim_1_inst.do_write
+top.tb_wbus_arbiter.wbus_master_sim_1_inst.do_abort
 top.tb_wbus_arbiter.wbus_master_sim_1_inst.req_active
 @420
 top.tb_wbus_arbiter.wbus_master_sim_1_inst.timeout_cnt
 @22
 #{top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[11:0]} top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[11] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[10] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[9] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[8] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[7] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[6] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[5] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[4] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[3] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[2] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[1] top.tb_wbus_arbiter.wbus_master_sim_1_inst.wr_ptr[0]
 #{top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[11:0]} top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[11] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[10] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[9] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[8] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[7] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[6] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[5] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[4] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[3] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[2] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[1] top.tb_wbus_arbiter.wbus_master_sim_1_inst.rd_ptr[0]
-@1000200
+@1401200
 -wbus_master_sim_1
+@800200
+-wbus_slave_sim
+@28
+top.tb_wbus_arbiter.wbus_slave_sim_inst.clk_i
+top.tb_wbus_arbiter.wbus_slave_sim_inst.rst_i
+top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_cyc_i
+top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_stall_o
+top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_stb_i
+@22
+#{top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[12:0]} top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[12] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[11] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[10] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[9] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[8] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[7] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[6] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[5] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[4] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[3] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[2] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[1] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_addr_i[0]
+@28
+top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_we_i
+@22
+#{top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[15:0]} top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[15] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[14] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[13] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[12] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[11] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[10] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[9] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[8] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[7] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[6] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[5] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[4] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[3] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[2] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[1] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_wrdat_i[0]
+@28
+top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_ack_o
+@22
+#{top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[15:0]} top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[15] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[14] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[13] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[12] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[11] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[10] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[9] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[8] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[7] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[6] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[5] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[4] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[3] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[2] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[1] top.tb_wbus_arbiter.wbus_slave_sim_inst.s_wbus_rddat_o[0]
+@28
+top.tb_wbus_arbiter.wbus_slave_sim_inst.req_active
+@1000200
+-wbus_slave_sim
 [pattern_trace] 1
 [pattern_trace] 0

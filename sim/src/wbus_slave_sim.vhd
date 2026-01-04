@@ -100,7 +100,7 @@ begin
         s_wbus_ack <= (others => '0');
       end if;
 
-      if rst_i = '1' then
+      if rst_i = '1' or s_wbus_cyc_i = '0' then
         s_wbus_ack <= (others => '0');
       end if;
     end if;
