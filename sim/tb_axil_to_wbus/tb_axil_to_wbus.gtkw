@@ -1,0 +1,82 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Nov 22 17:37:49 2025
+[*]
+[dumpfile] "/home/mike/git/MJoergen/Wishbone/sim/tb_axi_wbus/tb_axi_wbus.ghw"
+[dumpfile_mtime] "Sat Nov 22 17:34:47 2025"
+[dumpfile_size] 29322965
+[savefile] "/home/mike/git/MJoergen/Wishbone/sim/tb_axi_wbus/tb_axi_wbus.gtkw"
+[timestart] 76200000
+[size] 1704 807
+[pos] -1 -1
+*-26.068834 100000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_axi_wbus.
+[treeopen] top.tb_axi_wbus.axi_wbus_inst.
+[sst_width] 239
+[signals_width] 282
+[sst_expanded] 1
+[sst_vpaned_height] 231
+@800200
+-axi_wbus
+@28
+top.tb_axi_wbus.axi_wbus_inst.clk_i
+top.tb_axi_wbus.axi_wbus_inst.rst_i
+[color] 6
+top.tb_axi_wbus.axi_wbus_inst.s_axil_awready_o
+[color] 2
+top.tb_axi_wbus.axi_wbus_inst.s_axil_awvalid_i
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[8:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[0]
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[0]
+@28
+[color] 6
+top.tb_axi_wbus.axi_wbus_inst.s_axil_wready_o
+[color] 2
+top.tb_axi_wbus.axi_wbus_inst.s_axil_wvalid_i
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[15:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[15] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[14] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[13] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[12] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[11] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[10] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[9] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[0]
+@28
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_wstrb_i[1:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_wstrb_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_wstrb_i[0]
+[color] 6
+top.tb_axi_wbus.axi_wbus_inst.s_axil_bready_i
+[color] 2
+top.tb_axi_wbus.axi_wbus_inst.s_axil_bvalid_o
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[0]
+@28
+[color] 6
+top.tb_axi_wbus.axi_wbus_inst.s_axil_arready_o
+[color] 2
+top.tb_axi_wbus.axi_wbus_inst.s_axil_arvalid_i
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[8:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[0]
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[0]
+@28
+[color] 6
+top.tb_axi_wbus.axi_wbus_inst.s_axil_rready_i
+[color] 2
+top.tb_axi_wbus.axi_wbus_inst.s_axil_rvalid_o
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[15:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[15] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[14] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[13] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[12] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[11] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[10] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[9] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[0]
+#{top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[0]
+@28
+top.tb_axi_wbus.axi_wbus_inst.m_wbus_cyc_o
+top.tb_axi_wbus.axi_wbus_inst.m_wbus_stall_i
+top.tb_axi_wbus.axi_wbus_inst.m_wbus_stb_o
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[8:0]} top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[8] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[7] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[6] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[5] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[4] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[3] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[2] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[1] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[0]
+@28
+top.tb_axi_wbus.axi_wbus_inst.m_wbus_we_o
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[15:0]} top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[15] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[14] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[13] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[12] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[11] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[10] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[9] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[8] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[7] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[6] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[5] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[4] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[3] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[2] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[1] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[0]
+@28
+top.tb_axi_wbus.axi_wbus_inst.m_wbus_ack_i
+@22
+#{top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[15:0]} top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[15] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[14] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[13] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[12] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[11] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[10] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[9] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[8] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[7] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[6] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[5] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[4] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[3] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[2] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[1] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[0]
+@420
+top.tb_axi_wbus.axi_wbus_inst.state
+@1000200
+-axi_wbus
+[pattern_trace] 1
+[pattern_trace] 0

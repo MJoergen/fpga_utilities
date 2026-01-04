@@ -1,0 +1,169 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Mon Oct 20 12:10:53 2025
+[*]
+[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/Wishbone/sim/tb_wbus_axi/tb_wbus_axi.ghw"
+[dumpfile_mtime] "Mon Oct 20 12:07:28 2025"
+[dumpfile_size] 212037813
+[savefile] "/home/mfj/git/PRIVATE/MJoergen/Wishbone/sim/tb_wbus_axi/tb_wbus_axi.gtkw"
+[timestart] 759610000000
+[size] 1543 916
+[pos] -1 -1
+*-33.580120 789340000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_wbus_axi.
+[treeopen] top.tb_wbus_axi.axi_pause_aw_inst.
+[sst_width] 273
+[signals_width] 294
+[sst_expanded] 1
+[sst_vpaned_height] 378
+@c00200
+-wbus_axi
+@28
+top.tb_wbus_axi.wbus_axi_inst.clk_i
+top.tb_wbus_axi.wbus_axi_inst.rst_i
+top.tb_wbus_axi.wbus_axi_inst.s_wbus_cyc_i
+top.tb_wbus_axi.wbus_axi_inst.s_wbus_stall_o
+@22
+#{top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[7:0]} top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[7] top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[6] top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[5] top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[4] top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[3] top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[2] top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[1] top.tb_wbus_axi.wbus_axi_inst.s_wbus_addr_i[0]
+@28
+top.tb_wbus_axi.wbus_axi_inst.s_wbus_stb_i
+@22
+#{top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[15:0]} top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[15] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[14] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[13] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[12] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[11] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[10] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[9] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[8] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[7] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[6] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[5] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[4] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[3] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[2] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[1] top.tb_wbus_axi.wbus_axi_inst.s_wbus_wrdat_i[0]
+@28
+top.tb_wbus_axi.wbus_axi_inst.s_wbus_we_i
+@22
+#{top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[15:0]} top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[15] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[14] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[13] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[12] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[11] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[10] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[9] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[8] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[7] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[6] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[5] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[4] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[3] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[2] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[1] top.tb_wbus_axi.wbus_axi_inst.s_wbus_rddat_o[0]
+@28
+top.tb_wbus_axi.wbus_axi_inst.s_wbus_ack_o
+@200
+-
+@28
+[color] 7
+top.tb_wbus_axi.wbus_axi_inst.m_axil_awready_i
+[color] 2
+top.tb_wbus_axi.wbus_axi_inst.m_axil_awvalid_o
+@22
+#{top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[7:0]} top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[7] top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[6] top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[5] top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[4] top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[3] top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[2] top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[1] top.tb_wbus_axi.wbus_axi_inst.m_axil_awaddr_o[0]
+@28
+[color] 7
+top.tb_wbus_axi.wbus_axi_inst.m_axil_wready_i
+[color] 2
+top.tb_wbus_axi.wbus_axi_inst.m_axil_wvalid_o
+@22
+#{top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[15:0]} top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[15] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[14] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[13] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[12] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[11] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[10] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[9] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[8] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[7] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[6] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[5] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[4] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[3] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[2] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[1] top.tb_wbus_axi.wbus_axi_inst.m_axil_wdata_o[0]
+@28
+#{top.tb_wbus_axi.wbus_axi_inst.m_axil_wstrb_o[1:0]} top.tb_wbus_axi.wbus_axi_inst.m_axil_wstrb_o[1] top.tb_wbus_axi.wbus_axi_inst.m_axil_wstrb_o[0]
+[color] 7
+top.tb_wbus_axi.wbus_axi_inst.m_axil_bready_o
+[color] 2
+top.tb_wbus_axi.wbus_axi_inst.m_axil_bvalid_i
+[color] 7
+top.tb_wbus_axi.wbus_axi_inst.m_axil_arready_i
+[color] 2
+top.tb_wbus_axi.wbus_axi_inst.m_axil_arvalid_o
+@22
+#{top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[7:0]} top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[7] top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[6] top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[5] top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[4] top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[3] top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[2] top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[1] top.tb_wbus_axi.wbus_axi_inst.m_axil_araddr_o[0]
+@28
+[color] 7
+top.tb_wbus_axi.wbus_axi_inst.m_axil_rready_o
+[color] 2
+top.tb_wbus_axi.wbus_axi_inst.m_axil_rvalid_i
+@22
+#{top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[15:0]} top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[15] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[14] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[13] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[12] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[11] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[10] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[9] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[8] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[7] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[6] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[5] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[4] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[3] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[2] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[1] top.tb_wbus_axi.wbus_axi_inst.m_axil_rdata_i[0]
+@420
+top.tb_wbus_axi.wbus_axi_inst.state
+@1401200
+-wbus_axi
+@800200
+-axi_wbus
+@28
+top.tb_wbus_axi.axi_wbus_inst.clk_i
+top.tb_wbus_axi.axi_wbus_inst.rst_i
+[color] 7
+top.tb_wbus_axi.axi_wbus_inst.s_axil_awready_o
+[color] 2
+top.tb_wbus_axi.axi_wbus_inst.s_axil_awvalid_i
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[7:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_awaddr_i[0]
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[7:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_awid_i[0]
+@28
+[color] 7
+top.tb_wbus_axi.axi_wbus_inst.s_axil_wready_o
+[color] 2
+top.tb_wbus_axi.axi_wbus_inst.s_axil_wvalid_i
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[15:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[15] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[14] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[13] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[12] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[11] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[10] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[9] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[8] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_wdata_i[0]
+@28
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_wstrb_i[1:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_wstrb_i[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_wstrb_i[0]
+[color] 7
+top.tb_wbus_axi.axi_wbus_inst.s_axil_bready_i
+[color] 2
+top.tb_wbus_axi.axi_wbus_inst.s_axil_bvalid_o
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[7:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_bid_o[0]
+@28
+[color] 7
+top.tb_wbus_axi.axi_wbus_inst.s_axil_arready_o
+[color] 2
+top.tb_wbus_axi.axi_wbus_inst.s_axil_arvalid_i
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[7:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_araddr_i[0]
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[7:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_arid_i[0]
+@28
+[color] 7
+top.tb_wbus_axi.axi_wbus_inst.s_axil_rready_i
+[color] 2
+top.tb_wbus_axi.axi_wbus_inst.s_axil_rvalid_o
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[15:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[15] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[14] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[13] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[12] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[11] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[10] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[9] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[8] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_rdata_o[0]
+#{top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[7:0]} top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[7] top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[6] top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[5] top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[4] top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[3] top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[2] top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[1] top.tb_wbus_axi.axi_wbus_inst.s_axil_rid_o[0]
+@200
+-
+@28
+top.tb_wbus_axi.axi_wbus_inst.m_wbus_cyc_o
+top.tb_wbus_axi.axi_wbus_inst.m_wbus_stall_i
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[7:0]} top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[7] top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[6] top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[5] top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[4] top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[3] top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[2] top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[1] top.tb_wbus_axi.axi_wbus_inst.m_wbus_addr_o[0]
+@28
+top.tb_wbus_axi.axi_wbus_inst.m_wbus_stb_o
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[15:0]} top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[15] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[14] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[13] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[12] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[11] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[10] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[9] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[8] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[7] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[6] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[5] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[4] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[3] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[2] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[1] top.tb_wbus_axi.axi_wbus_inst.m_wbus_wrdat_o[0]
+@28
+top.tb_wbus_axi.axi_wbus_inst.m_wbus_we_o
+@22
+#{top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[15:0]} top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[15] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[14] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[13] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[12] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[11] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[10] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[9] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[8] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[7] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[6] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[5] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[4] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[3] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[2] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[1] top.tb_wbus_axi.axi_wbus_inst.m_wbus_rddat_i[0]
+@28
+top.tb_wbus_axi.axi_wbus_inst.m_wbus_ack_i
+@420
+top.tb_wbus_axi.axi_wbus_inst.state
+@1000200
+-axi_wbus
+@c00200
+-axi_pause_aw
+@28
+top.tb_wbus_axi.axi_pause_aw_inst.clk_i
+top.tb_wbus_axi.axi_pause_aw_inst.rst_i
+[color] 7
+top.tb_wbus_axi.axi_pause_aw_inst.s_tready_o
+[color] 2
+top.tb_wbus_axi.axi_pause_aw_inst.s_tvalid_i
+@22
+#{top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[11:0]} top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[11] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[10] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[9] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[8] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[7] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[6] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[5] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[4] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[3] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[2] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[1] top.tb_wbus_axi.axi_pause_aw_inst.s_tdata_i[0]
+@28
+[color] 7
+top.tb_wbus_axi.axi_pause_aw_inst.m_tready_i
+[color] 2
+top.tb_wbus_axi.axi_pause_aw_inst.m_tvalid_o
+@22
+#{top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[11:0]} top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[11] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[10] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[9] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[8] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[7] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[6] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[5] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[4] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[3] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[2] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[1] top.tb_wbus_axi.axi_pause_aw_inst.m_tdata_o[0]
+#{top.tb_wbus_axi.axi_pause_aw_inst.random_val[63:0]} top.tb_wbus_axi.axi_pause_aw_inst.random_val[63] top.tb_wbus_axi.axi_pause_aw_inst.random_val[62] top.tb_wbus_axi.axi_pause_aw_inst.random_val[61] top.tb_wbus_axi.axi_pause_aw_inst.random_val[60] top.tb_wbus_axi.axi_pause_aw_inst.random_val[59] top.tb_wbus_axi.axi_pause_aw_inst.random_val[58] top.tb_wbus_axi.axi_pause_aw_inst.random_val[57] top.tb_wbus_axi.axi_pause_aw_inst.random_val[56] top.tb_wbus_axi.axi_pause_aw_inst.random_val[55] top.tb_wbus_axi.axi_pause_aw_inst.random_val[54] top.tb_wbus_axi.axi_pause_aw_inst.random_val[53] top.tb_wbus_axi.axi_pause_aw_inst.random_val[52] top.tb_wbus_axi.axi_pause_aw_inst.random_val[51] top.tb_wbus_axi.axi_pause_aw_inst.random_val[50] top.tb_wbus_axi.axi_pause_aw_inst.random_val[49] top.tb_wbus_axi.axi_pause_aw_inst.random_val[48] top.tb_wbus_axi.axi_pause_aw_inst.random_val[47] top.tb_wbus_axi.axi_pause_aw_inst.random_val[46] top.tb_wbus_axi.axi_pause_aw_inst.random_val[45] top.tb_wbus_axi.axi_pause_aw_inst.random_val[44] top.tb_wbus_axi.axi_pause_aw_inst.random_val[43] top.tb_wbus_axi.axi_pause_aw_inst.random_val[42] top.tb_wbus_axi.axi_pause_aw_inst.random_val[41] top.tb_wbus_axi.axi_pause_aw_inst.random_val[40] top.tb_wbus_axi.axi_pause_aw_inst.random_val[39] top.tb_wbus_axi.axi_pause_aw_inst.random_val[38] top.tb_wbus_axi.axi_pause_aw_inst.random_val[37] top.tb_wbus_axi.axi_pause_aw_inst.random_val[36] top.tb_wbus_axi.axi_pause_aw_inst.random_val[35] top.tb_wbus_axi.axi_pause_aw_inst.random_val[34] top.tb_wbus_axi.axi_pause_aw_inst.random_val[33] top.tb_wbus_axi.axi_pause_aw_inst.random_val[32] top.tb_wbus_axi.axi_pause_aw_inst.random_val[31] top.tb_wbus_axi.axi_pause_aw_inst.random_val[30] top.tb_wbus_axi.axi_pause_aw_inst.random_val[29] top.tb_wbus_axi.axi_pause_aw_inst.random_val[28] top.tb_wbus_axi.axi_pause_aw_inst.random_val[27] top.tb_wbus_axi.axi_pause_aw_inst.random_val[26] top.tb_wbus_axi.axi_pause_aw_inst.random_val[25] top.tb_wbus_axi.axi_pause_aw_inst.random_val[24] top.tb_wbus_axi.axi_pause_aw_inst.random_val[23] top.tb_wbus_axi.axi_pause_aw_inst.random_val[22] top.tb_wbus_axi.axi_pause_aw_inst.random_val[21] top.tb_wbus_axi.axi_pause_aw_inst.random_val[20] top.tb_wbus_axi.axi_pause_aw_inst.random_val[19] top.tb_wbus_axi.axi_pause_aw_inst.random_val[18] top.tb_wbus_axi.axi_pause_aw_inst.random_val[17] top.tb_wbus_axi.axi_pause_aw_inst.random_val[16] top.tb_wbus_axi.axi_pause_aw_inst.random_val[15] top.tb_wbus_axi.axi_pause_aw_inst.random_val[14] top.tb_wbus_axi.axi_pause_aw_inst.random_val[13] top.tb_wbus_axi.axi_pause_aw_inst.random_val[12] top.tb_wbus_axi.axi_pause_aw_inst.random_val[11] top.tb_wbus_axi.axi_pause_aw_inst.random_val[10] top.tb_wbus_axi.axi_pause_aw_inst.random_val[9] top.tb_wbus_axi.axi_pause_aw_inst.random_val[8] top.tb_wbus_axi.axi_pause_aw_inst.random_val[7] top.tb_wbus_axi.axi_pause_aw_inst.random_val[6] top.tb_wbus_axi.axi_pause_aw_inst.random_val[5] top.tb_wbus_axi.axi_pause_aw_inst.random_val[4] top.tb_wbus_axi.axi_pause_aw_inst.random_val[3] top.tb_wbus_axi.axi_pause_aw_inst.random_val[2] top.tb_wbus_axi.axi_pause_aw_inst.random_val[1] top.tb_wbus_axi.axi_pause_aw_inst.random_val[0]
+@420
+top.tb_wbus_axi.axi_pause_aw_inst.cnt
+@28
+top.tb_wbus_axi.axi_pause_aw_inst.forward
+top.tb_wbus_axi.axi_pause_aw_inst.update
+@1401200
+-axi_pause_aw
+[pattern_trace] 1
+[pattern_trace] 0

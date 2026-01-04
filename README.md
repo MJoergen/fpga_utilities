@@ -96,6 +96,8 @@ Note that this interface is bi-directional.
 
 * [axip\_to\_axis.vhd](src/axip_to_axis.vhd): Convert from an AXI packet interface to an AXI streaming interface.
 * [axis\_to\_axip.vhd](src/axis_to_axip.vhd): Convert from an AXI streaming interface to an AXI packet interface.
+* [axil\_to\_wbus.vhd](src/axil_to_wbus.vhd): Convert from AXI lite to Wishbone.
+* [wbus\_to\_axil.vhd](src/wbus_to_axil.vhd): Convert from Wishbone to AXI lite.
 
 ### Simulation modules
 
