@@ -18,6 +18,7 @@ entity axil_sim is
     G_DEBUG     : boolean;
     G_RANDOM    : boolean;
     G_FAST      : boolean;
+    G_ID_SIZE   : natural;
     G_ADDR_SIZE : natural;
     G_DATA_SIZE : natural
   );
@@ -29,43 +30,43 @@ entity axil_sim is
     m_awready_i : in    std_logic;
     m_awvalid_o : out   std_logic;
     m_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_awid_o    : out   std_logic_vector(7 downto 0);
+    m_awid_o    : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_wready_i  : in    std_logic;
     m_wvalid_o  : out   std_logic;
     m_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
-    m_bid_i     : in    std_logic_vector(7 downto 0);
+    m_bid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
     m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_arid_o    : out   std_logic_vector(7 downto 0);
+    m_arid_o    : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
     m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_rid_i     : in    std_logic_vector(7 downto 0);
+    m_rid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
 
     -- Response
     s_awready_o : out   std_logic;
     s_awvalid_i : in    std_logic;
     s_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_awid_i    : in    std_logic_vector(7 downto 0);
+    s_awid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_wready_o  : out   std_logic;
     s_wvalid_i  : in    std_logic;
     s_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
     s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s_bready_i  : in    std_logic;
     s_bvalid_o  : out   std_logic;
-    s_bid_o     : out   std_logic_vector(7 downto 0);
+    s_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_arready_o : out   std_logic;
     s_arvalid_i : in    std_logic;
     s_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_arid_i    : in    std_logic_vector(7 downto 0);
+    s_arid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_rready_i  : in    std_logic;
     s_rvalid_o  : out   std_logic;
     s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_rid_o     : out   std_logic_vector(7 downto 0)
+    s_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0)
   );
 end entity axil_sim;
 
@@ -80,6 +81,7 @@ begin
       G_DEBUG     => G_DEBUG,
       G_RANDOM    => G_RANDOM,
       G_FAST      => G_FAST,
+      G_ID_SIZE   => G_ID_SIZE,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )
@@ -111,6 +113,7 @@ begin
     generic map (
       G_DEBUG     => G_DEBUG,
       G_FAST      => G_FAST,
+      G_ID_SIZE   => G_ID_SIZE,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )

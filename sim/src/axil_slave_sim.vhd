@@ -14,6 +14,7 @@ entity axil_slave_sim is
   generic (
     G_DEBUG     : boolean;
     G_FAST      : boolean;
+    G_ID_SIZE   : natural;
     G_ADDR_SIZE : natural;
     G_DATA_SIZE : natural
   );
@@ -24,29 +25,29 @@ entity axil_slave_sim is
     s_awready_o : out   std_logic;
     s_awvalid_i : in    std_logic;
     s_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_awid_i    : in    std_logic_vector(7 downto 0);
+    s_awid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_wready_o  : out   std_logic;
     s_wvalid_i  : in    std_logic;
     s_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
     s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s_bready_i  : in    std_logic;
     s_bvalid_o  : out   std_logic;
-    s_bid_o     : out   std_logic_vector(7 downto 0);
+    s_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_arready_o : out   std_logic;
     s_arvalid_i : in    std_logic;
     s_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_arid_i    : in    std_logic_vector(7 downto 0);
+    s_arid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_rready_i  : in    std_logic;
     s_rvalid_o  : out   std_logic;
     s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_rid_o     : out   std_logic_vector(7 downto 0)
+    s_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0)
   );
 end entity axil_slave_sim;
 
 architecture simulation of axil_slave_sim is
 
   signal s_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal s_awid    : std_logic_vector(7 downto 0);
+  signal s_awid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal s_awvalid : std_logic;
   signal s_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal s_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);

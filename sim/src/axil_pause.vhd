@@ -12,6 +12,7 @@ library ieee;
 entity axil_pause is
   generic (
     G_SEED       : std_logic_vector(63 downto 0) := x"8765432112345678";
+    G_ID_SIZE    : integer;
     G_ADDR_SIZE  : integer;
     G_DATA_SIZE  : integer;
     G_PAUSE_SIZE : integer
@@ -24,66 +25,66 @@ entity axil_pause is
     s_awready_o : out   std_logic;
     s_awvalid_i : in    std_logic;
     s_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_awid_i    : in    std_logic_vector(7 downto 0);
+    s_awid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_wready_o  : out   std_logic;
     s_wvalid_i  : in    std_logic;
     s_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
     s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s_bready_i  : in    std_logic;
     s_bvalid_o  : out   std_logic;
-    s_bid_o     : out   std_logic_vector(7 downto 0);
+    s_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_arready_o : out   std_logic;
     s_arvalid_i : in    std_logic;
     s_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_arid_i    : in    std_logic_vector(7 downto 0);
+    s_arid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     s_rready_i  : in    std_logic;
     s_rvalid_o  : out   std_logic;
     s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_rid_o     : out   std_logic_vector(7 downto 0);
+    s_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
 
     -- Output
     m_awready_i : in    std_logic;
     m_awvalid_o : out   std_logic;
     m_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_awid_o    : out   std_logic_vector(7 downto 0);
+    m_awid_o    : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_wready_i  : in    std_logic;
     m_wvalid_o  : out   std_logic;
     m_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
-    m_bid_i     : in    std_logic_vector(7 downto 0);
+    m_bid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
     m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_arid_o    : out   std_logic_vector(7 downto 0);
+    m_arid_o    : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
     m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_rid_i     : in    std_logic_vector(7 downto 0)
+    m_rid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0)
   );
 end entity axil_pause;
 
 architecture simulation of axil_pause is
 
-  signal s_aw_in  : std_logic_vector(G_ADDR_SIZE + 7 downto 0);
-  signal m_aw_out : std_logic_vector(G_ADDR_SIZE + 7 downto 0);
+  signal s_aw_in  : std_logic_vector(G_ADDR_SIZE + G_ID_SIZE - 1 downto 0);
+  signal m_aw_out : std_logic_vector(G_ADDR_SIZE + G_ID_SIZE - 1 downto 0);
 
-  signal s_ar_in  : std_logic_vector(G_ADDR_SIZE + 7 downto 0);
-  signal m_ar_out : std_logic_vector(G_ADDR_SIZE + 7 downto 0);
+  signal s_ar_in  : std_logic_vector(G_ADDR_SIZE + G_ID_SIZE - 1 downto 0);
+  signal m_ar_out : std_logic_vector(G_ADDR_SIZE + G_ID_SIZE - 1 downto 0);
 
   signal s_w_in  : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
   signal m_w_out : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
 
-  signal m_r_in  : std_logic_vector(G_DATA_SIZE + 7 downto 0);
-  signal s_r_out : std_logic_vector(G_DATA_SIZE + 7 downto 0);
+  signal m_r_in  : std_logic_vector(G_DATA_SIZE + G_ID_SIZE - 1 downto 0);
+  signal s_r_out : std_logic_vector(G_DATA_SIZE + G_ID_SIZE - 1 downto 0);
 
 begin
 
   axis_pause_aw_inst : entity work.axis_pause
     generic map (
       G_SEED       => G_SEED xor X"1234BABECAFEDEAD",
-      G_DATA_SIZE  => G_ADDR_SIZE + 8,
+      G_DATA_SIZE  => G_ADDR_SIZE + G_ID_SIZE,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -104,7 +105,7 @@ begin
   axis_pause_ar_inst : entity work.axis_pause
     generic map (
       G_SEED       => G_SEED xor X"234BABECAFEDEAD2",
-      G_DATA_SIZE  => G_ADDR_SIZE + 8,
+      G_DATA_SIZE  => G_ADDR_SIZE + G_ID_SIZE,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -146,7 +147,7 @@ begin
   axis_pause_b_inst : entity work.axis_pause
     generic map (
       G_SEED       => G_SEED xor X"4BABECAFEDEAD234",
-      G_DATA_SIZE  => 8,
+      G_DATA_SIZE  => G_ID_SIZE,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -164,7 +165,7 @@ begin
   axis_pause_r_inst : entity work.axis_pause
     generic map (
       G_SEED       => G_SEED xor X"BABECAFEDEAD2345",
-      G_DATA_SIZE  => G_DATA_SIZE + 8,
+      G_DATA_SIZE  => G_DATA_SIZE + G_ID_SIZE,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (

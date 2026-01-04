@@ -51,6 +51,8 @@ that all bytes in "DATA" are valid. Note that this interface is uni-directional.
 ### AXI lite
 Note that this interface is bi-directional.
 
+This is used extensively by AMD IP blocks.
+
 ### Wishbone
 
 * "CYC"
@@ -81,6 +83,10 @@ Note that this interface is bi-directional.
 * [axip\_insert\_fixed\_header.vhd](src/axip_insert_fixed_header.vhd): This inserts a fixed-size header in front of an AXI packet.
 * [axip\_remove\_fixed\_header.vhd](src/axip_remove_fixed_header.vhd): This removes a fixed-size header from the front of an AXI packet.
 
+### AXI Lite
+
+* [axil\_arbiter.vhd](src/axil_arbiter.vhd): The arbitrates between two AXI lite masters.
+
 ### Wishbone
 
 * [wbus\_arbiter.vhd](src/wbus_arbiter.vhd): The arbitrates (merges) two Wishbone interfaces into one.
@@ -93,14 +99,15 @@ Note that this interface is bi-directional.
 
 ### Simulation modules
 
-* [axis\_sim.vhd](sim/src/axis_sim.vhd) : Simulate an AXI streaming Master and Slave
 * [axis\_pause.vhd](sim/src/axis_pause.vhd) : Inserts empty clock cycles in an AXI streaming interface
+* [axis\_sim.vhd](sim/src/axis_sim.vhd) : Simulate an AXI streaming Master and Slave
 
-* [axip\_sim.vhd](sim/src/axip_sim.vhd) : Simulate an AXI packet Master and Slave
+* [axip\_logger.vhd](sim/src/axip_logger.vhd) : Makes a debug log of each packet
 * [axip\_pause.vhd](sim/src/axip_pause.vhd) : Inserts empty clock cycles in an AXI packet interface
+* [axip\_sim.vhd](sim/src/axip_sim.vhd) : Simulate an AXI packet Master and Slave
 
-* [axil\_sim.vhd](sim/src/axil_sim.vhd) : Simulate an AXI lite Master and Slave
 * [axil\_master\_sim.vhd](sim/src/axil_master_sim.vhd) : Simulate an AXI lite Master
-* [axil\_slave\_sim.vhd](sim/src/axil_slave_sim.vhd) : Simulate an AXI lite Slave
 * [axil\_pause.vhd](sim/src/axil_pause.vhd) : Inserts empty clock cycles in an AXI lite interface
+* [axil\_sim.vhd](sim/src/axil_sim.vhd) : Simulate an AXI lite Master and Slave
+* [axil\_slave\_sim.vhd](sim/src/axil_slave_sim.vhd) : Simulate an AXI lite Slave
 

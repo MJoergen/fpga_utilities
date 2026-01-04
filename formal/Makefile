@@ -2,6 +2,7 @@
 # and does Bounded Model Check on each of them.
 
 DUTS += axis_arbiter
+DUTS += axis_arbiter_pair
 DUTS += axis_fifo_sync
 DUTS += axip_insert_fixed_header
 DUTS += axip_remove_fixed_header

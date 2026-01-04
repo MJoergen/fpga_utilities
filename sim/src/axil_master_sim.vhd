@@ -19,6 +19,7 @@ entity axil_master_sim is
     G_DEBUG     : boolean;
     G_RANDOM    : boolean;
     G_FAST      : boolean;
+    G_ID_SIZE   : natural;
     G_ADDR_SIZE : natural;
     G_DATA_SIZE : natural
   );
@@ -29,22 +30,22 @@ entity axil_master_sim is
     m_awready_i : in    std_logic;
     m_awvalid_o : out   std_logic;
     m_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_awid_o    : out   std_logic_vector(7 downto 0);
+    m_awid_o    : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_wready_i  : in    std_logic;
     m_wvalid_o  : out   std_logic;
     m_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
-    m_bid_i     : in    std_logic_vector(7 downto 0);
+    m_bid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
     m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_arid_o    : out   std_logic_vector(7 downto 0);
+    m_arid_o    : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
     m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_rid_i     : in    std_logic_vector(7 downto 0)
+    m_rid_i     : in    std_logic_vector(G_ID_SIZE - 1 downto 0)
   );
 end entity axil_master_sim;
 
@@ -79,7 +80,7 @@ architecture simulation of axil_master_sim is
     addr : std_logic_vector
   ) return std_logic_vector is
   begin
-    return to_stdlogicvector((G_OFFSET + to_integer(addr)) mod 256, 8);
+    return to_stdlogicvector((G_OFFSET + to_integer(addr)) mod (2 ** G_ID_SIZE), G_ID_SIZE);
   end function addr_to_id;
 
 begin
@@ -143,7 +144,7 @@ begin
           wr_ptr_stim <= wr_ptr_stim + 1;
           if G_DEBUG then
             report "axil_sim: STIMULI: Write: " & to_hstring(wr_ptr_stim) & " (" & to_hstring(addr_to_id(wr_ptr_stim)) &
-              ") <- " & to_hstring(addr_to_data(wr_ptr_stim));
+                   ") <- " & to_hstring(addr_to_data(wr_ptr_stim));
           end if;
         end if;
       end if;

@@ -1,0 +1,76 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Jan  3 18:23:44 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/formal/axis_arbiter_pair_bmc/engine_0/trace.vcd"
+[dumpfile_mtime] "Sat Jan  3 18:22:19 2026"
+[dumpfile_size] 5305
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/formal/axis_arbiter_pair.gtkw"
+[timestart] 0
+[size] 1277 967
+[pos] -1 -1
+*-4.214844 45 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] axis_arbiter_pair.
+[sst_width] 239
+[signals_width] 225
+[sst_expanded] 1
+[sst_vpaned_height] 287
+@800200
+-axis_arbiter_pair
+@28
+axis_arbiter_pair.clk_i
+axis_arbiter_pair.rst_i
+[color] 6
+axis_arbiter_pair.s0_a_ready_o
+[color] 2
+axis_arbiter_pair.s0_a_valid_i
+axis_arbiter_pair.s0_a_data_i[1:0]
+[color] 6
+axis_arbiter_pair.s0_b_ready_o
+[color] 2
+axis_arbiter_pair.s0_b_valid_i
+axis_arbiter_pair.s0_b_data_i[2:0]
+[color] 6
+axis_arbiter_pair.s1_a_ready_o
+[color] 2
+axis_arbiter_pair.s1_a_valid_i
+axis_arbiter_pair.s1_a_data_i[1:0]
+[color] 6
+axis_arbiter_pair.s1_b_ready_o
+[color] 2
+axis_arbiter_pair.s1_b_valid_i
+axis_arbiter_pair.s1_b_data_i[2:0]
+[color] 6
+axis_arbiter_pair.m_a_ready_i
+[color] 2
+axis_arbiter_pair.m_a_valid_o
+axis_arbiter_pair.m_a_data_o[1:0]
+[color] 6
+axis_arbiter_pair.m_b_ready_i
+[color] 2
+axis_arbiter_pair.m_b_valid_o
+axis_arbiter_pair.m_b_data_o[2:0]
+axis_arbiter_pair.state
+axis_arbiter_pair.s0_state[1:0]
+axis_arbiter_pair.s1_state[1:0]
+@1000200
+-axis_arbiter_pair
+@28
+axis_arbiter_pair.axis_arbiter_pair_inst.f_sampled_in0_a
+axis_arbiter_pair.axis_arbiter_pair_inst.f_sampled_in0_b
+axis_arbiter_pair.axis_arbiter_pair_inst.f_sampled_in1_a
+axis_arbiter_pair.axis_arbiter_pair_inst.f_sampled_in1_b
+axis_arbiter_pair.axis_arbiter_pair_inst.f_sampled_out_a
+axis_arbiter_pair.axis_arbiter_pair_inst.f_sampled_out_b
+@24
+axis_arbiter_pair.axis_arbiter_pair_inst.f_cnt_in0_a[30:0]
+axis_arbiter_pair.axis_arbiter_pair_inst.f_cnt_in0_b[30:0]
+axis_arbiter_pair.axis_arbiter_pair_inst.f_cnt_in1_a[30:0]
+axis_arbiter_pair.axis_arbiter_pair_inst.f_cnt_in1_b[30:0]
+axis_arbiter_pair.axis_arbiter_pair_inst.f_cnt_out_a[30:0]
+axis_arbiter_pair.axis_arbiter_pair_inst.f_cnt_out_b[30:0]
+@28
+axis_arbiter_pair.axis_arbiter_pair_inst.f_value_a[1:0]
+axis_arbiter_pair.axis_arbiter_pair_inst.f_value_b[2:0]
+[pattern_trace] 1
+[pattern_trace] 0
