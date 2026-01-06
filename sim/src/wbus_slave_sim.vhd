@@ -12,8 +12,10 @@ library ieee;
 
 entity wbus_slave_sim is
   generic (
-    G_DEBUG     : boolean := false;
-    G_TIMEOUT   : boolean := true;
+    G_SEED      : std_logic_vector(63 downto 0) := X"C007BABEDEADBEEF";
+    G_DEBUG     : boolean                       := false;
+    G_TIMEOUT   : boolean                       := true;
+    G_LATENCY   : natural;
     G_ADDR_SIZE : natural;
     G_DATA_SIZE : natural
   );
@@ -33,16 +35,19 @@ end entity wbus_slave_sim;
 
 architecture simulation of wbus_slave_sim is
 
-  type     ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal   ram : ram_type(0 to 2 ** G_ADDR_SIZE - 1);
+  type    ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal  ram : ram_type(0 to 2 ** G_ADDR_SIZE - 1);
 
-  constant C_RANDOM_SIZE : natural := 16;
-  signal   random_s      : std_logic_vector(63 downto 0);
+  signal  random_s : std_logic_vector(63 downto 0);
+  subtype R_STALL   is natural range 16 downto 15;
+  subtype R_LATENCY is natural range 10 downto 0;
 
-  constant C_MAX_LATENCY : natural := 4;
-  signal   s_wbus_ack    : std_logic_vector(C_MAX_LATENCY - 1 downto 0);
+  signal  do_latency : natural range 0 to G_LATENCY;
+  signal  do_stall   : std_logic;
 
-  signal   req_active : std_logic  := '0';
+  signal  s_wbus_ack : std_logic_vector(G_LATENCY downto 0);
+
+  signal  req_active : std_logic := '0';
 
 begin
 
@@ -52,7 +57,7 @@ begin
 
   random_inst : entity work.random
     generic map (
-      G_SEED => X"C007BABEDEADBEEF"
+      G_SEED => G_SEED
     )
     port map (
       clk_i    => clk_i,
@@ -61,9 +66,12 @@ begin
       output_o => random_s
     ); -- random_inst : entity work.random
 
+  do_stall       <= and(random_s(R_STALL));
+  do_latency     <= to_integer(random_s(R_LATENCY)) mod (G_LATENCY + 1);
+
 
   -- Introduce extra stall
-  s_wbus_stall_o <= req_active or random_s(C_RANDOM_SIZE);
+  s_wbus_stall_o <= req_active or do_stall;
 
 
   --------------------------------
@@ -71,25 +79,22 @@ begin
   --------------------------------
 
   ram_proc : process (clk_i)
-    variable ack_idx_v : natural range C_MAX_LATENCY - 1 downto 0;
   begin
     if rising_edge(clk_i) then
       s_wbus_ack <= s_wbus_ack(s_wbus_ack'left-1 downto 0) & '0';
       if s_wbus_cyc_i = '1' and s_wbus_stall_o = '0' and s_wbus_stb_i = '1' and s_wbus_we_i = '1' then
         ram(to_integer(s_wbus_addr_i)) <= s_wbus_wrdat_i;
-        ack_idx_v                      := to_integer(random_s(C_RANDOM_SIZE - 1 downto 0)) mod C_MAX_LATENCY;
         s_wbus_ack                     <= (others => '0');
-        s_wbus_ack(ack_idx_v)          <= '1';
+        s_wbus_ack(do_latency)         <= '1';
         if G_DEBUG then
           report "WBUS SLAVE : Write " & to_hstring(s_wbus_wrdat_i) &
                  "   to address " & to_hstring(s_wbus_addr_i);
         end if;
       end if;
       if s_wbus_cyc_i = '1' and s_wbus_stall_o = '0' and s_wbus_stb_i = '1' and s_wbus_we_i = '0' then
-        s_wbus_rddat_o        <= ram(to_integer(s_wbus_addr_i));
-        ack_idx_v             := to_integer(random_s(C_RANDOM_SIZE - 1 downto 0)) mod C_MAX_LATENCY;
-        s_wbus_ack            <= (others => '0');
-        s_wbus_ack(ack_idx_v) <= '1';
+        s_wbus_rddat_o         <= ram(to_integer(s_wbus_addr_i));
+        s_wbus_ack             <= (others => '0');
+        s_wbus_ack(do_latency) <= '1';
         if G_DEBUG then
           report "WBUS SLAVE : Read  " & to_hstring(ram(to_integer(s_wbus_addr_i))) &
                  " from address " & to_hstring(s_wbus_addr_i);

@@ -7,7 +7,6 @@ library ieee;
 entity axil_to_wbus is
   generic (
     G_TIMEOUT   : natural := 1000;
-    G_ID_SIZE   : natural;
     G_ADDR_SIZE : natural;
     G_DATA_SIZE : natural
   );
@@ -19,7 +18,6 @@ entity axil_to_wbus is
     s_axil_awready_o : out   std_logic;
     s_axil_awvalid_i : in    std_logic;
     s_axil_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_axil_awid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     --
     s_axil_wready_o  : out   std_logic;
     s_axil_wvalid_i  : in    std_logic;
@@ -29,19 +27,15 @@ entity axil_to_wbus is
     s_axil_bready_i  : in    std_logic;
     s_axil_bvalid_o  : out   std_logic;
     s_axil_bresp_o   : out   std_logic_vector(1 downto 0);
-    s_axil_bid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
     --
     s_axil_arready_o : out   std_logic;
     s_axil_arvalid_i : in    std_logic;
     s_axil_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_axil_arid_i    : in    std_logic_vector(G_ID_SIZE - 1 downto 0);
     --
     s_axil_rready_i  : in    std_logic;
     s_axil_rvalid_o  : out   std_logic;
     s_axil_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     s_axil_rresp_o   : out   std_logic_vector(1 downto 0);
-    s_axil_rid_o     : out   std_logic_vector(G_ID_SIZE - 1 downto 0);
-    s_axil_rlast_o   : out   std_logic;
 
     -- Wishbone Bus interface (master)
     m_wbus_cyc_o     : out   std_logic;
@@ -58,44 +52,32 @@ end entity axil_to_wbus;
 architecture synthesis of axil_to_wbus is
 
   type     state_type is (IDLE_ST, WRITING_ST, READING_ST);
-  signal   state : state_type                                        := IDLE_ST;
+  signal   state : state_type                           := IDLE_ST;
 
   signal   time_cnt : natural range 0 to G_TIMEOUT;
 
-  pure function get_read_error return std_logic_vector is
-    variable res_v : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  begin
-    --
-    for i in G_DATA_SIZE / 8 - 1 downto 0 loop
-      res_v(8 * i + 7 downto 8 * i) := std_logic_vector(to_unsigned(16#DA# + i, 8));
-    end loop;
-
-    return res_v;
-  end function get_read_error;
-
-  constant C_READ_ERROR : std_logic_vector(G_DATA_SIZE - 1 downto 0) := get_read_error;
+  constant C_RESP_OKAY   : std_logic_vector(1 downto 0) := "00";
+  constant C_RESP_SLVERR : std_logic_vector(1 downto 0) := "10";
+  constant C_RESP_DECERR : std_logic_vector(1 downto 0) := "11";
 
 begin
 
-  s_axil_rlast_o   <= '1';
-
   -- AW and W streams wait for each other. Data only propagated when both streams are
   -- available.
-  s_axil_awready_o <= ((not m_wbus_stb_o) or (not m_wbus_stall_i)) and (s_axil_wvalid_i) and
+  s_axil_awready_o <= ((not m_wbus_stb_o) or (not m_wbus_stall_i)) and
+                      (s_axil_wvalid_i) and
                       (s_axil_bready_i or not s_axil_bvalid_o) and
-                      (s_axil_rready_i or not s_axil_rvalid_o) and
                       not (s_axil_arvalid_i)
                       when state = IDLE_ST else
                       '0';
-  s_axil_wready_o  <= ((not m_wbus_stb_o) or (not m_wbus_stall_i)) and (s_axil_awvalid_i) and
+  s_axil_wready_o  <= ((not m_wbus_stb_o) or (not m_wbus_stall_i)) and
+                      (s_axil_awvalid_i) and
                       (s_axil_bready_i or not s_axil_bvalid_o) and
-                      (s_axil_rready_i or not s_axil_rvalid_o) and
                       not (s_axil_arvalid_i)
                       when state = IDLE_ST else
                       '0';
 
   s_axil_arready_o <= ((not m_wbus_stb_o) or (not m_wbus_stall_i)) and
-                      (s_axil_bready_i or not s_axil_bvalid_o) and
                       (s_axil_rready_i or not s_axil_rvalid_o)
                       when state = IDLE_ST else
                       '0';
@@ -103,8 +85,9 @@ begin
   fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      s_axil_bresp_o <= "00";
-      s_axil_rresp_o <= "00";
+      s_axil_bresp_o <= C_RESP_OKAY;
+      s_axil_rresp_o <= C_RESP_OKAY;
+
       if m_wbus_stall_i = '0' then
         m_wbus_stb_o <= '0';
       end if;
@@ -130,7 +113,6 @@ begin
             m_wbus_cyc_o   <= '1';
             m_wbus_stb_o   <= '1';
             m_wbus_we_o    <= '1';
-            s_axil_bid_o   <= s_axil_awid_i;
             m_wbus_addr_o  <= s_axil_awaddr_i(G_ADDR_SIZE - 1 downto 0);
             m_wbus_wrdat_o <= s_axil_wdata_i;
             state          <= WRITING_ST;
@@ -140,7 +122,6 @@ begin
             m_wbus_cyc_o  <= '1';
             m_wbus_stb_o  <= '1';
             m_wbus_we_o   <= '0';
-            s_axil_rid_o  <= s_axil_arid_i;
             m_wbus_addr_o <= s_axil_araddr_i(G_ADDR_SIZE - 1 downto 0);
             state         <= READING_ST;
           end if;
@@ -149,7 +130,7 @@ begin
           time_cnt <= time_cnt + 1;
           if time_cnt = G_TIMEOUT - 1 then
             -- Send back B response
-            s_axil_bresp_o  <= "10";
+            s_axil_bresp_o  <= C_RESP_SLVERR;
             m_wbus_cyc_o    <= '0';
             m_wbus_stb_o    <= '0';
             s_axil_bvalid_o <= '1';
@@ -167,10 +148,10 @@ begin
           time_cnt <= time_cnt + 1;
           if time_cnt = G_TIMEOUT - 1 then
             -- Send back R response
-            s_axil_rresp_o  <= "10";
+            s_axil_rresp_o  <= C_RESP_SLVERR;
             m_wbus_cyc_o    <= '0';
             m_wbus_stb_o    <= '0';
-            s_axil_rdata_o  <= C_READ_ERROR;
+            s_axil_rdata_o  <= (others => '1');
             s_axil_rvalid_o <= '1';
             state           <= IDLE_ST;
           end if;

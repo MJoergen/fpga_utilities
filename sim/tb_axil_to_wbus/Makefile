@@ -19,7 +19,7 @@ SRC += $(SIM_SRC_DIR)/axil_pause.vhd
 SRC += $(SIM_SRC_DIR)/axis_pause.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
-SRC += $(SIM_SRC_DIR)/wbus_master_sim.vhd
+SRC += $(SIM_SRC_DIR)/axil_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
 
 # Top level entity
@@ -30,8 +30,9 @@ STOP_TIME = 100us
 
 # Test bench configuration
 GENERIC += -gG_DEBUG=false
-GENERIC += -gG_PAUSE_SIZE=3
-GENERIC += -gG_ID_SIZE=4
+GENERIC += -gG_LATENCY=2
+GENERIC += -gG_RANDOM=true
+GENERIC += -gG_FAST=true
 GENERIC += -gG_ADDR_SIZE=8
 GENERIC += -gG_DATA_SIZE=16
 

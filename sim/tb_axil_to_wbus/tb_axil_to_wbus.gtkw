@@ -1,82 +1,295 @@
 [*]
-[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Sat Nov 22 17:37:49 2025
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Mon Jan  5 13:27:34 2026
 [*]
-[dumpfile] "/home/mike/git/MJoergen/Wishbone/sim/tb_axi_wbus/tb_axi_wbus.ghw"
-[dumpfile_mtime] "Sat Nov 22 17:34:47 2025"
-[dumpfile_size] 29322965
-[savefile] "/home/mike/git/MJoergen/Wishbone/sim/tb_axi_wbus/tb_axi_wbus.gtkw"
-[timestart] 76200000
-[size] 1704 807
+[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_axil_to_wbus/tb_axil_to_wbus.ghw"
+[dumpfile_mtime] "Mon Jan  5 13:27:00 2026"
+[dumpfile_size] 274761
+[savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_axil_to_wbus/tb_axil_to_wbus.gtkw"
+[timestart] 80400000
+[size] 1704 981
 [pos] -1 -1
-*-26.068834 100000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-25.624863 227000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
-[treeopen] top.tb_axi_wbus.
-[treeopen] top.tb_axi_wbus.axi_wbus_inst.
+[treeopen] top.tb_axil_to_wbus.
+[treeopen] top.tb_axil_to_wbus.axil_master_multi_sim_inst.
 [sst_width] 239
 [signals_width] 282
 [sst_expanded] 1
-[sst_vpaned_height] 231
-@800200
--axi_wbus
+[sst_vpaned_height] 330
+@c00200
+-axil_to_wbus
 @28
-top.tb_axi_wbus.axi_wbus_inst.clk_i
-top.tb_axi_wbus.axi_wbus_inst.rst_i
+top.tb_axil_to_wbus.axil_to_wbus_inst.clk_i
+top.tb_axil_to_wbus.axil_to_wbus_inst.rst_i
 [color] 6
-top.tb_axi_wbus.axi_wbus_inst.s_axil_awready_o
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awready_o
 [color] 2
-top.tb_axi_wbus.axi_wbus_inst.s_axil_awvalid_i
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awvalid_i
 @22
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[8:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_awaddr_i[0]
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_awid_i[0]
-@28
-[color] 6
-top.tb_axi_wbus.axi_wbus_inst.s_axil_wready_o
-[color] 2
-top.tb_axi_wbus.axi_wbus_inst.s_axil_wvalid_i
-@22
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[15:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[15] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[14] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[13] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[12] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[11] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[10] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[9] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_wdata_i[0]
-@28
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_wstrb_i[1:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_wstrb_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_wstrb_i[0]
-[color] 6
-top.tb_axi_wbus.axi_wbus_inst.s_axil_bready_i
-[color] 2
-top.tb_axi_wbus.axi_wbus_inst.s_axil_bvalid_o
-@22
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_bid_o[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[8:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[8] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[7] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[6] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[5] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awaddr_i[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awid_i[4:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awid_i[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awid_i[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awid_i[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awid_i[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_awid_i[0]
 @28
 [color] 6
-top.tb_axi_wbus.axi_wbus_inst.s_axil_arready_o
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wready_o
 [color] 2
-top.tb_axi_wbus.axi_wbus_inst.s_axil_arvalid_i
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wvalid_i
 @22
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[8:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_araddr_i[0]
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_arid_i[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[15:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[15] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[14] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[13] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[12] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[11] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[10] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[9] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[8] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[7] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[6] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[5] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wdata_i[0]
+@28
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wstrb_i[1:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wstrb_i[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_wstrb_i[0]
+[color] 6
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bready_i
+[color] 2
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bvalid_o
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bresp_o[1:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bresp_o[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bresp_o[0]
+@22
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bid_o[4:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bid_o[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bid_o[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bid_o[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bid_o[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_bid_o[0]
 @28
 [color] 6
-top.tb_axi_wbus.axi_wbus_inst.s_axil_rready_i
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arready_o
 [color] 2
-top.tb_axi_wbus.axi_wbus_inst.s_axil_rvalid_o
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arvalid_i
 @22
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[15:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[15] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[14] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[13] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[12] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[11] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[10] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[9] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[8] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_rdata_o[0]
-#{top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[7:0]} top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[7] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[6] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[5] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[4] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[3] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[2] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[1] top.tb_axi_wbus.axi_wbus_inst.s_axil_rid_o[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[8:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[8] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[7] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[6] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[5] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_araddr_i[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arid_i[4:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arid_i[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arid_i[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arid_i[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arid_i[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_arid_i[0]
 @28
-top.tb_axi_wbus.axi_wbus_inst.m_wbus_cyc_o
-top.tb_axi_wbus.axi_wbus_inst.m_wbus_stall_i
-top.tb_axi_wbus.axi_wbus_inst.m_wbus_stb_o
+[color] 6
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rready_i
+[color] 2
+top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rvalid_o
 @22
-#{top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[8:0]} top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[8] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[7] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[6] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[5] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[4] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[3] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[2] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[1] top.tb_axi_wbus.axi_wbus_inst.m_wbus_addr_o[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[15:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[15] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[14] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[13] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[12] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[11] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[10] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[9] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[8] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[7] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[6] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[5] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rdata_o[0]
 @28
-top.tb_axi_wbus.axi_wbus_inst.m_wbus_we_o
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rresp_o[1:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rresp_o[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rresp_o[0]
 @22
-#{top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[15:0]} top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[15] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[14] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[13] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[12] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[11] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[10] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[9] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[8] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[7] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[6] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[5] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[4] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[3] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[2] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[1] top.tb_axi_wbus.axi_wbus_inst.m_wbus_wrdat_o[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rid_o[4:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rid_o[4] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rid_o[3] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rid_o[2] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rid_o[1] top.tb_axil_to_wbus.axil_to_wbus_inst.s_axil_rid_o[0]
 @28
-top.tb_axi_wbus.axi_wbus_inst.m_wbus_ack_i
+top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_cyc_o
+top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_stall_i
+top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_stb_o
 @22
-#{top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[15:0]} top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[15] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[14] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[13] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[12] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[11] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[10] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[9] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[8] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[7] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[6] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[5] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[4] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[3] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[2] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[1] top.tb_axi_wbus.axi_wbus_inst.m_wbus_rddat_i[0]
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[8:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[8] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[7] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[6] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[5] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[4] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[3] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[2] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[1] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_addr_o[0]
+@28
+top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_we_o
+@22
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[15:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[15] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[14] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[13] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[12] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[11] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[10] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[9] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[8] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[7] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[6] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[5] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[4] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[3] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[2] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[1] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_wrdat_o[0]
+@28
+top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_ack_i
+@22
+#{top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[15:0]} top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[15] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[14] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[13] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[12] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[11] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[10] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[9] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[8] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[7] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[6] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[5] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[4] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[3] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[2] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[1] top.tb_axil_to_wbus.axil_to_wbus_inst.m_wbus_rddat_i[0]
 @420
-top.tb_axi_wbus.axi_wbus_inst.state
+top.tb_axil_to_wbus.axil_to_wbus_inst.state
+top.tb_axil_to_wbus.axil_to_wbus_inst.time_cnt
+@1401200
+-axil_to_wbus
+@c00200
+-axil_master_sim_0
+@28
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.clk_i
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rst_i
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awready_i
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awvalid_o
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awaddr_o[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awid_o[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awid_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awid_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awid_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_awid_o[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wready_i
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wvalid_o
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wdata_o[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wstrb_o[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wstrb_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_wstrb_o[0]
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bready_o
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bvalid_i
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bresp_i[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bresp_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bresp_i[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bid_i[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bid_i[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bid_i[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bid_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_bid_i[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_arready_i
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_arvalid_o
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_araddr_o[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_arid_o[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_arid_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_arid_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_arid_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_arid_o[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rready_o
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rvalid_i
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rdata_i[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rresp_i[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rresp_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rresp_i[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rid_i[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rid_i[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rid_i[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rid_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.m_rid_i[0]
+@420
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.write_req_cnt
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.read_req_cnt
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_stim[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_stim[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.wr_ptr_resp[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_0_inst.rd_ptr_resp[0]
+@1401200
+-axil_master_sim_0
+@800200
+-axil_master_sim_1
+@28
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.clk_i
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rst_i
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awready_i
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awvalid_o
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awaddr_o[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awid_o[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awid_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awid_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awid_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_awid_o[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wready_i
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wvalid_o
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wdata_o[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wstrb_o[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wstrb_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_wstrb_o[0]
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bready_o
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bvalid_i
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bresp_i[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bresp_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bresp_i[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bid_i[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bid_i[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bid_i[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bid_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_bid_i[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_arready_i
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_arvalid_o
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_araddr_o[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_arid_o[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_arid_o[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_arid_o[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_arid_o[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_arid_o[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rready_o
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rvalid_i
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rdata_i[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rresp_i[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rresp_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rresp_i[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rid_i[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rid_i[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rid_i[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rid_i[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.m_rid_i[0]
+@420
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.write_req_cnt
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.read_req_cnt
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_stim[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_stim[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.wr_ptr_resp[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.axil_master_sim_1_inst.rd_ptr_resp[0]
 @1000200
--axi_wbus
+-axil_master_sim_1
+@c00200
+-p0
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awaddr[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_awid[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wdata[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wstrb[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wstrb[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_wstrb[0]
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bvalid
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bresp[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bresp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bresp[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_bid[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_arready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_arvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_araddr[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_arid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_arid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_arid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_arid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_arid[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rdata[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rresp[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rresp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rresp[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p0_rid[0]
+@1401200
+-p0
+@c00200
+-p1
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awaddr[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_awid[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wdata[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wstrb[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wstrb[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_wstrb[0]
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bvalid
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bresp[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bresp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bresp[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_bid[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_arready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_arvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[7:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_araddr[0]
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_arid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_arid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_arid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_arid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_arid[0]
+@28
+[color] 6
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rready
+[color] 2
+top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rvalid
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[15:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[15] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[14] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[13] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[12] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[11] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[10] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[9] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[8] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[7] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[6] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[5] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[4] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rdata[0]
+@28
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rresp[1:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rresp[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rresp[0]
+@22
+#{top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rid[3:0]} top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rid[3] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rid[2] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rid[1] top.tb_axil_to_wbus.axil_master_multi_sim_inst.p1_rid[0]
+@1401200
+-p1
 [pattern_trace] 1
 [pattern_trace] 0
