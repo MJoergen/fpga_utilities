@@ -53,6 +53,24 @@ Note that this interface is bi-directional.
 
 This is used extensively by AMD IP blocks.
 
+* "AWREADY"
+* "AWVALID"
+* "AWADDR"
+* "WREADY"
+* "WVALID"
+* "WDATA"
+* "WSTRB"
+* "BREADY"
+* "BVALID"
+* "BRESP"
+* "ARREADY"
+* "ARVALID"
+* "ARADDR"
+* "RREADY"
+* "RVALID"
+* "RDATA"
+* "RRESP"
+
 ### Wishbone
 
 * "CYC"
