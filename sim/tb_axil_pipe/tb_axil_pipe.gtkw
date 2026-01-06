@@ -1,0 +1,108 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Tue Jan  6 20:23:50 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axil_pipe/tb_axil_pipe.ghw"
+[dumpfile_mtime] "Tue Jan  6 20:20:47 2026"
+[dumpfile_size] 1504432
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axil_pipe/tb_axil_pipe.gtkw"
+[timestart] 18514000000
+[size] 1189 789
+[pos] -1 -1
+*-28.456617 19140000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_axil_pipe.
+[treeopen] top.tb_axil_pipe.axil_pipe_inst.
+[sst_width] 239
+[signals_width] 249
+[sst_expanded] 1
+[sst_vpaned_height] 447
+@800200
+-axil_pipe
+@28
+top.tb_axil_pipe.axil_pipe_inst.clk_i
+top.tb_axil_pipe.axil_pipe_inst.rst_i
+@800200
+-s
+@28
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.s_awready_o
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.s_awvalid_i
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[9:0]} top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[9] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[8] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[7] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[6] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[5] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[4] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[3] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[2] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[1] top.tb_axil_pipe.axil_pipe_inst.s_awaddr_i[0]
+@28
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.s_wready_o
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.s_wvalid_i
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[15:0]} top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[15] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[14] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[13] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[12] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[11] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[10] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[9] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[8] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[7] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[6] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[5] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[4] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[3] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[2] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[1] top.tb_axil_pipe.axil_pipe_inst.s_wdata_i[0]
+@28
+#{top.tb_axil_pipe.axil_pipe_inst.s_wstrb_i[1:0]} top.tb_axil_pipe.axil_pipe_inst.s_wstrb_i[1] top.tb_axil_pipe.axil_pipe_inst.s_wstrb_i[0]
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.s_bready_i
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.s_bvalid_o
+#{top.tb_axil_pipe.axil_pipe_inst.s_bresp_o[1:0]} top.tb_axil_pipe.axil_pipe_inst.s_bresp_o[1] top.tb_axil_pipe.axil_pipe_inst.s_bresp_o[0]
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.s_arready_o
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.s_arvalid_i
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[9:0]} top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[9] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[8] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[7] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[6] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[5] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[4] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[3] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[2] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[1] top.tb_axil_pipe.axil_pipe_inst.s_araddr_i[0]
+@28
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.s_rready_i
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.s_rvalid_o
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[15:0]} top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[15] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[14] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[13] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[12] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[11] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[10] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[9] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[8] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[7] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[6] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[5] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[4] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[3] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[2] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[1] top.tb_axil_pipe.axil_pipe_inst.s_rdata_o[0]
+@28
+#{top.tb_axil_pipe.axil_pipe_inst.s_rresp_o[1:0]} top.tb_axil_pipe.axil_pipe_inst.s_rresp_o[1] top.tb_axil_pipe.axil_pipe_inst.s_rresp_o[0]
+@1000200
+-s
+@c00200
+-m
+@28
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.m_awready_i
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.m_awvalid_o
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[9:0]} top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[9] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[8] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[7] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[6] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[5] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[4] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[3] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[2] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[1] top.tb_axil_pipe.axil_pipe_inst.m_awaddr_o[0]
+@28
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.m_wready_i
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.m_wvalid_o
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[15:0]} top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[15] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[14] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[13] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[12] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[11] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[10] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[9] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[8] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[7] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[6] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[5] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[4] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[3] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[2] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[1] top.tb_axil_pipe.axil_pipe_inst.m_wdata_o[0]
+@28
+#{top.tb_axil_pipe.axil_pipe_inst.m_wstrb_o[1:0]} top.tb_axil_pipe.axil_pipe_inst.m_wstrb_o[1] top.tb_axil_pipe.axil_pipe_inst.m_wstrb_o[0]
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.m_bready_o
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.m_bvalid_i
+#{top.tb_axil_pipe.axil_pipe_inst.m_bresp_i[1:0]} top.tb_axil_pipe.axil_pipe_inst.m_bresp_i[1] top.tb_axil_pipe.axil_pipe_inst.m_bresp_i[0]
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.m_arready_i
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.m_arvalid_o
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[9:0]} top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[9] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[8] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[7] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[6] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[5] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[4] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[3] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[2] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[1] top.tb_axil_pipe.axil_pipe_inst.m_araddr_o[0]
+@28
+[color] 6
+top.tb_axil_pipe.axil_pipe_inst.m_rready_o
+[color] 2
+top.tb_axil_pipe.axil_pipe_inst.m_rvalid_i
+@22
+#{top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[15:0]} top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[15] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[14] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[13] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[12] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[11] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[10] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[9] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[8] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[7] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[6] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[5] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[4] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[3] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[2] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[1] top.tb_axil_pipe.axil_pipe_inst.m_rdata_i[0]
+@28
+#{top.tb_axil_pipe.axil_pipe_inst.m_rresp_i[1:0]} top.tb_axil_pipe.axil_pipe_inst.m_rresp_i[1] top.tb_axil_pipe.axil_pipe_inst.m_rresp_i[0]
+@1401200
+-m
+@1000200
+-axil_pipe
+[pattern_trace] 1
+[pattern_trace] 0

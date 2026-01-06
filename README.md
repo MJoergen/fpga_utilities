@@ -76,6 +76,8 @@ Note that this interface is bi-directional.
 * [axis\_fifo\_sync.vhd](src/axis_fifo_sync.vhd): This is a simple synchronuous AXI streaming FIFO (i.e. input and output have same clock).
 * [axis\_arbiter.vhd](src/axis_arbiter.vhd): This arbitrates (merges) two AXI streaming interfaces into one.
 * [axis\_distributor.vhd](src/axis_distributor.vhd): This distribues a single AXI streaming interface into too.
+* [axis\_pipe.vhd](src/axis_pipe.vhd): A small 2-stage FIFO for AXI streaming.
+* [axis\_pipe\_lite.vhd](src/axis_pipe_lite.vhd): A small 1-stage FIFO for AXI streaming.
 
 ### AXI packet
 
@@ -86,6 +88,7 @@ Note that this interface is bi-directional.
 ### AXI Lite
 
 * [axil\_arbiter.vhd](src/axil_arbiter.vhd): The arbitrates between two AXI lite masters.
+* [axil\_pipe.vhd](src/axil_pipe.vhd): A small 2-stage FIFO for AXI Lite.
 
 ### Wishbone
 
