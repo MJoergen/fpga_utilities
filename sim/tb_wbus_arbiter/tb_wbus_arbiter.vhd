@@ -147,6 +147,7 @@ begin
   wbus_slave_sim_inst : entity work.wbus_slave_sim
     generic map (
       G_DEBUG     => G_DEBUG,
+      G_LATENCY   => 2,
       G_TIMEOUT   => false,
       G_ADDR_SIZE => G_ADDR_SIZE+1,
       G_DATA_SIZE => G_DATA_SIZE

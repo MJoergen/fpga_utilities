@@ -2,39 +2,31 @@
 #
 # Description: Makefile for simulating all the modules
 
-all:
-	make -C tb_axil_arbiter
-	make -C tb_axil_pipe
-	make -C tb_axil_sim
-	make -C tb_axil_to_wbus
-	make -C tb_axip_fifo_sync
-	make -C tb_axip_fixed_header
-	make -C tb_axip_insert_fixed_header
-	make -C tb_axip_remove_fixed_header
-	make -C tb_axis_arbiter
-	make -C tb_axis_fifo_sync
-	make -C tb_axis_pipe
-	make -C tb_axis_pipe_lite
-	make -C tb_axis_sim
-	make -C tb_wbus_arbiter
-	make -C tb_wbus_master
-	make -C tb_wbus_to_axil
+DUTS += tb_axil_arbiter
+DUTS += tb_axil_pipe
+DUTS += tb_axil_sim
+DUTS += tb_axil_to_wbus
+DUTS += tb_axip_fifo_sync
+DUTS += tb_axip_fixed_header
+DUTS += tb_axip_insert_fixed_header
+DUTS += tb_axip_remove_fixed_header
+DUTS += tb_axis_arbiter
+DUTS += tb_axis_fifo_sync
+DUTS += tb_axis_pipe
+DUTS += tb_axis_pipe_lite
+DUTS += tb_axis_sim
+DUTS += tb_wbus_arbiter
+DUTS += tb_wbus_master
+DUTS += tb_wbus_to_axil
+
+DUT_PASS   = $(patsubst %,%/PASS,$(DUTS))
+
+all: $(DUT_PASS)
+
+%/PASS: DUT=$(patsubst %/PASS,%,$@)
+%/PASS:
+	make -C $(DUT)
 
 clean:
-	make -C tb_axil_arbiter clean
-	make -C tb_axil_pipe clean
-	make -C tb_axil_sim clean
-	make -C tb_axil_to_wbus clean
-	make -C tb_axip_fifo_sync clean
-	make -C tb_axip_fixed_header clean
-	make -C tb_axip_insert_fixed_header clean
-	make -C tb_axip_remove_fixed_header clean
-	make -C tb_axis_arbiter clean
-	make -C tb_axis_fifo_sync clean
-	make -C tb_axis_pipe clean
-	make -C tb_axis_pipe_lite clean
-	make -C tb_axis_sim clean
-	make -C tb_wbus_arbiter clean
-	make -C tb_wbus_master clean
-	make -C tb_wbus_to_axil clean
+	for i in $(DUTS); do make -C $$i clean; done
 

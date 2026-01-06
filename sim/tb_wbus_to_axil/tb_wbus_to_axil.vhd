@@ -6,7 +6,6 @@ entity tb_wbus_to_axil is
   generic (
     G_DO_ABORT   : boolean;
     G_PAUSE_SIZE : natural;
-    G_ID_SIZE    : natural;
     G_ADDR_SIZE  : natural;
     G_DATA_SIZE  : natural
   );
@@ -39,7 +38,6 @@ architecture simulation of tb_wbus_to_axil is
   signal m_axil_awready : std_logic;
   signal m_axil_awvalid : std_logic;
   signal m_axil_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m_axil_awid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal m_axil_wready  : std_logic;
   signal m_axil_wvalid  : std_logic;
   signal m_axil_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
@@ -47,21 +45,17 @@ architecture simulation of tb_wbus_to_axil is
   signal m_axil_bready  : std_logic;
   signal m_axil_bvalid  : std_logic;
   signal m_axil_bresp   : std_logic_vector(1 downto 0);
-  signal m_axil_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal m_axil_arready : std_logic;
   signal m_axil_arvalid : std_logic;
   signal m_axil_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m_axil_arid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal m_axil_rready  : std_logic;
   signal m_axil_rvalid  : std_logic;
   signal m_axil_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal m_axil_rresp   : std_logic_vector(1 downto 0);
-  signal m_axil_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
 
   signal s_axil_awready : std_logic;
   signal s_axil_awvalid : std_logic;
   signal s_axil_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal s_axil_awid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal s_axil_wready  : std_logic;
   signal s_axil_wvalid  : std_logic;
   signal s_axil_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
@@ -69,16 +63,13 @@ architecture simulation of tb_wbus_to_axil is
   signal s_axil_bready  : std_logic;
   signal s_axil_bvalid  : std_logic;
   signal s_axil_bresp   : std_logic_vector(1 downto 0);
-  signal s_axil_bid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal s_axil_arready : std_logic;
   signal s_axil_arvalid : std_logic;
   signal s_axil_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal s_axil_arid    : std_logic_vector(G_ID_SIZE - 1 downto 0);
   signal s_axil_rready  : std_logic;
   signal s_axil_rvalid  : std_logic;
   signal s_axil_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal s_axil_rresp   : std_logic_vector(1 downto 0);
-  signal s_axil_rid     : std_logic_vector(G_ID_SIZE - 1 downto 0);
 
 begin
 
@@ -96,7 +87,6 @@ begin
 
   wbus_to_axil_inst : entity work.wbus_to_axil
     generic map (
-      G_ID_SIZE   => G_ID_SIZE,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )
@@ -114,7 +104,6 @@ begin
       m_axil_awready_i => m_axil_awready,
       m_axil_awvalid_o => m_axil_awvalid,
       m_axil_awaddr_o  => m_axil_awaddr,
-      m_axil_awid_o    => m_axil_awid,
       m_axil_wready_i  => m_axil_wready,
       m_axil_wvalid_o  => m_axil_wvalid,
       m_axil_wdata_o   => m_axil_wdata,
@@ -122,22 +111,18 @@ begin
       m_axil_bready_o  => m_axil_bready,
       m_axil_bvalid_i  => m_axil_bvalid,
       m_axil_bresp_i   => m_axil_bresp,
-      m_axil_bid_i     => m_axil_bid,
       m_axil_arready_i => m_axil_arready,
       m_axil_arvalid_o => m_axil_arvalid,
       m_axil_araddr_o  => m_axil_araddr,
-      m_axil_arid_o    => m_axil_arid,
       m_axil_rready_o  => m_axil_rready,
       m_axil_rvalid_i  => m_axil_rvalid,
       m_axil_rdata_i   => m_axil_rdata,
-      m_axil_rresp_i   => m_axil_rresp,
-      m_axil_rid_i     => m_axil_rid
+      m_axil_rresp_i   => m_axil_rresp
     ); -- wbus_to_axil_inst : entity work.wbus_to_axil
 
   axil_pause_inst : entity work.axil_pause
     generic map (
       G_SEED       => (others => '0'),
-      G_ID_SIZE    => G_ID_SIZE,
       G_ADDR_SIZE  => G_ADDR_SIZE,
       G_DATA_SIZE  => G_DATA_SIZE,
       G_PAUSE_SIZE => G_PAUSE_SIZE
@@ -148,7 +133,6 @@ begin
       s_awready_o => m_axil_awready,
       s_awvalid_i => m_axil_awvalid,
       s_awaddr_i  => m_axil_awaddr,
-      s_awid_i    => m_axil_awid,
       s_wready_o  => m_axil_wready,
       s_wvalid_i  => m_axil_wvalid,
       s_wdata_i   => m_axil_wdata,
@@ -156,20 +140,16 @@ begin
       s_bready_i  => m_axil_bready,
       s_bvalid_o  => m_axil_bvalid,
       s_bresp_o   => m_axil_bresp,
-      s_bid_o     => m_axil_bid,
       s_arready_o => m_axil_arready,
       s_arvalid_i => m_axil_arvalid,
       s_araddr_i  => m_axil_araddr,
-      s_arid_i    => m_axil_arid,
       s_rready_i  => m_axil_rready,
       s_rvalid_o  => m_axil_rvalid,
       s_rdata_o   => m_axil_rdata,
       s_rresp_o   => m_axil_rresp,
-      s_rid_o     => m_axil_rid,
       m_awready_i => s_axil_awready,
       m_awvalid_o => s_axil_awvalid,
       m_awaddr_o  => s_axil_awaddr,
-      m_awid_o    => s_axil_awid,
       m_wready_i  => s_axil_wready,
       m_wvalid_o  => s_axil_wvalid,
       m_wdata_o   => s_axil_wdata,
@@ -177,23 +157,19 @@ begin
       m_bready_o  => s_axil_bready,
       m_bvalid_i  => s_axil_bvalid,
       m_bresp_i   => s_axil_bresp,
-      m_bid_i     => s_axil_bid,
       m_arready_i => s_axil_arready,
       m_arvalid_o => s_axil_arvalid,
       m_araddr_o  => s_axil_araddr,
-      m_arid_o    => s_axil_arid,
       m_rready_o  => s_axil_rready,
       m_rvalid_i  => s_axil_rvalid,
       m_rdata_i   => s_axil_rdata,
-      m_rresp_i   => s_axil_rresp,
-      m_rid_i     => s_axil_rid
+      m_rresp_i   => s_axil_rresp
     ); -- axil_pause_inst : entity work.axil_pause
 
 
   axil_to_wbus_inst : entity work.axil_to_wbus
     generic map (
       G_TIMEOUT   => 1000,
-      G_ID_SIZE   => G_ID_SIZE,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )
@@ -203,22 +179,18 @@ begin
       s_axil_awready_o => s_axil_awready,
       s_axil_awvalid_i => s_axil_awvalid,
       s_axil_awaddr_i  => s_axil_awaddr,
-      s_axil_awid_i    => s_axil_awid,
       s_axil_wready_o  => s_axil_wready,
       s_axil_wvalid_i  => s_axil_wvalid,
       s_axil_wdata_i   => s_axil_wdata,
       s_axil_wstrb_i   => s_axil_wstrb,
       s_axil_bready_i  => s_axil_bready,
       s_axil_bvalid_o  => s_axil_bvalid,
-      s_axil_bid_o     => s_axil_bid,
       s_axil_arready_o => s_axil_arready,
       s_axil_arvalid_i => s_axil_arvalid,
       s_axil_araddr_i  => s_axil_araddr,
-      s_axil_arid_i    => s_axil_arid,
       s_axil_rready_i  => s_axil_rready,
       s_axil_rvalid_o  => s_axil_rvalid,
       s_axil_rdata_o   => s_axil_rdata,
-      s_axil_rid_o     => s_axil_rid,
       m_wbus_cyc_o     => s_wbus_cyc,
       m_wbus_stall_i   => s_wbus_stall,
       m_wbus_stb_o     => s_wbus_stb,
@@ -263,6 +235,7 @@ begin
   wbus_slave_sim_inst : entity work.wbus_slave_sim
     generic map (
       G_DEBUG     => false,
+      G_LATENCY   => 3,
       G_TIMEOUT   => false,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
