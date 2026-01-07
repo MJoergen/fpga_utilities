@@ -82,7 +82,7 @@ begin
           if s0_wbus_cyc_i = '0' and s1_wbus_cyc_i = '1' then
             state <= SLAVE_1_IDLE_ST;
           elsif s0_wbus_cyc_i = '1' and s0_wbus_stall_o = '0' and s0_wbus_stb_i = '1' and s0_wbus_ack_o = '0' then
-            f_slave0 : assert m_wbus_cyc_o = '0';
+            f_slave0 : assert m_wbus_cyc_o = '0' or rst_i = '1';
             m_wbus_addr_o  <= s0_wbus_addr_i;
             m_wbus_wrdat_o <= s0_wbus_wrdat_i;
             m_wbus_we_o    <= s0_wbus_we_i;
@@ -95,7 +95,7 @@ begin
           if s0_wbus_cyc_i = '1' and s1_wbus_cyc_i = '0' then
             state <= SLAVE_0_IDLE_ST;
           elsif s1_wbus_cyc_i = '1' and s1_wbus_stall_o = '0' and s1_wbus_stb_i = '1' and s1_wbus_ack_o = '0' then
-            f_slave1 : assert m_wbus_cyc_o = '0';
+            f_slave1 : assert m_wbus_cyc_o = '0' or rst_i = '1';
             m_wbus_addr_o  <= s1_wbus_addr_i;
             m_wbus_wrdat_o <= s1_wbus_wrdat_i;
             m_wbus_we_o    <= s1_wbus_we_i;
@@ -109,8 +109,8 @@ begin
             if m_wbus_we_o = '0' then
               s0_wbus_rddat_o <= m_wbus_rddat_i;
             end if;
-            s0_wbus_ack_o   <= '1';
-            state           <= SLAVE_1_IDLE_ST;
+            s0_wbus_ack_o <= '1';
+            state         <= SLAVE_1_IDLE_ST;
           end if;
           if s0_wbus_cyc_i = '0' then
             m_wbus_cyc_o  <= '0';
@@ -124,25 +124,25 @@ begin
             if m_wbus_we_o = '0' then
               s1_wbus_rddat_o <= m_wbus_rddat_i;
             end if;
-            s1_wbus_ack_o   <= '1';
+            s1_wbus_ack_o <= '1';
             state         <= SLAVE_0_IDLE_ST;
           end if;
           if s1_wbus_cyc_i = '0' then
             m_wbus_cyc_o  <= '0';
             m_wbus_stb_o  <= '0';
             s1_wbus_ack_o <= '0';
-            state           <= SLAVE_0_IDLE_ST;
+            state         <= SLAVE_0_IDLE_ST;
           end if;
 
       end case;
 
       if rst_i = '1' then
-        m_wbus_cyc_o <= '0';
-        m_wbus_stb_o <= '0';
-        m_wbus_we_o  <= '0';
+        m_wbus_cyc_o  <= '0';
+        m_wbus_stb_o  <= '0';
+        m_wbus_we_o   <= '0';
         s0_wbus_ack_o <= '0';
         s1_wbus_ack_o <= '0';
-        state        <= SLAVE_0_IDLE_ST;
+        state         <= SLAVE_0_IDLE_ST;
       end if;
     end if;
   end process fsm_proc;
