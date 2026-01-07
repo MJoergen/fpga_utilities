@@ -91,34 +91,34 @@ Note that this interface is bi-directional.
 
 ### AXI streaming
 
-* [axis\_fifo\_sync.vhd](src/axis_fifo_sync.vhd): This is a simple synchronuous AXI streaming FIFO (i.e. input and output have same clock).
-* [axis\_arbiter.vhd](src/axis_arbiter.vhd): This arbitrates (merges) two AXI streaming interfaces into one.
-* [axis\_distributor.vhd](src/axis_distributor.vhd): This distribues a single AXI streaming interface into too.
-* [axis\_pipe.vhd](src/axis_pipe.vhd): A small 2-stage FIFO for AXI streaming.
-* [axis\_pipe\_lite.vhd](src/axis_pipe_lite.vhd): A small 1-stage FIFO for AXI streaming.
+* [axis\_fifo\_sync.vhd](src/axis/axis_fifo_sync.vhd): This is a simple synchronuous AXI streaming FIFO (i.e. input and output have same clock).
+* [axis\_arbiter.vhd](src/axis/axis_arbiter.vhd): This arbitrates (merges) two AXI streaming interfaces into one.
+* [axis\_distributor.vhd](src/axis/axis_distributor.vhd): This distribues a single AXI streaming interface into too.
+* [axis\_pipe.vhd](src/axis/axis_pipe.vhd): A small 2-stage FIFO for AXI streaming.
+* [axis\_pipe\_lite.vhd](src/axis/axis_pipe_lite.vhd): A small 1-stage FIFO for AXI streaming.
 
 ### AXI packet
 
-* [axip\_fifo\_sync.vhd](src/axip_fifo_sync.vhd): This is a simple synchronuous AXI packet FIFO (i.e. input and output have same clock).
-* [axip\_insert\_fixed\_header.vhd](src/axip_insert_fixed_header.vhd): This inserts a fixed-size header in front of an AXI packet.
-* [axip\_remove\_fixed\_header.vhd](src/axip_remove_fixed_header.vhd): This removes a fixed-size header from the front of an AXI packet.
+* [axip\_fifo\_sync.vhd](src/axip/axip_fifo_sync.vhd): This is a simple synchronuous AXI packet FIFO (i.e. input and output have same clock).
+* [axip\_insert\_fixed\_header.vhd](src/axip/axip_insert_fixed_header.vhd): This inserts a fixed-size header in front of an AXI packet.
+* [axip\_remove\_fixed\_header.vhd](src/axip/axip_remove_fixed_header.vhd): This removes a fixed-size header from the front of an AXI packet.
 
 ### AXI Lite
 
-* [axil\_arbiter.vhd](src/axil_arbiter.vhd): The arbitrates between two AXI lite masters.
-* [axil\_pipe.vhd](src/axil_pipe.vhd): A small 2-stage FIFO for AXI Lite.
+* [axil\_arbiter.vhd](src/axil/axil_arbiter.vhd): The arbitrates between two AXI lite masters.
+* [axil\_pipe.vhd](src/axil/axil_pipe.vhd): A small 2-stage FIFO for AXI Lite.
 
 ### Wishbone
 
-* [wbus\_arbiter.vhd](src/wbus_arbiter.vhd): The arbitrates (merges) two Wishbone interfaces into one.
-* [wbus\_arbiter\_general.vhd](src/wbus_arbiter_general.vhd): The arbitrates (merges) several Wishbone interfaces into one.
+* [wbus\_arbiter.vhd](src/wbus/wbus_arbiter.vhd): The arbitrates (merges) two Wishbone interfaces into one.
+* [wbus\_arbiter\_general.vhd](src/wbus/wbus_arbiter_general.vhd): The arbitrates (merges) several Wishbone interfaces into one.
 
 ### Conversion between interfaces
 
-* [axip\_to\_axis.vhd](src/axip_to_axis.vhd): Convert from an AXI packet interface to an AXI streaming interface.
-* [axis\_to\_axip.vhd](src/axis_to_axip.vhd): Convert from an AXI streaming interface to an AXI packet interface.
-* [axil\_to\_wbus.vhd](src/axil_to_wbus.vhd): Convert from AXI lite to Wishbone.
-* [wbus\_to\_axil.vhd](src/wbus_to_axil.vhd): Convert from Wishbone to AXI lite.
+* [axip\_to\_axis.vhd](src/converters/axip_to_axis.vhd): Convert from an AXI packet interface to an AXI streaming interface.
+* [axis\_to\_axip.vhd](src/converters/axis_to_axip.vhd): Convert from an AXI streaming interface to an AXI packet interface.
+* [axil\_to\_wbus.vhd](src/converters/axil_to_wbus.vhd): Convert from AXI lite to Wishbone.
+* [wbus\_to\_axil.vhd](src/converters/wbus_to_axil.vhd): Convert from Wishbone to AXI lite.
 
 ### Simulation modules
 

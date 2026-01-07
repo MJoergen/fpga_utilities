@@ -3,7 +3,7 @@
 # Description: Makefile for simulating the axi_wbus.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/axis_pipe_lite.vhd
+SRC += $(SRC_DIR)/axis/axis_pipe_lite.vhd
 
 # List of test specific simulation files
 SRC += tb_axis_pipe_lite.vhd

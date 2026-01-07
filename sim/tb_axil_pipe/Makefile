@@ -2,8 +2,8 @@
 #
 # Description: Makefile for simulating the axil_sim.vhd file.
 
-SRC += $(SRC_DIR)/axil_pipe.vhd
-SRC += $(SRC_DIR)/axis_pipe.vhd
+SRC += $(SRC_DIR)/axil/axil_pipe.vhd
+SRC += $(SRC_DIR)/axis/axis_pipe.vhd
 
 # List of test specific simulation files
 SRC += tb_axil_pipe.vhd

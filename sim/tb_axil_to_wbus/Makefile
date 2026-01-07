@@ -3,12 +3,12 @@
 # Description: Makefile for simulating the axi_wbus.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/axil_arbiter.vhd
-SRC += $(SRC_DIR)/axis_arbiter.vhd
-SRC += $(SRC_DIR)/axis_arbiter_pair.vhd
-SRC += $(SRC_DIR)/axis_distributor.vhd
-SRC += $(SRC_DIR)/axil_to_wbus.vhd
-SRC += $(SRC_DIR)/wbus_to_axil.vhd
+SRC += $(SRC_DIR)/axil/axil_arbiter.vhd
+SRC += $(SRC_DIR)/axis/axis_arbiter.vhd
+SRC += $(SRC_DIR)/axis/axis_arbiter_pair.vhd
+SRC += $(SRC_DIR)/axis/axis_distributor.vhd
+SRC += $(SRC_DIR)/converters/axil_to_wbus.vhd
+SRC += $(SRC_DIR)/converters/wbus_to_axil.vhd
 
 # List of test specific simulation files
 SRC += tb_axil_to_wbus.vhd

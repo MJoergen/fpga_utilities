@@ -18,5 +18,5 @@ prep -top axis_fifo_sync
 
 [files]
 axis_fifo_sync.psl
-../src/axis_fifo_sync.vhd
+../src/axis/axis_fifo_sync.vhd
 

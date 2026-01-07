@@ -3,8 +3,8 @@
 # Description: Makefile for simulating the axi_wbus.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/axis_fifo_sync.vhd
-SRC += $(SRC_DIR)/axip_fifo_sync.vhd
+SRC += $(SRC_DIR)/axis/axis_fifo_sync.vhd
+SRC += $(SRC_DIR)/axip/axip_fifo_sync.vhd
 
 # List of test specific simulation files
 SRC += tb_axip_fifo_sync.vhd

@@ -18,5 +18,5 @@ prep -top axip_insert_fixed_header
 
 [files]
 axip_insert_fixed_header.psl
-../src/axip_insert_fixed_header.vhd
+../src/axip/axip_insert_fixed_header.vhd
 

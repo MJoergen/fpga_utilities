@@ -18,5 +18,5 @@ prep -top wbus_arbiter
 
 [files]
 wbus_arbiter.psl
-../src/wbus_arbiter.vhd
+../src/wbus/wbus_arbiter.vhd
 

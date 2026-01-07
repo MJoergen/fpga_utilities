@@ -18,5 +18,5 @@ prep -top axis_arbiter_pair
 
 [files]
 axis_arbiter_pair.psl
-../src/axis_arbiter_pair.vhd
+../src/axis/axis_arbiter_pair.vhd
 

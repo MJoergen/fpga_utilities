@@ -3,8 +3,8 @@
 # Description: Makefile for simulating the wbus_arbiter.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/axis_arbiter.vhd
-SRC += $(SRC_DIR)/axis_distributor.vhd
+SRC += $(SRC_DIR)/axis/axis_arbiter.vhd
+SRC += $(SRC_DIR)/axis/axis_distributor.vhd
 
 # List of test specific simulation files
 SRC += tb_axis_arbiter.vhd
