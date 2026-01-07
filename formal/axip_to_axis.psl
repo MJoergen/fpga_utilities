@@ -1,0 +1,100 @@
+vunit axip_to_axis_inst(axip_to_axis(synthesis))
+{
+   signal f_input_frame_len : natural;
+   signal f_output_frame_len : natural;
+   signal f_input_frame_len_last : natural;
+   signal f_output_frame_len_last : natural;
+
+   signal f_sampled_input_frame_len : boolean;
+   signal f_sampled_output_frame_len : boolean;
+   signal f_value_frame_len : natural;
+   attribute anyconst : boolean;
+   attribute anyconst of f_value_frame_len : signal is true;
+
+-- set all declarations to run on clk
+   default clock is rising_edge(clk_i);
+
+-- Calculate frame lengths (input and output)
+   frame_len_proc : process (clk_i)
+   begin
+      if rising_edge(clk_i) then
+         if s_valid_i and s_ready_o then
+            f_input_frame_len <= f_input_frame_len + G_DATA_BYTES;
+            if s_last_i then
+               if s_bytes_i > 0 then
+                  f_input_frame_len_last <= f_input_frame_len + s_bytes_i;
+               else
+                  f_input_frame_len_last <= f_input_frame_len + G_DATA_BYTES;
+               end if;
+               f_input_frame_len <= 0;
+            end if;
+         end if;
+         if m_valid_o and m_ready_i then
+            f_output_frame_len <= f_output_frame_len + 1;
+            if m_last_o then
+               f_output_frame_len_last <= f_output_frame_len + 1;
+               f_output_frame_len <= 0;
+            end if;
+         end if;
+         if rst_i = '1' then
+            f_input_frame_len <= 0;
+            f_output_frame_len <= 0;
+            f_input_frame_len_last <= 0;
+            f_output_frame_len_last <= 0;
+         end if;
+      end if;
+   end process frame_len_proc;
+
+-- Detect expected frame length (input and output)
+   sampled_proc : process (clk_i)
+   begin
+      if rising_edge(clk_i) then
+         if f_input_frame_len_last = f_value_frame_len then
+            f_sampled_input_frame_len <= true;
+         end if;
+         if f_output_frame_len_last = f_value_frame_len then
+            f_sampled_output_frame_len <= true;
+         end if;
+         if rst_i = '1' then
+            f_sampled_input_frame_len <= false;
+            f_sampled_output_frame_len <= false;
+         end if;
+      end if;
+   end process sampled_proc;
+
+------------------------------------------------
+-- PROPERTIES OF THE MASTER INTERFACE
+------------------------------------------------
+
+   f_master_reset : assert always {rst_i} |=> {not m_valid_o};
+
+   f_master_stable : assert always {m_valid_o and not m_ready_i and not rst_i} |=> {stable(m_valid_o) and stable(m_last_o) and stable(m_data_o)};
+
+-- The claim is that if a packet with some given length has been output, then a packet with the same length must have
+-- been input first.
+   f_verify_length : assert always {f_sampled_output_frame_len and rst_i = '0'} |-> {f_sampled_input_frame_len};
+
+
+-----------------------------
+-- ASSUMPTIONS ABOUT INPUTS
+-----------------------------
+
+-- Require reset at startup.
+   f_reset : assume {rst_i};
+
+-- The expected frame length must be positive.
+   f_value_frame_len_positive : assume f_value_frame_len > 0;
+
+
+--------------------------------------------
+-- COVER STATEMENTS TO VERIFY REACHABILITY
+--------------------------------------------
+
+-- A frame is dropped
+   f_dropped : cover {f_output_frame_len_last > 0 and f_input_frame_len_last = 0};
+
+-- Back pressure asserted and released
+   f_backpressure : cover {not s_ready_o and not rst_i; s_ready_o};
+
+} -- vunit axip_to_axis_inst(axip_to_axis(synthesis))
+

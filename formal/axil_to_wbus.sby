@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 3
+bmc: mode bmc
+bmc: depth 10
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_TIMEOUT=100 -gG_ADDR_SIZE=4 -gG_DATA_SIZE=16 axil_to_wbus.vhd axil_to_wbus.psl -e axil_to_wbus
+prep -top axil_to_wbus
+
+[files]
+axil_to_wbus.psl
+../src/converters/axil_to_wbus.vhd
+

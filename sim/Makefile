@@ -16,6 +16,7 @@ DUTS += tb_axis_pipe
 DUTS += tb_axis_pipe_lite
 DUTS += tb_axis_sim
 DUTS += tb_wbus_arbiter
+DUTS += tb_wbus_axil_wbus
 DUTS += tb_wbus_master
 DUTS += tb_wbus_to_axil
 

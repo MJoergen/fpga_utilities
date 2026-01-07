@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 3
+bmc: mode bmc
+bmc: depth 10
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_DATA_BYTES=4 axis_to_axip.vhd axis_to_axip.psl -e axis_to_axip
+prep -top axis_to_axip
+
+[files]
+axis_to_axip.psl
+../src/converters/axis_to_axip.vhd
+

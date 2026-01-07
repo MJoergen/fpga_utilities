@@ -1,0 +1,69 @@
+vunit axil_to_wbus_inst(axil_to_wbus(synthesis))
+{
+-- set all declarations to run on clk
+   default clock is rising_edge(clk_i);
+
+   signal f_request_active : boolean;
+   f_request_active_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if m_wbus_cyc_o and m_wbus_stb_o and not m_wbus_stall_i then
+         f_request_active <= true;
+       end if;
+       if m_wbus_ack_i or not m_wbus_cyc_o then
+         f_request_active <= false;
+       end if;
+       if rst_i = '1' then
+         f_request_active <= false;
+       end if;
+     end if;
+   end process f_request_active_proc;
+
+
+------------------------------------------------
+-- PROPERTIES OF THE MASTER INTERFACE
+------------------------------------------------
+
+-- WISHBONE MASTER: Clear all requests after a reset
+   f_wbus_master_reset : assert always {rst_i} |=> {not m_wbus_cyc_o and not m_wbus_stb_o};
+
+-- WISHBONE MASTER: STB must be low when CYC is low.
+   f_wbus_master_stb_low : assert always {not m_wbus_cyc_o and not rst_i} |-> {not m_wbus_stb_o};
+
+-- WISHBONE MASTER: Outputs must be stable during request
+   f_wbus_master_stable : assert always {m_wbus_stb_o and not rst_i} |=>
+     {stable(m_wbus_addr_o) and stable(m_wbus_wrdat_o) and stable(m_wbus_we_o)};
+
+-- WISHBONE MASTER: Outputs must be stable during stall
+  f_wbus_master_stall : assert always {m_wbus_cyc_o and m_wbus_stb_o and m_wbus_stall_i and not rst_i} |=>
+    {stable(m_wbus_stb_o) and stable(m_wbus_addr_o) and stable(m_wbus_wrdat_o) and stable(m_wbus_we_o)};
+
+
+-----------------------------
+-- ASSUMPTIONS ABOUT INPUTS
+-----------------------------
+
+-- Require reset at startup.
+   f_reset : assume {rst_i};
+
+-- WISHBONE SLAVE: Respond within at least 1 clock cycle.
+   f_wbus_slave_ack_delay_min : assume always {m_wbus_ack_i} |-> {f_request_active};
+
+
+--------------------------------------------
+-- COVER STATEMENTS TO VERIFY REACHABILITY
+--------------------------------------------
+
+-- A request is generated and accepted
+   f_wbus_request : cover {m_wbus_stb_o and not rst_i; not m_wbus_stb_o};
+
+ -- A request is generated and a response is received
+   f_wbus_transaction : cover {f_request_active and rst_i = '0'; not f_request_active};
+
+
+----------------------------------------------
+-- ADDITIONAL ASSUMES HELPFUL WHEN DEBUGGING
+----------------------------------------------
+
+} -- vunit vunit axil_to_wbus_inst(axil_to_wbus(synthesis))
+

@@ -1,0 +1,65 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Tue Jul  1 08:44:44 2025
+[*]
+[dumpfile] "/home/mike/git/Weibel/pcb1036/main/formal/axi_dropper_cover/engine_0/trace2.vcd"
+[dumpfile_mtime] "Tue Jul  1 08:43:41 2025"
+[dumpfile_size] 9786
+[savefile] "/home/mike/git/Weibel/pcb1036/main/formal/axi_dropper.gtkw"
+[timestart] 0
+[size] 1633 909
+[pos] -1 -1
+*-4.826334 45 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] axi_dropper.
+[sst_width] 367
+[signals_width] 385
+[sst_expanded] 1
+[sst_vpaned_height] 237
+@28
+axi_dropper.clk_i
+axi_dropper.rst_i
+[color] 6
+axi_dropper.s_ready_o
+[color] 2
+axi_dropper.s_valid_i
+axi_dropper.s_last_i
+@22
+axi_dropper.s_data_i[7:0]
+@28
+axi_dropper.s_drop_i
+[color] 6
+axi_dropper.m_ready_i
+[color] 2
+axi_dropper.m_valid_o
+axi_dropper.m_last_o
+@22
+axi_dropper.m_data_o[7:0]
+@24
+axi_dropper.axi_dropper_inst.f_sampled_output_frame_len
+axi_dropper.axi_dropper_inst.f_sampled_input_frame_len
+axi_dropper.axi_dropper_inst.f_output_frame_len_last[30:0]
+axi_dropper.axi_dropper_inst.f_output_frame_len[30:0]
+axi_dropper.axi_dropper_inst.f_input_frame_len_last[30:0]
+axi_dropper.axi_dropper_inst.f_input_frame_len[30:0]
+axi_dropper.axi_dropper_inst.f_value_frame_len[30:0]
+@22
+axi_dropper.wrptr[3:0]
+axi_dropper.rdptr[3:0]
+@28
+[color] 6
+axi_dropper.fifo_wr_ready
+[color] 2
+axi_dropper.fifo_wr_valid
+@22
+axi_dropper.fifo_wr_data[3:0]
+@28
+[color] 6
+axi_dropper.fifo_rd_ready
+[color] 2
+axi_dropper.fifo_rd_valid
+@22
+axi_dropper.fifo_rd_data[3:0]
+@28
+axi_dropper.fsm_state
+[pattern_trace] 1
+[pattern_trace] 0

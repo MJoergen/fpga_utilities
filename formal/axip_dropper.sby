@@ -1,0 +1,23 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 3
+bmc: mode bmc
+bmc: depth 10
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_ADDR_SIZE=4 -gG_DATA_SIZE=8 -gG_RAM_DEPTH=4 axip_dropper.vhd axis_fifo_sync.vhd axip_dropper.psl -e axip_dropper
+prep -top axip_dropper
+
+[files]
+axip_dropper.psl
+../src/axip/axip_dropper.vhd
+../src/axis/axis_fifo_sync.vhd
+

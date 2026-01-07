@@ -1,0 +1,56 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Tue Jul  1 11:31:07 2025
+[*]
+[dumpfile] "/home/mike/git/Weibel/pcb1036/main/formal/wide2byte_bmc/engine_0/trace.vcd"
+[dumpfile_mtime] "Tue Jul  1 11:27:50 2025"
+[dumpfile_size] 5872
+[savefile] "/home/mike/git/Weibel/pcb1036/main/formal/wide2byte.gtkw"
+[timestart] 0
+[size] 1595 901
+[pos] -1 -1
+*-4.220494 36 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] wide2byte.
+[sst_width] 249
+[signals_width] 430
+[sst_expanded] 1
+[sst_vpaned_height] 248
+@28
+wide2byte.clk_i
+wide2byte.rst_i
+[color] 6
+wide2byte.s_ready_o
+[color] 2
+wide2byte.s_valid_i
+wide2byte.s_last_i
+@24
+wide2byte.s_bytes_i[1:0]
+@22
+wide2byte.s_data_i[31:0]
+@28
+[color] 6
+wide2byte.m_ready_i
+[color] 2
+wide2byte.m_valid_o
+wide2byte.m_last_o
+@22
+wide2byte.m_data_o[7:0]
+@28
+wide2byte.state
+wide2byte.s_last
+@24
+wide2byte.s_bytes[1:0]
+@22
+wide2byte.s_data[31:0]
+@24
+wide2byte.wide2byte_inst.f_value_frame_len[30:0]
+@28
+wide2byte.wide2byte_inst.f_sampled_output_frame_len
+wide2byte.wide2byte_inst.f_sampled_input_frame_len
+@24
+wide2byte.wide2byte_inst.f_output_frame_len_last[30:0]
+wide2byte.wide2byte_inst.f_output_frame_len[30:0]
+wide2byte.wide2byte_inst.f_input_frame_len_last[30:0]
+wide2byte.wide2byte_inst.f_input_frame_len[30:0]
+[pattern_trace] 1
+[pattern_trace] 0

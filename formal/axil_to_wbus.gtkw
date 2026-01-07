@@ -1,0 +1,90 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sun Nov 23 08:10:05 2025
+[*]
+[dumpfile] "/home/mike/git/Weibel/pcb1036/main/formal/axi_lite_wbus_cover/engine_0/trace3.vcd"
+[dumpfile_mtime] "Sun Nov 23 08:09:17 2025"
+[dumpfile_size] 6262
+[savefile] "/home/mike/git/Weibel/pcb1036/main/formal/axi_lite_wbus.gtkw"
+[timestart] 0
+[size] 1405 925
+[pos] -1 -1
+*-3.641659 40 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] axi_lite_wbus.
+[sst_width] 239
+[signals_width] 221
+[sst_expanded] 1
+[sst_vpaned_height] 271
+@800200
+-axi_lite_wbus
+@28
+axi_lite_wbus.clk_i
+axi_lite_wbus.rst_i
+[color] 6
+axi_lite_wbus.s_axil_awready_o
+[color] 2
+axi_lite_wbus.s_axil_awvalid_i
+@22
+axi_lite_wbus.s_axil_awaddr_i[3:0]
+axi_lite_wbus.s_axil_awid_i[7:0]
+@28
+[color] 6
+axi_lite_wbus.s_axil_wready_o
+[color] 2
+axi_lite_wbus.s_axil_wvalid_i
+@22
+axi_lite_wbus.s_axil_wdata_i[15:0]
+@28
+axi_lite_wbus.s_axil_wstrb_i[1:0]
+[color] 6
+axi_lite_wbus.s_axil_bready_i
+[color] 2
+axi_lite_wbus.s_axil_bvalid_o
+axi_lite_wbus.s_axil_bresp_o[1:0]
+@22
+axi_lite_wbus.s_axil_bid_o[7:0]
+@28
+[color] 6
+axi_lite_wbus.s_axil_arready_o
+[color] 2
+axi_lite_wbus.s_axil_arvalid_i
+@22
+axi_lite_wbus.s_axil_araddr_i[3:0]
+axi_lite_wbus.s_axil_arid_i[7:0]
+@28
+[color] 6
+axi_lite_wbus.s_axil_rready_i
+[color] 2
+axi_lite_wbus.s_axil_rvalid_o
+@22
+axi_lite_wbus.s_axil_rdata_o[15:0]
+axi_lite_wbus.s_axil_rid_o[7:0]
+@28
+axi_lite_wbus.s_axil_rlast_o
+axi_lite_wbus.s_axil_rresp_o[1:0]
+@200
+-
+@28
+axi_lite_wbus.m_wbus_cyc_o
+axi_lite_wbus.m_wbus_stall_i
+axi_lite_wbus.m_wbus_stb_o
+@22
+axi_lite_wbus.m_wbus_addr_o[3:0]
+@28
+axi_lite_wbus.m_wbus_we_o
+@22
+axi_lite_wbus.m_wbus_wrdat_o[15:0]
+@28
+axi_lite_wbus.m_wbus_ack_i
+@22
+axi_lite_wbus.m_wbus_rddat_i[15:0]
+@28
+axi_lite_wbus.state[1:0]
+@22
+axi_lite_wbus.time_cnt[6:0]
+@1000200
+-axi_lite_wbus
+@28
+axi_lite_wbus.axi_lite_wbus_inst.f_request_active
+[pattern_trace] 1
+[pattern_trace] 0

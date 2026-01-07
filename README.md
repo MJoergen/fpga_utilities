@@ -102,16 +102,20 @@ Note that this interface is bi-directional.
 * [axip\_fifo\_sync.vhd](src/axip/axip_fifo_sync.vhd): This is a simple synchronuous AXI packet FIFO (i.e. input and output have same clock).
 * [axip\_insert\_fixed\_header.vhd](src/axip/axip_insert_fixed_header.vhd): This inserts a fixed-size header in front of an AXI packet.
 * [axip\_remove\_fixed\_header.vhd](src/axip/axip_remove_fixed_header.vhd): This removes a fixed-size header from the front of an AXI packet.
+* [axip\_arbiter.vhd](src/axip/axip_arbiter.vhd): This arbitrates between two AXI packet masters.
+* [axip\_arbiter\_general.vhd](src/axip/axip_arbiter_general.vhd): This arbitrates (merges) several AXI packet interfaces into one.
+* [axip\_dropper.vhd](src/axip/axip_dropper.vhd): This drops selected packets from an AXI packet interface.
 
 ### AXI Lite
 
-* [axil\_arbiter.vhd](src/axil/axil_arbiter.vhd): The arbitrates between two AXI lite masters.
+* [axil\_arbiter.vhd](src/axil/axil_arbiter.vhd): This arbitrates between two AXI lite masters.
 * [axil\_pipe.vhd](src/axil/axil_pipe.vhd): A small 2-stage FIFO for AXI Lite.
 
 ### Wishbone
 
-* [wbus\_arbiter.vhd](src/wbus/wbus_arbiter.vhd): The arbitrates (merges) two Wishbone interfaces into one.
-* [wbus\_arbiter\_general.vhd](src/wbus/wbus_arbiter_general.vhd): The arbitrates (merges) several Wishbone interfaces into one.
+* [wbus\_arbiter.vhd](src/wbus/wbus_arbiter.vhd): This arbitrates (merges) two Wishbone interfaces into one.
+* [wbus\_arbiter\_general.vhd](src/wbus/wbus_arbiter_general.vhd): This arbitrates (merges) several Wishbone interfaces into one.
+* [wbus\_mapper.vhd](src/wbus/wbus_mapper.vhd): This distributes a single Wishbone master to several Wishbone slaves.
 
 ### Conversion between interfaces
 

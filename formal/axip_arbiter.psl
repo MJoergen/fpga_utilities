@@ -1,0 +1,84 @@
+vunit axip_arbiter_inst(axip_arbiter(synthesis))
+{
+   -- set all declarations to run on clk
+   default clock is rising_edge(clk_i);
+
+   signal f_sampled_input_0 : boolean;
+   signal f_sampled_input_1 : boolean;
+   signal f_sampled_output_0 : boolean;
+   signal f_sampled_output_1 : boolean;
+   signal f_value_0 : std_logic_vector(G_DATA_SIZE-1 downto 0);
+   signal f_value_1 : std_logic_vector(G_DATA_SIZE-1 downto 0);
+   attribute anyconst : boolean;
+   attribute anyconst of f_value_0 : signal is true;
+   attribute anyconst of f_value_1 : signal is true;
+
+   f_sampled_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if s0_valid_i = '1' and s0_ready_o = '1' and s0_data_i = f_value_0 then
+         f_sampled_input_0 <= true;
+       end if;
+       if s1_valid_i = '1' and s1_ready_o = '1' and s1_data_i = f_value_1 then
+         f_sampled_input_1 <= true;
+       end if;
+       if m_valid_o = '1' and m_ready_i = '1' and m_data_o = f_value_0 then
+         f_sampled_output_0 <= true;
+       end if;
+       if m_valid_o = '1' and m_ready_i = '1' and m_data_o = f_value_1 then
+         f_sampled_output_1 <= true;
+       end if;
+
+       if rst_i = '1' then
+         f_sampled_input_0 <= false;
+         f_sampled_input_1 <= false;
+         f_sampled_output_0 <= false;
+         f_sampled_output_1 <= false;
+       end if;
+     end if;
+   end process f_sampled_proc;
+
+
+   ------------------------------------------------
+   -- PROPERTIES OF THE WISHBONE MASTER INTERFACE
+   ------------------------------------------------
+
+   -- WISHBONE MASTER: Clear all requests after a reset
+   f_axi_master_reset : assert always {rst_i} |=> {not m_valid_o};
+
+   -- WISHBONE MASTER: Outputs must be stable during request
+   f_axi_master_stable : assert always {m_valid_o and not m_ready_i and not rst_i} |=>
+     {stable(m_valid_o) and stable(m_data_o)};
+
+   f_verify_data_0 : assert always {f_sampled_output_0 and rst_i = '0'} |=> {f_sampled_input_0};
+   f_verify_data_1 : assert always {f_sampled_output_1 and rst_i = '0'} |=> {f_sampled_input_1};
+
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   f_value_diff : assume {f_value_0 /= f_value_1};
+
+   f_value_input : assume always {s0_data_i /= f_value_1 and s1_data_i /= f_value_0};
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   -- A request is generated and accepted
+   f_axi_request : cover {m_valid_o and not rst_i; not m_valid_o};
+
+   f_data : cover {f_sampled_output_0 and f_sampled_output_1 and rst_i = '0'};
+
+
+   ----------------------------------------------
+   -- ADDITIONAL ASSUMES HELPFUL WHEN DEBUGGING
+   ----------------------------------------------
+
+} -- vunit axip_arbiter_inst(axip_arbiter(synthesis))
+

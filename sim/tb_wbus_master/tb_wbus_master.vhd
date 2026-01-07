@@ -82,7 +82,7 @@ begin
       s_wbus_wrdat_i => wbus_wrdat,
       s_wbus_ack_o   => wbus_ack,
       s_wbus_rddat_o => wbus_rddat
-    ); -- wbus_mem_sim_inst : entity work.wbus_mem_sim
+    ); -- wbus_slave_sim_inst : entity work.wbus_slave_sim
 
 end architecture simulation;
 

@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 1
+bmc: mode bmc
+bmc: depth 12
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_DATA_SIZE=4 axip_arbiter.vhd axip_arbiter.psl -e axip_arbiter
+prep -top axip_arbiter
+
+[files]
+axip_arbiter.psl
+../src/axip/axip_arbiter.vhd
+
