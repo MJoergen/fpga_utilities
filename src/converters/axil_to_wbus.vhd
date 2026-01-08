@@ -2,11 +2,11 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
--- This allows a Wishbone Slave to be connected to an AXI Master
+-- This allows a Wishbone Slave to be connected to an AXI Lite Master
 
 entity axil_to_wbus is
   generic (
-    G_TIMEOUT   : natural := 1000;
+    G_TIMEOUT   : natural := 100;
     G_ADDR_SIZE : natural;
     G_DATA_SIZE : natural
   );

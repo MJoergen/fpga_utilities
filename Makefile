@@ -1,6 +1,6 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating all the modules
+# Description: Makefile for testing all the modules
 
 TARGETS += sim
 TARGETS += formal

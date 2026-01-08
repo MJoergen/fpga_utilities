@@ -1,3 +1,11 @@
+-- Author     : Michael Jørgensen
+-- Platform   : Simulation
+-- ----------------------------------------------------------------------------
+-- Description:
+-- Comprehensive test of the AXI-Lite to WBUS.
+-- The axil_master_sim module used here generates multiple accesses simultaneously.
+-- ----------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
@@ -47,16 +55,17 @@ architecture simulation of tb_axil_to_wbus is
 
 begin
 
-  --------------------------------
-  -- Clock and Reset
-  --------------------------------
+  ------------------------------------------
+  -- Clock and reset
+  ------------------------------------------
 
   clk <= not clk after 5 ns;
   rst <= '1', '0' after 100 ns;
 
 
-  --------------------------------
-  --------------------------------
+  ------------------------------------------
+  -- Generate stimuli
+  ------------------------------------------
 
   axil_master_sim_inst : entity work.axil_master_sim
     generic map (
@@ -90,13 +99,13 @@ begin
     ); -- axil_master_sim_inst : entity work.axil_master_sim
 
 
-  --------------------------------
+  ------------------------------------------
   -- Instantiate DUT
-  --------------------------------
+  ------------------------------------------
 
   axil_to_wbus_inst : entity work.axil_to_wbus
     generic map (
-      G_TIMEOUT   => 1000,
+      G_TIMEOUT   => 100,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )
@@ -131,9 +140,9 @@ begin
     ); -- axil_to_wbus_inst : entity work.axil_to_wbus
 
 
-  --------------------------------
+  --------..---------------------------
   -- Instantiate Wishbone slave
-  --------------------------------
+  ---------..--------------------------
 
   wbus_slave_sim_inst : entity work.wbus_slave_sim
     generic map (

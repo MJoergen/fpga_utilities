@@ -1,14 +1,9 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the axi_wbus.vhd file.
+# Description: Makefile for simulating the axil_to_wbus.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/axil/axil_arbiter.vhd
-SRC += $(SRC_DIR)/axis/axis_arbiter.vhd
-SRC += $(SRC_DIR)/axis/axis_arbiter_pair.vhd
-SRC += $(SRC_DIR)/axis/axis_distributor.vhd
 SRC += $(SRC_DIR)/converters/axil_to_wbus.vhd
-SRC += $(SRC_DIR)/converters/wbus_to_axil.vhd
 
 # List of test specific simulation files
 SRC += tb_axil_to_wbus.vhd
@@ -37,7 +32,7 @@ GENERIC += -gG_ADDR_SIZE=8
 GENERIC += -gG_DATA_SIZE=16
 
 # Don't stop on errors
-ASSERT_LEVEL = none
+#ASSERT_LEVEL = none
 
 include ../Makefile.inc
 

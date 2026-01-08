@@ -3,19 +3,15 @@
 -- Platform   : AMD Artix 7
 -- ----------------------------------------------------------------------------
 -- Description:
--- A simple testbench to verify the two converts: wide2byte.vhd and byte2wide.vhd.
+-- A simple testbench to verify the two converters: axip_to_axis.vhd and axis_to_axip.vhd.
 -- ----------------------------------------------------------------------------
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-library std;
-  use std.env.stop;
-
 entity tb_axip_axis_axip is
   generic (
     G_PAUSE_SIZE : natural;
-    G_RAM_DEPTH  : natural;
     G_DEBUG      : boolean;
     G_RANDOM     : boolean;
     G_FAST       : boolean;
@@ -92,6 +88,7 @@ begin
       m_last_o  => d_last
     ); -- axip_to_axis_inst : entity work.axip_to_axis
 
+
   ----------------------------------------------
   -- Add additional random delays
   ----------------------------------------------
@@ -133,8 +130,8 @@ begin
       rst_i     => rst,
       s_ready_o => p_ready,
       s_valid_i => p_valid,
-      s_last_i  => p_last,
       s_data_i  => p_data,
+      s_last_i  => p_last,
       m_ready_i => m_ready,
       m_valid_o => m_valid,
       m_data_o  => m_data,

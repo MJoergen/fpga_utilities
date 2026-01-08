@@ -6,6 +6,7 @@ DUTS += tb_axil_arbiter
 DUTS += tb_axil_pipe
 DUTS += tb_axil_sim
 DUTS += tb_axil_to_wbus
+DUTS += tb_axip_axis_axip
 DUTS += tb_axip_fifo_sync
 DUTS += tb_axip_fixed_header
 DUTS += tb_axip_insert_fixed_header

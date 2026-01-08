@@ -106,6 +106,9 @@ vunit wbus_arbiter_inst(wbus_arbiter(synthesis))
    -- WISHBONE MASTER: Verify ordering
    f_wbus_master_ordering : assert always {f_sampled_out} |-> {f_sampled_in0 or f_sampled_in1};
 
+   f_wbus_slave_0_request_active : assert always {s0_wbus_ack_o and not rst_i} |-> f_request0_active;
+   f_wbus_slave_1_request_active : assert always {s1_wbus_ack_o and not rst_i} |-> f_request1_active;
+
 
    -----------------------------
    -- ASSUMPTIONS ABOUT INPUTS

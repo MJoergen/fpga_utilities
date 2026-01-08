@@ -27,7 +27,7 @@ GENERIC += -gG_ADDR_SIZE=12
 GENERIC += -gG_DATA_SIZE=16
 
 # Don't stop on errors
-ASSERT_LEVEL = none
+#ASSERT_LEVEL = none
 
 include ../Makefile.inc
 

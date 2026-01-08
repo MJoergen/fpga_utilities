@@ -25,7 +25,6 @@ STOP_TIME = 80us
 
 # Test bench configuration
 GENERIC += -gG_PAUSE_SIZE=3
-GENERIC += -gG_RAM_DEPTH=8
 GENERIC += -gG_DEBUG=false
 GENERIC += -gG_RANDOM=true
 GENERIC += -gG_FAST=true
