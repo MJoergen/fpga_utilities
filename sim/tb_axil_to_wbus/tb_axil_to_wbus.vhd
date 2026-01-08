@@ -12,12 +12,12 @@ library ieee;
 
 entity tb_axil_to_wbus is
   generic (
-    G_DEBUG      : boolean;
-    G_LATENCY    : natural;
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
-    G_ADDR_SIZE  : natural;
-    G_DATA_SIZE  : natural
+    G_DEBUG     : boolean;
+    G_LATENCY   : natural;
+    G_RANDOM    : boolean;
+    G_FAST      : boolean;
+    G_ADDR_SIZE : natural;
+    G_DATA_SIZE : natural
   );
 end entity tb_axil_to_wbus;
 
@@ -69,12 +69,12 @@ begin
 
   axil_master_sim_inst : entity work.axil_master_sim
     generic map (
-      G_DEBUG      => G_DEBUG,
-      G_OFFSET     => 1234,
-      G_RANDOM     => G_RANDOM,
-      G_FAST       => G_FAST,
-      G_ADDR_SIZE  => G_ADDR_SIZE,
-      G_DATA_SIZE  => G_DATA_SIZE
+      G_DEBUG     => G_DEBUG,
+      G_OFFSET    => 1234,
+      G_RANDOM    => G_RANDOM,
+      G_FAST      => G_FAST,
+      G_ADDR_SIZE => G_ADDR_SIZE,
+      G_DATA_SIZE => G_DATA_SIZE
     )
     port map (
       clk_i       => clk,
@@ -153,16 +153,16 @@ begin
       G_DATA_SIZE => G_DATA_SIZE
     )
     port map (
-      clk_i          => clk,
-      rst_i          => rst,
-      s_wbus_cyc_i   => wbus_cyc,
-      s_wbus_stall_o => wbus_stall,
-      s_wbus_stb_i   => wbus_stb,
-      s_wbus_addr_i  => wbus_addr,
-      s_wbus_we_i    => wbus_we,
-      s_wbus_wrdat_i => wbus_wrdat,
-      s_wbus_ack_o   => wbus_ack,
-      s_wbus_rddat_o => wbus_rddat
+      clk_i     => clk,
+      rst_i     => rst,
+      s_cyc_i   => wbus_cyc,
+      s_stall_o => wbus_stall,
+      s_stb_i   => wbus_stb,
+      s_addr_i  => wbus_addr,
+      s_we_i    => wbus_we,
+      s_wrdat_i => wbus_wrdat,
+      s_ack_o   => wbus_ack,
+      s_rddat_o => wbus_rddat
     ); -- wbus_slave_sim_inst : entity work.wbus_slave_sim
 
 end architecture simulation;

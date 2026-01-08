@@ -13,9 +13,8 @@ end entity tb_wbus_to_axil;
 
 architecture simulation of tb_wbus_to_axil is
 
-  signal running : std_logic := '1';
-  signal clk     : std_logic := '1';
-  signal rst     : std_logic := '1';
+  signal clk : std_logic := '1';
+  signal rst : std_logic := '1';
 
   signal m_wbus_cyc   : std_logic;
   signal m_wbus_stall : std_logic;
@@ -77,7 +76,7 @@ begin
   -- Clock and Reset
   --------------------------------
 
-  clk <= running and not clk after 5 ns;
+  clk <= not clk after 5 ns;
   rst <= '1', '0' after 100 ns;
 
 
@@ -215,16 +214,16 @@ begin
       G_DATA_SIZE => G_DATA_SIZE
     )
     port map (
-      clk_i          => clk,
-      rst_i          => rst,
-      m_wbus_cyc_o   => m_wbus_cyc,
-      m_wbus_stall_i => m_wbus_stall,
-      m_wbus_stb_o   => m_wbus_stb,
-      m_wbus_addr_o  => m_wbus_addr,
-      m_wbus_we_o    => m_wbus_we,
-      m_wbus_wrdat_o => m_wbus_wrdat,
-      m_wbus_ack_i   => m_wbus_ack,
-      m_wbus_rddat_i => m_wbus_rddat
+      clk_i     => clk,
+      rst_i     => rst,
+      m_cyc_o   => m_wbus_cyc,
+      m_stall_i => m_wbus_stall,
+      m_stb_o   => m_wbus_stb,
+      m_addr_o  => m_wbus_addr,
+      m_we_o    => m_wbus_we,
+      m_wrdat_o => m_wbus_wrdat,
+      m_ack_i   => m_wbus_ack,
+      m_rddat_i => m_wbus_rddat
     ); -- wbus_master_sim_inst : entity work.wbus_master_sim
 
 
@@ -241,16 +240,16 @@ begin
       G_DATA_SIZE => G_DATA_SIZE
     )
     port map (
-      clk_i          => clk,
-      rst_i          => rst,
-      s_wbus_cyc_i   => s_wbus_cyc,
-      s_wbus_stall_o => s_wbus_stall,
-      s_wbus_stb_i   => s_wbus_stb,
-      s_wbus_addr_i  => s_wbus_addr,
-      s_wbus_we_i    => s_wbus_we,
-      s_wbus_wrdat_i => s_wbus_wrdat,
-      s_wbus_ack_o   => s_wbus_ack,
-      s_wbus_rddat_o => s_wbus_rddat
+      clk_i     => clk,
+      rst_i     => rst,
+      s_cyc_i   => s_wbus_cyc,
+      s_stall_o => s_wbus_stall,
+      s_stb_i   => s_wbus_stb,
+      s_addr_i  => s_wbus_addr,
+      s_we_i    => s_wbus_we,
+      s_wrdat_i => s_wbus_wrdat,
+      s_ack_o   => s_wbus_ack,
+      s_rddat_o => s_wbus_rddat
     ); -- wbus_mem_sim_inst : entity work.wbus_mem_sim
 
 end architecture simulation;

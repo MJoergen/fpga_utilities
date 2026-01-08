@@ -1,8 +1,13 @@
+-- ----------------------------------------------------------------------------
+-- Author     : Michael Jørgensen
+-- Platform   : AMD Artix 7
+-- ----------------------------------------------------------------------------
+-- Description: This allows a Wishbone Slave to be connected to an AXI Lite Master
+-- ----------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
-
--- This allows a Wishbone Slave to be connected to an AXI Lite Master
 
 entity axil_to_wbus is
   generic (

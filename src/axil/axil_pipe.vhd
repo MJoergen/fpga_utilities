@@ -2,11 +2,7 @@
 -- Author     : Michael Jørgensen
 -- Platform   : AMD Artix 7
 -- ----------------------------------------------------------------------------
--- Description: Arbitrate between two different AXI Lite masters
--- If both Masters request simultaneously, then they are granted access alternately.
---
--- This is similar to the 2-1 AXI crossbar, see:
--- https://www.xilinx.com/support/documents/ip_documentation/axi_interconnect/v2_1/pg059-axi-interconnect.pdf
+-- Description: An elastic pipeline for an AXI Lite interface.
 -- ----------------------------------------------------------------------------
 
 library ieee;
@@ -65,12 +61,14 @@ end entity axil_pipe;
 architecture synthesis of axil_pipe is
 
   subtype R_WDATA is natural range G_DATA_SIZE - 1 downto 0;
+
   subtype R_WSTRB is natural range G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto G_DATA_SIZE;
 
   signal  s_w_in  : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
   signal  m_w_out : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
 
   subtype R_RDATA is natural range G_DATA_SIZE - 1 downto 0;
+
   subtype R_RRESP is natural range G_DATA_SIZE + 1 downto G_DATA_SIZE;
 
   signal  m_r_in  : std_logic_vector(G_DATA_SIZE + 1 downto 0);

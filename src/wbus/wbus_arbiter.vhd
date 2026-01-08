@@ -15,37 +15,37 @@ entity wbus_arbiter is
     G_DATA_SIZE : natural := 32
   );
   port (
-    clk_i           : in    std_logic;
-    rst_i           : in    std_logic;
+    clk_i      : in    std_logic;
+    rst_i      : in    std_logic;
 
     -- Wishbone bus Slave interface
-    s0_wbus_cyc_i   : in    std_logic;                                  -- Valid bus cycle
-    s0_wbus_stall_o : out   std_logic;
-    s0_wbus_stb_i   : in    std_logic;                                  -- Strobe signals / core select signal
-    s0_wbus_addr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0); -- lower address bits
-    s0_wbus_we_i    : in    std_logic;                                  -- Write enable
-    s0_wbus_wrdat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Write Databus
-    s0_wbus_ack_o   : out   std_logic;                                  -- Bus cycle acknowledge
-    s0_wbus_rddat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Read Databus
+    s0_cyc_i   : in    std_logic;
+    s0_stall_o : out   std_logic;
+    s0_stb_i   : in    std_logic;
+    s0_addr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s0_we_i    : in    std_logic;
+    s0_wrdat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s0_ack_o   : out   std_logic;
+    s0_rddat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
-    s1_wbus_cyc_i   : in    std_logic;                                  -- Valid bus cycle
-    s1_wbus_stall_o : out   std_logic;
-    s1_wbus_stb_i   : in    std_logic;                                  -- Strobe signals / core select signal
-    s1_wbus_addr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0); -- lower address bits
-    s1_wbus_we_i    : in    std_logic;                                  -- Write enable
-    s1_wbus_wrdat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Write Databus
-    s1_wbus_ack_o   : out   std_logic;                                  -- Bus cycle acknowledge
-    s1_wbus_rddat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Read Databus
+    s1_cyc_i   : in    std_logic;
+    s1_stall_o : out   std_logic;
+    s1_stb_i   : in    std_logic;
+    s1_addr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s1_we_i    : in    std_logic;
+    s1_wrdat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s1_ack_o   : out   std_logic;
+    s1_rddat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
     -- Wishbone bus Master interface
-    m_wbus_cyc_o    : out   std_logic;                                  -- Valid bus cycle
-    m_wbus_stall_i  : in    std_logic;
-    m_wbus_stb_o    : out   std_logic;                                  -- Strobe signals / core select signal
-    m_wbus_addr_o   : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0); -- lower address bits
-    m_wbus_we_o     : out   std_logic;                                  -- Write enable
-    m_wbus_wrdat_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Write Databus
-    m_wbus_ack_i    : in    std_logic;                                  -- Bus cycle acknowledge
-    m_wbus_rddat_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)  -- Read Databus
+    m_cyc_o    : out   std_logic;
+    m_stall_i  : in    std_logic;
+    m_stb_o    : out   std_logic;
+    m_addr_o   : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_we_o     : out   std_logic;
+    m_wrdat_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_ack_i    : in    std_logic;
+    m_rddat_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
   );
 end entity wbus_arbiter;
 
@@ -56,93 +56,93 @@ architecture synthesis of wbus_arbiter is
 
 begin
 
-  s0_wbus_stall_o <= '0' when state = SLAVE_0_IDLE_ST else
-                     '1';
-  s1_wbus_stall_o <= '0' when state = SLAVE_1_IDLE_ST else
-                     '1';
+  s0_stall_o <= '0' when state = SLAVE_0_IDLE_ST else
+                '1';
+  s1_stall_o <= '0' when state = SLAVE_1_IDLE_ST else
+                '1';
 
   fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if m_wbus_ack_i = '1' then
-        m_wbus_cyc_o <= '0';
+      if m_ack_i = '1' then
+        m_cyc_o <= '0';
       end if;
-      if m_wbus_stall_i = '0' then
-        m_wbus_stb_o <= '0';
+      if m_stall_i = '0' then
+        m_stb_o <= '0';
       end if;
 
-      s0_wbus_rddat_o <= (others => '0');
-      s0_wbus_ack_o   <= '0';
-      s1_wbus_rddat_o <= (others => '0');
-      s1_wbus_ack_o   <= '0';
+      s0_rddat_o <= (others => '0');
+      s0_ack_o   <= '0';
+      s1_rddat_o <= (others => '0');
+      s1_ack_o   <= '0';
 
       case state is
 
         when SLAVE_0_IDLE_ST =>
-          f_slave0 : assert (m_wbus_cyc_o = '0' and m_wbus_stb_o = '0') or rst_i = '1';
-          if s0_wbus_cyc_i = '0' and s1_wbus_cyc_i = '1' then
+          f_slave0 : assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1';
+          if s0_cyc_i = '0' and s1_cyc_i = '1' then
             state <= SLAVE_1_IDLE_ST;
-          elsif s0_wbus_cyc_i = '1' and s0_wbus_stb_i = '1' and s0_wbus_ack_o = '0' then
-            m_wbus_addr_o  <= s0_wbus_addr_i;
-            m_wbus_wrdat_o <= s0_wbus_wrdat_i;
-            m_wbus_we_o    <= s0_wbus_we_i;
-            m_wbus_cyc_o   <= s0_wbus_cyc_i;
-            m_wbus_stb_o   <= s0_wbus_stb_i;
-            state          <= SLAVE_0_BUSY_ST;
+          elsif s0_cyc_i = '1' and s0_stb_i = '1' and s0_ack_o = '0' then
+            m_addr_o  <= s0_addr_i;
+            m_wrdat_o <= s0_wrdat_i;
+            m_we_o    <= s0_we_i;
+            m_cyc_o   <= s0_cyc_i;
+            m_stb_o   <= s0_stb_i;
+            state     <= SLAVE_0_BUSY_ST;
           end if;
 
         when SLAVE_1_IDLE_ST =>
-          f_slave1 : assert (m_wbus_cyc_o = '0' and m_wbus_stb_o = '0') or rst_i = '1';
-          if s0_wbus_cyc_i = '1' and s1_wbus_cyc_i = '0' then
+          f_slave1 : assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1';
+          if s0_cyc_i = '1' and s1_cyc_i = '0' then
             state <= SLAVE_0_IDLE_ST;
-          elsif s1_wbus_cyc_i = '1' and s1_wbus_stb_i = '1' and s1_wbus_ack_o = '0' then
-            m_wbus_addr_o  <= s1_wbus_addr_i;
-            m_wbus_wrdat_o <= s1_wbus_wrdat_i;
-            m_wbus_we_o    <= s1_wbus_we_i;
-            m_wbus_cyc_o   <= s1_wbus_cyc_i;
-            m_wbus_stb_o   <= s1_wbus_stb_i;
-            state          <= SLAVE_1_BUSY_ST;
+          elsif s1_cyc_i = '1' and s1_stb_i = '1' and s1_ack_o = '0' then
+            m_addr_o  <= s1_addr_i;
+            m_wrdat_o <= s1_wrdat_i;
+            m_we_o    <= s1_we_i;
+            m_cyc_o   <= s1_cyc_i;
+            m_stb_o   <= s1_stb_i;
+            state     <= SLAVE_1_BUSY_ST;
           end if;
 
         when SLAVE_0_BUSY_ST =>
-          if m_wbus_ack_i = '1' then
-            if m_wbus_we_o = '0' then
-              s0_wbus_rddat_o <= m_wbus_rddat_i;
+          if m_ack_i = '1' then
+            if m_we_o = '0' then
+              s0_rddat_o <= m_rddat_i;
             end if;
-            s0_wbus_ack_o <= '1';
-            state         <= SLAVE_1_IDLE_ST;
+            s0_ack_o <= '1';
+            state    <= SLAVE_1_IDLE_ST;
           end if;
-          if s0_wbus_cyc_i = '0' then
-            m_wbus_cyc_o  <= '0';
-            m_wbus_stb_o  <= '0';
-            s0_wbus_ack_o <= '0';
-            state         <= SLAVE_1_IDLE_ST;
+          if s0_cyc_i = '0' then
+            m_cyc_o  <= '0';
+            m_stb_o  <= '0';
+            s0_ack_o <= '0';
+            state    <= SLAVE_1_IDLE_ST;
           end if;
 
         when SLAVE_1_BUSY_ST =>
-          if m_wbus_ack_i = '1' then
-            if m_wbus_we_o = '0' then
-              s1_wbus_rddat_o <= m_wbus_rddat_i;
+          if m_ack_i = '1' then
+            if m_we_o = '0' then
+              s1_rddat_o <= m_rddat_i;
             end if;
-            s1_wbus_ack_o <= '1';
-            state         <= SLAVE_0_IDLE_ST;
+            s1_ack_o <= '1';
+            state    <= SLAVE_0_IDLE_ST;
           end if;
-          if s1_wbus_cyc_i = '0' then
-            m_wbus_cyc_o  <= '0';
-            m_wbus_stb_o  <= '0';
-            s1_wbus_ack_o <= '0';
-            state         <= SLAVE_0_IDLE_ST;
+          if s1_cyc_i = '0' then
+            m_cyc_o  <= '0';
+            m_stb_o  <= '0';
+            s1_ack_o <= '0';
+            state    <= SLAVE_0_IDLE_ST;
           end if;
 
       end case;
 
       if rst_i = '1' then
-        m_wbus_cyc_o  <= '0';
-        m_wbus_stb_o  <= '0';
-        m_wbus_we_o   <= '0';
-        s0_wbus_ack_o <= '0';
-        s1_wbus_ack_o <= '0';
-        state         <= SLAVE_0_IDLE_ST;
+        m_cyc_o  <= '0';
+        m_stb_o  <= '0';
+        m_we_o   <= '0';
+        s0_ack_o <= '0';
+        s1_ack_o <= '0';
+        state    <= SLAVE_0_IDLE_ST;
       end if;
     end if;
   end process fsm_proc;

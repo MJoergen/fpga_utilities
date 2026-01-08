@@ -80,7 +80,7 @@ begin
             state     <= BUSY_ST;
             if s_last_i = '1' then
               if s_bytes_i > G_DATA_BYTES - G_HEADER_BYTES then
-                state     <= LAST_ST;
+                state <= LAST_ST;
               else
                 m_last_o  <= '1';
                 m_bytes_o <= s_bytes_i + G_HEADER_BYTES;
@@ -93,8 +93,8 @@ begin
             s_bytes <= s_bytes_i;
             state   <= WAIT_HEADER_ST;
           elsif h_valid_i = '1' and h_ready_o = '1' then
-            h_data  <= h_data_i;
-            state   <= WAIT_DATA_ST;
+            h_data <= h_data_i;
+            state  <= WAIT_DATA_ST;
           end if;
 
         when WAIT_HEADER_ST =>
@@ -106,7 +106,7 @@ begin
             state     <= BUSY_ST;
             if s_last = '1' then
               if s_bytes > G_DATA_BYTES - G_HEADER_BYTES then
-                state     <= LAST_ST;
+                state <= LAST_ST;
               else
                 m_last_o  <= '1';
                 m_bytes_o <= s_bytes + G_HEADER_BYTES;
@@ -127,7 +127,7 @@ begin
             state     <= BUSY_ST;
             if s_last_i = '1' then
               if s_bytes_i > G_DATA_BYTES - G_HEADER_BYTES then
-                state     <= LAST_ST;
+                state <= LAST_ST;
               else
                 m_last_o  <= '1';
                 m_bytes_o <= s_bytes_i + G_HEADER_BYTES;

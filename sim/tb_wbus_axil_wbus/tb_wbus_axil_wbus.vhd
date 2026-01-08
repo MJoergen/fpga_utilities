@@ -19,45 +19,44 @@ end entity tb_wbus_axil_wbus;
 
 architecture simulation of tb_wbus_axil_wbus is
 
-  signal   running  : std_logic       := '1';
-  signal   wbus_clk : std_logic       := '1';
-  signal   wbus_rst : std_logic       := '1';
+  signal wbus_clk : std_logic       := '1';
+  signal wbus_rst : std_logic       := '1';
 
-  signal   tb_wbus_cyc   : std_logic;
-  signal   tb_wbus_stall : std_logic;
-  signal   tb_wbus_stb   : std_logic;
-  signal   tb_wbus_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal   tb_wbus_we    : std_logic;
-  signal   tb_wbus_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal   tb_wbus_ack   : std_logic;
-  signal   tb_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal tb_wbus_cyc   : std_logic;
+  signal tb_wbus_stall : std_logic;
+  signal tb_wbus_stb   : std_logic;
+  signal tb_wbus_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal tb_wbus_we    : std_logic;
+  signal tb_wbus_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal tb_wbus_ack   : std_logic;
+  signal tb_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
-  signal   mem_wbus_cyc   : std_logic := '0';
-  signal   mem_wbus_stall : std_logic;
-  signal   mem_wbus_stb   : std_logic;
-  signal   mem_wbus_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal   mem_wbus_we    : std_logic;
-  signal   mem_wbus_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal   mem_wbus_ack   : std_logic;
-  signal   mem_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal mem_wbus_cyc   : std_logic := '0';
+  signal mem_wbus_stall : std_logic;
+  signal mem_wbus_stb   : std_logic;
+  signal mem_wbus_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal mem_wbus_we    : std_logic;
+  signal mem_wbus_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal mem_wbus_ack   : std_logic;
+  signal mem_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
-  signal   axil_awready : std_logic;
-  signal   axil_awvalid : std_logic;
-  signal   axil_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal   axil_wready  : std_logic;
-  signal   axil_wvalid  : std_logic;
-  signal   axil_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal   axil_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal   axil_bready  : std_logic;
-  signal   axil_bvalid  : std_logic;
-  signal   axil_bresp   : std_logic_vector(1 downto 0);
-  signal   axil_arready : std_logic;
-  signal   axil_arvalid : std_logic;
-  signal   axil_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal   axil_rready  : std_logic;
-  signal   axil_rvalid  : std_logic;
-  signal   axil_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal   axil_rresp   : std_logic_vector(1 downto 0);
+  signal axil_awready : std_logic;
+  signal axil_awvalid : std_logic;
+  signal axil_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal axil_wready  : std_logic;
+  signal axil_wvalid  : std_logic;
+  signal axil_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal axil_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal axil_bready  : std_logic;
+  signal axil_bvalid  : std_logic;
+  signal axil_bresp   : std_logic_vector(1 downto 0);
+  signal axil_arready : std_logic;
+  signal axil_arvalid : std_logic;
+  signal axil_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal axil_rready  : std_logic;
+  signal axil_rvalid  : std_logic;
+  signal axil_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal axil_rresp   : std_logic_vector(1 downto 0);
 
 begin
 
@@ -65,7 +64,7 @@ begin
   -- Clock and reset
   -------------------------------------
 
-  wbus_clk <= running and not wbus_clk after 5 ns;
+  wbus_clk <= not wbus_clk after 5 ns;
   wbus_rst <= '1', '0' after 100 ns;
 
 
@@ -157,16 +156,16 @@ begin
       G_DATA_SIZE => G_DATA_SIZE
     )
     port map (
-      clk_i          => wbus_clk,
-      rst_i          => wbus_rst,
-      m_wbus_cyc_o   => tb_wbus_cyc,
-      m_wbus_stall_i => tb_wbus_stall,
-      m_wbus_stb_o   => tb_wbus_stb,
-      m_wbus_addr_o  => tb_wbus_addr,
-      m_wbus_we_o    => tb_wbus_we,
-      m_wbus_wrdat_o => tb_wbus_wrdat,
-      m_wbus_ack_i   => tb_wbus_ack,
-      m_wbus_rddat_i => tb_wbus_rddat
+      clk_i     => wbus_clk,
+      rst_i     => wbus_rst,
+      m_cyc_o   => tb_wbus_cyc,
+      m_stall_i => tb_wbus_stall,
+      m_stb_o   => tb_wbus_stb,
+      m_addr_o  => tb_wbus_addr,
+      m_we_o    => tb_wbus_we,
+      m_wrdat_o => tb_wbus_wrdat,
+      m_ack_i   => tb_wbus_ack,
+      m_rddat_i => tb_wbus_rddat
     ); -- wbus_master_sim_inst : entity work.wbus_master_sim
 
   wbus_slave_sim_inst : entity work.wbus_slave_sim
@@ -178,16 +177,16 @@ begin
       G_DATA_SIZE => G_DATA_SIZE
     )
     port map (
-      clk_i          => wbus_clk,
-      rst_i          => wbus_rst,
-      s_wbus_cyc_i   => mem_wbus_cyc,
-      s_wbus_stall_o => mem_wbus_stall,
-      s_wbus_stb_i   => mem_wbus_stb,
-      s_wbus_addr_i  => mem_wbus_addr,
-      s_wbus_we_i    => mem_wbus_we,
-      s_wbus_wrdat_i => mem_wbus_wrdat,
-      s_wbus_ack_o   => mem_wbus_ack,
-      s_wbus_rddat_o => mem_wbus_rddat
+      clk_i     => wbus_clk,
+      rst_i     => wbus_rst,
+      s_cyc_i   => mem_wbus_cyc,
+      s_stall_o => mem_wbus_stall,
+      s_stb_i   => mem_wbus_stb,
+      s_addr_i  => mem_wbus_addr,
+      s_we_i    => mem_wbus_we,
+      s_wrdat_i => mem_wbus_wrdat,
+      s_ack_o   => mem_wbus_ack,
+      s_rddat_o => mem_wbus_rddat
     ); -- wbus_slave_sim_inst : entity work.wbus_slave_sim
 
 end architecture simulation;

@@ -80,10 +80,10 @@ begin
             -- Write next byte
             if m_bytes_o = G_DATA_BYTES then
               m_data_o(G_DATA_BYTES * 8 - 1 downto G_DATA_BYTES * 8 - 8) <= s_data_i;
-              m_bytes_o <= 1;
+              m_bytes_o                                                  <= 1;
             else
               m_data_o(G_DATA_BYTES * 8 - 1 - m_bytes_o * 8 downto G_DATA_BYTES * 8 - 8 - m_bytes_o * 8) <= s_data_i;
-              m_bytes_o <= m_bytes_o + 1;
+              m_bytes_o                                                                                  <= m_bytes_o + 1;
             end if;
 
             -- If G_DATA_BYTES received, forward them.
