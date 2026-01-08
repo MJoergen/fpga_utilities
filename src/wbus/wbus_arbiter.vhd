@@ -56,9 +56,9 @@ architecture synthesis of wbus_arbiter is
 
 begin
 
-  s0_wbus_stall_o <= (m_wbus_stall_i or m_wbus_stb_o) when state = SLAVE_0_IDLE_ST else
+  s0_wbus_stall_o <= '0' when state = SLAVE_0_IDLE_ST else
                      '1';
-  s1_wbus_stall_o <= (m_wbus_stall_i or m_wbus_stb_o) when state = SLAVE_1_IDLE_ST else
+  s1_wbus_stall_o <= '0' when state = SLAVE_1_IDLE_ST else
                      '1';
 
   fsm_proc : process (clk_i)
@@ -79,10 +79,10 @@ begin
       case state is
 
         when SLAVE_0_IDLE_ST =>
+          f_slave0 : assert (m_wbus_cyc_o = '0' and m_wbus_stb_o = '0') or rst_i = '1';
           if s0_wbus_cyc_i = '0' and s1_wbus_cyc_i = '1' then
             state <= SLAVE_1_IDLE_ST;
-          elsif s0_wbus_cyc_i = '1' and s0_wbus_stall_o = '0' and s0_wbus_stb_i = '1' and s0_wbus_ack_o = '0' then
-            f_slave0 : assert m_wbus_cyc_o = '0' or rst_i = '1';
+          elsif s0_wbus_cyc_i = '1' and s0_wbus_stb_i = '1' and s0_wbus_ack_o = '0' then
             m_wbus_addr_o  <= s0_wbus_addr_i;
             m_wbus_wrdat_o <= s0_wbus_wrdat_i;
             m_wbus_we_o    <= s0_wbus_we_i;
@@ -92,10 +92,10 @@ begin
           end if;
 
         when SLAVE_1_IDLE_ST =>
+          f_slave1 : assert (m_wbus_cyc_o = '0' and m_wbus_stb_o = '0') or rst_i = '1';
           if s0_wbus_cyc_i = '1' and s1_wbus_cyc_i = '0' then
             state <= SLAVE_0_IDLE_ST;
-          elsif s1_wbus_cyc_i = '1' and s1_wbus_stall_o = '0' and s1_wbus_stb_i = '1' and s1_wbus_ack_o = '0' then
-            f_slave1 : assert m_wbus_cyc_o = '0' or rst_i = '1';
+          elsif s1_wbus_cyc_i = '1' and s1_wbus_stb_i = '1' and s1_wbus_ack_o = '0' then
             m_wbus_addr_o  <= s1_wbus_addr_i;
             m_wbus_wrdat_o <= s1_wbus_wrdat_i;
             m_wbus_we_o    <= s1_wbus_we_i;

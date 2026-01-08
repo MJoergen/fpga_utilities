@@ -1,5 +1,4 @@
 # Author:  Michael Jørgensen
-# Project: XENTA, RCU, Main FPGA
 #
 # Description: Makefile for simulating the axil_wbus.vhd and wbus_axil.vhd files.
 
