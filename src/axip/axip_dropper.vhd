@@ -1,12 +1,9 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description: Drops packets from an AXI Stream.
--- It stores input packets until the last word, before deciding whether to forward the packet.
--- Since multiple (short) packets may be received while forwarding a single (long) frame, the
--- "end pointer" of each received valid frame must be stored in a separate FIFO.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: Drops packets from an AXI Stream.  It stores input packets until the last
+-- word, before deciding whether to forward the packet.  Since multiple (short) packets
+-- may be received while forwarding a single (long) frame, the "end pointer" of each
+-- received valid frame must be stored in a separate FIFO.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -79,7 +76,6 @@ begin
   begin
     if rising_edge(clk_i) then
       fifo_wr_valid <= '0';
-      fifo_wr_data  <= (others => '0');
 
       if s_valid_i = '1' and s_ready_o = '1' then
         -- Store word in frame buffer
@@ -135,7 +131,7 @@ begin
   -- Read frame from buffer
   ----------------------------------------------------
 
-  fifo_rd_ready <= '1' when fsm_state = IDLE_ST and m_ready_i = '1' else
+  fifo_rd_ready <= '1' when fsm_state = IDLE_ST and (m_ready_i = '1' or m_valid_o = '0') else
                    '0';
 
   output_proc : process (clk_i)
@@ -143,13 +139,12 @@ begin
     if rising_edge(clk_i) then
       if m_ready_i = '1' then
         m_valid_o <= '0';
-        m_last_o  <= '0';
       end if;
 
       case fsm_state is
 
         when IDLE_ST =>
-          if fifo_rd_valid = '1' and m_ready_i = '1' then
+          if fifo_rd_valid = '1' and fifo_rd_ready = '1' then
             last_ptr  <= to_integer(unsigned(fifo_rd_data));
             m_valid_o <= '1';
             m_last_o  <= '0';
@@ -180,10 +175,8 @@ begin
       end case;
 
       if rst_i = '1' then
-        rdptr     <= 0;
         m_valid_o <= '0';
-        m_last_o  <= '0';
-        m_data_o  <= (others => '0');
+        rdptr     <= 0;
         fsm_state <= IDLE_ST;
       end if;
     end if;

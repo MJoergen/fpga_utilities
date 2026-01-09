@@ -1,16 +1,12 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : simulation
--------------------------------------------------------------------------------
--- Description:
--- This module generates empty cycles in an AXI stream by deasserting
--- s_ready_o and m_valid_o at random intervals. The period between the empty
--- cycles can be controlled by the generic G_PAUSE_SIZE:
+-- ---------------------------------------------------------------------------------------
+-- Description: This module generates empty cycles in an AXI stream by deasserting
+-- s_ready_o and m_valid_o at random intervals. The period between the empty cycles can be
+-- controlled by the generic G_PAUSE_SIZE:
 -- * Setting it to 0 disables the empty cycles.
 -- * Setting it to 10 inserts empty cycles approximately every tenth cycle, i.e. 90 % throughput.
 -- * Setting it to -10 inserts empty cycles except approximately every tenth cycle, i.e. 10 % throughput.
 -- * Etc.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;

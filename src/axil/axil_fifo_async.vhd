@@ -1,12 +1,13 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: This provides a Clock Domain Crossing (i.e. an asynchronuous FIFO) for a
+-- AXI Lite interface.  Each of the five channels (AW, W, B, AR, and R) use their own
+-- separate async FIFO, so you can not make any assumptions about the relative timings
+-- between these channels.
+-- ---------------------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
-
--- This provides a Clock Domain Crossing (i.e. an asynchronuous FIFO) for a AXI Lite
--- interface.
-
--- Each of the five channels (AW, W, B, AR, and R) use their own separate async FIFO,
--- so you can not make any assumptions about the relative timings between these channels.
 
 entity axil_fifo_async is
   generic (

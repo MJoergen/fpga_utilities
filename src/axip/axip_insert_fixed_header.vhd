@@ -1,13 +1,9 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description:
--- This takes an AXI packet stream as input, and inserts a fixed-size header to the start of the packet.
--- First byte is in the left-most (MSB) position.
+-- ---------------------------------------------------------------------------------------
+-- Description: This takes an AXI packet stream as input, and inserts a fixed-size header
+-- to the start of the packet.  First byte is in the left-most (MSB) position.
 -- s_bytes_i is only valid when s_last_i is 1.
 -- m_bytes_o is only valid when m_last_o is 1.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -42,13 +38,16 @@ end entity axip_insert_fixed_header;
 
 architecture synthesis of axip_insert_fixed_header is
 
-  type   state_type is (IDLE_ST, WAIT_HEADER_ST, WAIT_DATA_ST, BUSY_ST, LAST_ST);
-  signal state : state_type := IDLE_ST;
+  type    state_type is (IDLE_ST, WAIT_HEADER_ST, WAIT_DATA_ST, BUSY_ST, LAST_ST);
+  signal  state : state_type := IDLE_ST;
 
-  signal h_data  : std_logic_vector(G_HEADER_BYTES * 8 - 1 downto 0);
-  signal s_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal s_last  : std_logic;
-  signal s_bytes : natural range 0 to G_DATA_BYTES;
+  signal  h_data  : std_logic_vector(G_HEADER_BYTES * 8 - 1 downto 0);
+  signal  s_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal  s_last  : std_logic;
+  signal  s_bytes : natural range 0 to G_DATA_BYTES;
+
+  subtype R_DATA   is natural range G_DATA_BYTES * 8 - 1 downto G_HEADER_BYTES * 8;
+  subtype R_HEADER is natural range G_HEADER_BYTES * 8 - 1 downto 0;
 
 begin
 
@@ -62,52 +61,62 @@ begin
     if rising_edge(clk_i) then
       if m_ready_i = '1' then
         m_valid_o <= '0';
-        m_last_o  <= '0';
-        m_bytes_o <= 0;
       end if;
 
       case state is
 
         when IDLE_ST =>
           if s_valid_i = '1' and s_ready_o = '1' and h_valid_i = '1' and h_ready_o = '1' then
+            -- Both data and header received.
+            -- Store data for next clock cycle
             s_data    <= s_data_i;
             s_last    <= s_last_i;
             s_bytes   <= s_bytes_i;
+
+            -- Prepare output
             m_valid_o <= '1';
-            m_data_o  <= h_data_i & s_data_i(G_DATA_BYTES * 8 - 1 downto G_HEADER_BYTES * 8);
+            m_data_o  <= h_data_i & s_data_i(R_DATA);
             m_last_o  <= '0';
             m_bytes_o <= G_DATA_BYTES;
             state     <= BUSY_ST;
             if s_last_i = '1' then
+              -- Do we need an extra clock cycle?
               if s_bytes_i > G_DATA_BYTES - G_HEADER_BYTES then
                 state <= LAST_ST;
               else
+                -- We're done now.
                 m_last_o  <= '1';
                 m_bytes_o <= s_bytes_i + G_HEADER_BYTES;
                 state     <= IDLE_ST;
               end if;
             end if;
           elsif s_valid_i = '1' and s_ready_o = '1' then
+            -- Only data, no header
             s_data  <= s_data_i;
             s_last  <= s_last_i;
             s_bytes <= s_bytes_i;
             state   <= WAIT_HEADER_ST;
           elsif h_valid_i = '1' and h_ready_o = '1' then
+            -- Only header, no data
             h_data <= h_data_i;
             state  <= WAIT_DATA_ST;
           end if;
 
         when WAIT_HEADER_ST =>
           if h_valid_i = '1' and h_ready_o = '1' then
+            -- Header received
+            -- Prepare output
             m_valid_o <= '1';
-            m_data_o  <= h_data_i & s_data(G_DATA_BYTES * 8 - 1 downto G_HEADER_BYTES * 8);
+            m_data_o  <= h_data_i & s_data(R_DATA);
             m_last_o  <= '0';
             m_bytes_o <= G_DATA_BYTES;
             state     <= BUSY_ST;
             if s_last = '1' then
+              -- Do we need an extra clock cycle?
               if s_bytes > G_DATA_BYTES - G_HEADER_BYTES then
                 state <= LAST_ST;
               else
+                -- We're done now.
                 m_last_o  <= '1';
                 m_bytes_o <= s_bytes + G_HEADER_BYTES;
                 state     <= IDLE_ST;
@@ -117,18 +126,22 @@ begin
 
         when WAIT_DATA_ST =>
           if s_valid_i = '1' and s_ready_o = '1' then
+            -- Data received
             s_data    <= s_data_i;
             s_last    <= s_last_i;
             s_bytes   <= s_bytes_i;
+            -- Prepare output
             m_valid_o <= '1';
-            m_data_o  <= h_data & s_data_i(G_DATA_BYTES * 8 - 1 downto G_HEADER_BYTES * 8);
+            m_data_o  <= h_data & s_data_i(R_DATA);
             m_last_o  <= '0';
             m_bytes_o <= G_DATA_BYTES;
             state     <= BUSY_ST;
             if s_last_i = '1' then
+              -- Do we need an extra clock cycle?
               if s_bytes_i > G_DATA_BYTES - G_HEADER_BYTES then
                 state <= LAST_ST;
               else
+                -- We're done now.
                 m_last_o  <= '1';
                 m_bytes_o <= s_bytes_i + G_HEADER_BYTES;
                 state     <= IDLE_ST;
@@ -138,16 +151,21 @@ begin
 
         when BUSY_ST =>
           if s_valid_i = '1' and s_ready_o = '1' then
+            -- Data received
             s_data    <= s_data_i;
+            s_last    <= s_last_i;
             s_bytes   <= s_bytes_i;
+            -- Prepare output
             m_valid_o <= '1';
-            m_data_o  <= s_data(G_HEADER_BYTES * 8 - 1 downto 0) & s_data_i(G_DATA_BYTES * 8 - 1 downto G_HEADER_BYTES * 8);
+            m_data_o  <= s_data(R_HEADER) & s_data_i(R_DATA);
             m_last_o  <= '0';
             m_bytes_o <= G_DATA_BYTES;
             if s_last_i = '1' then
+              -- Do we need an extra clock cycle?
               if s_bytes_i > G_DATA_BYTES - G_HEADER_BYTES then
                 state <= LAST_ST;
               else
+                -- We're done now.
                 m_last_o  <= '1';
                 m_bytes_o <= s_bytes_i + G_HEADER_BYTES;
                 state     <= IDLE_ST;
@@ -158,7 +176,7 @@ begin
         when LAST_ST =>
           if m_ready_i or not m_valid_o then
             m_valid_o <= '1';
-            m_data_o  <= s_data(G_HEADER_BYTES * 8 - 1 downto 0) & s_data_i(G_DATA_BYTES * 8 - 1 downto G_HEADER_BYTES * 8);
+            m_data_o  <= s_data(R_HEADER) & s_data_i(R_DATA);
             m_last_o  <= '1';
             m_bytes_o <= s_bytes - (G_DATA_BYTES - G_HEADER_BYTES);
             state     <= IDLE_ST;
@@ -168,9 +186,6 @@ begin
 
       if rst_i = '1' then
         m_valid_o <= '0';
-        m_data_o  <= (others => '0');
-        m_last_o  <= '0';
-        m_bytes_o <= 0;
         state     <= IDLE_ST;
       end if;
     end if;

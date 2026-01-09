@@ -13,7 +13,7 @@ bmc: depth 12
 smtbmc
 
 [script]
-ghdl --std=08 -gG_ADDR_SIZE=4 wbus_arbiter.vhd wbus_arbiter.psl -e wbus_arbiter
+ghdl --std=08 -gG_ADDR_SIZE=4 -gG_DATA_SIZE=8 wbus_arbiter.vhd wbus_arbiter.psl -e wbus_arbiter
 prep -top wbus_arbiter
 
 [files]

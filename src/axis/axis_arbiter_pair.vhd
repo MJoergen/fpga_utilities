@@ -1,19 +1,14 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description: Arbitrate between two different pairs of AXI masters.
--- If only half of AXI Master is transferred, then the other AXI Master is blocked until
--- the second half is transferred.
--- In other words, one word from each pair must be transferred, before grant can be
--- switched.
--- The main use of this block is for arbitrating between two AW/W pairs in the AXI Lite
--- interface.
+-- ---------------------------------------------------------------------------------------
+-- Description: Arbitrate between two different pairs of AXI masters.  If only half of AXI
+-- Master is transferred, then the other AXI Master is blocked until the second half is
+-- transferred.  In other words, one word from each pair must be transferred, before grant
+-- can be switched.  The main use of this block is for arbitrating between two AW/W pairs
+-- in the AXI Lite interface.
 --
 -- The complexity in this module is to determine when it's safe to switch grant from one
 -- Master to another. This is the case when all data has been accepted by the slave AND
 -- the current Master is not sending new data.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -87,6 +82,9 @@ begin
   s0_accept_a  <= s0_a_valid_i and s0_a_ready_o;
   s0_accept_b  <= s0_b_valid_i and s0_b_ready_o;
 
+  s1_accept_a  <= s1_a_valid_i and s1_a_ready_o;
+  s1_accept_b  <= s1_b_valid_i and s1_b_ready_o;
+
   s0_busy_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
@@ -119,11 +117,6 @@ begin
     end if;
   end process s0_busy_proc;
 
-  busy_assert : assert s0_state = IDLE_ST or s1_state = IDLE_ST or rst_i = '1';
-
-  s1_accept_a  <= s1_a_valid_i and s1_a_ready_o;
-  s1_accept_b  <= s1_b_valid_i and s1_b_ready_o;
-
   s1_busy_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
@@ -155,6 +148,9 @@ begin
       end if;
     end if;
   end process s1_busy_proc;
+
+  -- This validates the invariant.
+  busy_assert : assert s0_state = IDLE_ST or s1_state = IDLE_ST or rst_i = '1';
 
 
   fsm_proc : process (clk_i)

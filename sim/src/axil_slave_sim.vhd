@@ -1,10 +1,7 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : simulation
--- ----------------------------------------------------------------------------
--- Description: This simulates an AXI lite slave.
--- It emulates a simple RAM and responds to Write and Read requests.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: This simulates an AXI lite slave.  It emulates a simple RAM and responds
+-- to Write and Read requests.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -43,11 +40,11 @@ end entity axil_slave_sim;
 
 architecture simulation of axil_slave_sim is
 
-  signal s_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
   signal s_awvalid : std_logic;
+  signal s_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_wvalid  : std_logic;
   signal s_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal s_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal s_wvalid  : std_logic;
 
   type   ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
@@ -77,15 +74,15 @@ begin
 
       -- Wait for write address
       if s_awready_o = '1' and s_awvalid_i = '1' then
-        s_awaddr  <= s_awaddr_i;
         s_awvalid <= '1';
+        s_awaddr  <= s_awaddr_i;
       end if;
 
       -- Wait for write data
       if s_wready_o = '1' and s_wvalid_i = '1' then
+        s_wvalid <= '1';
         s_wdata  <= s_wdata_i;
         s_wstrb  <= s_wstrb_i;
-        s_wvalid <= '1';
       end if;
 
       -- Handle write

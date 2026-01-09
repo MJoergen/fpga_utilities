@@ -1,66 +1,57 @@
 [*]
-[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
-[*] Wed Dec 31 08:34:21 2025
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Jan  9 11:35:13 2026
 [*]
-[dumpfile] "/home/mike/git/MJoergen/tcp/formal/axis_remove_fixed_header_bmc/engine_0/trace.vcd"
-[dumpfile_mtime] "Wed Dec 31 08:33:26 2025"
-[dumpfile_size] 4999
-[savefile] "/home/mike/git/MJoergen/tcp/formal/axis_remove_fixed_header.gtkw"
+[dumpfile] "(null)"
+[savefile] "/home/mfj/git/Weibel/fpga_utilities/formal/axip_remove_fixed_header.gtkw"
 [timestart] 0
-[size] 1300 821
+[size] 1357 821
 [pos] 0 23
-*-3.708951 25 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[treeopen] axis_remove_fixed_header.
+*-3.965342 34 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] axip_remove_fixed_header.
 [sst_width] 239
-[signals_width] 289
+[signals_width] 354
 [sst_expanded] 1
 [sst_vpaned_height] 236
 @800200
--DUT
+-axip_remove_fixed_header
 @28
-axis_remove_fixed_header.clk_i
-axis_remove_fixed_header.rst_i
+axip_remove_fixed_header.clk_i
+axip_remove_fixed_header.rst_i
 [color] 6
-axis_remove_fixed_header.s_ready_o
+axip_remove_fixed_header.s_ready_o
 [color] 2
-axis_remove_fixed_header.s_valid_i
+axip_remove_fixed_header.s_valid_i
 @22
-axis_remove_fixed_header.s_data_i[39:0]
-@24
-axis_remove_fixed_header.s_bytes_i[2:0]
+axip_remove_fixed_header.s_data_i[39:0]
 @28
-axis_remove_fixed_header.s_last_i
+axip_remove_fixed_header.s_last_i
+@24
+axip_remove_fixed_header.s_bytes_i[2:0]
+@28
 [color] 6
-axis_remove_fixed_header.m_ready_i
+axip_remove_fixed_header.m_ready_i
 [color] 2
-axis_remove_fixed_header.m_valid_o
+axip_remove_fixed_header.m_valid_o
 @22
-axis_remove_fixed_header.m_data_o[39:0]
+axip_remove_fixed_header.m_data_o[39:0]
+@29
+axip_remove_fixed_header.m_last_o
 @24
-axis_remove_fixed_header.m_bytes_o[2:0]
+axip_remove_fixed_header.m_bytes_o[2:0]
 @28
-axis_remove_fixed_header.m_last_o
 [color] 6
-axis_remove_fixed_header.h_ready_i
+axip_remove_fixed_header.h_ready_i
 [color] 2
-axis_remove_fixed_header.h_valid_o
+axip_remove_fixed_header.h_valid_o
 @22
-axis_remove_fixed_header.h_data_o[15:0]
-@28
-axis_remove_fixed_header.state[1:0]
-@22
-axis_remove_fixed_header.s_data[39:0]
-@24
-axis_remove_fixed_header.s_bytes[2:0]
+axip_remove_fixed_header.h_data_o[15:0]
 @1000200
--DUT
-@28
-axis_remove_fixed_header.axis_remove_fixed_header_inst.f_data_in
-axis_remove_fixed_header.axis_remove_fixed_header_inst.f_data_out
-@22
-axis_remove_fixed_header.axis_remove_fixed_header_inst.f_data[7:0]
+-axip_remove_fixed_header
 @24
-axis_remove_fixed_header.axis_remove_fixed_header_inst.f_s_length[9:0]
-axis_remove_fixed_header.axis_remove_fixed_header_inst.f_m_length[9:0]
+axip_remove_fixed_header.axip_remove_fixed_header_inst.f_s_cnt[3:0]
+axip_remove_fixed_header.axip_remove_fixed_header_inst.f_m_cnt[3:0]
+axip_remove_fixed_header.axip_remove_fixed_header_inst.f_s_length[9:0]
+axip_remove_fixed_header.axip_remove_fixed_header_inst.f_m_bytes[9:0]
 [pattern_trace] 1
 [pattern_trace] 0

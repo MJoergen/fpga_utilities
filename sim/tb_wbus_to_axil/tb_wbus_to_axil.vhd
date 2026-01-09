@@ -1,3 +1,7 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: Verify wbus_to_axil
+-- ---------------------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
@@ -5,6 +9,8 @@ library ieee;
 entity tb_wbus_to_axil is
   generic (
     G_DO_ABORT   : boolean;
+    G_DEBUG      : boolean;
+    G_FAST       : boolean;
     G_PAUSE_SIZE : natural;
     G_ADDR_SIZE  : natural;
     G_DATA_SIZE  : natural
@@ -24,15 +30,6 @@ architecture simulation of tb_wbus_to_axil is
   signal m_wbus_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal m_wbus_ack   : std_logic;
   signal m_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-
-  signal s_wbus_cyc   : std_logic;
-  signal s_wbus_stall : std_logic;
-  signal s_wbus_stb   : std_logic;
-  signal s_wbus_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal s_wbus_we    : std_logic;
-  signal s_wbus_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s_wbus_ack   : std_logic;
-  signal s_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
   signal m_axil_awready : std_logic;
   signal m_axil_awvalid : std_logic;
@@ -166,41 +163,6 @@ begin
     ); -- axil_pause_inst : entity work.axil_pause
 
 
-  axil_to_wbus_inst : entity work.axil_to_wbus
-    generic map (
-      G_TIMEOUT   => 1000,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
-    )
-    port map (
-      clk_i            => clk,
-      rst_i            => rst,
-      s_axil_awready_o => s_axil_awready,
-      s_axil_awvalid_i => s_axil_awvalid,
-      s_axil_awaddr_i  => s_axil_awaddr,
-      s_axil_wready_o  => s_axil_wready,
-      s_axil_wvalid_i  => s_axil_wvalid,
-      s_axil_wdata_i   => s_axil_wdata,
-      s_axil_wstrb_i   => s_axil_wstrb,
-      s_axil_bready_i  => s_axil_bready,
-      s_axil_bvalid_o  => s_axil_bvalid,
-      s_axil_arready_o => s_axil_arready,
-      s_axil_arvalid_i => s_axil_arvalid,
-      s_axil_araddr_i  => s_axil_araddr,
-      s_axil_rready_i  => s_axil_rready,
-      s_axil_rvalid_o  => s_axil_rvalid,
-      s_axil_rdata_o   => s_axil_rdata,
-      m_wbus_cyc_o     => s_wbus_cyc,
-      m_wbus_stall_i   => s_wbus_stall,
-      m_wbus_stb_o     => s_wbus_stb,
-      m_wbus_addr_o    => s_wbus_addr,
-      m_wbus_we_o      => s_wbus_we,
-      m_wbus_wrdat_o   => s_wbus_wrdat,
-      m_wbus_ack_i     => s_wbus_ack,
-      m_wbus_rddat_i   => s_wbus_rddat
-    ); -- axil_to_wbus_inst : entity work.axil_to_wbus
-
-
   --------------------------------
   -- Instantiate Wishbone master
   --------------------------------
@@ -228,29 +190,35 @@ begin
 
 
   --------------------------------
-  -- Instantiate Wishbone slave
+  -- Instantiate AXI Lite Slave
   --------------------------------
 
-  wbus_slave_sim_inst : entity work.wbus_slave_sim
+  axil_slave_sim : entity work.axil_slave_sim
     generic map (
-      G_DEBUG     => false,
-      G_LATENCY   => 3,
-      G_TIMEOUT   => false,
+      G_DEBUG     => G_DEBUG,
+      G_FAST      => G_FAST,
       G_ADDR_SIZE => G_ADDR_SIZE,
       G_DATA_SIZE => G_DATA_SIZE
     )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      s_cyc_i   => s_wbus_cyc,
-      s_stall_o => s_wbus_stall,
-      s_stb_i   => s_wbus_stb,
-      s_addr_i  => s_wbus_addr,
-      s_we_i    => s_wbus_we,
-      s_wrdat_i => s_wbus_wrdat,
-      s_ack_o   => s_wbus_ack,
-      s_rddat_o => s_wbus_rddat
-    ); -- wbus_mem_sim_inst : entity work.wbus_mem_sim
+      clk_i       => clk,
+      rst_i       => rst,
+      s_awready_o => s_axil_awready,
+      s_awvalid_i => s_axil_awvalid,
+      s_awaddr_i  => s_axil_awaddr,
+      s_wready_o  => s_axil_wready,
+      s_wvalid_i  => s_axil_wvalid,
+      s_wdata_i   => s_axil_wdata,
+      s_wstrb_i   => s_axil_wstrb,
+      s_bready_i  => s_axil_bready,
+      s_bvalid_o  => s_axil_bvalid,
+      s_arready_o => s_axil_arready,
+      s_arvalid_i => s_axil_arvalid,
+      s_araddr_i  => s_axil_araddr,
+      s_rready_i  => s_axil_rready,
+      s_rvalid_o  => s_axil_rvalid,
+      s_rdata_o   => s_axil_rdata
+    ); -- axil_slave_sim : entity work.axil_slave_sim
 
 end architecture simulation;
 

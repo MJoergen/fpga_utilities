@@ -1,12 +1,8 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : simulation
--- ----------------------------------------------------------------------------
--- Description:
--- This simulates a Wishbone Master.
--- It generates a sequence of Writes and Reads, and verifies that the values
--- returned from Read matches the corresponding values during Write.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: This simulates a Wishbone Master.  It generates a sequence of Writes and
+-- Reads, and verifies that the values returned from Read matches the corresponding values
+-- during Write.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;

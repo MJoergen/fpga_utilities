@@ -1,10 +1,7 @@
--- Author     : Michael Jørgensen
--- Platform   : Simulation
--- ----------------------------------------------------------------------------
--- Description:
--- Comprehensive test of the AXI-Lite to WBUS.
--- The axil_master_sim module used here generates multiple accesses simultaneously.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: Comprehensive test of the AXI-Lite to WBUS.  The axil_master_sim module
+-- used here generates multiple accesses simultaneously.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -140,9 +137,9 @@ begin
     ); -- axil_to_wbus_inst : entity work.axil_to_wbus
 
 
-  --------..---------------------------
+  ------------------------------------------
   -- Instantiate Wishbone slave
-  ---------..--------------------------
+  ------------------------------------------
 
   wbus_slave_sim_inst : entity work.wbus_slave_sim
     generic map (

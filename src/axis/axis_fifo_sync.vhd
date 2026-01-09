@@ -1,9 +1,6 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description: This is a simple synchronuous AXI streaming FIFO.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: This is a simple AXI streaming synchronuous FIFO.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -56,15 +53,15 @@ architecture synthesis of axis_fifo_sync is
 
   -- Increment or wrap the index if this transaction is valid
 
-  function next_index (
+  pure function next_index (
     index : INDEX_TYPE;
     ready : std_logic;
     valid : std_logic
   ) return INDEX_TYPE is
   begin
     if ready = '1' and valid = '1' then
-      if index = index_type'high then
-        return index_type'low;
+      if index = INDEX_TYPE'high then
+        return INDEX_TYPE'low;
       else
         return index + 1;
       end if;
@@ -75,8 +72,53 @@ architecture synthesis of axis_fifo_sync is
 
 begin
 
+  -------------------------------
+  -- Combinatorial signals
+  -------------------------------
+
   fill_o <= head - tail when head >= tail else
             G_RAM_DEPTH - (tail - head);
+
+  -- Set out_valid when the RAM outputs valid data
+  m_valid_proc : process (all)
+  begin
+    m_valid_o <= '1';
+
+    -- If the RAM is empty or was empty in the prev cycle
+    if count = 0 or count_d = 0 then
+      m_valid_o <= '0';
+    end if;
+
+    -- If simultaneous read and write when almost empty
+    if count = 1 and read_while_write_d = '1' then
+      m_valid_o <= '0';
+    end if;
+  end process m_valid_proc;
+
+  -- Set s_ready_o when the RAM isn't full
+  s_ready_proc : process (all)
+  begin
+    if count < G_RAM_DEPTH - 1 then
+      s_ready_o <= '1';
+    else
+      s_ready_o <= '0';
+    end if;
+  end process s_ready_proc;
+
+  -- Find the number of elements in the RAM
+  count_proc : process (all)
+  begin
+    if head < tail then
+      count <= head - tail + G_RAM_DEPTH;
+    else
+      count <= head - tail;
+    end if;
+  end process count_proc;
+
+
+  -------------------------------
+  -- Registered signals
+  -------------------------------
 
   head_proc : process (clk_i)
   begin
@@ -100,7 +142,6 @@ begin
     end if;
   end process tail_proc;
 
-
   -- Write to and read from the RAM
   ram_proc : process (clk_i)
   begin
@@ -110,18 +151,8 @@ begin
     end if;
   end process ram_proc;
 
-  -- Find the number of elements in the RAM
-  count_proc : process (head, tail)
-  begin
-    if head < tail then
-      count <= head - tail + G_RAM_DEPTH;
-    else
-      count <= head - tail;
-    end if;
-  end process count_proc;
-
   -- Delay the count by one clock cycles
-  count_p1_proc : process (clk_i)
+  count_d_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
       count_d <= count;
@@ -130,17 +161,7 @@ begin
         count_d <= 0;
       end if;
     end if;
-  end process count_p1_proc;
-
-  -- Set s_ready_o when the RAM isn't full
-  s_ready_proc : process (count)
-  begin
-    if count < G_RAM_DEPTH - 1 then
-      s_ready_o <= '1';
-    else
-      s_ready_o <= '0';
-    end if;
-  end process s_ready_proc;
+  end process count_d_proc;
 
   -- Detect simultaneous read and write operations
   read_while_write_d_proc : process (clk_i)
@@ -156,22 +177,6 @@ begin
       end if;
     end if;
   end process read_while_write_d_proc;
-
-  -- Set out_valid when the RAM outputs valid data
-  m_valid_proc : process (count, count_d, read_while_write_d)
-  begin
-    m_valid_o <= '1';
-
-    -- If the RAM is empty or was empty in the prev cycle
-    if count = 0 or count_d = 0 then
-      m_valid_o <= '0';
-    end if;
-
-    -- If simultaneous read and write when almost empty
-    if count = 1 and read_while_write_d = '1' then
-      m_valid_o <= '0';
-    end if;
-  end process m_valid_proc;
 
 end architecture synthesis;
 

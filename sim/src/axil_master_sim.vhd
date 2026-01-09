@@ -1,13 +1,9 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : simulation
--- ----------------------------------------------------------------------------
--- Description: This provides stimulus to and verifies response from an AXI lite interface.
--- It generates a sequence of Writes and Reads, and verifies that the values
--- returned from Read matches the corresponding values during Write.
--- This module may generate simultaneous read and write requests, without first
--- waiting for a response.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: This provides stimulus to and verifies response from an AXI lite
+-- interface.  It generates a sequence of Writes and Reads, and verifies that the values
+-- returned from Read matches the corresponding values during Write.  This module may
+-- generate simultaneous read and write requests, without first waiting for a response.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;

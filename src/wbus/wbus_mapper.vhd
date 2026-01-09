@@ -1,12 +1,11 @@
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description: Wishbone mapper
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: Wishbone mapper. Connect multiple Wishbone Slaves to a single Wishbone
+-- Master.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
-  use ieee.numeric_std_unsigned.all;
+  use ieee.numeric_std.all;
 
 library work;
   use work.wbus_pkg.slv32_array_type;
@@ -86,7 +85,6 @@ begin
     if rising_edge(clk_i) then
       if (m_stall_i and m_stb_o) = 0 then
         m_stb_o <= (others => '0');
-        m_we_o  <= '0';
       end if;
       s_ack_o <= '0';
 
@@ -95,8 +93,8 @@ begin
         when IDLE_ST =>
           if s_cyc_i = '1' and s_stb_i = '1' then
             slave_num_v := s_addr_i(G_MASTER_ADDR_SIZE - 1 downto G_SLAVE_ADDR_SIZE);
-            if to_integer(slave_num_v) < G_NUM_SLAVES then
-              idx_v          := to_integer(slave_num_v);
+            if to_integer(unsigned(slave_num_v)) < G_NUM_SLAVES then
+              idx_v          := to_integer(unsigned(slave_num_v));
               slave_num      <= idx_v;
               m_addr_o       <= s_addr_i(G_SLAVE_ADDR_SIZE - 1 downto 0);
               m_wrdat_o      <= s_wrdat_i;

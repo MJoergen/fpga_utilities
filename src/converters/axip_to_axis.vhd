@@ -1,11 +1,8 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description:
--- This module generates a stream of bytes from a wider bus interface.
--- The first byte sent is read from MSB, i.e. s_data_o(G_DATA_BYTES*8-1 downto G_DATA_BYTES*8-8);
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: This module generates a stream of bytes from a wider bus interface.  The
+-- first byte sent is read from MSB, i.e. s_data_o(G_DATA_BYTES*8-1 downto
+-- G_DATA_BYTES*8-8);
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -19,14 +16,14 @@ entity axip_to_axis is
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
 
-    -- Input interface (wide data bus).
+    -- AXI packet Input
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
     s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
     s_last_i  : in    std_logic;
-    s_bytes_i : in    natural range 0 to G_DATA_BYTES;          -- Only used when s_last_i is asserted.
+    s_bytes_i : in    natural range 0 to G_DATA_BYTES;
 
-    -- Output interface (byte data bus).
+    -- AXI stream output
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
     m_data_o  : out   std_logic_vector(7 downto 0);
@@ -53,16 +50,15 @@ begin
     if rising_edge(clk_i) then
       if m_ready_i = '1' then
         m_valid_o <= '0';
-        m_last_o  <= '0';
       end if;
 
       case state is
 
         when IDLE_ST =>
           if s_valid_i = '1' then
+            s_data  <= s_data_i;
             s_last  <= s_last_i;
             s_bytes <= s_bytes_i;
-            s_data  <= s_data_i;
             if s_last_i = '0' then
               s_bytes <= 0;
             end if;
@@ -72,8 +68,8 @@ begin
         when FWD_ST =>
           if m_ready_i = '1' then
             m_valid_o <= '1';
-            m_last_o  <= '0';
             m_data_o  <= s_data(G_DATA_BYTES * 8 - 1 downto G_DATA_BYTES * 8 - 8);
+            m_last_o  <= '0';
             if s_bytes = 1 then
               m_last_o <= s_last;
               state    <= IDLE_ST;
@@ -91,7 +87,6 @@ begin
 
       if rst_i = '1' then
         m_valid_o <= '0';
-        m_last_o  <= '0';
         state     <= IDLE_ST;
       end if;
     end if;

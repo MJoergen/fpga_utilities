@@ -1,9 +1,6 @@
--- Author     : Michael Jørgensen
--- Platform   : Simulation
--- ----------------------------------------------------------------------------
--- Description:
--- Simple testbench for the AXI-Lite to WBUS and WBUS to AXI-Lite converters
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: Simple testbench for the AXI-Lite to WBUS and WBUS to AXI-Lite converters
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -31,7 +28,7 @@ architecture simulation of tb_wbus_axil_wbus is
   signal tb_wbus_ack   : std_logic;
   signal tb_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
-  signal mem_wbus_cyc   : std_logic := '0';
+  signal mem_wbus_cyc   : std_logic;
   signal mem_wbus_stall : std_logic;
   signal mem_wbus_stb   : std_logic;
   signal mem_wbus_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);

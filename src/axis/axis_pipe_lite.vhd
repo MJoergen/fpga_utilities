@@ -1,17 +1,13 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- This module implements a pipe consisting of only a single register layer.
--- It has its use in elastic pipelines, where the data flow has back-pressure.
--- It places registers on the valid and data signals in the downstream direction,
--- but the ready signal in the upstream direction is still combinatorial.
--- The pipe supports simultaneous read and write, both when the pipe is full
--- and when it is empty.
+-- ---------------------------------------------------------------------------------------
+-- This module implements a pipe consisting of only a single register layer.  It has its
+-- use in elastic pipelines, where the data flow has back-pressure.  It places registers
+-- on the valid and data signals in the downstream direction, but the ready signal in the
+-- upstream direction is still combinatorial.  The pipe supports simultaneous read and
+-- write, both when the pipe is full and when it is empty.
 --
 -- For additional information, see:
 -- https://www.itdev.co.uk/blog/pipelining-axi-buses-registered-ready-signals
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;

@@ -1,10 +1,8 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description:
--- A simple testbench to verify the two converters: axip_to_axis.vhd and axis_to_axip.vhd.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: A simple testbench to verify the two converters: axip_to_axis.vhd and
+-- axis_to_axip.vhd.
+-- ---------------------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;

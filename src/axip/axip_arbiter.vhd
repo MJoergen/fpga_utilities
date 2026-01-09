@@ -1,10 +1,7 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description: Arbitrate between two different AXI masters
--- If both Masters request simultaneously, then they are granted access alternately.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: Arbitrate between two different AXI masters If both Masters request
+-- simultaneously, then they are granted access alternately.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -67,9 +64,9 @@ begin
         when MASTER_0_ST =>
           -- Accept data from Master 0
           if s0_valid_i = '1' and s0_ready_o = '1' then
+            m_valid_o <= '1';
             m_data_o  <= s0_data_i;
             m_last_o  <= s0_last_i;
-            m_valid_o <= '1';
 
             if s1_valid_i = '1' and s0_last_i = '1' then
               state <= MASTER_1_ST;
@@ -84,9 +81,9 @@ begin
         when MASTER_1_ST =>
           -- Accept data from Master 1
           if s1_valid_i = '1' and s1_ready_o = '1' then
+            m_valid_o <= '1';
             m_data_o  <= s1_data_i;
             m_last_o  <= s1_last_i;
-            m_valid_o <= '1';
 
             if s0_valid_i = '1' and s1_last_i = '1' then
               state <= MASTER_1_ST;

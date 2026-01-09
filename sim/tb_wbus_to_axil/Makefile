@@ -1,9 +1,8 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the wbus_axi.vhd file.
+# Description: Makefile for simulating the wbus_to_axil.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/converters/axil_to_wbus.vhd
 SRC += $(SRC_DIR)/converters/wbus_to_axil.vhd
 
 # List of test specific simulation files
@@ -15,13 +14,15 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 SRC += $(SIM_SRC_DIR)/axis_pause.vhd
 SRC += $(SIM_SRC_DIR)/axil_pause.vhd
 SRC += $(SIM_SRC_DIR)/wbus_master_sim.vhd
-SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
+SRC += $(SIM_SRC_DIR)/axil_slave_sim.vhd
 
 # Top level entity
 DUT = wbus_to_axil
 
 # Test bench configuration
 GENERIC += -gG_DO_ABORT=true
+GENERIC += -gG_DEBUG=false
+GENERIC += -gG_FAST=true
 GENERIC += -gG_PAUSE_SIZE=3
 GENERIC += -gG_ADDR_SIZE=12
 GENERIC += -gG_DATA_SIZE=16

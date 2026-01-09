@@ -1,9 +1,6 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 -- Description: Arbitrate between several different AXI masters
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -58,8 +55,8 @@ begin
   iterate_gen : if G_NUM_MASTERS = 1 generate
 
     -- Only one master
-    m_data_o     <= s_data_i;
     m_valid_o    <= s_valid_i(0);
+    m_data_o     <= s_data_i;
     m_last_o     <= s_last_i(0);
     s_ready_o(0) <= m_ready_i;
 

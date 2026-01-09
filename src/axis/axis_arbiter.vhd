@@ -1,11 +1,8 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description: Arbitrate between two different AXI Streams.
--- The arbitration is round-robbin, so if both inputs want to forward data, then they
--- are alternately granted access.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: Arbitrate between two different AXI Streams.  The arbitration is
+-- round-robin, so if both inputs want to forward data, then they are alternately granted
+-- access.
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;

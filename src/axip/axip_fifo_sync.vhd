@@ -1,13 +1,10 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 -- Description: This is a simple synchronuous AXI packet FIFO.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
-  use ieee.numeric_std_unsigned.all;
+  use ieee.numeric_std.all;
 
 entity axip_fifo_sync is
   generic (
@@ -68,11 +65,11 @@ begin
 
   s_data_in(R_AXI_FIFO_DATA)  <= s_data_i;
   s_data_in(C_AXI_FIFO_LAST)  <= s_last_i;
-  s_data_in(R_AXI_FIFO_BYTES) <= to_stdlogicvector(s_bytes_i, 15);
+  s_data_in(R_AXI_FIFO_BYTES) <= std_logic_vector(to_unsigned(s_bytes_i, 15));
 
   m_data_o                    <= m_data_out(R_AXI_FIFO_DATA);
   m_last_o                    <= m_data_out(C_AXI_FIFO_LAST);
-  m_bytes_o                   <= to_integer(m_data_out(R_AXI_FIFO_BYTES));
+  m_bytes_o                   <= to_integer(unsigned(m_data_out(R_AXI_FIFO_BYTES)));
 
 end architecture synthesis;
 

@@ -1,3 +1,7 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: A simple Linear Feedback Shift Register
+-- ---------------------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;

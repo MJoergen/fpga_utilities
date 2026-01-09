@@ -1,9 +1,6 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 -- Description: This allows an AXI Lite Slave to be connected to a Wishbone Master
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;
@@ -18,7 +15,7 @@ entity wbus_to_axil is
     clk_i            : in    std_logic;
     rst_i            : in    std_logic;
 
-    -- Wishbone Bus interface (slave)
+    -- Wishbone input
     s_wbus_cyc_i     : in    std_logic;
     s_wbus_stall_o   : out   std_logic;
     s_wbus_stb_i     : in    std_logic;
@@ -28,7 +25,7 @@ entity wbus_to_axil is
     s_wbus_ack_o     : out   std_logic;
     s_wbus_rddat_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
-    -- AXI Lite interface (master)
+    -- AXI Lite output
     m_axil_awready_i : in    std_logic;
     m_axil_awvalid_o : out   std_logic;
     m_axil_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
@@ -81,16 +78,16 @@ begin
         when IDLE_ST =>
           if s_wbus_cyc_i = '1' and s_wbus_stb_i = '1' then
             if s_wbus_we_i = '1' then
-              m_axil_awaddr_o  <= s_wbus_addr_i;
               m_axil_awvalid_o <= '1';
+              m_axil_awaddr_o  <= s_wbus_addr_i;
 
-              m_axil_wdata_o   <= s_wbus_wrdat_i;
               m_axil_wvalid_o  <= '1';
+              m_axil_wdata_o   <= s_wbus_wrdat_i;
               m_axil_wstrb_o   <= (others => '1');
               state            <= WRITING_ST;
             else
-              m_axil_araddr_o  <= s_wbus_addr_i;
               m_axil_arvalid_o <= '1';
+              m_axil_araddr_o  <= s_wbus_addr_i;
               state            <= READING_ST;
             end if;
           end if;
@@ -105,8 +102,8 @@ begin
 
         when READING_ST =>
           if m_axil_rvalid_i = '1' and m_axil_rready_o = '1' then
-            s_wbus_rddat_o <= m_axil_rdata_i;
             s_wbus_ack_o   <= s_wbus_cyc_i;
+            s_wbus_rddat_o <= m_axil_rdata_i;
             state          <= IDLE_ST;
           elsif s_wbus_cyc_i = '0' then
             state <= ABORTING_ST;
@@ -123,11 +120,11 @@ begin
       end case;
 
       if rst_i = '1' then
-        state            <= IDLE_ST;
         s_wbus_ack_o     <= '0';
         m_axil_awvalid_o <= '0';
-        m_axil_arvalid_o <= '0';
         m_axil_wvalid_o  <= '0';
+        m_axil_arvalid_o <= '0';
+        state            <= IDLE_ST;
       end if;
     end if;
   end process fsm_proc;

@@ -1,10 +1,11 @@
--- ----------------------------------------------------------------------------
--- Author     : Michael Jørgensen
--- Platform   : AMD Artix 7
--- ----------------------------------------------------------------------------
--- Description: An elastic pipeline with two stages, i.e. can accept two writes
--- before blocking.  In other words, a FIFO of depth two.
--- ----------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------------------
+-- Description: An AXI streaming elastic pipeline with two stages, i.e. can accept two
+-- writes before blocking.  In other words, a FIFO of depth two.  This can be useful for
+-- adding registers to an AXI streaming pipeline for helping to achieve timing closure.
+--
+-- For additional information, see:
+-- https://www.itdev.co.uk/blog/pipelining-axi-buses-registered-ready-signals
+-- ---------------------------------------------------------------------------------------
 
 library ieee;
   use ieee.std_logic_1164.all;

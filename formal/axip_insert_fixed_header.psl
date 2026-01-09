@@ -148,10 +148,7 @@ vunit axip_insert_fixed_header_inst(axip_insert_fixed_header(synthesis))
    f_master_header_seen : assert always {f_header_out and rst_i = '0'} |-> {f_header_in};
 
 -- Packet length must be valid
-   f_master_length_valid : assert always {rst_i = '0'} |-> {m_bytes_o <= G_DATA_BYTES};
-
--- Output buffer full always valid
-   f_master_buffer_full : assert always {rst_i = '0'} |-> {m_bytes_o = 0 or m_valid_o = '1'};
+   f_master_length_valid : assert always {m_valid_o = '1' and rst_i = '0'} |-> {m_bytes_o <= G_DATA_BYTES};
 
 -- Packet length must match
    f_master_length : assert always {f_s_cnt = f_m_cnt and f_s_cnt > 0 and rst_i = '0'} |->

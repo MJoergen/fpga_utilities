@@ -1,3 +1,7 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: Verify axil_pipe.
+-- ---------------------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
@@ -120,7 +124,7 @@ begin
 
 
   ----------------------------------------------
-  -- Instantiate AXI lite masters
+  -- Generate stimuli and verify response
   ----------------------------------------------
 
   axil_sim_inst : entity work.axil_sim

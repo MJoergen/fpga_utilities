@@ -1,3 +1,7 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: Verify axis_arbiter
+-- ---------------------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
@@ -13,9 +17,8 @@ end entity tb_axis_arbiter;
 
 architecture simulation of tb_axis_arbiter is
 
-  signal running : std_logic := '1';
-  signal clk     : std_logic := '1';
-  signal rst     : std_logic := '1';
+  signal clk : std_logic := '1';
+  signal rst : std_logic := '1';
 
   signal s0_ready : std_logic;
   signal s0_valid : std_logic;
@@ -43,7 +46,7 @@ begin
   -- Clock and Reset
   --------------------------------
 
-  clk <= running and not clk after 5 ns;
+  clk <= not clk after 5 ns;
   rst <= '1', '0' after 100 ns;
 
 
