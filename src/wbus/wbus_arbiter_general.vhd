@@ -84,7 +84,8 @@ begin
     -- Just two masters
     wbus_arbiter_inst : entity work.wbus_arbiter
       generic map (
-        G_ADDR_SIZE => 32
+        G_ADDR_SIZE => 32,
+        G_DATA_SIZE => 32
       )
       port map (
         clk_i      => clk_i,
@@ -172,7 +173,8 @@ begin
     -- Just two masters
     wbus_arbiter_inst : entity work.wbus_arbiter
       generic map (
-        G_ADDR_SIZE => 32
+        G_ADDR_SIZE => 32,
+        G_DATA_SIZE => 32
       )
       port map (
         clk_i      => clk_i,

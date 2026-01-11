@@ -74,7 +74,7 @@ begin
               m_last_o <= s_last;
               state    <= IDLE_ST;
             else
-              s_data <= s_data(G_DATA_BYTES * 8 - 9 downto 0) & x"00";
+              s_data <= s_data(G_DATA_BYTES * 8 - 9 downto 0) & X"00";
               if s_bytes > 0 then
                 s_bytes <= s_bytes - 1;
               else

@@ -83,7 +83,7 @@ begin
     variable idx_v       : natural range 0 to G_NUM_SLAVES - 1;
   begin
     if rising_edge(clk_i) then
-      if (m_stall_i and m_stb_o) = 0 then
+      if or(m_stall_i and m_stb_o) = '0' then
         m_stb_o <= (others => '0');
       end if;
       s_ack_o <= '0';
