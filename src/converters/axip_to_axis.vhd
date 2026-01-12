@@ -60,7 +60,7 @@ begin
             s_last  <= s_last_i;
             s_bytes <= s_bytes_i;
             if s_last_i = '0' then
-              s_bytes <= 0;
+              s_bytes <= G_DATA_BYTES;
             end if;
             state <= FWD_ST;
           end if;
