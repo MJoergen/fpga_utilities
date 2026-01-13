@@ -75,4 +75,6 @@ The modules are sorted according to interface type, and then sorted alphabetical
   interface
 * [axil\_sim.vhd](sim/src/axil_sim.vhd) : Simulate an AXI lite Master and Slave
 * [axil\_slave\_sim.vhd](sim/src/axil_slave_sim.vhd) : Simulate an AXI lite Slave
+* [avm\_sim.vhd](sim/src/avm_sim.vhd) : Simulate an Avalon Master and Slave
+* [wbus\_sim.vhd](sim/src/wbus_sim.vhd) : Simulate a Wishbone Master and Slave
 
