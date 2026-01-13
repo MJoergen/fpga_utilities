@@ -50,6 +50,10 @@ The modules are sorted according to interface type, and then sorted alphabetical
 * [wbus\_mapper.vhd](src/wbus/wbus_mapper.vhd): This distributes a single Wishbone master
   to several Wishbone slaves.
 
+## Avalon
+
+* [avm\_pipe.vhd](src/avm/avm_pipe.vhd): A small 2-stage FIFO for Avalon.
+
 ## Conversion between interfaces
 
 * [axip\_to\_axis.vhd](src/converters/axip_to_axis.vhd): Convert from an AXI packet

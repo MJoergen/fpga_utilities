@@ -74,5 +74,15 @@ interface.
 * "RDDAT" : Slave to Master
 
 ## Avalon
-TBD
+This interface is used by Intel IPs. It provides a simpler memory interface.
+
+* "WAITREQUEST"   : Slave to Master
+* "WRITE"         : Master to Slave
+* "READ"          : Master to Slave
+* "ADDRESS"       : Master to Slave
+* "WRITEDATA"     : Master to Slave
+* "BYTEENABLE"    : Master to Slave
+* "BURSTCOUNT"    : Master to Slave
+* "READDATA"      : Slave to Master
+* "READDATAVALID" : Slave to Master
 
