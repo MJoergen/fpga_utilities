@@ -17,25 +17,25 @@ entity avm_pause is
     clk_i             : in    std_logic;
     rst_i             : in    std_logic;
     -- Input
+    s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
     s_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
     s_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
     s_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     s_burstcount_i    : in    std_logic_vector(7 downto 0);
-    s_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     s_readdatavalid_o : out   std_logic;
-    s_waitrequest_o   : out   std_logic;
+    s_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     -- Output
+    m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
     m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
     m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_burstcount_o    : out   std_logic_vector(7 downto 0);
-    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_readdatavalid_i : in    std_logic;
-    m_waitrequest_i   : in    std_logic
+    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
   );
 end entity avm_pause;
 
@@ -73,8 +73,8 @@ begin
     ); -- random_inst : entity work.random
 
   -- Calculate random delays
-  req_delay         <= to_integer(random_s(R_REQ_PAUSE)) mod G_PAUSE_SIZE;
-  resp_delay        <= to_integer(random_s(R_RESP_PAUSE)) mod G_PAUSE_SIZE;
+  req_delay         <= to_integer(random_s(R_REQ_PAUSE)) mod (G_PAUSE_SIZE + 1);
+  resp_delay        <= to_integer(random_s(R_RESP_PAUSE)) mod (G_PAUSE_SIZE + 1);
 
 
   ---------------------------------------
@@ -105,7 +105,7 @@ begin
   -- Insert random pauses in requests
   ---------------------------------------
 
-  allow             <= '0' when req_delay = 0 else
+  allow             <= '0' when req_delay /= 0 else
                        '0' when rd_burstcount /= 0 else
                        '1';
 

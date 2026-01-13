@@ -17,7 +17,7 @@ SRC += $(SIM_SRC_DIR)/avm_pause.vhd
 DUT = avm_sim
 
 # Test duration
-STOP_TIME = 500us
+STOP_TIME = 1000us
 
 # Test bench configuration
 GENERIC += -gG_DEBUG=false

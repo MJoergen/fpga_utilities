@@ -22,15 +22,15 @@ entity avm_master_sim is
   port (
     clk_i             : in    std_logic;
     rst_i             : in    std_logic;
+    m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
     m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
     m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
     m_burstcount_o    : out   std_logic_vector(7 downto 0);
-    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_readdatavalid_i : in    std_logic;
-    m_waitrequest_i   : in    std_logic
+    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
   );
 end entity avm_master_sim;
 

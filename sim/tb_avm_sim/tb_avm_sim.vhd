@@ -59,9 +59,10 @@ begin
 
   avm_sim_inst : entity work.avm_sim
     generic map (
-      G_DEBUG     => G_DEBUG,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_DEBUG      => G_DEBUG,
+      G_PAUSE_SIZE => 0,
+      G_ADDR_SIZE  => G_ADDR_SIZE,
+      G_DATA_SIZE  => G_DATA_SIZE
     )
     port map (
       clk_i             => clk,
