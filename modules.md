@@ -53,6 +53,7 @@ The modules are sorted according to interface type, and then sorted alphabetical
 ## Avalon
 
 * [avm\_pipe.vhd](src/avm/avm_pipe.vhd): A small 2-stage FIFO for Avalon.
+* [avm\_arbit.vhd](src/avm/avm_arbit.vhd): This arbitrates between two Avalon masters.
 
 ## Conversion between interfaces
 

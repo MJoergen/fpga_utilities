@@ -1,0 +1,97 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Tue Jan 13 14:22:14 2026
+[*]
+[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_avm_arbit/tb_avm_arbit.ghw"
+[dumpfile_mtime] "Tue Jan 13 14:19:57 2026"
+[dumpfile_size] 50436672
+[savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_avm_arbit/tb_avm_arbit.gtkw"
+[timestart] 0
+[size] 1344 966
+[pos] -158 -103
+*-36.903366 89340000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_avm_arbit.
+[treeopen] top.tb_avm_arbit.avm_arbit_inst.
+[sst_width] 322
+[signals_width] 306
+[sst_expanded] 1
+[sst_vpaned_height] 270
+@800200
+-avm_arbit
+@28
+top.tb_avm_arbit.avm_arbit_inst.clk_i
+top.tb_avm_arbit.avm_arbit_inst.rst_i
+[color] 6
+top.tb_avm_arbit.avm_arbit_inst.s0_waitrequest_o
+[color] 2
+top.tb_avm_arbit.avm_arbit_inst.s0_write_i
+[color] 2
+top.tb_avm_arbit.avm_arbit_inst.s0_read_i
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.s0_address_i[12:0]} top.tb_avm_arbit.avm_arbit_inst.s0_address_i[12] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[11] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[10] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[9] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[8] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[7] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[6] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[5] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[4] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[3] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[2] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[1] top.tb_avm_arbit.avm_arbit_inst.s0_address_i[0]
+#{top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[15:0]} top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[15] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[14] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[13] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[12] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[11] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[10] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[9] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[8] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[7] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[6] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[5] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[4] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[3] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[2] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[1] top.tb_avm_arbit.avm_arbit_inst.s0_writedata_i[0]
+@28
+#{top.tb_avm_arbit.avm_arbit_inst.s0_byteenable_i[1:0]} top.tb_avm_arbit.avm_arbit_inst.s0_byteenable_i[1] top.tb_avm_arbit.avm_arbit_inst.s0_byteenable_i[0]
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[7:0]} top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[7] top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[6] top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[5] top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[4] top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[3] top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[2] top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[1] top.tb_avm_arbit.avm_arbit_inst.s0_burstcount_i[0]
+@28
+top.tb_avm_arbit.avm_arbit_inst.s0_readdatavalid_o
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[15:0]} top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[15] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[14] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[13] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[12] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[11] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[10] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[9] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[8] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[7] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[6] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[5] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[4] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[3] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[2] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[1] top.tb_avm_arbit.avm_arbit_inst.s0_readdata_o[0]
+@28
+[color] 6
+top.tb_avm_arbit.avm_arbit_inst.s1_waitrequest_o
+[color] 2
+top.tb_avm_arbit.avm_arbit_inst.s1_write_i
+[color] 2
+top.tb_avm_arbit.avm_arbit_inst.s1_read_i
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.s1_address_i[12:0]} top.tb_avm_arbit.avm_arbit_inst.s1_address_i[12] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[11] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[10] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[9] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[8] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[7] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[6] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[5] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[4] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[3] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[2] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[1] top.tb_avm_arbit.avm_arbit_inst.s1_address_i[0]
+#{top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[15:0]} top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[15] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[14] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[13] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[12] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[11] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[10] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[9] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[8] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[7] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[6] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[5] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[4] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[3] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[2] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[1] top.tb_avm_arbit.avm_arbit_inst.s1_writedata_i[0]
+@28
+#{top.tb_avm_arbit.avm_arbit_inst.s1_byteenable_i[1:0]} top.tb_avm_arbit.avm_arbit_inst.s1_byteenable_i[1] top.tb_avm_arbit.avm_arbit_inst.s1_byteenable_i[0]
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[7:0]} top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[7] top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[6] top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[5] top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[4] top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[3] top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[2] top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[1] top.tb_avm_arbit.avm_arbit_inst.s1_burstcount_i[0]
+@28
+top.tb_avm_arbit.avm_arbit_inst.s1_readdatavalid_o
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[15:0]} top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[15] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[14] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[13] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[12] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[11] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[10] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[9] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[8] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[7] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[6] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[5] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[4] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[3] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[2] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[1] top.tb_avm_arbit.avm_arbit_inst.s1_readdata_o[0]
+@28
+[color] 6
+top.tb_avm_arbit.avm_arbit_inst.m_waitrequest_i
+[color] 2
+top.tb_avm_arbit.avm_arbit_inst.m_write_o
+[color] 2
+top.tb_avm_arbit.avm_arbit_inst.m_read_o
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.m_address_o[12:0]} top.tb_avm_arbit.avm_arbit_inst.m_address_o[12] top.tb_avm_arbit.avm_arbit_inst.m_address_o[11] top.tb_avm_arbit.avm_arbit_inst.m_address_o[10] top.tb_avm_arbit.avm_arbit_inst.m_address_o[9] top.tb_avm_arbit.avm_arbit_inst.m_address_o[8] top.tb_avm_arbit.avm_arbit_inst.m_address_o[7] top.tb_avm_arbit.avm_arbit_inst.m_address_o[6] top.tb_avm_arbit.avm_arbit_inst.m_address_o[5] top.tb_avm_arbit.avm_arbit_inst.m_address_o[4] top.tb_avm_arbit.avm_arbit_inst.m_address_o[3] top.tb_avm_arbit.avm_arbit_inst.m_address_o[2] top.tb_avm_arbit.avm_arbit_inst.m_address_o[1] top.tb_avm_arbit.avm_arbit_inst.m_address_o[0]
+#{top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[15:0]} top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[15] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[14] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[13] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[12] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[11] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[10] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[9] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[8] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[7] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[6] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[5] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[4] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[3] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[2] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[1] top.tb_avm_arbit.avm_arbit_inst.m_writedata_o[0]
+@28
+#{top.tb_avm_arbit.avm_arbit_inst.m_byteenable_o[1:0]} top.tb_avm_arbit.avm_arbit_inst.m_byteenable_o[1] top.tb_avm_arbit.avm_arbit_inst.m_byteenable_o[0]
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[7:0]} top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[7] top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[6] top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[5] top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[4] top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[3] top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[2] top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[1] top.tb_avm_arbit.avm_arbit_inst.m_burstcount_o[0]
+@28
+top.tb_avm_arbit.avm_arbit_inst.m_readdatavalid_i
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[15:0]} top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[15] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[14] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[13] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[12] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[11] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[10] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[9] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[8] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[7] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[6] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[5] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[4] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[3] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[2] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[1] top.tb_avm_arbit.avm_arbit_inst.m_readdata_i[0]
+@c00200
+-Internal
+@28
+top.tb_avm_arbit.avm_arbit_inst.s0_active_req
+top.tb_avm_arbit.avm_arbit_inst.s1_active_req
+top.tb_avm_arbit.avm_arbit_inst.s0_active_grant
+top.tb_avm_arbit.avm_arbit_inst.s1_active_grant
+top.tb_avm_arbit.avm_arbit_inst.s0_last
+top.tb_avm_arbit.avm_arbit_inst.s1_last
+top.tb_avm_arbit.avm_arbit_inst.last_grant
+top.tb_avm_arbit.avm_arbit_inst.swapped
+#{top.tb_avm_arbit.avm_arbit_inst.active_grants[1:0]} top.tb_avm_arbit.avm_arbit_inst.active_grants[1] top.tb_avm_arbit.avm_arbit_inst.active_grants[0]
+@22
+#{top.tb_avm_arbit.avm_arbit_inst.burstcount[7:0]} top.tb_avm_arbit.avm_arbit_inst.burstcount[7] top.tb_avm_arbit.avm_arbit_inst.burstcount[6] top.tb_avm_arbit.avm_arbit_inst.burstcount[5] top.tb_avm_arbit.avm_arbit_inst.burstcount[4] top.tb_avm_arbit.avm_arbit_inst.burstcount[3] top.tb_avm_arbit.avm_arbit_inst.burstcount[2] top.tb_avm_arbit.avm_arbit_inst.burstcount[1] top.tb_avm_arbit.avm_arbit_inst.burstcount[0]
+@1401200
+-Internal
+@1000200
+-avm_arbit
+[pattern_trace] 1
+[pattern_trace] 0
