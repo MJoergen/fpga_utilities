@@ -4,6 +4,8 @@
 
 # List of source files
 SRC += $(SRC_DIR)/wbus/wbus_arbiter.vhd
+SRC += $(SRC_DIR)/wbus/wbus_pkg.vhd
+SRC += $(SRC_DIR)/wbus/wbus_mapper.vhd
 
 # List of test specific simulation files
 SRC += tb_wbus_arbiter.vhd
@@ -12,6 +14,7 @@ SRC += tb_wbus_arbiter.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
 SRC += $(SIM_SRC_DIR)/wbus_master_sim.vhd
+SRC += $(SIM_SRC_DIR)/wbus_sim.vhd
 SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
 
 # Top level entity
@@ -23,8 +26,8 @@ STOP_TIME = 1200us
 # Test bench configuration
 GENERIC += -gG_DEBUG=false
 GENERIC += -gG_DO_ABORT=true
+GENERIC += -gG_LATENCY=2
 GENERIC += -gG_ADDR_SIZE=12
-GENERIC += -gG_DATA_SIZE=16
 
 # Don't stop on errors
 #ASSERT_LEVEL = none
