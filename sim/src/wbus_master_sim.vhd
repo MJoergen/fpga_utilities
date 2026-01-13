@@ -16,7 +16,7 @@ entity wbus_master_sim is
     G_TIMEOUT_MAX : natural                       := 200;
     G_DEBUG       : boolean                       := false;
     G_DO_ABORT    : boolean                       := false;
-    G_OFFSET      : natural;
+    G_OFFSET      : natural                       := 1234;
     G_ADDR_SIZE   : natural;
     G_DATA_SIZE   : natural
   );
@@ -50,8 +50,10 @@ architecture simulation of wbus_master_sim is
   pure function addr_to_data (
     addr : std_logic_vector
   ) return std_logic_vector is
+    variable addr_v : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    variable data_v : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   begin
-    return to_stdlogicvector(2 ** (G_DATA_SIZE - 1) + G_OFFSET - to_integer(addr), G_DATA_SIZE);
+    return resize(addr, G_DATA_SIZE) + G_OFFSET;
   end function addr_to_data;
 
   signal   do_read  : std_logic;
