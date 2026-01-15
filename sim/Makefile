@@ -27,8 +27,8 @@ all: $(DUT_PASS)
 
 %/PASS: DUT=$(patsubst %/PASS,%,$@)
 %/PASS:
-	make -C $(DUT)
+	$(MAKE) -C $(DUT)
 
 clean:
-	for i in $(DUTS); do make -C $$i clean; done
+	for i in $(DUTS); do $(MAKE) -C $$i clean; done
 

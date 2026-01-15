@@ -9,14 +9,14 @@ all: $(TARGETS)
 
 .PHONY: sim
 sim:
-	make -C sim
+	$(MAKE) -C sim
 
 .PHONY: formal
 formal:
-	make -C formal
+	$(MAKE) -C formal
 
 .PHONY: clean
 clean:
-	make -C sim clean
-	make -C formal clean
+	$(MAKE) -C sim clean
+	$(MAKE) -C formal clean
 
