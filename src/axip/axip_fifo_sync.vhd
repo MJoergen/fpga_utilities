@@ -17,14 +17,14 @@ entity axip_fifo_sync is
     rst_i     : in    std_logic;
     fill_o    : out   natural range 0 to G_RAM_DEPTH - 1;
 
-    -- AXI stream input interface
+    -- AXI packet input interface
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
     s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
     s_last_i  : in    std_logic;
     s_bytes_i : in    natural range 0 to G_DATA_BYTES;
 
-    -- AXI stream output interface
+    -- AXI packet output interface
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
     m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);

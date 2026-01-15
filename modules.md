@@ -34,6 +34,9 @@ The modules are sorted according to interface type, and then sorted alphabetical
   (merges) several AXI packet interfaces into one.
 * [axip\_dropper.vhd](src/axip/axip_dropper.vhd): This drops selected packets from an AXI
   packet interface.
+* [axip\_pipe.vhd](src/axip/axip_pipe.vhd): A small 2-stage FIFO for AXI packet. This can
+  be useful for adding registers to an AXI packet pipeline for helping to achieve timing
+  closure.
 
 ## AXI Lite
 
