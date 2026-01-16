@@ -1,0 +1,95 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: This provides stimulus to and verifies response from an AXI streaming interface.
+-- ---------------------------------------------------------------------------------------
+
+library ieee;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std_unsigned.all;
+
+library std;
+  use std.env.stop;
+
+entity axis_slave_sim is
+  generic (
+    G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
+    G_RANDOM     : boolean;
+    G_CNT_SIZE   : natural;
+    G_DATA_BYTES : natural
+  );
+  port (
+    clk_i     : in    std_logic;
+    rst_i     : in    std_logic;
+
+    -- Response
+    s_ready_o : out   std_logic;
+    s_valid_i : in    std_logic;
+    s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0)
+  );
+end entity axis_slave_sim;
+
+architecture simulation of axis_slave_sim is
+
+  -- State machine for controlling reception and verification of packets.
+  signal  verf_cnt : std_logic_vector(G_CNT_SIZE - 1 downto 0);
+
+  -- Randomness
+  signal  rand : std_logic_vector(63 downto 0);
+
+  -- This controls how often data is received.
+
+  subtype R_RAND_DO_READY is natural range 32 downto 30;
+
+begin
+
+  ----------------------------------------------------------
+  -- Generate randomness
+  ----------------------------------------------------------
+
+  random_inst : entity work.random
+    generic map (
+      G_SEED => G_SEED
+    )
+    port map (
+      clk_i    => clk_i,
+      rst_i    => rst_i,
+      update_i => '1',
+      output_o => rand
+    ); -- random_inst : entity work.random
+
+
+  ----------------------------------------------------------
+  -- Verify output
+  ----------------------------------------------------------
+
+  s_ready_o <= or(rand(R_RAND_DO_READY)) when G_RANDOM else
+               '1';
+
+  verify_proc : process (clk_i)
+  begin
+    if rising_edge(clk_i) then
+      if s_valid_i = '1' and s_ready_o = '1' then
+
+        for i in 0 to G_DATA_BYTES - 1 loop
+          assert s_data_i((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8) = verf_cnt(7 downto 0) + i
+            report "Verify byte " & to_string(i) &
+                   ". Received " & to_hstring(s_data_i(i * 8 + 7 downto i * 8)) &
+                   ", expected " & to_hstring(verf_cnt(7 downto 0) + i);
+        end loop;
+
+        verf_cnt <= verf_cnt + G_DATA_BYTES;
+
+        -- Check for wrap-around
+        if verf_cnt > verf_cnt + G_DATA_BYTES then
+          report "Test finished";
+          stop;
+        end if;
+      end if;
+
+      if rst_i = '1' then
+        verf_cnt <= (others => '0');
+      end if;
+    end if;
+  end process verify_proc;
+
+end architecture simulation;
+

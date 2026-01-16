@@ -9,9 +9,9 @@ The modules are sorted according to interface type, and then sorted alphabetical
 
 * [axis\_arbiter.vhd](src/axis/axis_arbiter.vhd): This arbitrates (merges) two AXI
   streaming interfaces into one.
-* [axis\_distributor.vhd](src/axis/axis_distributor.vhd): This distribues a single AXI
+* [axis\_distributor.vhd](src/axis/axis_distributor.vhd): This distributes a single AXI
   streaming interface into two.
-* [axis\_fifo\_sync.vhd](src/axis/axis_fifo_sync.vhd): This is a simple synchronuous AXI
+* [axis\_fifo\_sync.vhd](src/axis/axis_fifo_sync.vhd): This is a simple synchronous AXI
   streaming FIFO (i.e. input and output have same clock).
 * [axis\_pipe\_lite.vhd](src/axis/axis_pipe_lite.vhd): A small 1-stage FIFO for AXI
   streaming. This can be useful for adding registers to an AXI streaming pipeline for
@@ -19,10 +19,12 @@ The modules are sorted according to interface type, and then sorted alphabetical
 * [axis\_pipe.vhd](src/axis/axis_pipe.vhd): A small 2-stage FIFO for AXI streaming. This
   can be useful for adding registers to an AXI streaming pipeline for helping to achieve
   timing closure.
+* [axis\_pipe\_async.vhd](src/axis/axis_pipe_async.vhd): This is an asynchronous shallow
+  FIFO to be used for Clock Domain Crossings.
 
 ## AXI packet
 
-* [axip\_fifo\_sync.vhd](src/axip/axip_fifo_sync.vhd): This is a simple synchronuous AXI
+* [axip\_fifo\_sync.vhd](src/axip/axip_fifo_sync.vhd): This is a simple synchronous AXI
   packet FIFO (i.e. input and output have same clock).
 * [axip\_insert\_fixed\_header.vhd](src/axip/axip_insert_fixed_header.vhd): This inserts a
   fixed-size header in front of an AXI packet.

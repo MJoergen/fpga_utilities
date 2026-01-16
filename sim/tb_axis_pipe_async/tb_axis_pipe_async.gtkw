@@ -1,0 +1,49 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Jan 16 13:46:32 2026
+[*]
+[dumpfile] "/home/mfj/git/Weibel/pcb1036/fpga_utilities/sim/tb_axis_pipe_async/tb_axis_pipe_async.ghw"
+[dumpfile_mtime] "Fri Jan 16 13:46:23 2026"
+[dumpfile_size] 1753333
+[savefile] "/home/mfj/git/Weibel/pcb1036/fpga_utilities/sim/tb_axis_pipe_async/tb_axis_pipe_async.gtkw"
+[timestart] 0
+[size] 1061 648
+[pos] -1 -1
+*-33.431221 100000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_axis_pipe_async.
+[treeopen] top.tb_axis_pipe_async.axis_pipe_async_inst.
+[sst_width] 285
+[signals_width] 255
+[sst_expanded] 1
+[sst_vpaned_height] 160
+@800200
+-axis_pipe_async
+@28
+top.tb_axis_pipe_async.axis_pipe_async_inst.s_clk_i
+[color] 6
+top.tb_axis_pipe_async.axis_pipe_async_inst.s_ready_o
+[color] 2
+top.tb_axis_pipe_async.axis_pipe_async_inst.s_valid_i
+@22
+#{top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[23:0]} top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[23] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[22] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[21] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[20] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[19] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[18] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[17] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[16] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[15] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[14] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[13] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[12] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[11] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[10] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[9] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[8] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[7] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[6] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[5] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[4] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[3] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[2] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[1] top.tb_axis_pipe_async.axis_pipe_async_inst.s_data_i[0]
+@28
+top.tb_axis_pipe_async.axis_pipe_async_inst.m_clk_i
+[color] 6
+top.tb_axis_pipe_async.axis_pipe_async_inst.m_ready_i
+[color] 2
+top.tb_axis_pipe_async.axis_pipe_async_inst.m_valid_o
+@22
+#{top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[23:0]} top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[23] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[22] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[21] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[20] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[19] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[18] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[17] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[16] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[15] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[14] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[13] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[12] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[11] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[10] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[9] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[8] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[7] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[6] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[5] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[4] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[3] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[2] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[1] top.tb_axis_pipe_async.axis_pipe_async_inst.m_data_o[0]
+@800200
+-Internal
+@22
+#{top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_wr[3:0]} top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_wr[3] top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_wr[2] top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_wr[1] top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_wr[0]
+#{top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_wr[3:0]} top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_wr[3] top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_wr[2] top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_wr[1] top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_wr[0]
+#{top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_rd[3:0]} top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_rd[3] top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_rd[2] top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_rd[1] top.tb_axis_pipe_async.axis_pipe_async_inst.m_gray_rd[0]
+#{top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_rd[3:0]} top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_rd[3] top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_rd[2] top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_rd[1] top.tb_axis_pipe_async.axis_pipe_async_inst.s_gray_rd[0]
+@1000200
+-Internal
+-axis_pipe_async
+[pattern_trace] 1
+[pattern_trace] 0
