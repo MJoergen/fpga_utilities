@@ -13,7 +13,7 @@ bmc: depth 12
 smtbmc
 
 [script]
-ghdl --std=08 -gG_DATA_SIZE=4 axip_arbiter.vhd axip_arbiter.psl -e axip_arbiter
+ghdl --std=08 -gG_DATA_BYTES=2 axip_arbiter.vhd axip_arbiter.psl -e axip_arbiter
 prep -top axip_arbiter
 
 [files]

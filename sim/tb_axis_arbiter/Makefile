@@ -1,6 +1,6 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the wbus_arbiter.vhd file.
+# Description: Makefile for simulating the axis_arbiter.vhd file.
 
 # List of source files
 SRC += $(SRC_DIR)/axis/axis_arbiter.vhd

@@ -9,7 +9,7 @@ library ieee;
 
 entity axip_arbiter is
   generic (
-    G_DATA_SIZE : natural
+    G_DATA_BYTES : natural
   );
   port (
     clk_i      : in    std_logic;
@@ -17,18 +17,21 @@ entity axip_arbiter is
 
     s0_ready_o : out   std_logic;
     s0_valid_i : in    std_logic;
-    s0_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s0_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
     s0_last_i  : in    std_logic;
+    s0_bytes_i : in    natural range 0 to G_DATA_BYTES;
 
     s1_ready_o : out   std_logic;
     s1_valid_i : in    std_logic;
-    s1_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s1_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
     s1_last_i  : in    std_logic;
+    s1_bytes_i : in    natural range 0 to G_DATA_BYTES;
 
     m_ready_i  : in    std_logic;
     m_valid_o  : out   std_logic;
-    m_data_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_last_o   : out   std_logic
+    m_data_o   : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+    m_last_o   : out   std_logic;
+    m_bytes_o  : out   natural range 0 to G_DATA_BYTES
   );
 end entity axip_arbiter;
 
@@ -67,6 +70,7 @@ begin
             m_valid_o <= '1';
             m_data_o  <= s0_data_i;
             m_last_o  <= s0_last_i;
+            m_bytes_o <= s0_bytes_i;
 
             if s1_valid_i = '1' and s0_last_i = '1' then
               state <= MASTER_1_ST;
@@ -74,7 +78,7 @@ begin
           end if;
 
           -- Grant access to Master 1 on next clock cycle, if requested
-          if s1_valid_i = '1' and m_last_o = '1' then
+          if s0_valid_i = '0' and s1_valid_i = '1' and m_last_o = '1' then
             state <= MASTER_1_ST;
           end if;
 
@@ -84,14 +88,15 @@ begin
             m_valid_o <= '1';
             m_data_o  <= s1_data_i;
             m_last_o  <= s1_last_i;
+            m_bytes_o <= s1_bytes_i;
 
             if s0_valid_i = '1' and s1_last_i = '1' then
-              state <= MASTER_1_ST;
+              state <= MASTER_0_ST;
             end if;
           end if;
 
           -- Grant access to Master 0 on next clock cycle, if requested
-          if s0_valid_i = '1' and m_last_o = '1' then
+          if s0_valid_i = '1' and s1_valid_i = '0' and m_last_o = '1' then
             state <= MASTER_0_ST;
           end if;
 

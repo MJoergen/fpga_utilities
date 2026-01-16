@@ -12,6 +12,7 @@ library std;
 entity axip_sim is
   generic (
     G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
+    G_NAME       : string := "";
     G_DEBUG      : boolean;
     G_RANDOM     : boolean;
     G_FAST       : boolean;
@@ -133,7 +134,8 @@ begin
   begin
     if rising_edge(clk_i) then
       if rst_i = '0' and first_v then
-        report "Test started";
+        report "axip_sim " & G_NAME &
+               ": Test started";
         first_v := false;
       end if;
 
@@ -155,7 +157,8 @@ begin
             length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_MIN_LENGTH + 1)) + G_MIN_LENGTH;
 
             if rst_i = '0' and G_DEBUG then
-              report "STIM length " & to_string(length_v);
+              report "axip_sim " & G_NAME &
+                     ": STIM length " & to_string(length_v);
             end if;
 
             -- Store length in FIFO
@@ -192,7 +195,8 @@ begin
                     length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_MIN_LENGTH + 1)) + G_MIN_LENGTH;
 
                     if rst_i = '0' and G_DEBUG then
-                      report "STIM length " & to_string(length_v);
+                      report "axip_sim " & G_NAME &
+                             ": STIM length " & to_string(length_v);
                     end if;
 
                     -- Store length in FIFO
@@ -269,7 +273,8 @@ begin
           if length_m_valid = '1' and length_m_ready = '1' then
             length_v := to_integer(length_m_data);
             if G_DEBUG then
-              report "VERF length " & to_string(length_v);
+              report "axip_sim " & G_NAME &
+                     ": VERF length " & to_string(length_v);
             end if;
             verf_length <= length_v;
             verf_state  <= VERF_DATA_ST;
@@ -280,25 +285,29 @@ begin
 
             for i in 0 to s_bytes_i - 1 loop
               assert s_data_i((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8) = verf_cnt(7 downto 0) + i
-                report "Verify byte " & to_string(i) &
+                report "axip_sim " & G_NAME &
+                       ": Verify byte " & to_string(i) &
                        ". Received " & to_hstring(s_data_i(i * 8 + 7 downto i * 8)) &
                        ", expected " & to_hstring(verf_cnt(7 downto 0) + i);
             end loop;
 
             verf_cnt    <= verf_cnt + s_bytes_i;
             assert s_bytes_i <= verf_length
-              report "FAIL: Packet too long";
+              report "axip_sim " & G_NAME &
+                     ": FAIL: Packet too long";
             verf_length <= verf_length - s_bytes_i;
 
             if s_last_i = '1' then
               assert s_bytes_i = verf_length
-                report "FAIL: Packet length received=" & to_string(verf_length - s_bytes_i);
+                report "axip_sim " & G_NAME &
+                       ": FAIL: Packet length received=" & to_string(verf_length - s_bytes_i);
               verf_state <= VERF_IDLE_ST;
             end if;
 
             -- Check for wrap-around
             if verf_cnt > verf_cnt + s_bytes_i then
-              report "Test finished";
+              report "axip_sim " & G_NAME &
+                     ": Test finished";
               stop;
             end if;
           end if;
