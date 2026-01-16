@@ -18,108 +18,64 @@ entity axil_fifo_async is
   );
   port (
     -- Connect to AXI Lite Master
-    s_aclk_i        : in    std_logic;
-    s_aresetn_i     : in    std_logic;
-    s_axi_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_axi_awlen_i   : in    std_logic_vector(7 downto 0);
-    s_axi_awsize_i  : in    std_logic_vector(2 downto 0);
-    s_axi_awburst_i : in    std_logic_vector(1 downto 0);
-    s_axi_awprot_i  : in    std_logic_vector(2 downto 0);
-    s_axi_awvalid_i : in    std_logic;
-    s_axi_awready_o : out   std_logic;
-    s_axi_awlock_i  : in    std_logic;
-    s_axi_awcache_i : in    std_logic_vector(3 downto 0);
-    s_axi_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_axi_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s_axi_wlast_i   : in    std_logic;
-    s_axi_wvalid_i  : in    std_logic;
-    s_axi_wready_o  : out   std_logic;
-    s_axi_bresp_o   : out   std_logic_vector(1 downto 0);
-    s_axi_bvalid_o  : out   std_logic;
-    s_axi_bready_i  : in    std_logic;
-    s_axi_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_axi_arlen_i   : in    std_logic_vector(7 downto 0);
-    s_axi_arsize_i  : in    std_logic_vector(2 downto 0);
-    s_axi_arburst_i : in    std_logic_vector(1 downto 0);
-    s_axi_arprot_i  : in    std_logic_vector(2 downto 0);
-    s_axi_arvalid_i : in    std_logic;
-    s_axi_arready_o : out   std_logic;
-    s_axi_arlock_i  : in    std_logic;
-    s_axi_arcache_i : in    std_logic_vector(3 downto 0);
-    s_axi_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_axi_rresp_o   : out   std_logic_vector(1 downto 0);
-    s_axi_rlast_o   : out   std_logic;
-    s_axi_rvalid_o  : out   std_logic;
-    s_axi_rready_i  : in    std_logic;
+    s_clk_i     : in    std_logic;
+    s_rst_i     : in    std_logic;
+    s_awready_o : out   std_logic;
+    s_awvalid_i : in    std_logic;
+    s_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_wready_o  : out   std_logic;
+    s_wvalid_i  : in    std_logic;
+    s_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    s_bready_i  : in    std_logic;
+    s_bvalid_o  : out   std_logic;
+    s_bresp_o   : out   std_logic_vector(1 downto 0);
+    s_arready_o : out   std_logic;
+    s_arvalid_i : in    std_logic;
+    s_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_rready_i  : in    std_logic;
+    s_rvalid_o  : out   std_logic;
+    s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_rresp_o   : out   std_logic_vector(1 downto 0);
 
     -- Connect to AXI Lite Slave
-    m_aclk_i        : in    std_logic;
-    m_aresetn_i     : in    std_logic;
-    m_axi_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_axi_awlen_o   : out   std_logic_vector(7 downto 0);
-    m_axi_awsize_o  : out   std_logic_vector(2 downto 0);
-    m_axi_awburst_o : out   std_logic_vector(1 downto 0);
-    m_axi_awprot_o  : out   std_logic_vector(2 downto 0);
-    m_axi_awvalid_o : out   std_logic;
-    m_axi_awready_i : in    std_logic;
-    m_axi_awlock_o  : out   std_logic;
-    m_axi_awcache_o : out   std_logic_vector(3 downto 0);
-    m_axi_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_axi_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_axi_wlast_o   : out   std_logic;
-    m_axi_wvalid_o  : out   std_logic;
-    m_axi_wready_i  : in    std_logic;
-    m_axi_bresp_i   : in    std_logic_vector(1 downto 0);
-    m_axi_bvalid_i  : in    std_logic;
-    m_axi_bready_o  : out   std_logic;
-    m_axi_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_axi_arlen_o   : out   std_logic_vector(7 downto 0);
-    m_axi_arsize_o  : out   std_logic_vector(2 downto 0);
-    m_axi_arburst_o : out   std_logic_vector(1 downto 0);
-    m_axi_arprot_o  : out   std_logic_vector(2 downto 0);
-    m_axi_arvalid_o : out   std_logic;
-    m_axi_arready_i : in    std_logic;
-    m_axi_arlock_o  : out   std_logic;
-    m_axi_arcache_o : out   std_logic_vector(3 downto 0);
-    m_axi_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_axi_rresp_i   : in    std_logic_vector(1 downto 0);
-    m_axi_rlast_i   : in    std_logic;
-    m_axi_rvalid_i  : in    std_logic;
-    m_axi_rready_o  : out   std_logic
+    m_clk_i     : in    std_logic;
+    m_rst_i     : in    std_logic;
+    m_awready_i : in    std_logic;
+    m_awvalid_o : out   std_logic;
+    m_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_wready_i  : in    std_logic;
+    m_wvalid_o  : out   std_logic;
+    m_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    m_bready_o  : out   std_logic;
+    m_bvalid_i  : in    std_logic;
+    m_bresp_i   : in    std_logic_vector(1 downto 0);
+    m_arready_i : in    std_logic;
+    m_arvalid_o : out   std_logic;
+    m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_rready_o  : out   std_logic;
+    m_rvalid_i  : in    std_logic;
+    m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rresp_i   : in    std_logic_vector(1 downto 0)
   );
 end entity axil_fifo_async;
 
 architecture synthesis of axil_fifo_async is
 
-  constant C_USER_SIZE_AW : natural := 24;
-  subtype  R_USER_AWLEN    is natural range  7 downto  0;
-  subtype  R_USER_AWSIZE   is natural range 10 downto  8;
-  subtype  R_USER_AWBURST  is natural range 12 downto 11;
-  subtype  R_USER_AWPROT   is natural range 15 downto 13;
-  constant C_USER_AWLOCK  : natural := 16;
-  subtype  R_USER_AWCACHE  is natural range 20 downto 17;
-  signal   s_axi_awuser   : std_logic_vector(C_USER_SIZE_AW - 1 downto 0);
-  signal   m_axi_awuser   : std_logic_vector(C_USER_SIZE_AW - 1 downto 0);
+  subtype R_WDATA is natural range G_DATA_SIZE - 1 downto 0;
 
-  constant C_USER_SIZE_B : natural  := 8;
-  subtype  R_USER_BRESP is natural range 1 downto 0;
-  signal   m_axi_buser   : std_logic_vector(C_USER_SIZE_B - 1 downto 0);
-  signal   s_axi_buser   : std_logic_vector(C_USER_SIZE_B - 1 downto 0);
+  subtype R_WSTRB is natural range G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto G_DATA_SIZE;
 
-  constant C_USER_SIZE_AR : natural := 24;
-  subtype  R_USER_ARLEN    is natural range  7 downto  0;
-  subtype  R_USER_ARSIZE   is natural range 10 downto  8;
-  subtype  R_USER_ARBURST  is natural range 12 downto 11;
-  subtype  R_USER_ARPROT   is natural range 15 downto 13;
-  constant C_USER_ARLOCK  : natural := 16;
-  subtype  R_USER_ARCACHE  is natural range 20 downto 17;
-  signal   s_axi_aruser   : std_logic_vector(C_USER_SIZE_AR - 1 downto 0);
-  signal   m_axi_aruser   : std_logic_vector(C_USER_SIZE_AR - 1 downto 0);
+  signal  s_w_in  : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
+  signal  m_w_out : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
 
-  constant C_USER_SIZE_R : natural  := 8;
-  subtype  R_USER_RRESP is natural range 1 downto 0;
-  signal   m_axi_ruser   : std_logic_vector(C_USER_SIZE_R - 1 downto 0);
-  signal   s_axi_ruser   : std_logic_vector(C_USER_SIZE_R - 1 downto 0);
+  subtype R_RDATA is natural range G_DATA_SIZE - 1 downto 0;
+
+  subtype R_RRESP is natural range G_DATA_SIZE + 1 downto G_DATA_SIZE;
+
+  signal  m_r_in  : std_logic_vector(G_DATA_SIZE + 1 downto 0);
+  signal  s_r_out : std_logic_vector(G_DATA_SIZE + 1 downto 0);
 
 begin
 
@@ -127,196 +83,130 @@ begin
   -- AW stream
   --------------------------------------------------------
 
-  s_axi_awuser(R_USER_AWLEN)   <= s_axi_awlen_i;
-  s_axi_awuser(R_USER_AWSIZE)  <= s_axi_awsize_i;
-  s_axi_awuser(R_USER_AWBURST) <= s_axi_awburst_i;
-  s_axi_awuser(R_USER_AWPROT)  <= s_axi_awprot_i;
-  s_axi_awuser(C_USER_AWLOCK)  <= s_axi_awlock_i;
-  s_axi_awuser(R_USER_AWCACHE) <= s_axi_awcache_i;
-
-  axip_fifo_async_aw_inst : entity work.axip_fifo_async
+  axis_fifo_async_aw_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_WR_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_SIZE => G_ADDR_SIZE,
-      G_USER_SIZE => C_USER_SIZE_AW
+      G_DATA_SIZE => G_ADDR_SIZE
     )
     port map (
-      s_aclk_i        => s_aclk_i,
-      s_aresetn_i     => s_aresetn_i,
-      s_axis_tready_o => s_axi_awready_o,
-      s_axis_tvalid_i => s_axi_awvalid_i,
-      s_axis_tdata_i  => s_axi_awaddr_i,
-      s_axis_tkeep_i  => (others => '1'),
-      s_axis_tlast_i  => '1',
-      s_axis_tuser_i  => s_axi_awuser,
-      s_fill_o        => open,
-      m_aclk_i        => m_aclk_i,
-      m_axis_tready_i => m_axi_awready_i,
-      m_axis_tvalid_o => m_axi_awvalid_o,
-      m_axis_tdata_o  => m_axi_awaddr_o,
-      m_axis_tkeep_o  => open,
-      m_axis_tlast_o  => open,
-      m_axis_tuser_o  => m_axi_awuser,
-      m_fill_o        => open
-    ); -- axip_fifo_async_aw_inst : entity work.axip_fifo_async
-
-  m_axi_awlen_o   <= s_axi_awuser(R_USER_AWLEN);
-  m_axi_awsize_o  <= s_axi_awuser(R_USER_AWSIZE);
-  m_axi_awburst_o <= s_axi_awuser(R_USER_AWBURST);
-  m_axi_awprot_o  <= s_axi_awuser(R_USER_AWPROT);
-  m_axi_awlock_o  <= s_axi_awuser(C_USER_AWLOCK);
-  m_axi_awcache_o <= s_axi_awuser(R_USER_AWCACHE);
+      s_clk_i   => s_clk_i,
+      s_rst_i   => s_rst_i,
+      s_ready_o => s_awready_o,
+      s_valid_i => s_awvalid_i,
+      s_data_i  => s_awaddr_i,
+      s_fill_o  => open,
+      m_clk_i   => m_clk_i,
+      m_ready_i => m_awready_i,
+      m_valid_o => m_awvalid_o,
+      m_data_o  => m_awaddr_o,
+      m_fill_o  => open
+    ); -- axis_fifo_async_aw_inst : entity work.axis_fifo_async
 
 
   --------------------------------------------------------
   -- W stream
   --------------------------------------------------------
 
-  axip_fifo_async_w_inst : entity work.axip_fifo_async
+  axis_fifo_async_w_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_WR_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_SIZE => G_DATA_SIZE,
-      G_USER_SIZE => G_DATA_SIZE / 8
+      G_DATA_SIZE => G_DATA_SIZE + G_DATA_SIZE / 8
     )
     port map (
-      s_aclk_i        => s_aclk_i,
-      s_aresetn_i     => s_aresetn_i,
-      s_axis_tready_o => s_axi_wready_o,
-      s_axis_tvalid_i => s_axi_wvalid_i,
-      s_axis_tdata_i  => s_axi_wdata_i,
-      s_axis_tkeep_i  => (others => '1'),
-      s_axis_tlast_i  => s_axi_wlast_i,
-      s_axis_tuser_i  => s_axi_wstrb_i,
-      s_fill_o        => open,
-      m_aclk_i        => m_aclk_i,
-      m_axis_tready_i => m_axi_wready_i,
-      m_axis_tvalid_o => m_axi_wvalid_o,
-      m_axis_tdata_o  => m_axi_wdata_o,
-      m_axis_tkeep_o  => open,
-      m_axis_tlast_o  => m_axi_wlast_o,
-      m_axis_tuser_o  => m_axi_wstrb_o,
-      m_fill_o        => open
-    ); -- axip_fifo_async_w_inst : entity work.axip_fifo_async
+      s_clk_i   => s_clk_i,
+      s_rst_i   => s_rst_i,
+      s_ready_o => s_wready_o,
+      s_valid_i => s_wvalid_i,
+      s_data_i  => s_w_in,
+      s_fill_o  => open,
+      m_clk_i   => m_clk_i,
+      m_ready_i => m_wready_i,
+      m_valid_o => m_wvalid_o,
+      m_data_o  => m_w_out,
+      m_fill_o  => open
+    ); -- axis_fifo_async_w_inst : entity work.axis_fifo_async
+
+  s_w_in(R_WDATA) <= s_wdata_i;
+  s_w_in(R_WSTRB) <= s_wstrb_i;
+  m_wdata_o       <= m_w_out(R_WDATA);
+  m_wstrb_o       <= m_w_out(R_WSTRB);
 
 
   --------------------------------------------------------
   -- B stream
   --------------------------------------------------------
 
-  m_axi_buser(R_USER_BRESP) <= m_axi_bresp_i;
-
-  axip_fifo_async_b_inst : entity work.axip_fifo_async
+  axis_fifo_async_b_inst : entity work.axis_fifo_async
     generic map (
-      G_DEPTH     => G_RD_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_SIZE => 8,
-      G_USER_SIZE => C_USER_SIZE_B
+      G_DEPTH     => G_WR_DEPTH,
+      G_DATA_SIZE => 2
     )
     port map (
-      s_aclk_i        => m_aclk_i,
-      s_aresetn_i     => m_aresetn_i,
-      s_axis_tready_o => m_axi_bready_o,
-      s_axis_tvalid_i => m_axi_bvalid_i,
-      s_axis_tdata_i  => (others => '0'),
-      s_axis_tkeep_i  => (others => '1'),
-      s_axis_tlast_i  => '1',
-      s_axis_tuser_i  => m_axi_buser,
-      s_fill_o        => open,
-      m_aclk_i        => s_aclk_i,
-      m_axis_tready_i => s_axi_bready_i,
-      m_axis_tvalid_o => s_axi_bvalid_o,
-      m_axis_tdata_o  => open,
-      m_axis_tkeep_o  => open,
-      m_axis_tlast_o  => open,
-      m_axis_tuser_o  => s_axi_buser,
-      m_fill_o        => open
-    ); -- axip_fifo_async_b_inst : entity work.axip_fifo_async
-
-  s_axi_bresp_o                <= s_axi_buser(R_USER_BRESP);
+      s_clk_i   => s_clk_i,
+      s_rst_i   => s_rst_i,
+      s_ready_o => m_bready_o,
+      s_valid_i => m_bvalid_i,
+      s_data_i  => m_bresp_i,
+      s_fill_o  => open,
+      m_clk_i   => m_clk_i,
+      m_ready_i => s_bready_i,
+      m_valid_o => s_bvalid_o,
+      m_data_o  => s_bresp_o,
+      m_fill_o  => open
+    ); -- axis_fifo_async_b_inst : entity work.axis_fifo_async
 
 
   --------------------------------------------------------
   -- AR stream
   --------------------------------------------------------
 
-  s_axi_aruser(R_USER_ARLEN)   <= s_axi_arlen_i;
-  s_axi_aruser(R_USER_ARSIZE)  <= s_axi_arsize_i;
-  s_axi_aruser(R_USER_ARBURST) <= s_axi_arburst_i;
-  s_axi_aruser(R_USER_ARPROT)  <= s_axi_arprot_i;
-  s_axi_aruser(C_USER_ARLOCK)  <= s_axi_arlock_i;
-  s_axi_aruser(R_USER_ARCACHE) <= s_axi_arcache_i;
-
-  axip_fifo_async_ar_inst : entity work.axip_fifo_async
+  axis_fifo_async_ar_inst : entity work.axis_fifo_async
     generic map (
-      G_DEPTH     => G_WR_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_SIZE => G_ADDR_SIZE,
-      G_USER_SIZE => C_USER_SIZE_AR
+      G_DEPTH     => G_RD_DEPTH,
+      G_DATA_SIZE => G_ADDR_SIZE
     )
     port map (
-      s_aclk_i        => s_aclk_i,
-      s_aresetn_i     => s_aresetn_i,
-      s_axis_tready_o => s_axi_arready_o,
-      s_axis_tvalid_i => s_axi_arvalid_i,
-      s_axis_tdata_i  => s_axi_araddr_i,
-      s_axis_tkeep_i  => (others => '1'),
-      s_axis_tlast_i  => '1',
-      s_axis_tuser_i  => s_axi_aruser,
-      s_fill_o        => open,
-      m_aclk_i        => m_aclk_i,
-      m_axis_tready_i => m_axi_arready_i,
-      m_axis_tvalid_o => m_axi_arvalid_o,
-      m_axis_tdata_o  => m_axi_araddr_o,
-      m_axis_tkeep_o  => open,
-      m_axis_tlast_o  => open,
-      m_axis_tuser_o  => m_axi_aruser,
-      m_fill_o        => open
-    ); -- axip_fifo_async_ar_inst : entity work.axip_fifo_async
-
-  m_axi_arlen_o             <= m_axi_aruser(R_USER_ARLEN);
-  m_axi_arsize_o            <= m_axi_aruser(R_USER_ARSIZE);
-  m_axi_arburst_o           <= m_axi_aruser(R_USER_ARBURST);
-  m_axi_arprot_o            <= m_axi_aruser(R_USER_ARPROT);
-  m_axi_arlock_o            <= m_axi_aruser(C_USER_ARLOCK);
-  m_axi_arcache_o           <= m_axi_aruser(R_USER_ARCACHE);
+      s_clk_i   => s_clk_i,
+      s_rst_i   => s_rst_i,
+      s_ready_o => s_arready_o,
+      s_valid_i => s_arvalid_i,
+      s_data_i  => s_araddr_i,
+      s_fill_o  => open,
+      m_clk_i   => m_clk_i,
+      m_ready_i => m_arready_i,
+      m_valid_o => m_arvalid_o,
+      m_data_o  => m_araddr_o,
+      m_fill_o  => open
+    ); -- axis_fifo_async_ar_inst : entity work.axis_fifo_async
 
 
   --------------------------------------------------------
   -- R stream
   --------------------------------------------------------
 
-  m_axi_ruser(R_USER_RRESP) <= m_axi_rresp_i;
-
-  axip_fifo_async_r_inst : entity work.axip_fifo_async
+  axis_fifo_async_r_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_RD_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_SIZE => G_DATA_SIZE,
-      G_USER_SIZE => C_USER_SIZE_B
+      G_DATA_SIZE => G_DATA_SIZE + 2
     )
     port map (
-      s_aclk_i        => m_aclk_i,
-      s_aresetn_i     => m_aresetn_i,
-      s_axis_tready_o => m_axi_rready_o,
-      s_axis_tvalid_i => m_axi_rvalid_i,
-      s_axis_tdata_i  => m_axi_rdata_i,
-      s_axis_tkeep_i  => (others => '1'),
-      s_axis_tlast_i  => m_axi_rlast_i,
-      s_axis_tuser_i  => m_axi_ruser,
-      s_fill_o        => open,
-      m_aclk_i        => s_aclk_i,
-      m_axis_tready_i => s_axi_rready_i,
-      m_axis_tvalid_o => s_axi_rvalid_o,
-      m_axis_tdata_o  => s_axi_rdata_o,
-      m_axis_tkeep_o  => open,
-      m_axis_tlast_o  => s_axi_rlast_o,
-      m_axis_tuser_o  => s_axi_ruser,
-      m_fill_o        => open
-    ); -- axip_fifo_async_r_inst : entity work.axip_fifo_async
+      s_clk_i   => s_clk_i,
+      s_rst_i   => s_rst_i,
+      s_ready_o => m_rready_o,
+      s_valid_i => m_rvalid_i,
+      s_data_i  => m_r_in,
+      s_fill_o  => open,
+      m_clk_i   => m_clk_i,
+      m_ready_i => s_rready_i,
+      m_valid_o => s_rvalid_o,
+      m_data_o  => s_r_out,
+      m_fill_o  => open
+    ); -- axis_fifo_async_r_inst : entity work.axis_fifo_async
 
-  s_axi_rresp_o <= s_axi_ruser(R_USER_RRESP);
+  m_r_in(R_RDATA) <= m_rdata_i;
+  m_r_in(R_RRESP) <= m_rresp_i;
+  s_rdata_o       <= s_r_out(R_RDATA);
+  s_rresp_o       <= s_r_out(R_RRESP);
 
 end architecture synthesis;
 
