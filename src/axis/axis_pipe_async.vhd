@@ -8,7 +8,7 @@ library ieee;
 
 entity axis_pipe_async is
   generic (
-    G_PIPE_SIZE : natural;
+    G_PIPE_SIZE : natural := 4;
     G_DATA_SIZE : natural
   );
   port (
