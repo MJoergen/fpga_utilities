@@ -142,13 +142,13 @@ begin
       G_DATA_SIZE => 2
     )
     port map (
-      s_clk_i   => s_clk_i,
-      s_rst_i   => s_rst_i,
+      s_clk_i   => m_clk_i,
+      s_rst_i   => m_rst_i,
       s_ready_o => m_bready_o,
       s_valid_i => m_bvalid_i,
       s_data_i  => m_bresp_i,
       s_fill_o  => open,
-      m_clk_i   => m_clk_i,
+      m_clk_i   => s_clk_i,
       m_ready_i => s_bready_i,
       m_valid_o => s_bvalid_o,
       m_data_o  => s_bresp_o,
@@ -190,13 +190,13 @@ begin
       G_DATA_SIZE => G_DATA_SIZE + 2
     )
     port map (
-      s_clk_i   => s_clk_i,
-      s_rst_i   => s_rst_i,
+      s_clk_i   => m_clk_i,
+      s_rst_i   => m_rst_i,
       s_ready_o => m_rready_o,
       s_valid_i => m_rvalid_i,
       s_data_i  => m_r_in,
       s_fill_o  => open,
-      m_clk_i   => m_clk_i,
+      m_clk_i   => s_clk_i,
       m_ready_i => s_rready_i,
       m_valid_o => s_rvalid_o,
       m_data_o  => s_r_out,
