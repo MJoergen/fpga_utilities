@@ -7,9 +7,9 @@ library xpm;
 
 entity axis_fifo_async is
   generic (
-    G_DEPTH     : natural;
-    G_FILL_SIZE : natural := 1;
-    G_DATA_SIZE : natural
+    G_DEPTH     : positive;
+    G_FILL_SIZE : positive;
+    G_DATA_SIZE : positive
   );
   port (
     s_clk_i   : in    std_logic;

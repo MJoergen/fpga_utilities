@@ -11,9 +11,9 @@ library ieee;
 
 entity axip_dropper is
   generic (
-    G_DATA_SIZE : natural; -- Size of each byte
-    G_ADDR_SIZE : natural; -- Controls size of frame buffer
-    G_RAM_DEPTH : natural  -- Set to ratio between longest and shortest frame length possible
+    G_DATA_SIZE : positive; -- Size of each byte
+    G_ADDR_SIZE : positive; -- Controls size of frame buffer
+    G_RAM_DEPTH : positive  -- Set to ratio between longest and shortest frame length possible
   );
   port (
     clk_i     : in    std_logic;

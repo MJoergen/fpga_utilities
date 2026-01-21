@@ -9,8 +9,8 @@ library ieee;
 entity axis_fifo_sync is
   generic (
     G_RAM_STYLE : string := "auto";
-    G_RAM_DEPTH : natural;
-    G_DATA_SIZE : natural
+    G_RAM_DEPTH : positive;
+    G_DATA_SIZE : positive
   );
   port (
     clk_i     : in    std_logic;
@@ -76,8 +76,7 @@ begin
   -- Combinatorial signals
   -------------------------------
 
-  fill_o <= head - tail when head >= tail else
-            G_RAM_DEPTH - (tail - head);
+  fill_o <= count;
 
   -- Set out_valid when the RAM outputs valid data
   m_valid_proc : process (all)

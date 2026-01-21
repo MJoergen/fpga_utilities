@@ -11,8 +11,9 @@ library ieee;
 
 entity axil_pipe_async is
   generic (
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_ADDR_SIZE : positive;
+    G_DATA_SIZE : positive;
+    G_PIPE_SIZE : positive range 2 to 16
   );
   port (
     -- Connect to AXI Lite Master
@@ -83,6 +84,7 @@ begin
 
   axis_pipe_async_aw_inst : entity work.axis_pipe_async
     generic map (
+      G_PIPE_SIZE => G_PIPE_SIZE,
       G_DATA_SIZE => G_ADDR_SIZE
     )
     port map (
@@ -103,6 +105,7 @@ begin
 
   axis_pipe_async_w_inst : entity work.axis_pipe_async
     generic map (
+      G_PIPE_SIZE => G_PIPE_SIZE,
       G_DATA_SIZE => G_DATA_SIZE + G_DATA_SIZE / 8
     )
     port map (
@@ -128,6 +131,7 @@ begin
 
   axis_pipe_async_b_inst : entity work.axis_pipe_async
     generic map (
+      G_PIPE_SIZE => G_PIPE_SIZE,
       G_DATA_SIZE => 2
     )
     port map (
@@ -148,6 +152,7 @@ begin
 
   axis_pipe_async_ar_inst : entity work.axis_pipe_async
     generic map (
+      G_PIPE_SIZE => G_PIPE_SIZE,
       G_DATA_SIZE => G_ADDR_SIZE
     )
     port map (
@@ -168,6 +173,7 @@ begin
 
   axis_pipe_async_r_inst : entity work.axis_pipe_async
     generic map (
+      G_PIPE_SIZE => G_PIPE_SIZE,
       G_DATA_SIZE => G_DATA_SIZE + 2
     )
     port map (

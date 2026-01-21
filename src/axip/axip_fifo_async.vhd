@@ -7,9 +7,9 @@ library xpm;
 
 entity axip_fifo_async is
   generic (
-    G_DEPTH      : natural;
-    G_FILL_SIZE  : natural;
-    G_DATA_BYTES : natural
+    G_DEPTH      : positive;
+    G_FILL_SIZE  : positive;
+    G_DATA_BYTES : positive
   );
   port (
     s_clk_i   : in    std_logic;
@@ -57,7 +57,7 @@ architecture synthesis of axip_fifo_async is
       end if;
     end loop;
     return ret_v;
-  end function keep2bytes;
+  end function bytes2keep;
 
 begin
 

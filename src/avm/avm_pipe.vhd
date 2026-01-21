@@ -1,12 +1,11 @@
 library ieee;
   use ieee.std_logic_1164.all;
-  use ieee.numeric_std.all;
   use ieee.numeric_std_unsigned.all;
 
 entity avm_pipe is
   generic (
-    G_ADDR_SIZE : integer; -- Number of bits
-    G_DATA_SIZE : integer  -- Number of bits
+    G_ADDR_SIZE : positive; -- Number of bits
+    G_DATA_SIZE : positive  -- Number of bits
   );
   port (
     clk_i             : in    std_logic;

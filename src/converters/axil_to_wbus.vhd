@@ -8,9 +8,9 @@ library ieee;
 
 entity axil_to_wbus is
   generic (
-    G_TIMEOUT   : natural := 100;
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_TIMEOUT   : positive := 100;
+    G_ADDR_SIZE : positive;
+    G_DATA_SIZE : positive
   );
   port (
     clk_i            : in    std_logic;

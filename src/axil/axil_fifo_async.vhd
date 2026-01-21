@@ -11,10 +11,10 @@ library ieee;
 
 entity axil_fifo_async is
   generic (
-    G_WR_DEPTH  : natural := 16; -- Channels AW, W, and AR
-    G_RD_DEPTH  : natural := 16; -- Channels B and R
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_WR_DEPTH  : positive; -- Channels AW, W, and AR
+    G_RD_DEPTH  : positive; -- Channels B and R
+    G_ADDR_SIZE : positive;
+    G_DATA_SIZE : positive
   );
   port (
     -- Connect to AXI Lite Master

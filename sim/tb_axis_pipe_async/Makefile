@@ -21,12 +21,12 @@ DUT = axis_pipe_async
 STOP_TIME = 100us
 
 # Test bench configuration
-GENERIC += -gG_PIPE_SIZE=8
+GENERIC += -gG_PIPE_SIZE=4
 GENERIC += -gG_RANDOM=true
 GENERIC += -gG_FAST=true
-GENERIC += -gG_CNT_SIZE=12
+GENERIC += -gG_CNT_SIZE=14
 GENERIC += -gG_DATA_BYTES=3
-GENERIC += -gG_RATIO=120
+GENERIC += -gG_RATIO=80
 
 # Don't stop on errors
 #ASSERT_LEVEL = none

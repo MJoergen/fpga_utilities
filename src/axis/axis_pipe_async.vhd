@@ -8,8 +8,8 @@ library ieee;
 
 entity axis_pipe_async is
   generic (
-    G_PIPE_SIZE : natural := 4;
-    G_DATA_SIZE : natural
+    G_PIPE_SIZE : positive range 2 to 16;
+    G_DATA_SIZE : positive
   );
   port (
     -- Input AXI stream
@@ -40,12 +40,12 @@ architecture synthesis of axis_pipe_async is
   end function log2;
 
   -- Number of bits in gray-code counters
-  constant C_GRAY_SIZE : natural                                       := log2(G_PIPE_SIZE) + 1;
+  constant C_GRAY_SIZE : positive                                      := log2(G_PIPE_SIZE) + 1;
 
   -- Number of words in FIFO
-  constant C_PIPE_SIZE : natural                                       := 2 ** (C_GRAY_SIZE - 1);
+  constant C_PIPE_SIZE : positive                                      := 2 ** (C_GRAY_SIZE - 1);
 
-  -- Dual-port LUTRAM memory to contain the FIFO data
+  -- Dual-port LUTRAM memory to contain the FIFO data.
   -- We use LUTRAM instead of registers to save space in the FPGA.
   -- We could use BRAM, but there is a higher delay writing to BRAM than to LUTRAM.
   type     ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
@@ -109,6 +109,21 @@ architecture synthesis of axis_pipe_async is
     return b_v;
   end function gray2unsigned;
 
+  -- When the two binary pointers differ by exactly G_PIPE_SIZE,
+  -- then the gray-coded values are identical except for the two
+  -- most significant bits.
+
+  pure function get_gray_full return std_logic_vector is
+    variable res_v : std_logic_vector(C_GRAY_SIZE - 1 downto 0);
+  begin
+    res_v                  := (others => '0');
+    res_v(C_GRAY_SIZE - 1) := '1';
+    res_v(C_GRAY_SIZE - 2) := '1';
+    return res_v;
+  end function;
+
+  constant C_GRAY_FULL : std_logic_vector(C_GRAY_SIZE - 1 downto 0)    := get_gray_full;
+
 begin
 
   assert C_PIPE_SIZE = G_PIPE_SIZE
@@ -117,11 +132,11 @@ begin
 
   -----------------------------------------------------------
   -- Input flow control
+  -- Accept when pipeline contains less than G_PIPE_SIZE.
   -----------------------------------------------------------
 
-  s_ready_o <= '1' when s_gray_wr(C_GRAY_SIZE - 1) = s_gray_rd(C_GRAY_SIZE - 1) else
-               '0';
-
+  s_ready_o <= '0' when (s_gray_wr xor s_gray_rd) = C_GRAY_FULL else
+               '1';
 
   -----------------------------------------------------------
   -- Update write pointer
@@ -143,7 +158,7 @@ begin
   -- The memory is implemented with LUTRAM. There is no
   -- need for a complete CDC circuit on the output of the LUTRAM, a simple
   -- flip-flop is sufficient. This is because the contents being read from the LUTRAM is
-  -- not changing at the time it is sampled. This is due to the CDC causing a (usually) two-cycle
+  -- not changing at the time it is sampled. This is due to the CDC causing a two-cycle
   -- delay between writing to and reading from a given memory location.
   -----------------------------------------------------------
 
@@ -172,23 +187,29 @@ begin
   -- Handle CDC explicitly.
   -- We won't use the Xilinx XPM primitive, because that includes a set_false_path.
   -- Instead, we use a set_max_delay in the constraints.
+  -- It's placed inside a 'block' to simplify the associated timing constraint.
   -----------------------------------------------------------
 
-  async_m_proc : process (m_clk_i)
+  axis_pipe_async_block : block is
   begin
-    if rising_edge(m_clk_i) then
-      m_gray_wr_meta <= s_gray_wr;
-      m_gray_wr      <= m_gray_wr_meta;
-    end if;
-  end process async_m_proc;
 
-  async_s_proc : process (s_clk_i)
-  begin
-    if rising_edge(s_clk_i) then
-      s_gray_rd_meta <= m_gray_rd;
-      s_gray_rd      <= s_gray_rd_meta;
-    end if;
-  end process async_s_proc;
+    async_m_proc : process (m_clk_i)
+    begin
+      if rising_edge(m_clk_i) then
+        m_gray_wr_meta <= s_gray_wr;
+        m_gray_wr      <= m_gray_wr_meta;
+      end if;
+    end process async_m_proc;
+
+    async_s_proc : process (s_clk_i)
+    begin
+      if rising_edge(s_clk_i) then
+        s_gray_rd_meta <= m_gray_rd;
+        s_gray_rd      <= s_gray_rd_meta;
+      end if;
+    end process async_s_proc;
+
+  end block axis_pipe_async_block;
 
 
   -----------------------------------------------------------

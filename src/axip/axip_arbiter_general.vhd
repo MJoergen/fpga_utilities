@@ -12,8 +12,8 @@ library work;
 
 entity axip_arbiter_general is
   generic (
-    G_NUM_MASTERS : natural;
-    G_DATA_BYTES  : natural
+    G_NUM_MASTERS : positive;
+    G_DATA_BYTES  : positive
   );
   port (
     clk_i     : in    std_logic;

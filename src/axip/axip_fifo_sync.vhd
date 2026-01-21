@@ -9,8 +9,8 @@ library ieee;
 entity axip_fifo_sync is
   generic (
     G_RAM_STYLE  : string := "auto";
-    G_RAM_DEPTH  : natural;
-    G_DATA_BYTES : natural
+    G_RAM_DEPTH  : positive;
+    G_DATA_BYTES : positive
   );
   port (
     clk_i     : in    std_logic;

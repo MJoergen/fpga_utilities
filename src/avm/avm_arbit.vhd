@@ -9,8 +9,8 @@ library ieee;
 entity avm_arbit is
   generic (
     G_PREFER_SWAP : boolean;
-    G_ADDR_SIZE   : integer;
-    G_DATA_SIZE   : integer
+    G_ADDR_SIZE   : positive;
+    G_DATA_SIZE   : positive
   );
   port (
     clk_i              : in    std_logic;

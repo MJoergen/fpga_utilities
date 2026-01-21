@@ -25,7 +25,7 @@ STOP_TIME = 100us
 
 # Test bench configuration
 GENERIC += -gG_RANDOM=true
-GENERIC += -gG_DEBUG=true
+GENERIC += -gG_DEBUG=false
 GENERIC += -gG_MIN_LENGTH=1
 GENERIC += -gG_MAX_LENGTH=10
 GENERIC += -gG_FAST=true

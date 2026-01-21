@@ -37,7 +37,7 @@ SRC_DIR = ../../src
 SIM_SRC_DIR = ../src
 
 # Default target: Run the test
-PASS: $(WORK)
+PASS: $(WORK) Makefile
 	rm -f PASS
 	rm -f *.gcda
 	ghdl -r --std=08 $(COV) $(ELAB) $(TB) $(GENERIC) $(RUN_OPTIONS) --wave=$(WAVE) --stop-time=$(STOP_TIME)

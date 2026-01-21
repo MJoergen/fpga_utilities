@@ -9,7 +9,7 @@ library ieee;
 
 entity axip_arbiter is
   generic (
-    G_DATA_BYTES : natural
+    G_DATA_BYTES : positive
   );
   port (
     clk_i      : in    std_logic;

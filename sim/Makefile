@@ -16,6 +16,7 @@ DUTS += tb_axip_remove_fixed_header
 DUTS += tb_axis_arbiter
 DUTS += tb_axis_fifo_sync
 DUTS += tb_axis_pipe
+DUTS += tb_axis_pipe_async
 DUTS += tb_axis_pipe_lite
 DUTS += tb_axis_sim
 DUTS += tb_wbus_arbiter

@@ -12,10 +12,10 @@ library work;
 
 entity wbus_mapper is
   generic (
-    G_TIMEOUT          : natural := 100;
-    G_NUM_SLAVES       : natural;
-    G_MASTER_ADDR_SIZE : natural;
-    G_SLAVE_ADDR_SIZE  : natural
+    G_TIMEOUT          : positive := 100;
+    G_NUM_SLAVES       : positive;
+    G_MASTER_ADDR_SIZE : positive;
+    G_SLAVE_ADDR_SIZE  : positive
   );
   port (
     clk_i     : in    std_logic;

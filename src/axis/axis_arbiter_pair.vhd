@@ -16,8 +16,8 @@ library ieee;
 
 entity axis_arbiter_pair is
   generic (
-    G_A_DATA_SIZE : natural;
-    G_B_DATA_SIZE : natural
+    G_A_DATA_SIZE : positive;
+    G_B_DATA_SIZE : positive
   );
   port (
     clk_i        : in    std_logic;

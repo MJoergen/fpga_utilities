@@ -15,7 +15,7 @@ library ieee;
 
 entity axis_pipe_lite is
   generic (
-    G_DATA_SIZE : integer
+    G_DATA_SIZE : positive
   );
   port (
     clk_i     : in    std_logic;

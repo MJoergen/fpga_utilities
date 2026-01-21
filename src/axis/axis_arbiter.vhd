@@ -10,7 +10,7 @@ library ieee;
 
 entity axis_arbiter is
   generic (
-    G_DATA_SIZE : natural
+    G_DATA_SIZE : positive
   );
   port (
     clk_i      : in    std_logic;

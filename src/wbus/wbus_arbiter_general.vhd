@@ -11,7 +11,7 @@ library work;
 
 entity wbus_arbiter_general is
   generic (
-    G_NUM_MASTERS : natural
+    G_NUM_MASTERS : positive
   );
   port (
     clk_i     : in    std_logic;
