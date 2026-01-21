@@ -86,6 +86,7 @@ begin
   axis_fifo_async_aw_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_WR_DEPTH,
+      G_FILL_SIZE => 1,
       G_DATA_SIZE => G_ADDR_SIZE
     )
     port map (
@@ -110,6 +111,7 @@ begin
   axis_fifo_async_w_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_WR_DEPTH,
+      G_FILL_SIZE => 1,
       G_DATA_SIZE => G_DATA_SIZE + G_DATA_SIZE / 8
     )
     port map (
@@ -139,6 +141,7 @@ begin
   axis_fifo_async_b_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_WR_DEPTH,
+      G_FILL_SIZE => 1,
       G_DATA_SIZE => 2
     )
     port map (
@@ -163,6 +166,7 @@ begin
   axis_fifo_async_ar_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_RD_DEPTH,
+      G_FILL_SIZE => 1,
       G_DATA_SIZE => G_ADDR_SIZE
     )
     port map (
@@ -187,6 +191,7 @@ begin
   axis_fifo_async_r_inst : entity work.axis_fifo_async
     generic map (
       G_DEPTH     => G_RD_DEPTH,
+      G_FILL_SIZE => 1,
       G_DATA_SIZE => G_DATA_SIZE + 2
     )
     port map (
