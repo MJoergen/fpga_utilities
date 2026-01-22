@@ -109,7 +109,7 @@ begin
       s_axis_tlast             => s_last_i,
       s_axis_tready            => s_ready_o,
       s_axis_tstrb             => (others => '0'),
-      s_axis_tuser             => s_user_i,
+      s_axis_tuser             => (others => '0'),
       s_axis_tvalid            => s_valid_i,
       sbiterr_axis             => open,
       wr_data_count_axis       => s_fill_o
