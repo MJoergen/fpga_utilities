@@ -1,4 +1,4 @@
-vunit axip_dropper_inst(axip_dropper(synthesis))
+vunit axis_dropper_inst(axis_dropper(synthesis))
 {
    signal f_input_frame_len : natural;
    signal f_output_frame_len : natural;
@@ -94,5 +94,5 @@ vunit axip_dropper_inst(axip_dropper(synthesis))
 -- Back pressure asserted and released
    f_backpressure : cover {not s_ready_o and not rst_i; s_ready_o};
 
-} -- vunit axip_dropper_inst(axip_dropper(synthesis))
+} -- vunit axis_dropper_inst(axis_dropper(synthesis))
 

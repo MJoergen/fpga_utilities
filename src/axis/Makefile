@@ -3,6 +3,7 @@
 SRC += axis_arbiter_pair.vhd
 SRC += axis_arbiter.vhd
 SRC += axis_distributor.vhd
+SRC += axis_dropper.vhd
 #SRC += axis_fifo_async.vhd   # Uses XPM, not supported by yosys
 SRC += axis_fifo_sync.vhd
 SRC += axis_pipe_async.vhd
@@ -14,6 +15,7 @@ TARGETS = $(patsubst %.vhd,%.edif,$(SRC))
 all: $(TARGETS)
 
 # Explicitly handle dependencies
+axis_dropper.edif:         axis_fifo_sync.vhd axis_dropper.vhd
 
 ########################################
 # Don't change anything below here

@@ -11,6 +11,8 @@ The modules are sorted according to interface type, and then sorted alphabetical
   streaming interfaces into one.
 * [axis\_distributor.vhd](src/axis/axis_distributor.vhd): This distributes a single AXI
   streaming interface into two.
+* [axis\_dropper.vhd](src/axis/axis_dropper.vhd): This drops selected packets from an AXI
+  stream interface.
 * [axis\_fifo\_sync.vhd](src/axis/axis_fifo_sync.vhd): This is a simple synchronous AXI
   streaming FIFO (i.e. input and output have same clock).
 * [axis\_pipe\_lite.vhd](src/axis/axis_pipe_lite.vhd): A small 1-stage FIFO for AXI
@@ -34,8 +36,6 @@ The modules are sorted according to interface type, and then sorted alphabetical
   masters.
 * [axip\_arbiter\_general.vhd](src/axip/axip_arbiter_general.vhd): This arbitrates
   (merges) several AXI packet interfaces into one.
-* [axip\_dropper.vhd](src/axip/axip_dropper.vhd): This drops selected packets from an AXI
-  packet interface.
 * [axip\_pipe.vhd](src/axip/axip_pipe.vhd): A small 2-stage FIFO for AXI packet. This can
   be useful for adding registers to an AXI packet pipeline for helping to achieve timing
   closure.

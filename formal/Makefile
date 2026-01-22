@@ -3,12 +3,12 @@
 
 DUTS += axil_to_wbus
 DUTS += axip_arbiter
-DUTS += axip_dropper
 DUTS += axip_insert_fixed_header
 DUTS += axip_remove_fixed_header
 DUTS += axip_to_axis
 DUTS += axis_arbiter
 DUTS += axis_arbiter_pair
+DUTS += axis_dropper
 DUTS += axis_fifo_sync
 DUTS += axis_to_axip
 DUTS += wbus_arbiter
