@@ -39,6 +39,8 @@ The modules are sorted according to interface type, and then sorted alphabetical
 * [axip\_pipe.vhd](src/axip/axip_pipe.vhd): A small 2-stage FIFO for AXI packet. This can
   be useful for adding registers to an AXI packet pipeline for helping to achieve timing
   closure.
+* [axip\_pipe\_async.vhd](src/axip/axip_pipe_async.vhd): This is an asynchronous shallow
+  FIFO to be used for Clock Domain Crossings.
 
 ## AXI Lite
 

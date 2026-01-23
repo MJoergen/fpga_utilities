@@ -7,6 +7,7 @@ SRC += axip_distributor.vhd
 SRC += axip_fifo.vhd
 SRC += axip_insert_fixed_header.vhd
 SRC += axip_pipe.vhd
+SRC += axip_pipe_async.vhd
 #SRC += axip_pkg.vhd                # Only contains a package
 SRC += axip_remove_fixed_header.vhd
 
@@ -17,6 +18,7 @@ all: $(TARGETS)
 # Explicitly handle dependencies
 axip_arbiter_general.edif: axip_pkg.vhd axip_arbiter.vhd axip_arbiter_general.vhd
 axip_pipe.edif:            ../axis/axis_pipe.vhd axip_pipe.vhd
+axip_pipe_async.edif:      ../axis/axis_pipe_async.vhd axip_pipe_async.vhd
 axip_fifo.edif:            ../axis/axis_fifo.vhd axip_fifo.vhd
 
 ########################################
