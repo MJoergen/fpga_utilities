@@ -3,7 +3,7 @@
 # Description: Makefile for simulating the axi_pipe_wide.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/axis/axis_fifo_sync.vhd
+SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 SRC += $(SRC_DIR)/axip/axip_insert_fixed_header.vhd
 
 # List of test specific simulation files

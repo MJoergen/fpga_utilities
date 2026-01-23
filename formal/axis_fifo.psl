@@ -1,4 +1,4 @@
-vunit axis_fifo_sync_inst(axis_fifo_sync(synthesis))
+vunit axis_fifo_inst(axis_fifo(synthesis))
 {
 -- set all declarations to run on clk_i
    default clock is rising_edge(clk_i);
@@ -78,5 +78,5 @@ vunit axis_fifo_sync_inst(axis_fifo_sync(synthesis))
 
    f_fifo_full : cover {not rst_i and not s_ready_o and m_ready_i};
 
-} -- vunit axis_fifo_sync_inst(axis_fifo_sync(synthesis))
+} -- vunit axis_fifo_inst(axis_fifo(synthesis))
 

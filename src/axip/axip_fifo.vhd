@@ -6,7 +6,7 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity axip_fifo_sync is
+entity axip_fifo is
   generic (
     G_RAM_STYLE  : string := "auto";
     G_RAM_DEPTH  : positive;
@@ -31,9 +31,9 @@ entity axip_fifo_sync is
     m_last_o  : out   std_logic;
     m_bytes_o : out   natural range 0 to G_DATA_BYTES
   );
-end entity axip_fifo_sync;
+end entity axip_fifo;
 
-architecture synthesis of axip_fifo_sync is
+architecture synthesis of axip_fifo is
 
   signal   s_data_in  : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
   signal   m_data_out : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
@@ -46,7 +46,7 @@ architecture synthesis of axip_fifo_sync is
 
 begin
 
-  axis_fifo_sync_inst : entity work.axis_fifo_sync
+  axis_fifo_inst : entity work.axis_fifo
     generic map (
       G_RAM_STYLE => G_RAM_STYLE,
       G_RAM_DEPTH => G_RAM_DEPTH,
@@ -61,7 +61,7 @@ begin
       m_ready_i => m_ready_i,
       m_valid_o => m_valid_o,
       m_data_o  => m_data_out
-    ); -- axi_fifo_sync_inst : entity work.axi_fifo_sync
+    ); -- axis_fifo_inst : entity work.axis_fifo
 
   s_data_in(R_AXI_FIFO_DATA)  <= s_data_i;
   s_data_in(C_AXI_FIFO_LAST)  <= s_last_i;

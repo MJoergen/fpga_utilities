@@ -13,8 +13,8 @@ The modules are sorted according to interface type, and then sorted alphabetical
   streaming interface into two.
 * [axis\_dropper.vhd](src/axis/axis_dropper.vhd): This drops selected packets from an AXI
   stream interface.
-* [axis\_fifo\_sync.vhd](src/axis/axis_fifo_sync.vhd): This is a simple synchronous AXI
-  streaming FIFO (i.e. input and output have same clock).
+* [axis\_fifo.vhd](src/axis/axis_fifo.vhd): This is a simple synchronous AXI streaming
+  FIFO (i.e. input and output have same clock).
 * [axis\_pipe\_lite.vhd](src/axis/axis_pipe_lite.vhd): A small 1-stage FIFO for AXI
   streaming. This can be useful for adding registers to an AXI streaming pipeline for
   helping to achieve timing closure.
@@ -26,8 +26,8 @@ The modules are sorted according to interface type, and then sorted alphabetical
 
 ## AXI packet
 
-* [axip\_fifo\_sync.vhd](src/axip/axip_fifo_sync.vhd): This is a simple synchronous AXI
-  packet FIFO (i.e. input and output have same clock).
+* [axip\_fifo.vhd](src/axip/axip_fifo.vhd): This is a simple synchronous AXI packet FIFO
+  (i.e. input and output have same clock).
 * [axip\_insert\_fixed\_header.vhd](src/axip/axip_insert_fixed_header.vhd): This inserts a
   fixed-size header in front of an AXI packet.
 * [axip\_remove\_fixed\_header.vhd](src/axip/axip_remove_fixed_header.vhd): This removes a

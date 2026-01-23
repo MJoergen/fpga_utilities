@@ -9,7 +9,7 @@ DUTS += axip_to_axis
 DUTS += axis_arbiter
 DUTS += axis_arbiter_pair
 DUTS += axis_dropper
-DUTS += axis_fifo_sync
+DUTS += axis_fifo
 DUTS += axis_to_axip
 DUTS += wbus_arbiter
 

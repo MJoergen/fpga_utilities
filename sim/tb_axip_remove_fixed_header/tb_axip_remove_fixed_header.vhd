@@ -255,7 +255,7 @@ begin
     end if;
   end process stimuli_proc;
 
-  axis_fifo_sync_length_inst : entity work.axis_fifo_sync
+  axis_fifo_length_inst : entity work.axis_fifo
     generic map (
       G_RAM_STYLE => "auto",
       G_DATA_SIZE => C_LENGTH_SIZE,
@@ -271,7 +271,7 @@ begin
       m_ready_i => length_m_ready,
       m_valid_o => length_m_valid,
       m_data_o  => length_m_data
-    ); -- axis_fifo_sync_length_inst : entity work.axis_fifo_sync
+    ); -- axis_fifo_length_inst : entity work.axis_fifo
 
 
   ----------------------------------------------------------

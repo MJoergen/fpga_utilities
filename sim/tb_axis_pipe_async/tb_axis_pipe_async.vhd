@@ -70,7 +70,7 @@ begin
       m_ready_i => m_ready,
       m_valid_o => m_valid,
       m_data_o  => m_data
-    ); -- axis_pipe_sync_inst : entity work.axis_pipe_sync
+    ); -- axis_pipe_async_inst : entity work.axis_pipe_async
 
 
   ----------------------------------------------

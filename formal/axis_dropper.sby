@@ -13,11 +13,11 @@ bmc: depth 10
 smtbmc
 
 [script]
-ghdl --std=08 -gG_ADDR_SIZE=4 -gG_DATA_SIZE=8 -gG_RAM_DEPTH=4 axis_dropper.vhd axis_fifo_sync.vhd axis_dropper.psl -e axis_dropper
+ghdl --std=08 -gG_ADDR_SIZE=4 -gG_DATA_SIZE=8 -gG_RAM_DEPTH=4 axis_dropper.vhd axis_fifo.vhd axis_dropper.psl -e axis_dropper
 prep -top axis_dropper
 
 [files]
 axis_dropper.psl
 ../src/axis/axis_dropper.vhd
-../src/axis/axis_fifo_sync.vhd
+../src/axis/axis_fifo.vhd
 

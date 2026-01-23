@@ -4,7 +4,7 @@ SRC += axip_arbiter_general.vhd
 SRC += axip_arbiter.vhd
 SRC += axip_distributor.vhd
 #SRC += axip_fifo_async.vhd         # Uses XPM, not supported by yosys
-SRC += axip_fifo_sync.vhd
+SRC += axip_fifo.vhd
 SRC += axip_insert_fixed_header.vhd
 SRC += axip_pipe.vhd
 #SRC += axip_pkg.vhd                # Only contains a package
@@ -17,7 +17,7 @@ all: $(TARGETS)
 # Explicitly handle dependencies
 axip_arbiter_general.edif: axip_pkg.vhd axip_arbiter.vhd axip_arbiter_general.vhd
 axip_pipe.edif:            ../axis/axis_pipe.vhd axip_pipe.vhd
-axip_fifo_sync.edif:       ../axis/axis_fifo_sync.vhd axip_fifo_sync.vhd
+axip_fifo.edif:            ../axis/axis_fifo.vhd axip_fifo.vhd
 
 ########################################
 # Don't change anything below here

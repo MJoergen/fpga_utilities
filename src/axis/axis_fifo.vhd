@@ -6,7 +6,7 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity axis_fifo_sync is
+entity axis_fifo is
   generic (
     G_RAM_STYLE : string := "auto";
     G_RAM_DEPTH : positive;
@@ -27,9 +27,9 @@ entity axis_fifo_sync is
     m_valid_o : out   std_logic;
     m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
   );
-end entity axis_fifo_sync;
+end entity axis_fifo;
 
-architecture synthesis of axis_fifo_sync is
+architecture synthesis of axis_fifo is
 
   -- The FIFO is full when the RAM contains G_RAM_DEPTH-1 elements
   type    ram_type is array (0 to G_RAM_DEPTH - 1) of std_logic_vector(s_data_i'range);

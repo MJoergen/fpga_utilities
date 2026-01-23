@@ -110,7 +110,7 @@ begin
   -- FIFO containing "end pointer" for each frame
   ----------------------------------------------------
 
-  axis_fifo_sync_inst : entity work.axis_fifo_sync
+  axis_fifo_inst : entity work.axis_fifo
     generic map (
       G_DATA_SIZE => G_ADDR_SIZE,
       G_RAM_DEPTH => G_RAM_DEPTH
@@ -124,7 +124,7 @@ begin
       m_ready_i => fifo_rd_ready,
       m_valid_o => fifo_rd_valid,
       m_data_o  => fifo_rd_data
-    ); -- axis_fifo_sync_inst : entity work.axis_fifo_sync
+    ); -- axis_fifo_inst : entity work.axis_fifo
 
 
   ----------------------------------------------------
