@@ -13,6 +13,8 @@ SRC += tb_axis_arbiter.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
 SRC += $(SIM_SRC_DIR)/axis_sim.vhd
+SRC += $(SIM_SRC_DIR)/axis_master_sim.vhd
+SRC += $(SIM_SRC_DIR)/axis_slave_sim.vhd
 
 # Top level entity
 DUT = axis_arbiter

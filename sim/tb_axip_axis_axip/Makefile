@@ -3,7 +3,8 @@
 # Description: Makefile for simulating the axip_to_axis.vhd and axis_to_axip.vhd files.
 
 # List of source files
-SRC += $(SRC_DIR)/axis/axis_fifo_sync.vhd
+SRC += $(SRC_DIR)/axip/axip_insert_fixed_header.vhd
+SRC += $(SRC_DIR)/axip/axip_remove_fixed_header.vhd
 SRC += $(SRC_DIR)/converters/axis_to_axip.vhd
 SRC += $(SRC_DIR)/converters/axip_to_axis.vhd
 
@@ -12,6 +13,8 @@ SRC += tb_axip_axis_axip.vhd
 
 # List of generic simulation files
 SRC += $(SIM_SRC_DIR)/axip_sim.vhd
+SRC += $(SIM_SRC_DIR)/axip_master_sim.vhd
+SRC += $(SIM_SRC_DIR)/axip_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/axis_sim.vhd
 SRC += $(SIM_SRC_DIR)/axis_pause.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd

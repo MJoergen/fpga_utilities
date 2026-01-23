@@ -5,12 +5,16 @@
 # List of source files
 SRC += $(SRC_DIR)/axis/axis_fifo_sync.vhd
 SRC += $(SRC_DIR)/axip/axip_fifo_sync.vhd
+SRC += $(SRC_DIR)/axip/axip_insert_fixed_header.vhd
+SRC += $(SRC_DIR)/axip/axip_remove_fixed_header.vhd
 
 # List of test specific simulation files
 SRC += tb_axip_fifo_sync.vhd
 
 # List of generic simulation files
 SRC += $(SIM_SRC_DIR)/axip_sim.vhd
+SRC += $(SIM_SRC_DIR)/axip_master_sim.vhd
+SRC += $(SIM_SRC_DIR)/axip_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
 

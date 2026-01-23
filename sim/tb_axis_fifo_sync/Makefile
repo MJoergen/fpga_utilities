@@ -10,6 +10,8 @@ SRC += tb_axis_fifo_sync.vhd
 
 # List of generic simulation files
 SRC += $(SIM_SRC_DIR)/axis_sim.vhd
+SRC += $(SIM_SRC_DIR)/axis_master_sim.vhd
+SRC += $(SIM_SRC_DIR)/axis_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
 
