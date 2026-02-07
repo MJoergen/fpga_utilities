@@ -6,32 +6,31 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std_unsigned.all;
 
+library work;
+  use work.axis_pkg.all;
+  use work.axip_pkg.all;
+
 entity axip_master_sim is
   generic (
-    G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
+    G_SEED       : std_logic_vector(63 downto 0) := x"DEADBEAFC007BABE";
     G_NAME       : string                        := "";
     G_DEBUG      : boolean;
     G_RANDOM     : boolean;
     G_FAST       : boolean;
     G_MIN_LENGTH : natural;
     G_MAX_LENGTH : natural;
-    G_CNT_SIZE   : natural;
-    G_DATA_BYTES : natural
+    G_CNT_SIZE   : natural
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-
-    -- AXI packet output
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    m_last_o  : out   std_logic;
-    m_bytes_o : out   natural range 0 to G_DATA_BYTES
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    m_axip : view axip_master_view
   );
 end entity axip_master_sim;
 
 architecture simulation of axip_master_sim is
+
+  constant C_DATA_BYTES : positive         := m_axip.data'length / 8;
 
   -- C_LENGTH_SIZE is the number of bits necessary to encode the packet length.
   -- The value 8 allows packet lengths up to 255 bytes.
@@ -55,15 +54,13 @@ architecture simulation of axip_master_sim is
 
   subtype  R_RAND_LENGTH is natural range 20 downto 5;
 
-  signal   header_ready : std_logic;
-  signal   header_valid : std_logic;
-  signal   header_data  : std_logic_vector(7 downto 0);
+  signal   header : axis_rec_type (
+                                   data(7 downto 0)
+                                  );
 
-  signal   payload_ready : std_logic;
-  signal   payload_valid : std_logic;
-  signal   payload_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal   payload_last  : std_logic;
-  signal   payload_bytes : natural range 0 to G_DATA_BYTES;
+  signal   payload : axip_rec_type (
+                                    data(m_axip.data'range)
+                                   );
 
 begin
 
@@ -95,7 +92,7 @@ begin
 
   stimuli_proc : process (clk_i)
     variable length_v : natural range G_MIN_LENGTH to G_MAX_LENGTH;
-    variable bytes_v  : natural range 1 to G_DATA_BYTES;
+    variable bytes_v  : natural range 1 to C_DATA_BYTES;
     variable first_v  : boolean := true;
   begin
     if rising_edge(clk_i) then
@@ -105,21 +102,21 @@ begin
         first_v := false;
       end if;
 
-      if payload_ready = '1' then
-        payload_valid <= '0';
-        payload_data  <= (others => '0');
-        payload_last  <= '0';
-        payload_bytes <= 0;
+      if payload.ready = '1' then
+        payload.valid <= '0';
+        payload.data  <= (others => '0');
+        payload.last  <= '0';
+        payload.bytes <= 0;
       end if;
 
-      if header_ready = '1' then
-        header_valid <= '0';
+      if header.ready = '1' then
+        header.valid <= '0';
       end if;
 
       case stim_state is
 
         when STIM_IDLE_ST =>
-          if header_ready = '1' or header_valid = '0' then
+          if header.ready = '1' or header.valid = '0' then
             length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_MIN_LENGTH + 1)) + G_MIN_LENGTH;
 
             if rst_i = '0' and G_DEBUG then
@@ -128,17 +125,17 @@ begin
             end if;
 
             -- Store length in FIFO
-            header_data  <= to_stdlogicvector(length_v, C_LENGTH_SIZE);
-            header_valid <= '1';
+            header.data  <= to_stdlogicvector(length_v, C_LENGTH_SIZE);
+            header.valid <= '1';
 
             stim_length  <= length_v;
             stim_state   <= STIM_DATA_ST;
           end if;
 
         when STIM_DATA_ST =>
-          if payload_valid = '0' or (G_FAST and payload_ready = '1') then
+          if payload.valid = '0' or (G_FAST and payload.ready = '1') then
             if stim_do_valid = '1' then
-              bytes_v := G_DATA_BYTES;
+              bytes_v := C_DATA_BYTES;
               if bytes_v > stim_length then
                 bytes_v := stim_length;
               end if;
@@ -147,17 +144,17 @@ begin
               stim_length <= stim_length - bytes_v;
 
               for i in 0 to bytes_v - 1 loop
-                payload_data((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8) <= stim_cnt(7 downto 0) + i;
+                payload.data((C_DATA_BYTES - 1 - i) * 8 + 7 downto (C_DATA_BYTES - 1 - i) * 8) <= stim_cnt(7 downto 0) + i;
               end loop;
 
-              payload_valid <= '1';
-              payload_bytes <= bytes_v;
+              payload.valid <= '1';
+              payload.bytes <= bytes_v;
               if stim_length = bytes_v then
-                payload_last <= '1';
+                payload.last <= '1';
                 stim_state   <= STIM_IDLE_ST;
 
                 if G_FAST then
-                  if header_ready = '1' or header_valid = '0' then
+                  if header.ready = '1' or header.valid = '0' then
                     length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_MIN_LENGTH + 1)) + G_MIN_LENGTH;
 
                     if rst_i = '0' and G_DEBUG then
@@ -166,8 +163,8 @@ begin
                     end if;
 
                     -- Store length in FIFO
-                    header_data  <= to_stdlogicvector(length_v, C_LENGTH_SIZE);
-                    header_valid <= '1';
+                    header.data  <= to_stdlogicvector(length_v, C_LENGTH_SIZE);
+                    header.valid <= '1';
 
                     stim_length  <= length_v;
                     stim_state   <= STIM_DATA_ST;
@@ -180,12 +177,12 @@ begin
       end case;
 
       if rst_i = '1' then
-        payload_valid <= '0';
-        payload_data  <= (others => '0');
-        payload_last  <= '0';
-        payload_bytes <= 0;
+        payload.valid <= '0';
+        payload.data  <= (others => '0');
+        payload.last  <= '0';
+        payload.bytes <= 0;
         --
-        header_valid  <= '0';
+        header.valid  <= '0';
         stim_cnt      <= (others => '0');
         stim_state    <= STIM_IDLE_ST;
       end if;
@@ -198,26 +195,12 @@ begin
   ----------------------------------------------------------
 
   axip_insert_fixed_header_inst : entity work.axip_insert_fixed_header
-    generic map (
-      G_DATA_BYTES   => G_DATA_BYTES,
-      G_HEADER_BYTES => 1
-    )
     port map (
-      clk_i     => clk_i,
-      rst_i     => rst_i,
-      h_ready_o => header_ready,
-      h_valid_i => header_valid,
-      h_data_i  => header_data,
-      s_ready_o => payload_ready,
-      s_valid_i => payload_valid,
-      s_data_i  => payload_data,
-      s_last_i  => payload_last,
-      s_bytes_i => payload_bytes,
-      m_ready_i => m_ready_i,
-      m_valid_o => m_valid_o,
-      m_data_o  => m_data_o,
-      m_last_o  => m_last_o,
-      m_bytes_o => m_bytes_o
+      clk_i  => clk_i,
+      rst_i  => rst_i,
+      h_axis => header,
+      s_axip => payload,
+      m_axip => m_axip
     ); -- axip_insert_fixed_header_inst : entity work.axip_insert_fixed_header
 
 end architecture simulation;

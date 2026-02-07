@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description: Verify axis_sim
+-- Description: Verify axip_sim
 -- ---------------------------------------------------------------------------------------
 
 library ieee;
@@ -7,9 +7,9 @@ library ieee;
   use ieee.numeric_std.all;
 
 library work;
-  use work.axis_pkg.all;
+  use work.axip_pkg.all;
 
-entity tb_axis_sim is
+entity tb_axip_sim is
   generic (
     G_PAUSE_SIZE : natural;
     G_RAM_DEPTH  : natural;
@@ -18,22 +18,22 @@ entity tb_axis_sim is
     G_CNT_SIZE   : natural;
     G_DATA_BYTES : natural
   );
-end entity tb_axis_sim;
+end entity tb_axip_sim;
 
-architecture simulation of tb_axis_sim is
+architecture simulation of tb_axip_sim is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
 
-  -- Input to axis_sim
-  signal tx_axis : axis_rec_type (
-    data(G_DATA_BYTES * 8 - 1 downto 0)
-  );
+  -- Input to axip_sim
+  signal tx_axip : axip_rec_type (
+                                  data(G_DATA_BYTES * 8 - 1 downto 0)
+                                 );
 
-  -- Output from axis_sim
-  signal rx_axis : axis_rec_type (
-    data(G_DATA_BYTES * 8 - 1 downto 0)
-  );
+  -- Output from axip_sim
+  signal rx_axip : axip_rec_type (
+                                  data(G_DATA_BYTES * 8 - 1 downto 0)
+                                 );
 
 begin
 
@@ -49,8 +49,11 @@ begin
   -- Instantiate DUT
   ----------------------------------------------
 
-  axis_sim_inst : entity work.axis_sim
+  axip_sim_inst : entity work.axip_sim
     generic map (
+      G_DEBUG      => false,
+      G_MIN_LENGTH => 1,
+      G_MAX_LENGTH => 10,
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
       G_CNT_SIZE   => G_CNT_SIZE
@@ -58,16 +61,16 @@ begin
     port map (
       clk_i  => clk,
       rst_i  => rst,
-      m_axis => tx_axis,
-      s_axis => rx_axis
-    ); -- axis_sim_inst : entity work.axis_sim
+      m_axip => tx_axip,
+      s_axip => rx_axip
+    ); -- axip_sim_inst : entity work.axip_sim
 
 
   ----------------------------------------------
   -- Add additional random delays
   ----------------------------------------------
 
-  axis_pause_inst : entity work.axis_pause
+  axip_pause_inst : entity work.axip_pause
     generic map (
       G_SEED       => X"CAFEBABE666B00B5",
       G_PAUSE_SIZE => G_PAUSE_SIZE
@@ -75,9 +78,9 @@ begin
     port map (
       clk_i  => clk,
       rst_i  => rst,
-      s_axis => tx_axis,
-      m_axis => rx_axis
-    ); -- axis_pause_inst : entity work.axis_pause
+      s_axip => tx_axip,
+      m_axip => rx_axip
+    ); -- axip_pause_inst : entity work.axip_pause
 
 end architecture simulation;
 

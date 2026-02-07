@@ -8,28 +8,16 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axis_pkg.all;
+
 entity axis_arbiter is
-  generic (
-    G_DATA_SIZE : positive
-  );
   port (
-    clk_i      : in    std_logic;
-    rst_i      : in    std_logic;
-
-    -- AXI stream input interface #0
-    s0_ready_o : out   std_logic;
-    s0_valid_i : in    std_logic;
-    s0_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-
-    -- AXI stream input interface #1
-    s1_ready_o : out   std_logic;
-    s1_valid_i : in    std_logic;
-    s1_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-
-    -- AXI stream output interface
-    m_ready_i  : in    std_logic;
-    m_valid_o  : out   std_logic;
-    m_data_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    clk_i   : in    std_logic;
+    rst_i   : in    std_logic;
+    s0_axis : view  axis_slave_view;
+    s1_axis : view  axis_slave_view;
+    m_axis  : view  axis_master_view
   );
 end entity axis_arbiter;
 
@@ -40,45 +28,45 @@ architecture synthesis of axis_arbiter is
 
 begin
 
-  s0_ready_o <= (m_ready_i or not m_valid_o) when state = INPUT_0_ST else
-                '0';
-  s1_ready_o <= (m_ready_i or not m_valid_o) when state = INPUT_1_ST else
-                '0';
+  s0_axis.ready <= (m_axis.ready or not m_axis.valid) when state = INPUT_0_ST else
+                   '0';
+  s1_axis.ready <= (m_axis.ready or not m_axis.valid) when state = INPUT_1_ST else
+                   '0';
 
   fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if m_ready_i = '1' then
-        m_valid_o <= '0';
+      if m_axis.ready = '1' then
+        m_axis.valid <= '0';
       end if;
 
       case state is
 
         when INPUT_0_ST =>
-          if s0_valid_i = '1' and s0_ready_o = '1' then
-            m_data_o  <= s0_data_i;
-            m_valid_o <= '1';
+          if s0_axis.valid = '1' and s0_axis.ready = '1' then
+            m_axis.data  <= s0_axis.data;
+            m_axis.valid <= '1';
           end if;
 
-          if s1_valid_i = '1' then
+          if s1_axis.valid = '1' then
             state <= INPUT_1_ST;
           end if;
 
         when INPUT_1_ST =>
-          if s1_valid_i = '1' and s1_ready_o = '1' then
-            m_data_o  <= s1_data_i;
-            m_valid_o <= '1';
+          if s1_axis.valid = '1' and s1_axis.ready = '1' then
+            m_axis.data  <= s1_axis.data;
+            m_axis.valid <= '1';
           end if;
 
-          if s0_valid_i = '1' then
+          if s0_axis.valid = '1' then
             state <= INPUT_0_ST;
           end if;
 
       end case;
 
       if rst_i = '1' then
-        m_valid_o <= '0';
-        state     <= INPUT_0_ST;
+        m_axis.valid <= '0';
+        state        <= INPUT_0_ST;
       end if;
     end if;
   end process fsm_proc;

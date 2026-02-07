@@ -6,6 +6,9 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axip_pkg.all;
+
 entity tb_axip_pipe_async is
   generic (
     G_DEBUG      : boolean;
@@ -25,20 +28,16 @@ architecture simulation of tb_axip_pipe_async is
   signal   s_clk : std_logic := '1';
   signal   s_rst : std_logic := '1';
 
-  signal   s_ready : std_logic;
-  signal   s_valid : std_logic;
-  signal   s_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal   s_last  : std_logic;
-  signal   s_bytes : natural range 0 to G_DATA_BYTES;
-
   signal   m_clk : std_logic := '1';
   signal   m_rst : std_logic := '1';
 
-  signal   m_ready : std_logic;
-  signal   m_valid : std_logic;
-  signal   m_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal   m_last  : std_logic;
-  signal   m_bytes : natural range 0 to G_DATA_BYTES;
+  signal   s_axip : axip_rec_type (
+                                   data(G_DATA_BYTES * 8 - 1 downto 0)
+                                  );
+
+  signal   m_axip : axip_rec_type (
+                                   data(G_DATA_BYTES * 8 - 1 downto 0)
+                                  );
 
   constant C_S_PERIOD : time := 5 ns;
   constant C_M_PERIOD : time := (C_S_PERIOD * G_RATIO) / 100;
@@ -62,22 +61,13 @@ begin
 
   axip_pipe_async_inst : entity work.axip_pipe_async
     generic map (
-      G_PIPE_SIZE  => G_PIPE_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_PIPE_SIZE => G_PIPE_SIZE
     )
     port map (
-      s_clk_i   => s_clk,
-      s_ready_o => s_ready,
-      s_valid_i => s_valid,
-      s_data_i  => s_data,
-      s_last_i  => s_last,
-      s_bytes_i => s_bytes,
-      m_clk_i   => m_clk,
-      m_ready_i => m_ready,
-      m_valid_o => m_valid,
-      m_data_o  => m_data,
-      m_last_o  => m_last,
-      m_bytes_o => m_bytes
+      s_clk_i => s_clk,
+      s_axip  => s_axip,
+      m_clk_i => m_clk,
+      m_axip  => m_axip
     ); -- axip_pipe_async_inst : entity work.axip_pipe_async
 
 
@@ -92,17 +82,12 @@ begin
       G_MAX_LENGTH => G_MAX_LENGTH,
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_CNT_SIZE   => G_CNT_SIZE
     )
     port map (
-      clk_i     => s_clk,
-      rst_i     => s_rst,
-      m_ready_i => s_ready,
-      m_valid_o => s_valid,
-      m_data_o  => s_data,
-      m_last_o  => s_last,
-      m_bytes_o => s_bytes
+      clk_i  => s_clk,
+      rst_i  => s_rst,
+      m_axip => s_axip
     ); -- axip_master_sim_inst : entity work.axip_master_sim
 
 
@@ -116,17 +101,12 @@ begin
       G_MIN_LENGTH => G_MIN_LENGTH,
       G_MAX_LENGTH => G_MAX_LENGTH,
       G_RANDOM     => G_RANDOM,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_CNT_SIZE   => G_CNT_SIZE
     )
     port map (
-      clk_i     => m_clk,
-      rst_i     => m_rst,
-      s_ready_o => m_ready,
-      s_valid_i => m_valid,
-      s_data_i  => m_data,
-      s_last_i  => m_last,
-      s_bytes_i => m_bytes
+      clk_i  => m_clk,
+      rst_i  => m_rst,
+      s_axip => m_axip
     ); -- axip_slave_sim_inst : entity work.axip_slave_sim
 
 end architecture simulation;

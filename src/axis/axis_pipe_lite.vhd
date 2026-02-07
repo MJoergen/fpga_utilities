@@ -13,19 +13,15 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axis_pkg.all;
+
 entity axis_pipe_lite is
-  generic (
-    G_DATA_SIZE : positive
-  );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-    s_ready_o : out   std_logic;
-    s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    s_axis : view  axis_slave_view;
+    m_axis : view  axis_master_view
   );
 end entity axis_pipe_lite;
 
@@ -38,19 +34,18 @@ begin
   -- * When downstream is ready.
   -- The latter situation allows simultaneous read and write, even when the
   -- pipe is full.
-  s_ready_o <= m_ready_i or not m_valid_o;
+  s_axis.ready <= m_axis.ready or not m_axis.valid;
 
   m_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if s_ready_o then
-        m_data_o  <= s_data_i;
-        m_valid_o <= s_valid_i;
+      if s_axis.ready then
+        m_axis.data  <= s_axis.data;
+        m_axis.valid <= s_axis.valid;
       end if;
 
-      -- Reset empties the pipe
-      if rst_i = '1' then
-        m_valid_o <= '0';
+      if rst_i then
+        m_axis.valid <= '0';
       end if;
     end if;
   end process m_proc;

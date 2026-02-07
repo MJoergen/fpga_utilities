@@ -1,0 +1,52 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Fri Feb  6 19:08:21 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axip_sim/tb_axip_sim.fst"
+[dumpfile_mtime] "Fri Feb  6 19:06:35 2026"
+[dumpfile_size] 179521
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axip_sim/tb_axip_sim.gtkw"
+[timestart] 0
+[size] 1000 600
+[pos] -1 -1
+*-33.782280 6490000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_axip_sim.
+[treeopen] tb_axip_sim.axip_sim_inst.
+[sst_width] 239
+[signals_width] 254
+[sst_expanded] 1
+[sst_vpaned_height] 159
+@800200
+-axip_sim
+-m_axip
+@28
+[color] 6
+tb_axip_sim.axip_sim_inst.m_axip.ready
+[color] 2
+tb_axip_sim.axip_sim_inst.m_axip.valid
+@22
+tb_axip_sim.axip_sim_inst.m_axip.data[23:0]
+@28
+tb_axip_sim.axip_sim_inst.m_axip.last
+@22
+tb_axip_sim.axip_sim_inst.m_axip.bytes
+@1000200
+-m_axip
+@800200
+-s_axip
+@28
+[color] 6
+tb_axip_sim.axip_sim_inst.s_axip.ready
+[color] 2
+tb_axip_sim.axip_sim_inst.s_axip.valid
+@22
+tb_axip_sim.axip_sim_inst.s_axip.data[23:0]
+@28
+tb_axip_sim.axip_sim_inst.s_axip.last
+@22
+tb_axip_sim.axip_sim_inst.s_axip.bytes
+@1000200
+-s_axip
+-axip_sim
+[pattern_trace] 1
+[pattern_trace] 0

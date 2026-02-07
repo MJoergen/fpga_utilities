@@ -10,70 +10,70 @@
 
 library ieee;
   use ieee.std_logic_1164.all;
-  use ieee.numeric_std_unsigned.all;
+  use ieee.numeric_std.all;
+
+library work;
+  use work.axis_pkg.all;
+  use work.axip_pkg.all;
 
 entity axip_pause is
   generic (
     G_SEED       : std_logic_vector(63 downto 0) := x"01234567FEDCBA98";
-    G_DATA_BYTES : integer;
     G_PAUSE_SIZE : integer
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-
-    -- AXI packet Input
-    s_valid_i : in    std_logic;
-    s_ready_o : out   std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    s_last_i  : in    std_logic;
-    s_bytes_i : in    natural range 0 to G_DATA_BYTES;
-
-    -- AXI packet Output
-    m_valid_o : out   std_logic;
-    m_ready_i : in    std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    m_last_o  : out   std_logic;
-    m_bytes_o : out   natural range 0 to G_DATA_BYTES
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    s_axip : view axip_slave_view;
+    m_axip : view axip_master_view
   );
 end entity axip_pause;
 
 architecture simulation of axip_pause is
 
-  signal   s_data_in  : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
-  signal   m_data_out : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
+  constant C_DATA_BYTES : positive := s_axip.data'length / 8;
 
-  subtype  R_DATA is natural range G_DATA_BYTES * 8 - 1 downto 0;
+  signal   s_data_in  : std_logic_vector(C_DATA_BYTES * 8 + 15 downto 0);
+  signal   m_data_out : std_logic_vector(C_DATA_BYTES * 8 + 15 downto 0);
 
-  subtype  R_BYTES is natural range G_DATA_BYTES * 8 + 14 downto G_DATA_BYTES * 8;
+  subtype  R_DATA is natural range C_DATA_BYTES * 8 - 1 downto 0;
 
-  constant C_LAST : natural := G_DATA_BYTES * 8 + 15;
+  subtype  R_BYTES is natural range C_DATA_BYTES * 8 + 14 downto C_DATA_BYTES * 8;
+
+  constant C_LAST : natural := C_DATA_BYTES * 8 + 15;
+
+  signal s_axis : axis_rec_type (
+    data(C_DATA_BYTES * 8 + 15 downto 0)
+  );
+
+  signal m_axis : axis_rec_type (
+    data(C_DATA_BYTES * 8 + 15 downto 0)
+  );
 
 begin
 
-  s_data_in(R_DATA)  <= s_data_i;
-  s_data_in(R_BYTES) <= to_stdlogicvector(s_bytes_i, 15);
-  s_data_in(C_LAST)  <= s_last_i;
+  s_axis.valid         <= s_axip.valid;
+  s_axis.data(R_DATA)  <= s_axip.data;
+  s_axis.data(R_BYTES) <= std_logic_vector(to_unsigned(s_axip.bytes, 15));
+  s_axis.data(C_LAST)  <= s_axip.last;
+  s_axip.ready         <= s_axis.ready;
 
-  m_data_o           <= m_data_out(R_DATA);
-  m_bytes_o          <= to_integer(m_data_out(R_BYTES));
-  m_last_o           <= m_data_out(C_LAST);
+  m_axip.valid         <= m_axis.valid;
+  m_axip.data          <= m_axis.data(R_DATA);
+  m_axip.bytes         <= to_integer(unsigned(m_axis.data(R_BYTES)));
+  m_axip.last          <= m_axis.data(C_LAST);
+  m_axis.ready         <= m_axip.ready;
 
   axis_pause_inst : entity work.axis_pause
     generic map (
       G_SEED       => G_SEED,
-      G_DATA_SIZE  => G_DATA_BYTES * 8 + 16,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
-      clk_i     => clk_i,
-      rst_i     => rst_i,
-      s_ready_o => s_ready_o,
-      s_valid_i => s_valid_i,
-      s_data_i  => s_data_in,
-      m_ready_i => m_ready_i,
-      m_valid_o => m_valid_o,
-      m_data_o  => m_data_out
+      clk_i  => clk_i,
+      rst_i  => rst_i,
+      s_axis => s_axis,
+      m_axis => m_axis
     ); -- axis_pause_inst : entity work.axis_pause
 
 end architecture simulation;

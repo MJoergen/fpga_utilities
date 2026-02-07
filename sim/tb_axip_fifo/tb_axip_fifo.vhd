@@ -6,8 +6,8 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-library std;
-  use std.env.stop;
+library work;
+  use work.axip_pkg.all;
 
 entity tb_axip_fifo is
   generic (
@@ -27,17 +27,13 @@ architecture simulation of tb_axip_fifo is
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
 
-  signal s_ready : std_logic;
-  signal s_valid : std_logic;
-  signal s_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal s_last  : std_logic;
-  signal s_bytes : natural range 0 to G_DATA_BYTES;
+  signal s_axip : axip_rec_type (
+    data(G_DATA_BYTES * 8 - 1 downto 0)
+  );
 
-  signal m_ready : std_logic;
-  signal m_valid : std_logic;
-  signal m_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal m_last  : std_logic;
-  signal m_bytes : natural range 0 to G_DATA_BYTES;
+  signal m_axip : axip_rec_type (
+    data(G_DATA_BYTES * 8 - 1 downto 0)
+  );
 
 begin
 
@@ -56,22 +52,13 @@ begin
   axip_fifo_inst : entity work.axip_fifo
     generic map (
       G_RAM_STYLE => "auto",
-      G_RAM_DEPTH => G_RAM_DEPTH,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_RAM_DEPTH => G_RAM_DEPTH
     )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      s_ready_o => s_ready,
-      s_valid_i => s_valid,
-      s_data_i  => s_data,
-      s_last_i  => s_last,
-      s_bytes_i => s_bytes,
-      m_ready_i => m_ready,
-      m_valid_o => m_valid,
-      m_data_o  => m_data,
-      m_last_o  => m_last,
-      m_bytes_o => m_bytes
+      clk_i  => clk,
+      rst_i  => rst,
+      s_axip => s_axip,
+      m_axip => m_axip
     ); -- axip_fifo_inst : entity work.axip_fifo
 
 
@@ -86,22 +73,13 @@ begin
       G_FAST       => G_FAST,
       G_MIN_LENGTH => G_MIN_LENGTH,
       G_MAX_LENGTH => G_MAX_LENGTH,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_CNT_SIZE   => G_CNT_SIZE
     )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      m_ready_i => s_ready,
-      m_valid_o => s_valid,
-      m_data_o  => s_data,
-      m_last_o  => s_last,
-      m_bytes_o => s_bytes,
-      s_ready_o => m_ready,
-      s_valid_i => m_valid,
-      s_data_i  => m_data,
-      s_last_i  => m_last,
-      s_bytes_i => m_bytes
+      clk_i  => clk,
+      rst_i  => rst,
+      m_axip => s_axip,
+      s_axip => m_axip
     ); -- axip_sim_inst : entity work.axip_sim
 
 end architecture simulation;

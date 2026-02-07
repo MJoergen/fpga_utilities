@@ -6,6 +6,9 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.wbus_pkg.all;
+
 entity wbus_sim is
   generic (
     G_SEED        : std_logic_vector(63 downto 0);
@@ -15,29 +18,14 @@ entity wbus_sim is
     G_DO_ABORT    : boolean;
     G_OFFSET      : natural;
     G_TIMEOUT     : boolean;
-    G_LATENCY     : natural;
-    G_ADDR_SIZE   : natural;
-    G_DATA_SIZE   : natural
+    G_FIRST       : std_logic := 'U';
+    G_LATENCY     : natural
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-    m_cyc_o   : out   std_logic;
-    m_stall_i : in    std_logic;
-    m_stb_o   : out   std_logic;
-    m_addr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_we_o    : out   std_logic;
-    m_wrdat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_ack_i   : in    std_logic;
-    m_rddat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_cyc_i   : in    std_logic;
-    s_stall_o : out   std_logic;
-    s_stb_i   : in    std_logic;
-    s_addr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_we_i    : in    std_logic;
-    s_wrdat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_ack_o   : out   std_logic;
-    s_rddat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    m_wbus : view  wbus_master_view;
+    s_wbus : view  wbus_slave_view
   );
 end entity wbus_sim;
 
@@ -56,21 +44,13 @@ begin
       G_TIMEOUT_MAX => G_TIMEOUT_MAX,
       G_DEBUG       => G_DEBUG,
       G_DO_ABORT    => G_DO_ABORT,
-      G_OFFSET      => G_OFFSET,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_FIRST       => G_FIRST,
+      G_OFFSET      => G_OFFSET
     )
     port map (
-      clk_i     => clk_i,
-      rst_i     => rst_i,
-      m_cyc_o   => m_cyc_o,
-      m_stall_i => m_stall_i,
-      m_stb_o   => m_stb_o,
-      m_addr_o  => m_addr_o,
-      m_we_o    => m_we_o,
-      m_wrdat_o => m_wrdat_o,
-      m_ack_i   => m_ack_i,
-      m_rddat_i => m_rddat_i
+      clk_i  => clk_i,
+      rst_i  => rst_i,
+      m_wbus => m_wbus
     ); -- wbus_master_sim_inst : entity work.wbus_master_sim
 
 
@@ -80,21 +60,13 @@ begin
 
   wbus_slave_sim_inst : entity work.wbus_slave_sim
     generic map (
-      G_DEBUG     => G_DEBUG,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_FIRST => G_FIRST,
+      G_DEBUG => G_DEBUG
     )
     port map (
-      clk_i     => clk_i,
-      rst_i     => rst_i,
-      s_cyc_i   => s_cyc_i,
-      s_stall_o => s_stall_o,
-      s_stb_i   => s_stb_i,
-      s_addr_i  => s_addr_i,
-      s_we_i    => s_we_i,
-      s_wrdat_i => s_wrdat_i,
-      s_ack_o   => s_ack_o,
-      s_rddat_o => s_rddat_o
+      clk_i  => clk_i,
+      rst_i  => rst_i,
+      s_wbus => s_wbus
     ); -- wbus_slave_sim_inst : entity work.wbus_slave_sim
 
 end architecture simulation;

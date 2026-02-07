@@ -13,12 +13,16 @@ ASSERT_LEVEL ?= error
 ################## Don't change anything below here ******************************
 
 TB = tb_$(DUT)
-WAVE = $(TB).ghw
+WAVE = $(TB).fst
 SAVE = $(TB).gtkw
-WORK = work-obj08.cf
+TB_upper = $(shell echo $(TB) | tr '[:lower:]' '[:upper:]')
+WORK = work/WORK.$(TB_upper).elab
 
 # Code coverage
 COV += --coverage
+
+SIMULATOR = nvc
+VHDL_VERSION += --std=2019
 
 # Elaboration
 #ELAB += -frelaxed
@@ -29,19 +33,18 @@ COV += --coverage
 #COMP_OPTIONS += -fsynopsys
 
 # Runtime options
-RUN_OPTIONS += --ieee-asserts=disable-at-0
-RUN_OPTIONS += --assert-level=$(ASSERT_LEVEL)
+RUN_OPTIONS += --ieee-warnings=off-at-0
+#RUN_OPTIONS += --assert-level=$(ASSERT_LEVEL)
 
 # Source file directories
 SRC_DIR = ../../src
 SIM_SRC_DIR = ../src
 
 # Default target: Run the test
-PASS: $(WORK) Makefile
+$(WAVE): $(WORK) Makefile
 	rm -f PASS
 	rm -f *.gcda
-	ghdl -r --std=08 $(COV) $(ELAB) $(TB) $(GENERIC) $(RUN_OPTIONS) --wave=$(WAVE) --stop-time=$(STOP_TIME)
-	echo > PASS
+	$(SIMULATOR) $(VHDL_VERSION) $(RUN_OPTIONS) -r $(TB) --wave=$(WAVE) && echo > PASS
 
 # Show the waveform of the last simulation
 show: $(WAVE)
@@ -52,10 +55,10 @@ show: $(WAVE)
 show_coverage: html
 	xdg-open html/index.html
 
-# Compile the testbench
+# Analyze and Elaborate the testbench
 $(WORK): $(SRC)
-	ghdl -i --std=08 $(COMP_OPTIONS) $(SRC)
-	ghdl -m --std=08 $(COMP_OPTIONS) $(TB)
+	$(SIMULATOR) $(VHDL_VERSION) -a $(SRC)
+	$(SIMULATOR) $(VHDL_VERSION) -e $(GENERIC) $(TB)
 
 # Generate code coverage data
 html: $(WAVE)

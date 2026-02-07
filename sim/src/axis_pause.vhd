@@ -12,25 +12,19 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std_unsigned.all;
 
+library work;
+  use work.axis_pkg.all;
+
 entity axis_pause is
   generic (
     G_SEED       : std_logic_vector(63 downto 0);
-    G_DATA_SIZE  : integer;
     G_PAUSE_SIZE : integer
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-
-    -- AXI streaming Input
-    s_ready_o : out   std_logic;
-    s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-
-    -- AXI streaming Output
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    s_axis : view  axis_slave_view;
+    m_axis : view  axis_master_view
   );
 end entity axis_pause;
 
@@ -56,7 +50,7 @@ begin
 
   cnt    <= 0 when G_PAUSE_SIZE = 0 else
             to_integer(random_val(27 downto 0)) mod abs(G_PAUSE_SIZE);
-  update <= '0' when forward = '1' and m_valid_o = '1' and m_ready_i = '0' else
+  update <= '0' when forward = '1' and m_axis.valid = '1' and m_axis.ready = '0' else
             '1';
 
   no_pause_gen : if G_PAUSE_SIZE = 0 generate
@@ -75,9 +69,9 @@ begin
                '0';
   end generate pause_negative_gen;
 
-  s_ready_o <= m_ready_i and forward;
-  m_valid_o <= s_valid_i and forward;
-  m_data_o  <= s_data_i;
+  s_axis.ready <= m_axis.ready and forward;
+  m_axis.valid <= s_axis.valid and forward;
+  m_axis.data  <= s_axis.data;
 
 end architecture simulation;
 

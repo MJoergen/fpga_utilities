@@ -9,31 +9,30 @@ library ieee;
 library std;
   use std.env.stop;
 
+library work;
+  use work.axis_pkg.all;
+  use work.axip_pkg.all;
+
 entity axip_slave_sim is
   generic (
-    G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
+    G_SEED       : std_logic_vector(63 downto 0) := x"DEADBEAFC007BABE";
     G_NAME       : string                        := "";
     G_DEBUG      : boolean;
     G_RANDOM     : boolean;
     G_MIN_LENGTH : natural;
     G_MAX_LENGTH : natural;
-    G_CNT_SIZE   : natural;
-    G_DATA_BYTES : natural
+    G_CNT_SIZE   : natural
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-
-    -- AXI packet input
-    s_ready_o : out   std_logic;
-    s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    s_last_i  : in    std_logic;
-    s_bytes_i : in    natural range 0 to G_DATA_BYTES
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    s_axip : view  axip_slave_view
   );
 end entity axip_slave_sim;
 
 architecture simulation of axip_slave_sim is
+
+  constant C_DATA_BYTES : positive := s_axip.data'length / 8;
 
   -- C_LENGTH_SIZE is the number of bits necessary to encode the packet length.
   -- The value 8 allows packet lengths up to 255 bytes.
@@ -53,15 +52,13 @@ architecture simulation of axip_slave_sim is
 
   subtype  R_RAND_DO_READY is natural range 32 downto 30;
 
-  signal   header_ready : std_logic;
-  signal   header_valid : std_logic;
-  signal   header_data  : std_logic_vector(7 downto 0);
+  signal   header : axis_rec_type (
+                                   data(7 downto 0)
+                                  );
 
-  signal   payload_ready : std_logic;
-  signal   payload_valid : std_logic;
-  signal   payload_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal   payload_last  : std_logic;
-  signal   payload_bytes : natural range 0 to G_DATA_BYTES;
+  signal   payload : axip_rec_type (
+                                    data(C_DATA_BYTES * 8 - 1 downto 0)
+                                   );
 
 begin
 
@@ -89,26 +86,12 @@ begin
   ----------------------------------------------------------
 
   axip_remove_fixed_header_inst : entity work.axip_remove_fixed_header
-    generic map (
-      G_DATA_BYTES   => G_DATA_BYTES,
-      G_HEADER_BYTES => 1
-    )
     port map (
-      clk_i     => clk_i,
-      rst_i     => rst_i,
-      s_ready_o => s_ready_o,
-      s_valid_i => s_valid_i,
-      s_data_i  => s_data_i,
-      s_last_i  => s_last_i,
-      s_bytes_i => s_bytes_i,
-      m_ready_i => payload_ready,
-      m_valid_o => payload_valid,
-      m_data_o  => payload_data,
-      m_last_o  => payload_last,
-      m_bytes_o => payload_bytes,
-      h_ready_i => header_ready,
-      h_valid_o => header_valid,
-      h_data_o  => header_data
+      clk_i  => clk_i,
+      rst_i  => rst_i,
+      s_axip => s_axip,
+      m_axip => payload,
+      h_axis => header
     ); -- axip_remove_fixed_header_inst : entity work.axip_remove_fixed_header
 
 
@@ -118,10 +101,10 @@ begin
 
   verf_do_ready <= or(rand(R_RAND_DO_READY)) when G_RANDOM else
                    '1';
-  payload_ready <= verf_do_ready when verf_state = VERF_DATA_ST else
+  payload.ready <= verf_do_ready when verf_state = VERF_DATA_ST else
                    '0';
 
-  header_ready  <= '1' when verf_state = VERF_IDLE_ST else
+  header.ready  <= '1' when verf_state = VERF_IDLE_ST else
                    '0';
 
   verify_proc : process (clk_i)
@@ -132,8 +115,8 @@ begin
       case verf_state is
 
         when VERF_IDLE_ST =>
-          if header_valid = '1' and header_ready = '1' then
-            length_v := to_integer(header_data);
+          if header.valid = '1' and header.ready = '1' then
+            length_v := to_integer(header.data);
             if G_DEBUG then
               report "axip_sim " & G_NAME &
                      ": VERF length " & to_string(length_v);
@@ -143,31 +126,31 @@ begin
           end if;
 
         when VERF_DATA_ST =>
-          if payload_valid = '1' and payload_ready = '1' then
+          if payload.valid = '1' and payload.ready = '1' then
 
-            for i in 0 to payload_bytes - 1 loop
-              assert payload_data((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8) = verf_cnt(7 downto 0) + i
+            for i in 0 to payload.bytes - 1 loop
+              assert payload.data((C_DATA_BYTES - 1 - i) * 8 + 7 downto (C_DATA_BYTES - 1 - i) * 8) = verf_cnt(7 downto 0) + i
                 report "axip_sim " & G_NAME &
                        ": Verify byte " & to_string(i) &
-                       ". Received " & to_hstring(payload_data(i * 8 + 7 downto i * 8)) &
+                       ". Received " & to_hstring(payload.data(i * 8 + 7 downto i * 8)) &
                        ", expected " & to_hstring(verf_cnt(7 downto 0) + i);
             end loop;
 
-            verf_cnt    <= verf_cnt + payload_bytes;
-            assert payload_bytes <= verf_length
+            verf_cnt    <= verf_cnt + payload.bytes;
+            assert payload.bytes <= verf_length
               report "axip_sim " & G_NAME &
                      ": FAIL: Packet too long";
-            verf_length <= verf_length - payload_bytes;
+            verf_length <= verf_length - payload.bytes;
 
-            if payload_last = '1' then
-              assert payload_bytes = verf_length
+            if payload.last = '1' then
+              assert payload.bytes = verf_length
                 report "axip_sim " & G_NAME &
-                       ": FAIL: Packet length received=" & to_string(verf_length - payload_bytes);
+                       ": FAIL: Packet length received=" & to_string(verf_length - payload.bytes);
               verf_state <= VERF_IDLE_ST;
             end if;
 
             -- Check for wrap-around
-            if verf_cnt > verf_cnt + payload_bytes then
+            if verf_cnt > verf_cnt + payload.bytes then
               report "axip_sim " & G_NAME &
                      ": Test finished";
               stop;

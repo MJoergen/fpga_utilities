@@ -6,22 +6,18 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axis_pkg.all;
+
 entity axis_pipe_async is
   generic (
-    G_PIPE_SIZE : positive range 2 to 16;
-    G_DATA_SIZE : positive
+    G_PIPE_SIZE : positive range 2 to 16
   );
   port (
-    -- Input AXI stream
-    s_clk_i   : in    std_logic;
-    s_ready_o : out   std_logic;
-    s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    -- Output AXI stream
-    m_clk_i   : in    std_logic;
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    s_clk_i : in    std_logic;
+    s_axis  : view  axis_slave_view;
+    m_clk_i : in    std_logic;
+    m_axis  : view  axis_master_view
   );
 end entity axis_pipe_async;
 
@@ -36,6 +32,7 @@ architecture synthesis of axis_pipe_async is
         return i;
       end if;
     end loop;
+
     return 32;
   end function log2;
 
@@ -48,7 +45,7 @@ architecture synthesis of axis_pipe_async is
   -- Dual-port LUTRAM memory to contain the FIFO data.
   -- We use LUTRAM instead of registers to save space in the FPGA.
   -- We could use BRAM, but there is a higher delay writing to BRAM than to LUTRAM.
-  type     ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  type     ram_type is array (natural range <>) of std_logic_vector(s_axis.data'range);
   signal   dpram : ram_type(0 to C_PIPE_SIZE - 1);
   attribute ram_style : string;
   attribute ram_style of dpram          : signal is "distributed";
@@ -86,7 +83,7 @@ architecture synthesis of axis_pipe_async is
   begin
     g_v(b'left) := b(b'left);
 
-    for i in b'left-1 downto b'right loop
+    for i in b'left - 1 downto b'right loop
       g_v(i) := b(i + 1) xor b(i);
     end loop;
 
@@ -102,7 +99,7 @@ architecture synthesis of axis_pipe_async is
   begin
     b_v(g'left) := g(g'left);
 
-    for i in g'left-1 downto g'right loop
+    for i in g'left - 1 downto g'right loop
       b_v(i) := b_v(i + 1) xor g(i);
     end loop;
 
@@ -120,7 +117,7 @@ architecture synthesis of axis_pipe_async is
     res_v(C_GRAY_SIZE - 1) := '1';
     res_v(C_GRAY_SIZE - 2) := '1';
     return res_v;
-  end function;
+  end function get_gray_full;
 
   constant C_GRAY_FULL : std_logic_vector(C_GRAY_SIZE - 1 downto 0)    := get_gray_full;
 
@@ -135,8 +132,8 @@ begin
   -- Accept when pipeline contains less than G_PIPE_SIZE.
   -----------------------------------------------------------
 
-  s_ready_o <= '0' when (s_gray_wr xor s_gray_rd) = C_GRAY_FULL else
-               '1';
+  s_axis.ready <= '0' when (s_gray_wr xor s_gray_rd) = C_GRAY_FULL else
+                  '1';
 
   -----------------------------------------------------------
   -- Update write pointer
@@ -146,7 +143,7 @@ begin
     variable index_v : natural range 0 to C_PIPE_SIZE - 1;
   begin
     if rising_edge(s_clk_i) then
-      if s_valid_i = '1' and s_ready_o = '1' then
+      if s_axis.valid = '1' and s_axis.ready = '1' then
         s_gray_wr <= unsigned2gray(gray2unsigned(s_gray_wr) + 1);
       end if;
     end if;
@@ -167,17 +164,17 @@ begin
   begin
     -- Write to memory
     if rising_edge(s_clk_i) then
-      if s_valid_i = '1' and s_ready_o = '1' then
+      if s_axis.valid = '1' and s_axis.ready = '1' then
         index_v        := to_integer(gray2unsigned(s_gray_wr)) mod C_PIPE_SIZE;
-        dpram(index_v) <= s_data_i;
+        dpram(index_v) <= s_axis.data;
       end if;
     end if;
 
     -- Read from memory
     if rising_edge(m_clk_i) then
-      if m_gray_wr /= m_gray_rd and (m_ready_i = '1' or m_valid_o = '0') then
-        index_v  := to_integer(gray2unsigned(m_gray_rd)) mod C_PIPE_SIZE;
-        m_data_o <= dpram(index_v);
+      if m_gray_wr /= m_gray_rd and (m_axis.ready = '1' or m_axis.valid = '0') then
+        index_v     := to_integer(gray2unsigned(m_gray_rd)) mod C_PIPE_SIZE;
+        m_axis.data <= dpram(index_v);
       end if;
     end if;
   end process dpram_proc;
@@ -221,13 +218,13 @@ begin
     variable index_v : natural range 0 to C_PIPE_SIZE - 1;
   begin
     if rising_edge(m_clk_i) then
-      if m_ready_i = '1' then
-        m_valid_o <= '0';
+      if m_axis.ready = '1' then
+        m_axis.valid <= '0';
       end if;
 
-      if m_gray_wr /= m_gray_rd and (m_ready_i = '1' or m_valid_o = '0') then
-        m_gray_rd <= unsigned2gray(gray2unsigned(m_gray_rd) + 1);
-        m_valid_o <= '1';
+      if m_gray_wr /= m_gray_rd and (m_axis.ready = '1' or m_axis.valid = '0') then
+        m_gray_rd    <= unsigned2gray(gray2unsigned(m_gray_rd) + 1);
+        m_axis.valid <= '1';
       end if;
     end if;
   end process m_proc;

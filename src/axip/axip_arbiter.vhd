@@ -7,31 +7,16 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axip_pkg.all;
+
 entity axip_arbiter is
-  generic (
-    G_DATA_BYTES : positive
-  );
   port (
-    clk_i      : in    std_logic;
-    rst_i      : in    std_logic;
-
-    s0_ready_o : out   std_logic;
-    s0_valid_i : in    std_logic;
-    s0_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    s0_last_i  : in    std_logic;
-    s0_bytes_i : in    natural range 0 to G_DATA_BYTES;
-
-    s1_ready_o : out   std_logic;
-    s1_valid_i : in    std_logic;
-    s1_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    s1_last_i  : in    std_logic;
-    s1_bytes_i : in    natural range 0 to G_DATA_BYTES;
-
-    m_ready_i  : in    std_logic;
-    m_valid_o  : out   std_logic;
-    m_data_o   : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    m_last_o   : out   std_logic;
-    m_bytes_o  : out   natural range 0 to G_DATA_BYTES
+    clk_i   : in    std_logic;
+    rst_i   : in    std_logic;
+    s0_axip : view axip_slave_view;
+    s1_axip : view axip_slave_view;
+    m_axip  : view axip_master_view
   );
 end entity axip_arbiter;
 
@@ -49,63 +34,63 @@ begin
 
   -- Data is accepted only when we can process it, i.e. when m_valid_o is 0 or will be set
   -- to zero in this clock cycle.
-  s0_ready_o <= (m_ready_i or not m_valid_o) when state = MASTER_0_ST else
-                '0';
-  s1_ready_o <= (m_ready_i or not m_valid_o) when state = MASTER_1_ST else
-                '0';
+  s0_axip.ready <= (m_axip.ready or not m_axip.valid) when state = MASTER_0_ST else
+                   '0';
+  s1_axip.ready <= (m_axip.ready or not m_axip.valid) when state = MASTER_1_ST else
+                   '0';
 
   fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
       -- The slave has accepted our data.
-      if m_ready_i = '1' then
-        m_valid_o <= '0';
+      if m_axip.ready = '1' then
+        m_axip.valid <= '0';
       end if;
 
       case state is
 
         when MASTER_0_ST =>
           -- Accept data from Master 0
-          if s0_valid_i = '1' and s0_ready_o = '1' then
-            m_valid_o <= '1';
-            m_data_o  <= s0_data_i;
-            m_last_o  <= s0_last_i;
-            m_bytes_o <= s0_bytes_i;
+          if s0_axip.valid = '1' and s0_axip.ready = '1' then
+            m_axip.valid <= '1';
+            m_axip.data  <= s0_axip.data;
+            m_axip.last  <= s0_axip.last;
+            m_axip.bytes <= s0_axip.bytes;
 
-            if s1_valid_i = '1' and s0_last_i = '1' then
+            if s1_axip.valid = '1' and s0_axip.last = '1' then
               state <= MASTER_1_ST;
             end if;
           end if;
 
           -- Grant access to Master 1 on next clock cycle, if requested
-          if s0_valid_i = '0' and s1_valid_i = '1' and m_last_o = '1' then
+          if s0_axip.valid = '0' and s1_axip.valid = '1' and m_axip.last = '1' then
             state <= MASTER_1_ST;
           end if;
 
         when MASTER_1_ST =>
           -- Accept data from Master 1
-          if s1_valid_i = '1' and s1_ready_o = '1' then
-            m_valid_o <= '1';
-            m_data_o  <= s1_data_i;
-            m_last_o  <= s1_last_i;
-            m_bytes_o <= s1_bytes_i;
+          if s1_axip.valid = '1' and s1_axip.ready = '1' then
+            m_axip.valid <= '1';
+            m_axip.data  <= s1_axip.data;
+            m_axip.last  <= s1_axip.last;
+            m_axip.bytes <= s1_axip.bytes;
 
-            if s0_valid_i = '1' and s1_last_i = '1' then
+            if s0_axip.valid = '1' and s1_axip.last = '1' then
               state <= MASTER_0_ST;
             end if;
           end if;
 
           -- Grant access to Master 0 on next clock cycle, if requested
-          if s0_valid_i = '1' and s1_valid_i = '0' and m_last_o = '1' then
+          if s0_axip.valid = '1' and s1_axip.valid = '0' and m_axip.last = '1' then
             state <= MASTER_0_ST;
           end if;
 
       end case;
 
       if rst_i = '1' then
-        m_valid_o <= '0';
-        m_last_o  <= '1';
-        state     <= MASTER_0_ST;
+        m_axip.valid <= '0';
+        m_axip.last  <= '1';
+        state        <= MASTER_0_ST;
       end if;
     end if;
   end process fsm_proc;

@@ -6,36 +6,19 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std_unsigned.all;
 
+library work;
+  use work.avm_pkg.all;
+
 entity avm_pause is
   generic (
-    G_SEED       : std_logic_vector(63 downto 0) := X"12345678AABBCCDD";
-    G_PAUSE_SIZE : natural;
-    G_ADDR_SIZE  : natural;
-    G_DATA_SIZE  : natural
+    G_SEED       : std_logic_vector(63 downto 0) := x"12345678AABBCCDD";
+    G_PAUSE_SIZE : natural
   );
   port (
-    clk_i             : in    std_logic;
-    rst_i             : in    std_logic;
-    -- Input
-    s_waitrequest_o   : out   std_logic;
-    s_write_i         : in    std_logic;
-    s_read_i          : in    std_logic;
-    s_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s_burstcount_i    : in    std_logic_vector(7 downto 0);
-    s_readdatavalid_o : out   std_logic;
-    s_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    -- Output
-    m_waitrequest_i   : in    std_logic;
-    m_write_o         : out   std_logic;
-    m_read_o          : out   std_logic;
-    m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o    : out   std_logic_vector(7 downto 0);
-    m_readdatavalid_i : in    std_logic;
-    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    clk_i : in    std_logic;
+    rst_i : in    std_logic;
+    s_avm : view avm_slave_view;
+    m_avm : view avm_master_view
   );
 end entity avm_pause;
 
@@ -43,7 +26,8 @@ architecture synthesis of avm_pause is
 
   signal   random_s : std_logic_vector(63 downto 0);
 
-  subtype  R_REQ_PAUSE  is natural range 20 downto 0;
+  subtype  R_REQ_PAUSE is natural range 20 downto 0;
+
   subtype  R_RESP_PAUSE is natural range 30 downto 10;
 
   signal   req_delay  : natural range 0 to G_PAUSE_SIZE;
@@ -73,8 +57,8 @@ begin
     ); -- random_inst : entity work.random
 
   -- Calculate random delays
-  req_delay         <= to_integer(random_s(R_REQ_PAUSE)) mod (G_PAUSE_SIZE + 1);
-  resp_delay        <= to_integer(random_s(R_RESP_PAUSE)) mod (G_PAUSE_SIZE + 1);
+  req_delay           <= to_integer(random_s(R_REQ_PAUSE)) mod (G_PAUSE_SIZE + 1);
+  resp_delay          <= to_integer(random_s(R_RESP_PAUSE)) mod (G_PAUSE_SIZE + 1);
 
 
   ---------------------------------------
@@ -84,14 +68,14 @@ begin
   rd_burstcount_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if s_readdatavalid_o then
+      if s_avm.readdatavalid then
         assert rst_i = '1' or rd_burstcount /= 0
           report "avm_pause: s_readdatavalid_o asserted when rd_burstcount = 0";
         rd_burstcount <= rd_burstcount - 1;
       end if;
 
-      if s_read_i and not s_waitrequest_o then
-        rd_burstcount <= to_integer(s_burstcount_i);
+      if s_avm.read and not s_avm.waitrequest then
+        rd_burstcount <= to_integer(s_avm.burstcount);
       end if;
 
       if rst_i = '1' then
@@ -105,17 +89,17 @@ begin
   -- Insert random pauses in requests
   ---------------------------------------
 
-  allow             <= '0' when req_delay /= 0 else
-                       '0' when rd_burstcount /= 0 else
-                       '1';
+  allow               <= '0' when req_delay /= 0 else
+                         '0' when rd_burstcount /= 0 else
+                         '1';
 
-  m_write_o         <= s_write_i and allow;
-  m_read_o          <= s_read_i and allow;
-  m_address_o       <= s_address_i;
-  m_writedata_o     <= s_writedata_i;
-  m_byteenable_o    <= s_byteenable_i;
-  m_burstcount_o    <= s_burstcount_i;
-  s_waitrequest_o   <= m_waitrequest_i or not allow;
+  m_avm.write         <= s_avm.write and allow;
+  m_avm.read          <= s_avm.read and allow;
+  m_avm.address       <= s_avm.address;
+  m_avm.writedata     <= s_avm.writedata;
+  m_avm.byteenable    <= s_avm.byteenable;
+  m_avm.burstcount    <= s_avm.burstcount;
+  s_avm.waitrequest   <= m_avm.waitrequest or not allow;
 
 
   ---------------------------------------
@@ -126,10 +110,10 @@ begin
   begin
     if rising_edge(clk_i) then
       s_readdatavalid <= '0' & s_readdatavalid(s_readdatavalid'left downto 1);
-      if m_readdatavalid_i = '1' then
+      if m_avm.readdatavalid = '1' then
         assert s_readdatavalid = C_ZERO
           report "avm_pause: s_readdatavalid not zero: " & to_hstring(s_readdatavalid);
-        s_readdata_o                <= m_readdata_i;
+        s_avm.readdata              <= m_avm.readdata;
         -- Insert a random delay in response
         s_readdatavalid(resp_delay) <= '1';
       end if;
@@ -140,7 +124,7 @@ begin
     end if;
   end process resp_proc;
 
-  s_readdatavalid_o <= s_readdatavalid(0);
+  s_avm.readdatavalid <= s_readdatavalid(0);
 
 end architecture synthesis;
 

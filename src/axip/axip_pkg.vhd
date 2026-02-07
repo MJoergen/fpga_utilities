@@ -12,6 +12,24 @@ package axip_pkg is
 
   type nat16_array_type is array (natural range <>) of nat16_type;
 
+  type axip_rec_type is record
+    ready : std_logic;
+    valid : std_logic;
+    data  : std_logic_vector;
+    last  : std_logic;
+    bytes : natural;
+  end record axip_rec_type;
+
+  view axip_master_view of axip_rec_type is
+    ready : in;
+    valid : out;
+    data  : out;
+    last  : out;
+    bytes : out;
+  end view axip_master_view;
+
+  alias axip_slave_view is axip_master_view'converse;
+
 end package axip_pkg;
 
 

@@ -6,38 +6,41 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std_unsigned.all;
 
+library work;
+  use work.axis_pkg.all;
+
 entity axis_master_sim is
   generic (
-    G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
-    G_CNT_SIZE   : natural;
-    G_DATA_BYTES : natural
+    G_SEED     : std_logic_vector(63 downto 0) := x"DEADBEAFC007BABE";
+    G_RANDOM   : boolean;
+    G_FAST     : boolean;
+    G_FIRST    : std_logic := 'U';
+    G_CNT_SIZE : natural
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
 
     -- Stimulus
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0)
+    m_axis : view  axis_master_view
   );
 end entity axis_master_sim;
 
 architecture simulation of axis_master_sim is
 
+  constant C_DATA_BYTES : positive := m_axis.data'length / 8;
+
   -- Randomness
-  signal  rand : std_logic_vector(63 downto 0);
+  signal   rand : std_logic_vector(63 downto 0);
 
   -- This controls how often data is transmitted.
 
-  subtype R_RAND_DO_VALID is natural range 42 downto 40;
+  subtype  R_RAND_DO_VALID is natural range 42 downto 40;
 
-  signal  stim_do_valid : std_logic;
+  signal   stim_do_valid : std_logic;
 
   -- State machine for controlling generation and transmission of packets.
-  signal  stim_cnt : std_logic_vector(G_CNT_SIZE - 1 downto 0);
+  signal   stim_cnt : std_logic_vector(G_CNT_SIZE - 1 downto 0);
 
 begin
 
@@ -73,27 +76,31 @@ begin
         first_v := false;
       end if;
 
-      if m_ready_i = '1' then
-        m_valid_o <= '0';
-        m_data_o  <= (others => '0');
+      if m_axis.ready = '1' then
+        m_axis.valid <= '0';
+        m_axis.data  <= (C_DATA_BYTES * 8 - 1 downto 0 => '0');
       end if;
 
-      if m_valid_o = '0' or (G_FAST and m_ready_i = '1') then
+      if m_axis.valid = '0' or (G_FAST and m_axis.ready = '1') then
         if stim_do_valid = '1' then
-          stim_cnt <= stim_cnt + G_DATA_BYTES;
+          stim_cnt <= stim_cnt + C_DATA_BYTES;
 
-          for i in 0 to G_DATA_BYTES - 1 loop
-            m_data_o((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8) <= stim_cnt(7 downto 0) + i;
+          for i in 0 to C_DATA_BYTES - 1 loop
+            m_axis.data((C_DATA_BYTES - 1 - i) * 8 + 7 downto (C_DATA_BYTES - 1 - i) * 8) <= stim_cnt(7 downto 0) + i;
           end loop;
 
-          m_valid_o <= '1';
+          if G_FIRST /= 'U' then
+            m_axis.data(m_axis.data'left) <= G_FIRST;
+          end if;
+
+          m_axis.valid <= '1';
         end if;
       end if;
 
       if rst_i = '1' then
-        stim_cnt  <= (others => '0');
-        m_valid_o <= '0';
-        m_data_o  <= (others => '0');
+        stim_cnt     <= (others => '0');
+        m_axis.valid <= '0';
+        m_axis.data  <= (C_DATA_BYTES * 8 - 1 downto 0 => '0');
       end if;
     end if;
   end process stimuli_proc;

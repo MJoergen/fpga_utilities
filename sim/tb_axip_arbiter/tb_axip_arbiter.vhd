@@ -6,6 +6,10 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axis_pkg.all;
+  use work.axip_pkg.all;
+
 entity tb_axip_arbiter is
   generic (
     G_RANDOM     : boolean;
@@ -23,56 +27,49 @@ architecture simulation of tb_axip_arbiter is
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
 
-  signal s0_ready : std_logic;
-  signal s0_valid : std_logic;
-  signal s0_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal s0_last  : std_logic;
-  signal s0_bytes : natural range 0 to G_DATA_BYTES;
+  signal s0_axip : axip_rec_type (
+                                  data(G_DATA_BYTES * 8 - 1 downto 0)
+                                 );
 
-  signal s1_ready : std_logic;
-  signal s1_valid : std_logic;
-  signal s1_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal s1_last  : std_logic;
-  signal s1_bytes : natural range 0 to G_DATA_BYTES;
+  signal s1_axip : axip_rec_type (
+                                  data(G_DATA_BYTES * 8 - 1 downto 0)
+                                 );
 
-  signal d_ready : std_logic;
-  signal d_valid : std_logic;
-  signal d_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal d_last  : std_logic;
-  signal d_bytes : natural range 0 to G_DATA_BYTES;
+  signal d_axip : axip_rec_type (
+                                 data(G_DATA_BYTES * 8 - 1 downto 0)
+                                );
 
-  signal sh0_ready : std_logic;
-  signal sh0_valid : std_logic;
-  signal sh0_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal sh0_last  : std_logic;
-  signal sh0_bytes : natural range 0 to G_DATA_BYTES;
+  signal sh0_axip : axip_rec_type (
+                                   data(G_DATA_BYTES * 8 - 1 downto 0)
+                                  );
 
-  signal sh1_ready : std_logic;
-  signal sh1_valid : std_logic;
-  signal sh1_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal sh1_last  : std_logic;
-  signal sh1_bytes : natural range 0 to G_DATA_BYTES;
+  signal sh1_axip : axip_rec_type (
+                                   data(G_DATA_BYTES * 8 - 1 downto 0)
+                                  );
 
-  signal dh_ready : std_logic;
-  signal dh_valid : std_logic;
-  signal dh_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal dh_last  : std_logic;
-  signal dh_bytes : natural range 0 to G_DATA_BYTES;
+  signal dh_axip : axip_rec_type (
+                                  data(G_DATA_BYTES * 8 - 1 downto 0)
+                                 );
 
-  signal m0_ready : std_logic;
-  signal m0_valid : std_logic;
-  signal m0_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal m0_last  : std_logic;
-  signal m0_bytes : natural range 0 to G_DATA_BYTES;
+  signal m0_axip : axip_rec_type (
+                                  data(G_DATA_BYTES * 8 - 1 downto 0)
+                                 );
 
-  signal m1_ready : std_logic;
-  signal m1_valid : std_logic;
-  signal m1_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-  signal m1_last  : std_logic;
-  signal m1_bytes : natural range 0 to G_DATA_BYTES;
+  signal m1_axip : axip_rec_type (
+                                  data(G_DATA_BYTES * 8 - 1 downto 0)
+                                 );
 
-  signal h_valid : std_logic;
-  signal h_data  : std_logic_vector(7 downto 0);
+  signal h_axis : axis_rec_type (
+                                 data(7 downto 0)
+                                );
+
+  signal h0_axis : axis_rec_type (
+                                  data(7 downto 0)
+                                 );
+
+  signal h1_axis : axis_rec_type (
+                                  data(7 downto 0)
+                                 );
 
 begin
 
@@ -80,8 +77,16 @@ begin
   -- Clock and Reset
   --------------------------------
 
-  clk <= not clk after 5 ns;
-  rst <= '1', '0' after 100 ns;
+  clk           <= not clk after 5 ns;
+  rst           <= '1', '0' after 100 ns;
+
+  h_axis.ready  <= '1';
+
+  h0_axis.valid <= '1';
+  h0_axis.data  <= x"00";
+
+  h1_axis.valid <= '1';
+  h1_axis.data  <= x"FF";
 
 
   --------------------------------
@@ -89,50 +94,21 @@ begin
   --------------------------------
 
   axip_arbiter_inst : entity work.axip_arbiter
-    generic map (
-      G_DATA_BYTES => G_DATA_BYTES
-    )
     port map (
-      clk_i      => clk,
-      rst_i      => rst,
-      s0_ready_o => sh0_ready,
-      s0_valid_i => sh0_valid,
-      s0_data_i  => sh0_data,
-      s0_last_i  => sh0_last,
-      s0_bytes_i => sh0_bytes,
-      s1_ready_o => sh1_ready,
-      s1_valid_i => sh1_valid,
-      s1_data_i  => sh1_data,
-      s1_last_i  => sh1_last,
-      s1_bytes_i => sh1_bytes,
-      m_ready_i  => d_ready,
-      m_valid_o  => d_valid,
-      m_data_o   => d_data,
-      m_last_o   => d_last,
-      m_bytes_o  => d_bytes
+      clk_i   => clk,
+      rst_i   => rst,
+      s0_axip => sh0_axip,
+      s1_axip => sh1_axip,
+      m_axip  => d_axip
     ); -- axip_arbiter_inst : entity work.axip_arbiter
 
   axip_remove_fixed_header_inst : entity work.axip_remove_fixed_header
-    generic map (
-      G_DATA_BYTES   => G_DATA_BYTES,
-      G_HEADER_BYTES => 1
-    )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      s_ready_o => d_ready,
-      s_valid_i => d_valid,
-      s_data_i  => d_data,
-      s_last_i  => d_last,
-      s_bytes_i => d_bytes,
-      m_ready_i => dh_ready,
-      m_valid_o => dh_valid,
-      m_data_o  => dh_data,
-      m_last_o  => dh_last,
-      m_bytes_o => dh_bytes,
-      h_ready_i => '1',
-      h_valid_o => h_valid,
-      h_data_o  => h_data
+      clk_i  => clk,
+      rst_i  => rst,
+      s_axip => d_axip,
+      m_axip => dh_axip,
+      h_axis => h_axis
     ); -- axip_remove_fixed_header_inst : entity work.axip_remove_fixed_header
 
 
@@ -141,28 +117,13 @@ begin
   --------------------------------
 
   axip_distributor_inst : entity work.axip_distributor
-    generic map (
-      G_DATA_BYTES => G_DATA_BYTES
-    )
     port map (
-      clk_i      => clk,
-      rst_i      => rst,
-      s_ready_o  => dh_ready,
-      s_valid_i  => dh_valid,
-      s_data_i   => dh_data(G_DATA_BYTES * 8 - 1 downto 0),
-      s_last_i   => dh_last,
-      s_bytes_i  => dh_bytes,
-      s_dst_i    => h_data(0),
-      m0_ready_i => m0_ready,
-      m0_valid_o => m0_valid,
-      m0_data_o  => m0_data,
-      m0_last_o  => m0_last,
-      m0_bytes_o => m0_bytes,
-      m1_ready_i => m1_ready,
-      m1_valid_o => m1_valid,
-      m1_data_o  => m1_data,
-      m1_last_o  => m1_last,
-      m1_bytes_o => m1_bytes
+      clk_i   => clk,
+      rst_i   => rst,
+      s_dst_i => h_axis.data(0),
+      s_axip  => dh_axip,
+      m0_axip => m0_axip,
+      m1_axip => m1_axip
     ); -- axis_distributor_inst : entity work.axis_distributor
 
 
@@ -179,45 +140,22 @@ begin
       G_MAX_LENGTH => G_MAX_LENGTH,
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_CNT_SIZE   => G_CNT_SIZE
     )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      m_ready_i => s0_ready,
-      m_valid_o => s0_valid,
-      m_data_o  => s0_data,
-      m_last_o  => s0_last,
-      m_bytes_o => s0_bytes,
-      s_ready_o => m0_ready,
-      s_valid_i => m0_valid,
-      s_data_i  => m0_data,
-      s_last_i  => m0_last,
-      s_bytes_i => m0_bytes
+      clk_i  => clk,
+      rst_i  => rst,
+      m_axip => s0_axip,
+      s_axip => m0_axip
     ); -- axip_sim_0_inst : entity work.axip_sim
 
   axip_insert_fixed_header_0_inst : entity work.axip_insert_fixed_header
-    generic map (
-      G_DATA_BYTES   => G_DATA_BYTES,
-      G_HEADER_BYTES => 1
-    )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      h_ready_o => open,
-      h_valid_i => '1',
-      h_data_i  => X"00",
-      s_ready_o => s0_ready,
-      s_valid_i => s0_valid,
-      s_data_i  => s0_data,
-      s_last_i  => s0_last,
-      s_bytes_i => s0_bytes,
-      m_ready_i => sh0_ready,
-      m_valid_o => sh0_valid,
-      m_data_o  => sh0_data,
-      m_last_o  => sh0_last,
-      m_bytes_o => sh0_bytes
+      clk_i  => clk,
+      rst_i  => rst,
+      h_axis => h0_axis,
+      s_axip => s0_axip,
+      m_axip => sh0_axip
     ); -- axip_insert_fixed_header_0_inst : entity work.axip_insert_fixed_header
 
 
@@ -230,45 +168,22 @@ begin
       G_MAX_LENGTH => G_MAX_LENGTH,
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_CNT_SIZE   => G_CNT_SIZE
     )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      m_ready_i => s1_ready,
-      m_valid_o => s1_valid,
-      m_data_o  => s1_data,
-      m_last_o  => s1_last,
-      m_bytes_o => s1_bytes,
-      s_ready_o => m1_ready,
-      s_valid_i => m1_valid,
-      s_data_i  => m1_data,
-      s_last_i  => m1_last,
-      s_bytes_i => m1_bytes
+      clk_i  => clk,
+      rst_i  => rst,
+      m_axip => s1_axip,
+      s_axip => m1_axip
     ); -- axip_sim_1_inst : entity work.axip_sim
 
   axip_insert_fixed_header_1_inst : entity work.axip_insert_fixed_header
-    generic map (
-      G_DATA_BYTES   => G_DATA_BYTES,
-      G_HEADER_BYTES => 1
-    )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      h_ready_o => open,
-      h_valid_i => '1',
-      h_data_i  => X"FF",
-      s_ready_o => s1_ready,
-      s_valid_i => s1_valid,
-      s_data_i  => s1_data,
-      s_last_i  => s1_last,
-      s_bytes_i => s1_bytes,
-      m_ready_i => sh1_ready,
-      m_valid_o => sh1_valid,
-      m_data_o  => sh1_data,
-      m_last_o  => sh1_last,
-      m_bytes_o => sh1_bytes
+      clk_i  => clk,
+      rst_i  => rst,
+      h_axis => h1_axis,
+      s_axip => s1_axip,
+      m_axip => sh1_axip
     ); -- axip_insert_fixed_header_1_inst : entity work.axip_insert_fixed_header
 
 end architecture simulation;

@@ -3,19 +3,22 @@
 # Description: Makefile for simulating the axil_to_wbus.vhd file.
 
 # List of source files
+SRC += $(SRC_DIR)/axis/axis_pkg.vhd
+SRC += $(SRC_DIR)/axil/axil_pkg.vhd
+SRC += $(SRC_DIR)/wbus/wbus_pkg.vhd
 SRC += $(SRC_DIR)/converters/axil_to_wbus.vhd
+
+# List of generic simulation files
+SRC += $(SIM_SRC_DIR)/lfsr.vhd
+SRC += $(SIM_SRC_DIR)/random.vhd
+SRC += $(SIM_SRC_DIR)/axis_pause.vhd
+SRC += $(SIM_SRC_DIR)/axil_busy.vhd
+SRC += $(SIM_SRC_DIR)/axil_pause.vhd
+SRC += $(SIM_SRC_DIR)/axil_master_sim.vhd
+SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
 
 # List of test specific simulation files
 SRC += tb_axil_to_wbus.vhd
-
-# List of generic simulation files
-SRC += $(SIM_SRC_DIR)/axil_busy.vhd
-SRC += $(SIM_SRC_DIR)/axil_pause.vhd
-SRC += $(SIM_SRC_DIR)/axis_pause.vhd
-SRC += $(SIM_SRC_DIR)/lfsr.vhd
-SRC += $(SIM_SRC_DIR)/random.vhd
-SRC += $(SIM_SRC_DIR)/axil_master_sim.vhd
-SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
 
 # Top level entity
 DUT = axil_to_wbus

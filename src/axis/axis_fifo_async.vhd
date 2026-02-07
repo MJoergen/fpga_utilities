@@ -5,6 +5,9 @@ library ieee;
 library xpm;
   use xpm.vcomponents.all;
 
+library work;
+  use work.axis_pkg.all;
+
 entity axis_fifo_async is
   generic (
     G_DEPTH     : positive;
@@ -12,17 +15,13 @@ entity axis_fifo_async is
     G_DATA_SIZE : positive
   );
   port (
-    s_clk_i   : in    std_logic;
-    s_rst_i   : in    std_logic;
-    s_ready_o : out   std_logic;
-    s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_fill_o  : out   std_logic_vector(G_FILL_SIZE - 1 downto 0);
-    m_clk_i   : in    std_logic;
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_fill_o  : out   std_logic_vector(G_FILL_SIZE - 1 downto 0)
+    s_clk_i  : in    std_logic;
+    s_rst_i  : in    std_logic;
+    s_axis   : view  axis_slave_view;
+    s_fill_o : out   std_logic_vector(G_FILL_SIZE - 1 downto 0);
+    m_clk_i  : in    std_logic;
+    m_axis   : view  axis_master_view;
+    m_fill_o : out   std_logic_vector(G_FILL_SIZE - 1 downto 0)
   );
 end entity axis_fifo_async;
 
@@ -35,10 +34,10 @@ architecture synthesis of axis_fifo_async is
 
 begin
 
-  s_data(G_DATA_SIZE - 1 downto 0)           <= s_data_i;
+  s_data(G_DATA_SIZE - 1 downto 0)             <= s_axis.data;
   s_data(C_TDATA_WIDTH - 1 downto G_DATA_SIZE) <= (others => '0');
 
-  m_data_o                                   <= m_data(G_DATA_SIZE - 1 downto 0);
+  m_axis.data                                  <= m_data(G_DATA_SIZE - 1 downto 0);
 
   xpm_fifo_axis_inst : component xpm_fifo_axis
     generic map (
@@ -72,10 +71,10 @@ begin
       m_axis_tid         => open,
       m_axis_tkeep       => open,
       m_axis_tlast       => open,
-      m_axis_tready      => m_ready_i,
+      m_axis_tready      => m_axis.ready,
       m_axis_tstrb       => open,
       m_axis_tuser       => open,
-      m_axis_tvalid      => m_valid_o,
+      m_axis_tvalid      => m_axis.valid,
       prog_empty_axis    => open,
       prog_full_axis     => open,
       rd_data_count_axis => m_fill_o,
@@ -86,10 +85,10 @@ begin
       s_axis_tid         => (others => '0'),
       s_axis_tkeep       => (others => '1'),
       s_axis_tlast       => '1',
-      s_axis_tready      => s_ready_o,
+      s_axis_tready      => s_axis.ready,
       s_axis_tstrb       => (others => '0'),
       s_axis_tuser       => (others => '0'),
-      s_axis_tvalid      => s_valid_i,
+      s_axis_tvalid      => s_axis.valid,
       sbiterr_axis       => open,
       wr_data_count_axis => s_fill_o
     ); -- xpm_fifo_axis_inst

@@ -9,28 +9,23 @@ library ieee;
   use ieee.numeric_std_unsigned.all;
   use std.env.stop;
 
+library work;
+  use work.wbus_pkg.all;
+
 entity wbus_master_sim is
   generic (
-    G_SEED        : std_logic_vector(63 downto 0) := X"DEADBEEFC007BABE";
+    G_SEED        : std_logic_vector(63 downto 0) := x"DEADBEEFC007BABE";
     G_NAME        : string                        := "";
     G_TIMEOUT_MAX : natural                       := 200;
     G_DEBUG       : boolean                       := false;
     G_DO_ABORT    : boolean                       := false;
-    G_OFFSET      : natural                       := 1234;
-    G_ADDR_SIZE   : natural;
-    G_DATA_SIZE   : natural
+    G_FIRST       : std_logic                     := 'U';
+    G_OFFSET      : natural                       := 1234
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-    m_cyc_o   : out   std_logic;                                  -- Valid bus cycle
-    m_stall_i : in    std_logic;
-    m_stb_o   : out   std_logic;                                  -- Strobe signals / core select signal
-    m_addr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0); -- lower address bits
-    m_we_o    : out   std_logic;                                  -- Write enable
-    m_wrdat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Write Databus
-    m_ack_i   : in    std_logic;                                  -- Bus cycle acknowledge
-    m_rddat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)  -- Read Databus
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    m_wbus : view wbus_master_view
   );
 end entity wbus_master_sim;
 
@@ -44,16 +39,16 @@ architecture simulation of wbus_master_sim is
   type     state_type is (IDLE_ST, WRITING_ST, READING_ST, DONE_ST);
   signal   state : state_type      := IDLE_ST;
 
-  signal   wr_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal   rd_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal   wr_ptr : std_logic_vector(m_wbus.addr'range);
+  signal   rd_ptr : std_logic_vector(m_wbus.addr'range);
 
   pure function addr_to_data (
     addr : std_logic_vector
   ) return std_logic_vector is
-    variable addr_v : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    variable data_v : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    variable addr_v : std_logic_vector(m_wbus.addr'range);
+    variable data_v : std_logic_vector(m_wbus.wrdat'range);
   begin
-    return resize(addr, G_DATA_SIZE) + G_OFFSET;
+    return resize(addr, m_wbus.wrdat'length) + G_OFFSET;
   end function addr_to_data;
 
   signal   do_read  : std_logic;
@@ -86,17 +81,23 @@ begin
               '0';
 
   wbus_proc : process (clk_i)
+    variable first_v : boolean := true;
   begin
     if rising_edge(clk_i) then
-      if m_stall_i = '0' then
-        m_stb_o   <= '0';
-        m_addr_o  <= (others => '0');
-        m_we_o    <= '0';
-        m_wrdat_o <= (others => '0');
+      if rst_i = '0' and first_v then
+        first_v := false;
+        report "WBUS MASTER " & G_NAME & ": Start";
       end if;
 
-      if m_ack_i = '1' then
-        m_cyc_o <= '0';
+      if m_wbus.stall = '0' then
+        m_wbus.stb   <= '0';
+        m_wbus.addr  <= (m_wbus.addr'range => '0');
+        m_wbus.we    <= '0';
+        m_wbus.wrdat <= (m_wbus.wrdat'range => '0');
+      end if;
+
+      if m_wbus.ack = '1' then
+        m_wbus.cyc <= '0';
       end if;
 
       case state is
@@ -107,21 +108,21 @@ begin
             if wr_ptr + 1 = 0 then
               state <= DONE_ST;
             else
-              m_cyc_o   <= '1';
-              m_stb_o   <= '1';
-              m_addr_o  <= wr_ptr;
-              m_we_o    <= '1';
-              m_wrdat_o <= addr_to_data(wr_ptr);
+              m_wbus.cyc   <= '1';
+              m_wbus.stb   <= '1';
+              m_wbus.addr  <= wr_ptr;
+              m_wbus.we    <= '1';
+              m_wbus.wrdat <= addr_to_data(wr_ptr);
               if G_DEBUG then
                 report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr) & " with data " & to_hstring(addr_to_data(wr_ptr));
               end if;
               state <= WRITING_ST;
             end if;
           elsif do_read = '1' and rd_ptr < wr_ptr then
-            m_cyc_o  <= '1';
-            m_stb_o  <= '1';
-            m_addr_o <= rd_ptr;
-            m_we_o   <= '0';
+            m_wbus.cyc  <= '1';
+            m_wbus.stb  <= '1';
+            m_wbus.addr <= rd_ptr;
+            m_wbus.we   <= '0';
             if G_DEBUG then
               report "WBUS MASTER " & G_NAME & ": Read from address " & to_hstring(rd_ptr);
             end if;
@@ -129,28 +130,28 @@ begin
           end if;
 
         when WRITING_ST =>
-          if m_ack_i = '1' then
+          if m_wbus.ack = '1' then
             wr_ptr <= wr_ptr + 1;
 
             if do_write = '1' then
               if wr_ptr + 1 = 0 then
                 state <= DONE_ST;
               else
-                m_cyc_o   <= '1';
-                m_stb_o   <= '1';
-                m_addr_o  <= wr_ptr + 1;
-                m_we_o    <= '1';
-                m_wrdat_o <= addr_to_data(wr_ptr + 1);
+                m_wbus.cyc   <= '1';
+                m_wbus.stb   <= '1';
+                m_wbus.addr  <= wr_ptr + 1;
+                m_wbus.we    <= '1';
+                m_wbus.wrdat <= addr_to_data(wr_ptr + 1);
                 if G_DEBUG then
                   report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr + 1) & " with data " & to_hstring(addr_to_data(wr_ptr + 1));
                 end if;
                 state <= WRITING_ST;
               end if;
             elsif do_read = '1' and rd_ptr < wr_ptr + 1 then
-              m_cyc_o  <= '1';
-              m_stb_o  <= '1';
-              m_addr_o <= rd_ptr;
-              m_we_o   <= '0';
+              m_wbus.cyc  <= '1';
+              m_wbus.stb  <= '1';
+              m_wbus.addr <= rd_ptr;
+              m_wbus.we   <= '0';
               if G_DEBUG then
                 report "WBUS MASTER " & G_NAME & ": Read from address " & to_hstring(rd_ptr);
               end if;
@@ -161,11 +162,11 @@ begin
           end if;
 
         when READING_ST =>
-          if m_ack_i = '1' then
-            assert m_rddat_i = addr_to_data(rd_ptr)
+          if m_wbus.ack = '1' then
+            assert m_wbus.rddat = addr_to_data(rd_ptr)
               report "WBUS MASTER " & G_NAME &
                      ": Read failure from address " & to_hstring(rd_ptr) &
-                     ". Got " & to_hstring(m_rddat_i) &
+                     ". Got " & to_hstring(m_wbus.rddat) &
                      ", expected " & to_hstring(addr_to_data(rd_ptr));
             rd_ptr <= rd_ptr + 1;
 
@@ -173,21 +174,21 @@ begin
               if wr_ptr + 1 = 0 then
                 state <= DONE_ST;
               else
-                m_cyc_o   <= '1';
-                m_stb_o   <= '1';
-                m_addr_o  <= wr_ptr;
-                m_we_o    <= '1';
-                m_wrdat_o <= addr_to_data(wr_ptr);
+                m_wbus.cyc   <= '1';
+                m_wbus.stb   <= '1';
+                m_wbus.addr  <= wr_ptr;
+                m_wbus.we    <= '1';
+                m_wbus.wrdat <= addr_to_data(wr_ptr);
                 if G_DEBUG then
                   report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr) & " with data " & to_hstring(addr_to_data(wr_ptr));
                 end if;
                 state <= WRITING_ST;
               end if;
             elsif do_read = '1' and rd_ptr + 1 < wr_ptr then
-              m_cyc_o  <= '1';
-              m_stb_o  <= '1';
-              m_addr_o <= rd_ptr + 1;
-              m_we_o   <= '0';
+              m_wbus.cyc  <= '1';
+              m_wbus.stb  <= '1';
+              m_wbus.addr <= rd_ptr + 1;
+              m_wbus.we   <= '0';
               if G_DEBUG then
                 report "WBUS MASTER " & G_NAME & ": Read from address " & to_hstring(rd_ptr + 1);
               end if;
@@ -204,16 +205,20 @@ begin
       end case;
 
       if do_abort = '1' then
-        m_cyc_o <= '0';
-        state   <= IDLE_ST;
+        m_wbus.cyc <= '0';
+        state      <= IDLE_ST;
+      end if;
+
+      if G_FIRST /= 'U' then
+        m_wbus.addr(m_wbus.addr'left) <= G_FIRST;
       end if;
 
       if rst_i = '1' then
-        m_cyc_o <= '0';
-        m_stb_o <= '0';
-        wr_ptr  <= (others => '0');
-        rd_ptr  <= (others => '0');
-        state   <= IDLE_ST;
+        m_wbus.cyc <= '0';
+        m_wbus.stb <= '0';
+        wr_ptr     <= (others => '0');
+        rd_ptr     <= (others => '0');
+        state      <= IDLE_ST;
       end if;
     end if;
   end process wbus_proc;
@@ -222,19 +227,19 @@ begin
   assert_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if m_cyc_o = '1' and m_stall_i = '0' and m_stb_o = '1' then
+      if m_wbus.cyc = '1' and m_wbus.stall = '0' and m_wbus.stb = '1' then
         assert req_active = '0'
           report "WBUS MASTER " & G_NAME & ": Repeated access received";
         req_active <= '1';
       end if;
 
-      if m_cyc_o = '1' and m_ack_i = '1' then
-        assert req_active = '1' or m_stall_i = '1'
+      if m_wbus.cyc = '1' and m_wbus.ack = '1' then
+        assert req_active = '1' or m_wbus.stall = '1'
           report "WBUS MASTER " & G_NAME & ": Missing access";
         req_active <= '0';
       end if;
 
-      if rst_i = '1' or m_cyc_o = '0' or do_abort = '1' then
+      if rst_i = '1' or m_wbus.cyc = '0' or do_abort = '1' then
         req_active <= '0';
       end if;
     end if;

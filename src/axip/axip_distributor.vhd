@@ -6,32 +6,17 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axip_pkg.all;
+
 entity axip_distributor is
-  generic (
-    G_DATA_BYTES : positive
-  );
   port (
-    clk_i      : in    std_logic;
-    rst_i      : in    std_logic;
-
-    s_ready_o  : out   std_logic;
-    s_valid_i  : in    std_logic;
-    s_data_i   : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    s_last_i   : in    std_logic;
-    s_bytes_i  : in    natural range 0 to G_DATA_BYTES;
-    s_dst_i    : in    std_logic;
-
-    m0_ready_i : in    std_logic;
-    m0_valid_o : out   std_logic;
-    m0_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    m0_last_o  : out   std_logic;
-    m0_bytes_o : out   natural range 0 to G_DATA_BYTES;
-
-    m1_ready_i : in    std_logic;
-    m1_valid_o : out   std_logic;
-    m1_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    m1_last_o  : out   std_logic;
-    m1_bytes_o : out   natural range 0 to G_DATA_BYTES
+    clk_i   : in    std_logic;
+    rst_i   : in    std_logic;
+    s_dst_i : in    std_logic;
+    s_axip  : view axip_slave_view;
+    m0_axip : view axip_master_view;
+    m1_axip : view axip_master_view
   );
 end entity axip_distributor;
 
@@ -47,8 +32,8 @@ begin
   first_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if s_valid_i = '1' and s_ready_o = '1' then
-        s_first <= s_last_i;
+      if s_axip.valid = '1' and s_axip.ready = '1' then
+        s_first <= s_axip.last;
       end if;
 
       if rst_i = '1' then
@@ -61,7 +46,7 @@ begin
   dst_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if s_valid_i = '1' and s_ready_o = '1' and s_first = '1' then
+      if s_axip.valid = '1' and s_axip.ready = '1' and s_first = '1' then
         s_dst_r <= s_dst_i;
       end if;
 
@@ -72,25 +57,25 @@ begin
   end process dst_proc;
 
   -- Only change direction when a new packet starts
-  s_dst      <= s_dst_i when s_first = '1' else
-                s_dst_r;
+  s_dst         <= s_dst_i when s_first = '1' else
+                   s_dst_r;
 
 
-  m0_valid_o <= s_valid_i when s_dst = '0' else
-                '0';
-  m1_valid_o <= s_valid_i when s_dst = '1' else
-                '0';
-  s_ready_o  <= m0_ready_i when s_dst = '0' else
-                m1_ready_i;
+  m0_axip.valid <= s_axip.valid when s_dst = '0' else
+                   '0';
+  m1_axip.valid <= s_axip.valid when s_dst = '1' else
+                   '0';
+  s_axip.ready  <= m0_axip.ready when s_dst = '0' else
+                   m1_axip.ready;
 
-  m0_data_o  <= s_data_i;
-  m1_data_o  <= s_data_i;
+  m0_axip.data  <= s_axip.data;
+  m1_axip.data  <= s_axip.data;
 
-  m0_last_o  <= s_last_i;
-  m1_last_o  <= s_last_i;
+  m0_axip.last  <= s_axip.last;
+  m1_axip.last  <= s_axip.last;
 
-  m0_bytes_o <= s_bytes_i;
-  m1_bytes_o <= s_bytes_i;
+  m0_axip.bytes <= s_axip.bytes;
+  m1_axip.bytes <= s_axip.bytes;
 
 end architecture synthesis;
 

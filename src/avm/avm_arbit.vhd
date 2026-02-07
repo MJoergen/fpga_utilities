@@ -6,48 +6,19 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.avm_pkg.all;
+
 entity avm_arbit is
   generic (
-    G_PREFER_SWAP : boolean;
-    G_ADDR_SIZE   : positive;
-    G_DATA_SIZE   : positive
+    G_PREFER_SWAP : boolean
   );
   port (
-    clk_i              : in    std_logic;
-    rst_i              : in    std_logic;
-
-    -- Slave interface 0 (input)
-    s0_waitrequest_o   : out   std_logic;
-    s0_write_i         : in    std_logic;
-    s0_read_i          : in    std_logic;
-    s0_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s0_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s0_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s0_burstcount_i    : in    std_logic_vector(7 downto 0);
-    s0_readdatavalid_o : out   std_logic;
-    s0_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-
-    -- Slave interface 1 (input)
-    s1_waitrequest_o   : out   std_logic;
-    s1_write_i         : in    std_logic;
-    s1_read_i          : in    std_logic;
-    s1_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s1_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s1_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s1_burstcount_i    : in    std_logic_vector(7 downto 0);
-    s1_readdatavalid_o : out   std_logic;
-    s1_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-
-    -- Master interface (output)
-    m_waitrequest_i    : in    std_logic;
-    m_write_o          : out   std_logic;
-    m_read_o           : out   std_logic;
-    m_address_o        : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_writedata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_byteenable_o     : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o     : out   std_logic_vector(7 downto 0);
-    m_readdatavalid_i  : in    std_logic;
-    m_readdata_i       : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    s0_avm : view  avm_slave_view;
+    s1_avm : view  avm_slave_view;
+    m_avm  : view  avm_master_view
   );
 end entity avm_arbit;
 
@@ -73,35 +44,35 @@ begin
   -- Validation check that the two Masters are not granted access at the same time.
   assert not (s0_active_grant and s1_active_grant);
 
-  s0_waitrequest_o   <= m_waitrequest_i or not s0_active_grant;
-  s1_waitrequest_o   <= m_waitrequest_i or not s1_active_grant;
+  s0_avm.waitrequest   <= m_avm.waitrequest or not s0_active_grant;
+  s1_avm.waitrequest   <= m_avm.waitrequest or not s1_active_grant;
 
-  s0_active_req      <= s0_write_i or s0_read_i;
-  s1_active_req      <= s1_write_i or s1_read_i;
+  s0_active_req        <= s0_avm.write or s0_avm.read;
+  s1_active_req        <= s1_avm.write or s1_avm.read;
 
   -- Determine remaining length of current transaction.
   burstcount_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if s0_write_i = '1' and s0_waitrequest_o = '0' and unsigned(burstcount) = 0 then
-        burstcount <= std_logic_vector(unsigned(s0_burstcount_i) - 1);
-      elsif s0_read_i and not s0_waitrequest_o then
-        burstcount <= s0_burstcount_i;
-      elsif s1_write_i = '1' and s1_waitrequest_o = '0' and unsigned(burstcount) = 0 then
-        burstcount <= std_logic_vector(unsigned(s1_burstcount_i) - 1);
-      elsif s1_read_i and not s1_waitrequest_o then
-        burstcount <= s1_burstcount_i;
+      if s0_avm.write = '1' and s0_avm.waitrequest = '0' and unsigned(burstcount) = 0 then
+        burstcount <= std_logic_vector(unsigned(s0_avm.burstcount) - 1);
+      elsif s0_avm.read and not s0_avm.waitrequest then
+        burstcount <= s0_avm.burstcount;
+      elsif s1_avm.write = '1' and s1_avm.waitrequest = '0' and unsigned(burstcount) = 0 then
+        burstcount <= std_logic_vector(unsigned(s1_avm.burstcount) - 1);
+      elsif s1_avm.read and not s1_avm.waitrequest then
+        burstcount <= s1_avm.burstcount;
       else
-        if (s0_write_i and not s0_waitrequest_o) or
-           s0_readdatavalid_o or
-           (s1_write_i and not s1_waitrequest_o) or
-           s1_readdatavalid_o then
+        if (s0_avm.write and not s0_avm.waitrequest) or
+           s0_avm.readdatavalid or
+           (s1_avm.write and not s1_avm.waitrequest) or
+           s1_avm.readdatavalid then
           burstcount <= std_logic_vector(unsigned(burstcount) - 1);
         end if;
       end if;
 
       if rst_i = '1' then
-        burstcount <= X"00";
+        burstcount <= x"00";
       end if;
     end if;
   end process burstcount_proc;
@@ -113,24 +84,24 @@ begin
     s1_last <= '0';
 
     if s0_active_grant = '1' then
-      if burstcount = X"00" or (burstcount = X"01" and s0_readdatavalid_o = '1')
-         or (burstcount = X"01" and s0_write_i = '1') then
+      if burstcount = x"00" or (burstcount = x"01" and s0_avm.readdatavalid = '1')
+         or (burstcount = x"01" and s0_avm.write = '1') then
         if s0_active_req = '0'
-           or (burstcount = X"01"  and s0_readdatavalid_o = '1' and s0_waitrequest_o = '1')
-           or (burstcount = X"01"          and s0_write_i = '1' and s0_waitrequest_o = '0')
-           or (s0_burstcount_i = X"01" and s0_write_i = '1' and s0_waitrequest_o = '0') then
+           or (burstcount = x"01"  and s0_avm.readdatavalid = '1' and s0_avm.waitrequest = '1')
+           or (burstcount = x"01"          and s0_avm.write = '1' and s0_avm.waitrequest = '0')
+           or (s0_avm.burstcount = x"01" and s0_avm.write = '1' and s0_avm.waitrequest = '0') then
           s0_last <= '1';
         end if;
       end if;
     end if;
 
     if s1_active_grant = '1' then
-      if burstcount = X"00" or (burstcount = X"01" and s1_readdatavalid_o = '1')
-         or (burstcount = X"01" and s1_write_i = '1') then
+      if burstcount = x"00" or (burstcount = x"01" and s1_avm.readdatavalid = '1')
+         or (burstcount = x"01" and s1_avm.write = '1') then
         if s1_active_req = '0'
-           or (burstcount = X"01"  and s1_readdatavalid_o = '1' and s1_waitrequest_o = '1')
-           or (burstcount = X"01"          and s1_write_i = '1' and s1_waitrequest_o = '0')
-           or (s1_burstcount_i = X"01" and s1_write_i = '1' and s1_waitrequest_o = '0') then
+           or (burstcount = x"01"  and s1_avm.readdatavalid = '1' and s1_avm.waitrequest = '1')
+           or (burstcount = x"01"          and s1_avm.write = '1' and s1_avm.waitrequest = '0')
+           or (s1_avm.burstcount = x"01" and s1_avm.write = '1' and s1_avm.waitrequest = '0') then
           s1_last <= '1';
         end if;
       end if;
@@ -138,7 +109,7 @@ begin
   end process last_proc;
 
   -- Determine who to grant access next.
-  active_grants      <= s1_active_grant & s0_active_grant;
+  active_grants        <= s1_active_grant & s0_active_grant;
 
   grant_proc : process (clk_i)
   begin
@@ -245,26 +216,26 @@ begin
   end process grant_proc;
 
   -- Generate output signals combinatorially
-  m_write_o          <= s0_write_i and s0_active_grant when last_grant = '0' else
-                        s1_write_i and s1_active_grant;
-  m_read_o           <= s0_read_i and s0_active_grant when last_grant = '0' else
-                        s1_read_i and s1_active_grant;
-  m_address_o        <= s0_address_i when last_grant = '0' else
-                        s1_address_i;
-  m_writedata_o      <= s0_writedata_i when last_grant = '0' else
-                        s1_writedata_i;
-  m_byteenable_o     <= s0_byteenable_i when last_grant = '0' else
-                        s1_byteenable_i;
-  m_burstcount_o     <= s0_burstcount_i when last_grant = '0' else
-                        s1_burstcount_i;
+  m_avm.write          <= s0_avm.write and s0_active_grant when last_grant = '0' else
+                          s1_avm.write and s1_active_grant;
+  m_avm.read           <= s0_avm.read and s0_active_grant when last_grant = '0' else
+                          s1_avm.read and s1_active_grant;
+  m_avm.address        <= s0_avm.address when last_grant = '0' else
+                          s1_avm.address;
+  m_avm.writedata      <= s0_avm.writedata when last_grant = '0' else
+                          s1_avm.writedata;
+  m_avm.byteenable     <= s0_avm.byteenable when last_grant = '0' else
+                          s1_avm.byteenable;
+  m_avm.burstcount     <= s0_avm.burstcount when last_grant = '0' else
+                          s1_avm.burstcount;
 
-  s0_readdata_o      <= m_readdata_i;
-  s0_readdatavalid_o <= m_readdatavalid_i when last_grant = '0' else
-                        '0';
+  s0_avm.readdata      <= m_avm.readdata;
+  s0_avm.readdatavalid <= m_avm.readdatavalid when last_grant = '0' else
+                          '0';
 
-  s1_readdata_o      <= m_readdata_i;
-  s1_readdatavalid_o <= m_readdatavalid_i when last_grant = '1' else
-                        '0';
+  s1_avm.readdata      <= m_avm.readdata;
+  s1_avm.readdatavalid <= m_avm.readdatavalid when last_grant = '1' else
+                          '0';
 
 end architecture synthesis;
 

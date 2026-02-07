@@ -7,110 +7,95 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std_unsigned.all;
 
+library work;
+  use work.axil_pkg.all;
+
 entity axil_slave_sim is
   generic (
-    G_DEBUG     : boolean;
-    G_FAST      : boolean;
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_DEBUG : boolean;
+    G_FAST  : boolean
   );
   port (
-    clk_i       : in    std_logic;
-    rst_i       : in    std_logic;
-
-    s_awready_o : out   std_logic;
-    s_awvalid_i : in    std_logic;
-    s_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_wready_o  : out   std_logic;
-    s_wvalid_i  : in    std_logic;
-    s_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s_bready_i  : in    std_logic;
-    s_bvalid_o  : out   std_logic;
-    s_bresp_o   : out   std_logic_vector(1 downto 0);
-    s_arready_o : out   std_logic;
-    s_arvalid_i : in    std_logic;
-    s_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_rready_i  : in    std_logic;
-    s_rvalid_o  : out   std_logic;
-    s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_rresp_o   : out   std_logic_vector(1 downto 0)
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    s_axil : view  axil_slave_view
   );
 end entity axil_slave_sim;
 
 architecture simulation of axil_slave_sim is
 
   signal s_awvalid : std_logic;
-  signal s_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_awaddr  : std_logic_vector(s_axil.awaddr'range);
   signal s_wvalid  : std_logic;
-  signal s_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal s_wdata   : std_logic_vector(s_axil.wdata'range);
+  signal s_wstrb   : std_logic_vector(s_axil.wstrb'range);
 
-  type   ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  type   ram_type is array (natural range <>) of std_logic_vector(s_axil.wdata'range);
 
 begin
 
-  s_bresp_o <= "00";
-  s_rresp_o <= "00";
+  s_axil.bresp   <= "00";
+  s_axil.rresp   <= "00";
 
   -- Only receive one write address and/or write data at a time
-  s_awready_o <= not s_awvalid;
-  s_wready_o  <= not s_wvalid;
+  s_axil.awready <= not s_awvalid;
+  s_axil.wready  <= not s_wvalid;
 
   -- Only accept one read request at a time
-  s_arready_o <= (not s_rvalid_o) or s_rready_i when G_FAST else
-                 (not s_rvalid_o);
+  s_axil.arready <= (not s_axil.rvalid) or s_axil.rready when G_FAST else
+                    (not s_axil.rvalid);
 
   verify_proc : process (clk_i)
-    variable ram_v : ram_type(0 to 2 ** G_ADDR_SIZE - 1);
+    variable ram_v : ram_type(0 to 2 ** s_axil.awaddr'length - 1);
   begin
     if rising_edge(clk_i) then
-      if s_bready_i = '1' then
-        s_bvalid_o <= '0';
+      if s_axil.bready = '1' then
+        s_axil.bvalid <= '0';
       end if;
-      if s_rready_i = '1' then
-        s_rvalid_o <= '0';
+      if s_axil.rready = '1' then
+        s_axil.rvalid <= '0';
       end if;
 
       -- Wait for write address
-      if s_awready_o = '1' and s_awvalid_i = '1' then
+      if s_axil.awready = '1' and s_axil.awvalid = '1' then
         s_awvalid <= '1';
-        s_awaddr  <= s_awaddr_i;
+        s_awaddr  <= s_axil.awaddr;
       end if;
 
       -- Wait for write data
-      if s_wready_o = '1' and s_wvalid_i = '1' then
+      if s_axil.wready = '1' and s_axil.wvalid = '1' then
         s_wvalid <= '1';
-        s_wdata  <= s_wdata_i;
-        s_wstrb  <= s_wstrb_i;
+        s_wdata  <= s_axil.wdata;
+        s_wstrb  <= s_axil.wstrb;
       end if;
 
       -- Handle write
-      if s_awvalid = '1' and s_wvalid = '1' and ((s_bready_i = '1' and G_FAST) or s_bvalid_o = '0') then
+      if s_awvalid = '1' and s_wvalid = '1' and ((s_axil.bready = '1' and G_FAST) or s_axil.bvalid = '0') then
         if G_DEBUG then
           report "axil_sim: VERIFY: Write " & to_hstring(s_wdata) & " to " & to_hstring(s_awaddr);
         end if;
         ram_v(to_integer(s_awaddr)) := s_wdata;
         s_awvalid                   <= '0';
         s_wvalid                    <= '0';
-        s_bvalid_o                  <= '1';
+        s_axil.bvalid               <= '1';
       end if;
 
       -- Handle read
-      if s_arready_o = '1' and s_arvalid_i = '1' then
+      if s_axil.arready = '1' and s_axil.arvalid = '1' then
         if G_DEBUG then
-          report "axil_sim: VERIFY: Reading " & to_hstring(ram_v(to_integer(s_araddr_i))) & " from " & to_hstring(s_araddr_i);
+          report "axil_sim: VERIFY: Reading " & to_hstring(ram_v(to_integer(s_axil.araddr))) &
+                 " from " & to_hstring(s_axil.araddr);
         end if;
-        s_rdata_o  <= ram_v(to_integer(s_araddr_i));
-        s_rvalid_o <= '1';
+        s_axil.rdata  <= ram_v(to_integer(s_axil.araddr));
+        s_axil.rvalid <= '1';
       end if;
 
       if rst_i = '1' then
-        ram_v      := (others => (others => 'U'));
-        s_awvalid  <= '0';
-        s_wvalid   <= '0';
-        s_bvalid_o <= '0';
-        s_rvalid_o <= '0';
+        ram_v         := (others => (others => 'U'));
+        s_awvalid     <= '0';
+        s_wvalid      <= '0';
+        s_axil.bvalid <= '0';
+        s_axil.rvalid <= '0';
       end if;
     end if;
   end process verify_proc;

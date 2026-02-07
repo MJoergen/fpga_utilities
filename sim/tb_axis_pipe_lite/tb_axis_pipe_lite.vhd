@@ -6,8 +6,8 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-library std;
-  use std.env.stop;
+library work;
+  use work.axis_pkg.all;
 
 entity tb_axis_pipe_lite is
   generic (
@@ -23,13 +23,15 @@ architecture simulation of tb_axis_pipe_lite is
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
 
-  signal s_ready : std_logic;
-  signal s_valid : std_logic;
-  signal s_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  -- Input to axis_pipe_lite
+  signal tx_axis : axis_rec_type (
+    data(G_DATA_BYTES * 8 - 1 downto 0)
+  );
 
-  signal m_ready : std_logic;
-  signal m_valid : std_logic;
-  signal m_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  -- Output from axis_pipe_lite
+  signal rx_axis : axis_rec_type (
+    data(G_DATA_BYTES * 8 - 1 downto 0)
+  );
 
 begin
 
@@ -46,18 +48,11 @@ begin
   ----------------------------------------------
 
   axis_pipe_inst_lite : entity work.axis_pipe_lite
-    generic map (
-      G_DATA_SIZE => G_DATA_BYTES * 8
-    )
     port map (
-      clk_i     => clk,
-      rst_i     => rst,
-      s_ready_o => s_ready,
-      s_valid_i => s_valid,
-      s_data_i  => s_data,
-      m_ready_i => m_ready,
-      m_valid_o => m_valid,
-      m_data_o  => m_data
+      clk_i  => clk,
+      rst_i  => rst,
+      s_axis => tx_axis,
+      m_axis => rx_axis
     ); -- axis_pipe_inst_lite : entity work.axis_pipe_lite
 
 
@@ -69,18 +64,13 @@ begin
     generic map (
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_CNT_SIZE   => G_CNT_SIZE
     )
     port map (
       clk_i     => clk,
       rst_i     => rst,
-      m_ready_i => s_ready,
-      m_valid_o => s_valid,
-      m_data_o  => s_data,
-      s_ready_o => m_ready,
-      s_valid_i => m_valid,
-      s_data_i  => m_data
+      m_axis => tx_axis,
+      s_axis => rx_axis
     ); -- axis_sim_inst : entity work.axis_sim
 
 end architecture simulation;

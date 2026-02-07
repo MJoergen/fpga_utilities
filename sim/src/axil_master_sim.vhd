@@ -10,69 +10,56 @@ library ieee;
   use ieee.numeric_std_unsigned.all;
   use std.env.stop;
 
+library work;
+  use work.axil_pkg.all;
+
 entity axil_master_sim is
   generic (
-    G_NAME      : string                        := "";
-    G_SEED      : std_logic_vector(63 downto 0) := x"DEADBEEFC007BABE";
-    G_OFFSET    : natural;
-    G_DEBUG     : boolean;
-    G_RANDOM    : boolean;
-    G_FAST      : boolean;
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_NAME   : string                        := "";
+    G_SEED   : std_logic_vector(63 downto 0) := x"DEADBEEFC007BABE";
+    G_OFFSET : natural;
+    G_DEBUG  : boolean;
+    G_RANDOM : boolean;
+    G_FIRST  : std_logic := 'U';
+    G_FAST   : boolean
   );
   port (
-    clk_i       : in    std_logic;
-    rst_i       : in    std_logic;
-
-    m_awready_i : in    std_logic;
-    m_awvalid_o : out   std_logic;
-    m_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_wready_i  : in    std_logic;
-    m_wvalid_o  : out   std_logic;
-    m_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_bready_o  : out   std_logic;
-    m_bvalid_i  : in    std_logic;
-    m_bresp_i   : in    std_logic_vector(1 downto 0);
-    m_arready_i : in    std_logic;
-    m_arvalid_o : out   std_logic;
-    m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_rready_o  : out   std_logic;
-    m_rvalid_i  : in    std_logic;
-    m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_rresp_i   : in    std_logic_vector(1 downto 0)
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    m_axil : view  axil_master_view
   );
 end entity axil_master_sim;
 
 architecture simulation of axil_master_sim is
 
-  signal  random_s : std_logic_vector(63 downto 0);
+  constant C_DATA_SIZE : positive := m_axil.wdata'length;
 
-  subtype R_DO_WRITE is natural range 16 downto 15;
+  signal   random_s : std_logic_vector(63 downto 0);
 
-  subtype R_DO_READ is natural range 6 downto 5;
+  subtype  R_DO_WRITE is natural range 16 downto 15;
 
-  subtype R_BREADY is natural range 26 downto 35;
+  subtype  R_DO_READ is natural range 6 downto 5;
 
-  subtype R_RREADY is natural range 36 downto 35;
+  subtype  R_BREADY is natural range 26 downto 35;
 
-  signal  do_write : std_logic;
-  signal  do_read  : std_logic;
+  subtype  R_RREADY is natural range 36 downto 35;
 
-  signal  write_req_cnt : natural range 0 to 100;
-  signal  read_req_cnt  : natural range 0 to 100;
+  signal   do_write : std_logic;
+  signal   do_read  : std_logic;
 
-  signal  wr_ptr_stim : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal  rd_ptr_stim : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal  wr_ptr_resp : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal  rd_ptr_resp : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal   write_req_cnt : natural range 0 to 100;
+  signal   read_req_cnt  : natural range 0 to 100;
+
+  signal   wr_ptr_stim : std_logic_vector(m_axil.awaddr'range);
+  signal   rd_ptr_stim : std_logic_vector(m_axil.awaddr'range);
+  signal   wr_ptr_resp : std_logic_vector(m_axil.awaddr'range);
+  signal   rd_ptr_resp : std_logic_vector(m_axil.awaddr'range);
 
   pure function addr_to_data (
     addr : std_logic_vector
   ) return std_logic_vector is
   begin
-    return to_stdlogicvector(2 ** (G_DATA_SIZE - 1) + G_OFFSET - to_integer(addr), G_DATA_SIZE);
+    return to_stdlogicvector(2 ** (C_DATA_SIZE - 1) + G_OFFSET - to_integer(addr), C_DATA_SIZE);
   end function addr_to_data;
 
 begin
@@ -97,28 +84,34 @@ begin
   -- Generate stimulus
   -----------------------------------------------
 
-  do_write   <= and(random_s(R_DO_WRITE)) when G_RANDOM else
-                '1';
-  do_read    <= and(random_s(R_DO_READ)) when G_RANDOM else
-                '1';
-  m_bready_o <= and(random_s(R_BREADY)) when G_RANDOM else
-                '1';
-  m_rready_o <= and(random_s(R_RREADY)) when G_RANDOM else
-                '1';
+  do_write      <= and(random_s(R_DO_WRITE)) when G_RANDOM else
+                   '1';
+  do_read       <= and(random_s(R_DO_READ)) when G_RANDOM else
+                   '1';
+  m_axil.bready <= and(random_s(R_BREADY)) when G_RANDOM else
+                   '1';
+  m_axil.rready <= and(random_s(R_RREADY)) when G_RANDOM else
+                   '1';
 
   stimuli_proc : process (clk_i)
     variable new_write_req_cnt_v : natural;
     variable new_read_req_cnt_v  : natural;
+    variable first_v             : boolean := true;
   begin
     if rising_edge(clk_i) then
-      if m_awready_i = '1' then
-        m_awvalid_o <= '0';
+      if first_v and rst_i = '0' then
+        report "axil_master_sim: " & G_NAME & " Test started";
+        first_v := false;
       end if;
-      if m_wready_i = '1' then
-        m_wvalid_o <= '0';
+
+      if m_axil.awready = '1' then
+        m_axil.awvalid <= '0';
       end if;
-      if m_arready_i = '1' then
-        m_arvalid_o <= '0';
+      if m_axil.wready = '1' then
+        m_axil.wvalid <= '0';
+      end if;
+      if m_axil.arready = '1' then
+        m_axil.arvalid <= '0';
       end if;
 
       new_write_req_cnt_v := write_req_cnt;
@@ -126,18 +119,18 @@ begin
 
       -- Issue write request
       if do_write = '1'
-         and ((G_FAST and m_awready_i = '1') or m_awvalid_o = '0')
-         and ((G_FAST and m_wready_i = '1') or m_wvalid_o = '0') then
+         and ((G_FAST and m_axil.awready = '1') or m_axil.awvalid = '0')
+         and ((G_FAST and m_axil.wready = '1') or m_axil.wvalid = '0') then
         if wr_ptr_stim + 1 = 0 then
           report "axil_master_sim: " & G_NAME & " Test finished";
           stop;
         else
           new_write_req_cnt_v := new_write_req_cnt_v + 1;
-          m_awvalid_o         <= '1';
-          m_awaddr_o          <= wr_ptr_stim;
-          m_wvalid_o          <= '1';
-          m_wdata_o           <= addr_to_data(wr_ptr_stim);
-          m_wstrb_o           <= (others => '1');
+          m_axil.awvalid      <= '1';
+          m_axil.awaddr       <= wr_ptr_stim;
+          m_axil.wvalid       <= '1';
+          m_axil.wdata        <= addr_to_data(wr_ptr_stim);
+          m_axil.wstrb        <= (C_DATA_SIZE / 8 - 1 downto 0 => '1');
           wr_ptr_stim         <= wr_ptr_stim + 1;
           if G_DEBUG then
             report "axil_master_sim: " & G_NAME & " STIMULI: Write: " & to_hstring(wr_ptr_stim) &
@@ -147,11 +140,11 @@ begin
       end if;
 
       -- Receive write response
-      if m_bvalid_i = '1' and m_bready_o = '1' then
+      if m_axil.bvalid = '1' and m_axil.bready = '1' then
         assert write_req_cnt > 0
           report "axil_master_sim: " & G_NAME & " Write not active";
         new_write_req_cnt_v := new_write_req_cnt_v - 1;
-        assert m_bresp_i = "00"
+        assert m_axil.bresp = "00"
           report "axil_master_sim: " & G_NAME & " Incorrect m_bresp_i";
         wr_ptr_resp         <= wr_ptr_resp + 1;
       end if;
@@ -159,26 +152,26 @@ begin
       -- Issue read request
       if do_read = '1'
          and rd_ptr_stim < wr_ptr_resp
-         and ((G_FAST and m_arready_i = '1') or m_arvalid_o = '0') then
+         and ((G_FAST and m_axil.arready = '1') or m_axil.arvalid = '0') then
         if G_DEBUG then
           report "axil_master_sim: " & G_NAME & " STIMULI: Read: " & to_hstring(rd_ptr_stim);
         end if;
         new_read_req_cnt_v := new_read_req_cnt_v + 1;
-        m_arvalid_o        <= '1';
-        m_araddr_o         <= rd_ptr_stim;
+        m_axil.arvalid     <= '1';
+        m_axil.araddr      <= rd_ptr_stim;
         rd_ptr_stim        <= rd_ptr_stim + 1;
       end if;
 
       -- Receive read response
-      if m_rvalid_i = '1' and m_rready_o = '1' then
+      if m_axil.rvalid = '1' and m_axil.rready = '1' then
         assert read_req_cnt > 0
           report "axil_master_sim: " & G_NAME & " Read not active";
         new_read_req_cnt_v := new_read_req_cnt_v - 1;
-        assert m_rresp_i = "00"
+        assert m_axil.rresp = "00"
           report "axil_master_sim: " & G_NAME & " Incorrect m_rresp_i";
-        assert m_rdata_i = addr_to_data(rd_ptr_resp)
+        assert m_axil.rdata = addr_to_data(rd_ptr_resp)
           report "axil_master_sim: " & G_NAME & " Read failure from address " & to_hstring(rd_ptr_resp) &
-                 ". Got " & to_hstring(m_rdata_i) &
+                 ". Got " & to_hstring(m_axil.rdata) &
                  ", expected " & to_hstring(addr_to_data(rd_ptr_resp));
         rd_ptr_resp        <= rd_ptr_resp + 1;
       end if;
@@ -186,16 +179,21 @@ begin
       write_req_cnt <= new_write_req_cnt_v;
       read_req_cnt  <= new_read_req_cnt_v;
 
+      if G_FIRST /= 'U' then
+        m_axil.awaddr(m_axil.awaddr'left) <= G_FIRST;
+        m_axil.araddr(m_axil.araddr'left) <= G_FIRST;
+      end if;
+
       if rst_i = '1' then
-        m_awvalid_o   <= '0';
-        m_wvalid_o    <= '0';
-        m_arvalid_o   <= '0';
-        write_req_cnt <= 0;
-        read_req_cnt  <= 0;
-        wr_ptr_stim   <= (others => '0');
-        wr_ptr_resp   <= (others => '0');
-        rd_ptr_stim   <= (others => '0');
-        rd_ptr_resp   <= (others => '0');
+        m_axil.awvalid <= '0';
+        m_axil.wvalid  <= '0';
+        m_axil.arvalid <= '0';
+        write_req_cnt  <= 0;
+        read_req_cnt   <= 0;
+        wr_ptr_stim    <= (others => '0');
+        wr_ptr_resp    <= (others => '0');
+        rd_ptr_stim    <= (others => '0');
+        rd_ptr_resp    <= (others => '0');
       end if;
     end if;
   end process stimuli_proc;

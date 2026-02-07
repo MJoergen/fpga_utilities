@@ -1,80 +1,59 @@
 [*]
-[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Tue Jan 13 13:44:53 2026
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Feb  7 15:44:55 2026
 [*]
-[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_avm_pipe/tb_avm_pipe.ghw"
-[dumpfile_mtime] "Tue Jan 13 13:43:01 2026"
-[dumpfile_size] 37547321
-[savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_avm_pipe/tb_avm_pipe.gtkw"
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_avm_pipe/tb_avm_pipe.fst"
+[dumpfile_mtime] "Sat Feb  7 15:41:42 2026"
+[dumpfile_size] 2701
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_avm_pipe/tb_avm_pipe.gtkw"
 [timestart] 0
 [size] 1231 897
-[pos] -1 -150
-*-36.996708 243340000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[treeopen] top.
-[treeopen] top.tb_avm_pipe.
-[treeopen] top.tb_avm_pipe.avm_pipe_inst.
+[pos] -1503 -6
+*-26.137386 200000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_avm_pipe.
+[treeopen] tb_avm_pipe.avm_pipe_inst.
 [sst_width] 320
 [signals_width] 316
 [sst_expanded] 1
 [sst_vpaned_height] 246
 @800200
 -avm_pipe
+-s_avm
 @28
-top.tb_avm_pipe.avm_pipe_inst.clk_i
-top.tb_avm_pipe.avm_pipe_inst.rst_i
-[color] 6
-top.tb_avm_pipe.avm_pipe_inst.s_waitrequest_o
-[color] 2
-top.tb_avm_pipe.avm_pipe_inst.s_write_i
-[color] 2
-top.tb_avm_pipe.avm_pipe_inst.s_read_i
+tb_avm_pipe.avm_pipe_inst.s_avm.waitrequest
+tb_avm_pipe.avm_pipe_inst.s_avm.write
+tb_avm_pipe.avm_pipe_inst.s_avm.read
 @22
-#{top.tb_avm_pipe.avm_pipe_inst.s_address_i[11:0]} top.tb_avm_pipe.avm_pipe_inst.s_address_i[11] top.tb_avm_pipe.avm_pipe_inst.s_address_i[10] top.tb_avm_pipe.avm_pipe_inst.s_address_i[9] top.tb_avm_pipe.avm_pipe_inst.s_address_i[8] top.tb_avm_pipe.avm_pipe_inst.s_address_i[7] top.tb_avm_pipe.avm_pipe_inst.s_address_i[6] top.tb_avm_pipe.avm_pipe_inst.s_address_i[5] top.tb_avm_pipe.avm_pipe_inst.s_address_i[4] top.tb_avm_pipe.avm_pipe_inst.s_address_i[3] top.tb_avm_pipe.avm_pipe_inst.s_address_i[2] top.tb_avm_pipe.avm_pipe_inst.s_address_i[1] top.tb_avm_pipe.avm_pipe_inst.s_address_i[0]
-#{top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[15:0]} top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[15] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[14] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[13] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[12] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[11] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[10] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[9] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[8] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[7] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[6] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[5] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[4] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[3] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[2] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[1] top.tb_avm_pipe.avm_pipe_inst.s_writedata_i[0]
+tb_avm_pipe.avm_pipe_inst.s_avm.address[11:0]
+tb_avm_pipe.avm_pipe_inst.s_avm.writedata[15:0]
 @28
-#{top.tb_avm_pipe.avm_pipe_inst.s_byteenable_i[1:0]} top.tb_avm_pipe.avm_pipe_inst.s_byteenable_i[1] top.tb_avm_pipe.avm_pipe_inst.s_byteenable_i[0]
+tb_avm_pipe.avm_pipe_inst.s_avm.byteenable[1:0]
 @22
-#{top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[7:0]} top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[7] top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[6] top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[5] top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[4] top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[3] top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[2] top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[1] top.tb_avm_pipe.avm_pipe_inst.s_burstcount_i[0]
+tb_avm_pipe.avm_pipe_inst.s_avm.burstcount[7:0]
+tb_avm_pipe.avm_pipe_inst.s_avm.readdata[15:0]
 @28
-top.tb_avm_pipe.avm_pipe_inst.s_readdatavalid_o
-@22
-#{top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[15:0]} top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[15] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[14] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[13] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[12] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[11] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[10] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[9] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[8] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[7] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[6] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[5] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[4] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[3] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[2] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[1] top.tb_avm_pipe.avm_pipe_inst.s_readdata_o[0]
-@28
-[color] 6
-top.tb_avm_pipe.avm_pipe_inst.m_waitrequest_i
-[color] 2
-top.tb_avm_pipe.avm_pipe_inst.m_write_o
-[color] 2
-top.tb_avm_pipe.avm_pipe_inst.m_read_o
-@22
-#{top.tb_avm_pipe.avm_pipe_inst.m_address_o[11:0]} top.tb_avm_pipe.avm_pipe_inst.m_address_o[11] top.tb_avm_pipe.avm_pipe_inst.m_address_o[10] top.tb_avm_pipe.avm_pipe_inst.m_address_o[9] top.tb_avm_pipe.avm_pipe_inst.m_address_o[8] top.tb_avm_pipe.avm_pipe_inst.m_address_o[7] top.tb_avm_pipe.avm_pipe_inst.m_address_o[6] top.tb_avm_pipe.avm_pipe_inst.m_address_o[5] top.tb_avm_pipe.avm_pipe_inst.m_address_o[4] top.tb_avm_pipe.avm_pipe_inst.m_address_o[3] top.tb_avm_pipe.avm_pipe_inst.m_address_o[2] top.tb_avm_pipe.avm_pipe_inst.m_address_o[1] top.tb_avm_pipe.avm_pipe_inst.m_address_o[0]
-#{top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[15:0]} top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[15] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[14] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[13] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[12] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[11] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[10] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[9] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[8] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[7] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[6] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[5] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[4] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[3] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[2] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[1] top.tb_avm_pipe.avm_pipe_inst.m_writedata_o[0]
-@28
-#{top.tb_avm_pipe.avm_pipe_inst.m_byteenable_o[1:0]} top.tb_avm_pipe.avm_pipe_inst.m_byteenable_o[1] top.tb_avm_pipe.avm_pipe_inst.m_byteenable_o[0]
-@22
-#{top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[7:0]} top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[7] top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[6] top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[5] top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[4] top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[3] top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[2] top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[1] top.tb_avm_pipe.avm_pipe_inst.m_burstcount_o[0]
-@28
-top.tb_avm_pipe.avm_pipe_inst.m_readdatavalid_i
-@22
-#{top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[15:0]} top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[15] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[14] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[13] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[12] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[11] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[10] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[9] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[8] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[7] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[6] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[5] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[4] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[3] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[2] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[1] top.tb_avm_pipe.avm_pipe_inst.m_readdata_i[0]
-@800200
--Internal
-@28
-[color] 6
-top.tb_avm_pipe.avm_pipe_inst.s_wr_ready
-[color] 2
-top.tb_avm_pipe.avm_pipe_inst.s_wr_valid
-@22
-#{top.tb_avm_pipe.avm_pipe_inst.s_wr_data[38:0]} top.tb_avm_pipe.avm_pipe_inst.s_wr_data[38] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[37] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[36] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[35] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[34] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[33] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[32] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[31] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[30] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[29] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[28] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[27] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[26] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[25] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[24] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[23] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[22] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[21] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[20] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[19] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[18] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[17] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[16] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[15] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[14] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[13] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[12] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[11] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[10] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[9] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[8] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[7] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[6] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[5] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[4] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[3] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[2] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[1] top.tb_avm_pipe.avm_pipe_inst.s_wr_data[0]
-@28
-[color] 6
-top.tb_avm_pipe.avm_pipe_inst.m_wr_ready
-[color] 2
-top.tb_avm_pipe.avm_pipe_inst.m_wr_valid
-@22
-#{top.tb_avm_pipe.avm_pipe_inst.m_wr_data[38:0]} top.tb_avm_pipe.avm_pipe_inst.m_wr_data[38] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[37] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[36] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[35] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[34] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[33] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[32] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[31] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[30] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[29] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[28] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[27] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[26] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[25] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[24] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[23] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[22] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[21] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[20] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[19] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[18] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[17] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[16] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[15] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[14] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[13] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[12] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[11] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[10] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[9] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[8] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[7] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[6] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[5] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[4] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[3] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[2] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[1] top.tb_avm_pipe.avm_pipe_inst.m_wr_data[0]
+tb_avm_pipe.avm_pipe_inst.s_avm.readdatavalid
 @1000200
--Internal
+-s_avm
+@800201
+-m_avm
+@29
+tb_avm_pipe.avm_pipe_inst.m_avm.waitrequest
+tb_avm_pipe.avm_pipe_inst.m_avm.write
+tb_avm_pipe.avm_pipe_inst.m_avm.read
+@23
+tb_avm_pipe.avm_pipe_inst.m_avm.address[11:0]
+tb_avm_pipe.avm_pipe_inst.m_avm.writedata[15:0]
+@29
+tb_avm_pipe.avm_pipe_inst.m_avm.byteenable[1:0]
+@23
+tb_avm_pipe.avm_pipe_inst.m_avm.burstcount[7:0]
+tb_avm_pipe.avm_pipe_inst.m_avm.readdata[15:0]
+@29
+tb_avm_pipe.avm_pipe_inst.m_avm.readdatavalid
+@1000201
+-m_avm
+@1000200
 -avm_pipe
 [pattern_trace] 1
 [pattern_trace] 0

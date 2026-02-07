@@ -2,16 +2,17 @@
 #
 # Description: Makefile for simulating the axi_wbus.vhd file.
 
-# List of test specific simulation files
-SRC += tb_axis_sim.vhd
-
 # List of generic simulation files
-SRC += $(SIM_SRC_DIR)/axis_sim.vhd
+SRC += $(SRC_DIR)/axis/axis_pkg.vhd
+SRC += $(SIM_SRC_DIR)/lfsr.vhd
+SRC += $(SIM_SRC_DIR)/random.vhd
 SRC += $(SIM_SRC_DIR)/axis_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/axis_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/axis_pause.vhd
-SRC += $(SIM_SRC_DIR)/lfsr.vhd
-SRC += $(SIM_SRC_DIR)/random.vhd
+SRC += $(SIM_SRC_DIR)/axis_sim.vhd
+
+# List of test specific simulation files
+SRC += tb_axis_sim.vhd
 
 # Top level entity
 DUT = axis_sim

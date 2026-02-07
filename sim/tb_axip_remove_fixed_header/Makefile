@@ -3,12 +3,16 @@
 # Description: Makefile for simulating the axi_pipe_wide.vhd file.
 
 # List of source files
+SRC += $(SRC_DIR)/axis/axis_pkg.vhd
+SRC += $(SRC_DIR)/axip/axip_pkg.vhd
 SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 SRC += $(SRC_DIR)/axip/axip_remove_fixed_header.vhd
 
-# List of test specific simulation files
+# List of generic simulation files
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
+
+# List of test specific simulation files
 SRC += tb_axip_remove_fixed_header.vhd
 
 # Top level entity

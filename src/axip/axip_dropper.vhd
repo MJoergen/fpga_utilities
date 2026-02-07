@@ -9,7 +9,7 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity axis_dropper is
+entity axip_dropper is
   generic (
     G_DATA_SIZE : positive; -- Size of each byte
     G_ADDR_SIZE : positive; -- Controls size of frame buffer
@@ -32,9 +32,9 @@ entity axis_dropper is
     m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_last_o  : out   std_logic
   );
-end entity axis_dropper;
+end entity axip_dropper;
 
-architecture synthesis of axis_dropper is
+architecture synthesis of axip_dropper is
 
   -- Buffer containing the packet data
   -- This is not a regular FIFO, because the data may be intentionally overwritten (in case s_drop_i = 1).

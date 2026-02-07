@@ -6,32 +6,19 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.wbus_pkg.all;
+
 entity wbus_pause is
   generic (
     G_SEED       : std_logic_vector(63 downto 0);
-    G_PAUSE_SIZE : integer;
-    G_ADDR_SIZE  : natural;
-    G_DATA_SIZE  : natural
+    G_PAUSE_SIZE : integer
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
-    s_cyc_i   : in    std_logic;
-    s_stall_o : out   std_logic;
-    s_stb_i   : in    std_logic;
-    s_addr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_we_i    : in    std_logic;
-    s_wrdat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_ack_o   : out   std_logic;
-    s_rddat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_cyc_o   : out   std_logic;
-    m_stall_i : in    std_logic;
-    m_stb_o   : out   std_logic;
-    m_addr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_we_o    : out   std_logic;
-    m_wrdat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_ack_i   : in    std_logic;
-    m_rddat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
+    s_wbus : view  wbus_slave_view;
+    m_wbus : view  wbus_master_view
   );
 end entity wbus_pause;
 
@@ -62,7 +49,7 @@ begin
 
   cnt    <= 0 when G_PAUSE_SIZE = 0 else
             to_integer(unsigned(random_val(R_PAUSE))) mod abs(G_PAUSE_SIZE);
-  update <= '0' when forward = '1' and m_stb_o = '1' and m_stall_i = '1' else
+  update <= '0' when forward = '1' and m_wbus.stb = '1' and m_wbus.stall = '1' else
             '1';
 
   no_pause_gen : if G_PAUSE_SIZE = 0 generate
@@ -85,26 +72,26 @@ begin
   begin
     if rising_edge(clk_i) then
       s_ack <= '0' & s_ack(s_ack'left downto 1);
-      if m_ack_i = '1' then
+      if m_wbus.ack = '1' then
         assert or(s_ack) = '0';
-        s_rddat_o  <= m_rddat_i;
-        s_ack(cnt) <= '1';
+        s_wbus.rddat <= m_wbus.rddat;
+        s_ack(cnt)   <= '1';
       end if;
 
-      if s_cyc_i = '0' then
+      if s_wbus.cyc = '0' then
         s_ack <= (others => '0');
       end if;
     end if;
   end process resp_proc;
 
 
-  m_cyc_o   <= s_cyc_i;
-  m_stb_o   <= s_stb_i and forward;
-  m_addr_o  <= s_addr_i;
-  m_we_o    <= s_we_i;
-  m_wrdat_o <= s_wrdat_i;
-  s_stall_o <= m_stall_i or not forward;
-  s_ack_o   <= s_ack(0) and s_cyc_i;
+  m_wbus.cyc   <= s_wbus.cyc;
+  m_wbus.stb   <= s_wbus.stb and forward;
+  m_wbus.addr  <= s_wbus.addr;
+  m_wbus.we    <= s_wbus.we;
+  m_wbus.wrdat <= s_wbus.wrdat;
+  s_wbus.stall <= m_wbus.stall or not forward;
+  s_wbus.ack   <= s_ack(0) and s_wbus.cyc;
 
 end architecture simulation;
 

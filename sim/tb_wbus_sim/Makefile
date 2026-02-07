@@ -2,16 +2,18 @@
 #
 # Description: Makefile for simulating the wbus_master_sim.vhd file.
 
-# List of test specific simulation files
-SRC += tb_wbus_sim.vhd
+SRC += $(SRC_DIR)/wbus/wbus_pkg.vhd
 
 # List of generic simulation files
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
+SRC += $(SIM_SRC_DIR)/wbus_pause.vhd
 SRC += $(SIM_SRC_DIR)/wbus_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/wbus_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/wbus_sim.vhd
-SRC += $(SIM_SRC_DIR)/wbus_pause.vhd
+
+# List of test specific simulation files
+SRC += tb_wbus_sim.vhd
 
 # Top level entity
 DUT = wbus_sim

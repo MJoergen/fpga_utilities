@@ -1,154 +1,170 @@
 [*]
-[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Tue Jan 13 14:14:16 2026
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Fri Feb  6 13:02:15 2026
 [*]
-[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_wbus_arbiter/tb_wbus_arbiter.ghw"
-[dumpfile_mtime] "Tue Jan 13 14:10:02 2026"
-[dumpfile_size] 61150253
-[savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_wbus_arbiter/tb_wbus_arbiter.gtkw"
-[timestart] 4936100000
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_wbus_arbiter/tb_wbus_arbiter.fst"
+[dumpfile_mtime] "Fri Feb  6 12:59:47 2026"
+[dumpfile_size] 207022
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_wbus_arbiter/tb_wbus_arbiter.gtkw"
+[timestart] 0
 [size] 1686 871
 [pos] 163 26
-*-27.258463 5630000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
-[treeopen] top.
-[treeopen] top.tb_wbus_arbiter.
-[treeopen] top.tb_wbus_arbiter.wbus_arbiter_inst.
-[treeopen] top.tb_wbus_arbiter.wbus_sim_1_inst.
+*-33.406788 46570000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_wbus_arbiter.
+[treeopen] tb_wbus_arbiter.wbus_mapper_inst.
+[treeopen] tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.
+[treeopen] tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.
 [sst_width] 445
 [signals_width] 336
 [sst_expanded] 1
 [sst_vpaned_height] 237
+@c00200
+-wbus_arbiter
 @800200
--wbus_arbiter
+-s0_wbus
 @28
-top.tb_wbus_arbiter.wbus_arbiter_inst.clk_i
-top.tb_wbus_arbiter.wbus_arbiter_inst.rst_i
-top.tb_wbus_arbiter.wbus_arbiter_inst.s0_cyc_i
-[color] 6
-top.tb_wbus_arbiter.wbus_arbiter_inst.s0_stall_o
-[color] 2
-top.tb_wbus_arbiter.wbus_arbiter_inst.s0_stb_i
+tb_wbus_arbiter.wbus_arbiter_inst.s0_wbus.cyc
+tb_wbus_arbiter.wbus_arbiter_inst.s0_wbus.stall
+tb_wbus_arbiter.wbus_arbiter_inst.s0_wbus.stb
+tb_wbus_arbiter.wbus_arbiter_inst.s0_wbus.we
 @22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[12:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[12] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[11] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[10] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[9] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[8] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[7] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[6] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[5] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[4] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[3] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[2] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[1] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_addr_i[0]
+tb_wbus_arbiter.wbus_arbiter_inst.s0_wbus.wrdat[31:0]
 @28
-top.tb_wbus_arbiter.wbus_arbiter_inst.s0_we_i
+tb_wbus_arbiter.wbus_arbiter_inst.s0_wbus.ack
 @22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[31:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[31] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[30] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[29] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[28] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[27] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[26] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[25] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[24] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[23] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[22] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[21] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[20] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[19] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[18] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[17] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[16] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[15] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[14] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[13] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[12] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[11] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[10] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[9] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[8] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[7] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[6] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[5] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[4] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[3] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[2] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[1] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_wrdat_i[0]
-@28
-top.tb_wbus_arbiter.wbus_arbiter_inst.s0_ack_o
-@22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[31:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[31] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[30] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[29] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[28] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[27] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[26] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[25] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[24] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[23] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[22] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[21] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[20] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[19] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[18] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[17] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[16] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[15] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[14] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[13] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[12] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[11] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[10] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[9] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[8] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[7] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[6] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[5] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[4] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[3] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[2] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[1] top.tb_wbus_arbiter.wbus_arbiter_inst.s0_rddat_o[0]
-@28
-top.tb_wbus_arbiter.wbus_arbiter_inst.s1_cyc_i
-[color] 6
-top.tb_wbus_arbiter.wbus_arbiter_inst.s1_stall_o
-[color] 2
-top.tb_wbus_arbiter.wbus_arbiter_inst.s1_stb_i
-@22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[12:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[12] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[11] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[10] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[9] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[8] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[7] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[6] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[5] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[4] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[3] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[2] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[1] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_addr_i[0]
-@28
-top.tb_wbus_arbiter.wbus_arbiter_inst.s1_we_i
-@22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[31:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[31] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[30] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[29] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[28] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[27] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[26] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[25] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[24] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[23] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[22] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[21] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[20] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[19] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[18] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[17] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[16] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[15] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[14] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[13] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[12] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[11] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[10] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[9] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[8] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[7] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[6] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[5] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[4] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[3] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[2] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[1] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_wrdat_i[0]
-@28
-top.tb_wbus_arbiter.wbus_arbiter_inst.s1_ack_o
-@22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[31:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[31] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[30] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[29] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[28] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[27] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[26] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[25] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[24] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[23] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[22] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[21] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[20] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[19] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[18] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[17] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[16] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[15] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[14] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[13] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[12] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[11] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[10] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[9] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[8] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[7] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[6] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[5] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[4] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[3] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[2] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[1] top.tb_wbus_arbiter.wbus_arbiter_inst.s1_rddat_o[0]
-@28
-top.tb_wbus_arbiter.wbus_arbiter_inst.m_cyc_o
-[color] 6
-top.tb_wbus_arbiter.wbus_arbiter_inst.m_stall_i
-[color] 2
-top.tb_wbus_arbiter.wbus_arbiter_inst.m_stb_o
-@22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[12:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[12] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[11] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[10] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[9] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[8] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[7] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[6] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[5] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[4] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[3] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[2] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[1] top.tb_wbus_arbiter.wbus_arbiter_inst.m_addr_o[0]
-@28
-top.tb_wbus_arbiter.wbus_arbiter_inst.m_we_o
-@22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[31:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[31] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[30] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[29] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[28] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[27] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[26] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[25] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[24] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[23] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[22] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[21] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[20] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[19] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[18] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[17] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[16] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[15] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[14] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[13] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[12] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[11] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[10] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[9] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[8] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[7] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[6] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[5] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[4] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[3] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[2] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[1] top.tb_wbus_arbiter.wbus_arbiter_inst.m_wrdat_o[0]
-@28
-top.tb_wbus_arbiter.wbus_arbiter_inst.m_ack_i
-@22
-#{top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[31:0]} top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[31] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[30] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[29] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[28] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[27] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[26] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[25] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[24] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[23] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[22] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[21] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[20] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[19] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[18] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[17] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[16] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[15] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[14] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[13] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[12] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[11] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[10] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[9] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[8] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[7] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[6] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[5] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[4] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[3] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[2] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[1] top.tb_wbus_arbiter.wbus_arbiter_inst.m_rddat_i[0]
-@420
-top.tb_wbus_arbiter.wbus_arbiter_inst.state
+tb_wbus_arbiter.wbus_arbiter_inst.s0_wbus.rddat[31:0]
 @1000200
+-s0_wbus
+@800200
+-s1_wbus
+@28
+tb_wbus_arbiter.wbus_arbiter_inst.s1_wbus.cyc
+tb_wbus_arbiter.wbus_arbiter_inst.s1_wbus.stall
+tb_wbus_arbiter.wbus_arbiter_inst.s1_wbus.stb
+tb_wbus_arbiter.wbus_arbiter_inst.s1_wbus.we
+@22
+tb_wbus_arbiter.wbus_arbiter_inst.s1_wbus.wrdat[31:0]
+@28
+tb_wbus_arbiter.wbus_arbiter_inst.s1_wbus.ack
+@22
+tb_wbus_arbiter.wbus_arbiter_inst.s1_wbus.rddat[31:0]
+@1000200
+-s1_wbus
+@800200
+-m_wbus
+@28
+tb_wbus_arbiter.wbus_arbiter_inst.m_wbus.cyc
+tb_wbus_arbiter.wbus_arbiter_inst.m_wbus.stall
+tb_wbus_arbiter.wbus_arbiter_inst.m_wbus.stb
+tb_wbus_arbiter.wbus_arbiter_inst.m_wbus.we
+@22
+tb_wbus_arbiter.wbus_arbiter_inst.m_wbus.wrdat[31:0]
+@28
+tb_wbus_arbiter.wbus_arbiter_inst.m_wbus.ack
+@22
+tb_wbus_arbiter.wbus_arbiter_inst.m_wbus.rddat[31:0]
+@1000200
+-m_wbus
+@28
+tb_wbus_arbiter.wbus_arbiter_inst.state
+@1401200
 -wbus_arbiter
+@200
+-
+@800200
+-wbus_master_sim_0
 @c00200
--wbus_sim_0
+-m_wbus
 @28
-top.tb_wbus_arbiter.wbus_sim_0_inst.clk_i
-top.tb_wbus_arbiter.wbus_sim_0_inst.rst_i
-top.tb_wbus_arbiter.wbus_sim_0_inst.m_cyc_o
-[color] 6
-top.tb_wbus_arbiter.wbus_sim_0_inst.m_stall_i
-[color] 2
-top.tb_wbus_arbiter.wbus_sim_0_inst.m_stb_o
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.m_wbus.cyc
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.m_wbus.stall
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.m_wbus.stb
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.m_wbus.we
 @22
-#{top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[11:0]} top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[11] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[10] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[9] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[8] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[7] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[6] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[5] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[4] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[3] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[2] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[1] top.tb_wbus_arbiter.wbus_sim_0_inst.m_addr_o[0]
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.m_wbus.wrdat[31:0]
 @28
-top.tb_wbus_arbiter.wbus_sim_0_inst.m_we_o
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.m_wbus.ack
 @22
-#{top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[31:0]} top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[31] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[30] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[29] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[28] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[27] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[26] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[25] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[24] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[23] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[22] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[21] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[20] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[19] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[18] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[17] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[16] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[15] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[14] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[13] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[12] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[11] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[10] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[9] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[8] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[7] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[6] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[5] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[4] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[3] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[2] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[1] top.tb_wbus_arbiter.wbus_sim_0_inst.m_wrdat_o[0]
-@28
-top.tb_wbus_arbiter.wbus_sim_0_inst.m_ack_i
-@22
-#{top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[31:0]} top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[31] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[30] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[29] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[28] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[27] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[26] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[25] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[24] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[23] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[22] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[21] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[20] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[19] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[18] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[17] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[16] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[15] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[14] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[13] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[12] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[11] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[10] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[9] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[8] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[7] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[6] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[5] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[4] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[3] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[2] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[1] top.tb_wbus_arbiter.wbus_sim_0_inst.m_rddat_i[0]
-@28
-top.tb_wbus_arbiter.wbus_sim_0_inst.s_cyc_i
-[color] 6
-top.tb_wbus_arbiter.wbus_sim_0_inst.s_stall_o
-[color] 2
-top.tb_wbus_arbiter.wbus_sim_0_inst.s_stb_i
-@22
-#{top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[11:0]} top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[11] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[10] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[9] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[8] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[7] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[6] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[5] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[4] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[3] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[2] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[1] top.tb_wbus_arbiter.wbus_sim_0_inst.s_addr_i[0]
-@28
-top.tb_wbus_arbiter.wbus_sim_0_inst.s_we_i
-@22
-#{top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[31:0]} top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[31] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[30] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[29] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[28] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[27] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[26] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[25] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[24] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[23] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[22] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[21] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[20] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[19] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[18] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[17] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[16] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[15] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[14] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[13] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[12] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[11] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[10] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[9] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[8] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[7] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[6] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[5] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[4] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[3] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[2] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[1] top.tb_wbus_arbiter.wbus_sim_0_inst.s_wrdat_i[0]
-@28
-top.tb_wbus_arbiter.wbus_sim_0_inst.s_ack_o
-@22
-#{top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[31:0]} top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[31] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[30] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[29] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[28] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[27] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[26] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[25] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[24] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[23] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[22] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[21] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[20] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[19] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[18] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[17] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[16] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[15] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[14] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[13] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[12] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[11] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[10] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[9] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[8] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[7] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[6] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[5] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[4] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[3] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[2] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[1] top.tb_wbus_arbiter.wbus_sim_0_inst.s_rddat_o[0]
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.m_wbus.rddat[31:0]
 @1401200
--wbus_sim_0
+-m_wbus
+@28
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.state
+@22
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.wr_ptr[7:0]
+tb_wbus_arbiter.wbus_sim_0_inst.wbus_master_sim_inst.rd_ptr[7:0]
+@1000200
+-wbus_master_sim_0
+@200
+-
+@800200
+-wbus_master_sim_1
 @c00200
--wbus_sim_1
+-m_wbus
 @28
-top.tb_wbus_arbiter.wbus_sim_1_inst.clk_i
-top.tb_wbus_arbiter.wbus_sim_1_inst.rst_i
-top.tb_wbus_arbiter.wbus_sim_1_inst.m_cyc_o
-[color] 6
-top.tb_wbus_arbiter.wbus_sim_1_inst.m_stall_i
-[color] 2
-top.tb_wbus_arbiter.wbus_sim_1_inst.m_stb_o
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.cyc
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.stall
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.stb
 @22
-#{top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[11:0]} top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[11] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[10] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[9] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[8] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[7] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[6] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[5] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[4] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[3] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[2] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[1] top.tb_wbus_arbiter.wbus_sim_1_inst.m_addr_o[0]
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.addr[7:0]
 @28
-top.tb_wbus_arbiter.wbus_sim_1_inst.m_we_o
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.we
 @22
-#{top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[31:0]} top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[31] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[30] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[29] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[28] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[27] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[26] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[25] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[24] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[23] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[22] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[21] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[20] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[19] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[18] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[17] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[16] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[15] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[14] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[13] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[12] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[11] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[10] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[9] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[8] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[7] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[6] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[5] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[4] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[3] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[2] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[1] top.tb_wbus_arbiter.wbus_sim_1_inst.m_wrdat_o[0]
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.wrdat[31:0]
 @28
-top.tb_wbus_arbiter.wbus_sim_1_inst.m_ack_i
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.ack
 @22
-#{top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[31:0]} top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[31] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[30] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[29] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[28] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[27] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[26] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[25] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[24] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[23] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[22] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[21] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[20] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[19] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[18] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[17] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[16] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[15] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[14] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[13] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[12] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[11] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[10] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[9] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[8] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[7] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[6] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[5] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[4] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[3] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[2] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[1] top.tb_wbus_arbiter.wbus_sim_1_inst.m_rddat_i[0]
-@28
-top.tb_wbus_arbiter.wbus_sim_1_inst.s_cyc_i
-[color] 6
-top.tb_wbus_arbiter.wbus_sim_1_inst.s_stall_o
-[color] 2
-top.tb_wbus_arbiter.wbus_sim_1_inst.s_stb_i
-@22
-#{top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[11:0]} top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[11] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[10] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[9] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[8] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[7] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[6] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[5] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[4] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[3] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[2] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[1] top.tb_wbus_arbiter.wbus_sim_1_inst.s_addr_i[0]
-@28
-top.tb_wbus_arbiter.wbus_sim_1_inst.s_we_i
-@22
-#{top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[31:0]} top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[31] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[30] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[29] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[28] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[27] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[26] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[25] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[24] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[23] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[22] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[21] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[20] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[19] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[18] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[17] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[16] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[15] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[14] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[13] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[12] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[11] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[10] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[9] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[8] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[7] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[6] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[5] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[4] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[3] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[2] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[1] top.tb_wbus_arbiter.wbus_sim_1_inst.s_wrdat_i[0]
-@28
-top.tb_wbus_arbiter.wbus_sim_1_inst.s_ack_o
-@22
-#{top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[31:0]} top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[31] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[30] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[29] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[28] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[27] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[26] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[25] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[24] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[23] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[22] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[21] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[20] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[19] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[18] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[17] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[16] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[15] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[14] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[13] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[12] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[11] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[10] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[9] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[8] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[7] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[6] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[5] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[4] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[3] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[2] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[1] top.tb_wbus_arbiter.wbus_sim_1_inst.s_rddat_o[0]
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.m_wbus.rddat[31:0]
 @1401200
--wbus_sim_1
+-m_wbus
+@28
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.state
+@22
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.wr_ptr[7:0]
+tb_wbus_arbiter.wbus_sim_1_inst.wbus_master_sim_inst.rd_ptr[7:0]
+@1000200
+-wbus_master_sim_1
+@200
+-
+@800200
+-wbus_mapper
+@c00200
+-s_wbus
+@28
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.cyc
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.stall
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.stb
+@22
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.addr[7:0]
+@28
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.we
+@22
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.wrdat[31:0]
+@28
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.ack
+@22
+tb_wbus_arbiter.wbus_mapper_inst.s_wbus.rddat[31:0]
+@1401200
+-s_wbus
+@800200
+-m_wbus
+@28
+tb_wbus_arbiter.wbus_mapper_inst.m_wbus.rst[1:0]
+tb_wbus_arbiter.wbus_mapper_inst.m_wbus.cyc
+tb_wbus_arbiter.wbus_mapper_inst.m_wbus.stb[1:0]
+@22
+tb_wbus_arbiter.wbus_mapper_inst.m_wbus.addr[7:0]
+@28
+tb_wbus_arbiter.wbus_mapper_inst.m_wbus.we
+@22
+tb_wbus_arbiter.wbus_mapper_inst.m_wbus.wrdat[31:0]
+@28
+tb_wbus_arbiter.wbus_mapper_inst.m_wbus.ack[1:0]
+@1000200
+-m_wbus
+@28
+tb_wbus_arbiter.wbus_mapper_inst.state
+@1000200
+-wbus_mapper
 [pattern_trace] 1
 [pattern_trace] 0

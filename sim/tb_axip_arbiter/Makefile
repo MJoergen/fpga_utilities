@@ -3,20 +3,22 @@
 # Description: Makefile for simulating the axip_arbiter.vhd file.
 
 # List of source files
+SRC += $(SRC_DIR)/axis/axis_pkg.vhd
+SRC += $(SRC_DIR)/axip/axip_pkg.vhd
 SRC += $(SRC_DIR)/axip/axip_arbiter.vhd
 SRC += $(SRC_DIR)/axip/axip_distributor.vhd
 SRC += $(SRC_DIR)/axip/axip_insert_fixed_header.vhd
 SRC += $(SRC_DIR)/axip/axip_remove_fixed_header.vhd
 
-# List of test specific simulation files
-SRC += tb_axip_arbiter.vhd
-
 # List of generic simulation files
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
-SRC += $(SIM_SRC_DIR)/axip_sim.vhd
 SRC += $(SIM_SRC_DIR)/axip_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/axip_slave_sim.vhd
+SRC += $(SIM_SRC_DIR)/axip_sim.vhd
+
+# List of test specific simulation files
+SRC += tb_axip_arbiter.vhd
 
 # Top level entity
 DUT = axip_arbiter

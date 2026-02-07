@@ -2,24 +2,25 @@
 #
 # Description: Makefile for simulating the axil_sim.vhd file.
 
-SRC += $(SRC_DIR)/axil/axil_arbiter.vhd
-SRC += $(SRC_DIR)/axil/axil_arbiter_write.vhd
-SRC += $(SRC_DIR)/axil/axil_arbiter_read.vhd
-SRC += $(SRC_DIR)/axil/axil_pipe.vhd
+SRC += $(SRC_DIR)/axis/axis_pkg.vhd
 SRC += $(SRC_DIR)/axis/axis_distributor.vhd
 SRC += $(SRC_DIR)/axis/axis_pipe.vhd
 
-# List of test specific simulation files
-SRC += tb_axil_arbiter.vhd
+SRC += $(SRC_DIR)/axil/axil_pkg.vhd
+SRC += $(SRC_DIR)/axil/axil_arbiter.vhd
+SRC += $(SRC_DIR)/axil/axil_pipe.vhd
 
 # List of generic simulation files
+SRC += $(SIM_SRC_DIR)/lfsr.vhd
+SRC += $(SIM_SRC_DIR)/random.vhd
+SRC += $(SIM_SRC_DIR)/axis_pause.vhd
 SRC += $(SIM_SRC_DIR)/axil_busy.vhd
 SRC += $(SIM_SRC_DIR)/axil_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/axil_pause.vhd
 SRC += $(SIM_SRC_DIR)/axil_slave_sim.vhd
-SRC += $(SIM_SRC_DIR)/axis_pause.vhd
-SRC += $(SIM_SRC_DIR)/lfsr.vhd
-SRC += $(SIM_SRC_DIR)/random.vhd
+
+# List of test specific simulation files
+SRC += tb_axil_arbiter.vhd
 
 # Top level entity
 DUT = axil_arbiter

@@ -6,27 +6,26 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
+library work;
+  use work.axis_pkg.all;
+
 entity axis_sim is
   generic (
-    G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
-    G_CNT_SIZE   : positive;
-    G_DATA_BYTES : positive
+    G_SEED     : std_logic_vector(63 downto 0) := x"DEADBEAFC007BABE";
+    G_RANDOM   : boolean;
+    G_FAST     : boolean;
+    G_FIRST    : std_logic                     := 'U';
+    G_CNT_SIZE : positive
   );
   port (
-    clk_i     : in    std_logic;
-    rst_i     : in    std_logic;
+    clk_i  : in    std_logic;
+    rst_i  : in    std_logic;
 
     -- Stimulus
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+    m_axis : view  axis_master_view;
 
     -- Response
-    s_ready_o : out   std_logic;
-    s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0)
+    s_axis : view  axis_slave_view
   );
 end entity axis_sim;
 
@@ -36,33 +35,29 @@ begin
 
   axis_master_sim_inst : entity work.axis_master_sim
     generic map (
-      G_SEED       => G_SEED,
-      G_RANDOM     => G_RANDOM,
-      G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_SEED     => G_SEED,
+      G_RANDOM   => G_RANDOM,
+      G_FAST     => G_FAST,
+      G_FIRST    => G_FIRST,
+      G_CNT_SIZE => G_CNT_SIZE
     )
     port map (
-      clk_i     => clk_i,
-      rst_i     => rst_i,
-      m_ready_i => m_ready_i,
-      m_valid_o => m_valid_o,
-      m_data_o  => m_data_o
+      clk_i  => clk_i,
+      rst_i  => rst_i,
+      m_axis => m_axis
     ); -- axis_master_sim_inst : entity work.axis_master_sim
 
   axis_slave_sim_inst : entity work.axis_slave_sim
     generic map (
-      G_SEED       => G_SEED,
-      G_RANDOM     => G_RANDOM,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_SEED     => G_SEED,
+      G_RANDOM   => G_RANDOM,
+      G_FIRST    => G_FIRST,
+      G_CNT_SIZE => G_CNT_SIZE
     )
     port map (
-      clk_i     => clk_i,
-      rst_i     => rst_i,
-      s_ready_o => s_ready_o,
-      s_valid_i => s_valid_i,
-      s_data_i  => s_data_i
+      clk_i  => clk_i,
+      rst_i  => rst_i,
+      s_axis => s_axis
     ); -- axis_slave_sim_inst : entity work.axis_slave_sim
 
 end architecture simulation;

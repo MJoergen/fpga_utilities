@@ -1,6 +1,5 @@
 # Run all source files through yosys to check for synthesis
 
-SRC += axis_arbiter_pair.vhd
 SRC += axis_arbiter.vhd
 SRC += axis_distributor.vhd
 SRC += axis_dropper.vhd
@@ -25,7 +24,7 @@ axis_dropper.edif:         axis_fifo.vhd axis_dropper.vhd
 %.edif: %.vhd
 	ghdl -i --std=08 --work=$(DUT)_work $^
 	ghdl -m --std=08 --work=$(DUT)_work $(DUT)
-	yosys -m ghdl -p 'ghdl --std=08 --work=$(DUT)_work $(DUT); synth_xilinx -top $(DUT) -edif $@' > $(DUT).log
+	yosys -m ghdl -p 'ghdl --std=19 --work=$(DUT)_work $(DUT); synth_xilinx -top $(DUT) -edif $@' > $(DUT).log
 
 .PHONY: clean
 clean:
