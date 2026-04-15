@@ -145,7 +145,9 @@ begin
   ram_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      ram(head) <= s_data_i;
+      if s_valid_i = '1' and s_ready_o = '1' then
+        ram(head) <= s_data_i;
+      end if;
       m_data_o  <= ram(next_index(tail, m_ready_i, m_valid_o));
     end if;
   end process ram_proc;
