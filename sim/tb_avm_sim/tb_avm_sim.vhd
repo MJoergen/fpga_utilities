@@ -9,7 +9,6 @@ library ieee;
 entity tb_avm_sim is
   generic (
     G_DEBUG       : boolean;
-    G_TIMEOUT_MAX : natural;
     G_DO_ABORT    : boolean;
     G_PAUSE_SIZE  : integer;
     G_ADDR_SIZE   : natural;

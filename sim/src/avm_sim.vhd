@@ -71,7 +71,6 @@ begin
     generic map (
       G_SEED        => X"DEADBEEFC007BABE",
       G_NAME        => "",
-      G_TIMEOUT_MAX => 200,
       G_DEBUG       => G_DEBUG,
       G_OFFSET      => 1234,
       G_ADDR_SIZE   => G_ADDR_SIZE,
