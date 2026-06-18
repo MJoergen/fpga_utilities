@@ -20,6 +20,7 @@ DUT = avm_sim
 STOP_TIME = 1000us
 
 # Test bench configuration
+GENERIC += -gG_BURST_WIDTH=4
 GENERIC += -gG_DEBUG=false
 GENERIC += -gG_ADDR_SIZE=12
 GENERIC += -gG_DATA_SIZE=16

@@ -32,25 +32,27 @@ library ieee;
 
 entity avm_master_sim is
   generic (
-    G_SEED      : std_logic_vector(63 downto 0) := X"DEADBEEFC007BABE";
+    G_BURST_WIDTH : natural                       := 8;
+
+    G_SEED        : std_logic_vector(63 downto 0) := X"DEADBEEFC007BABE";
     -- Initial seed for the PRNG — use different seeds for
     -- independent master instances to decorrelate traffic.
 
-    G_NAME      : string                        := "";
+    G_NAME        : string                        := "";
     -- Human-readable instance name, prepended to all report messages.
 
-    G_DEBUG     : boolean                       := false;
+    G_DEBUG       : boolean                       := false;
     -- When true, every issued write/read is reported to the console.
 
-    G_OFFSET    : natural                       := 1234;
+    G_OFFSET      : natural                       := 1234;
     -- Constant offset added to the address to form the expected data
     -- pattern: data = resize(addr, G_DATA_SIZE) + G_OFFSET.
     -- A non-zero offset helps catch address/data-bus cross-wiring.
 
-    G_ADDR_SIZE : natural;
+    G_ADDR_SIZE   : natural;
     -- Width of the Avalon-MM address bus (bits).
 
-    G_DATA_SIZE : natural
+    G_DATA_SIZE   : natural
   -- Width of the Avalon-MM data bus (bits).
   -- Must be a multiple of 8 (byte-enables = G_DATA_SIZE / 8).
   );
@@ -65,7 +67,7 @@ entity avm_master_sim is
     m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);     -- Transaction address.
     m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);     -- Write data.
     m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0); -- Byte-lane enables.
-    m_burstcount_o    : out   std_logic_vector(7 downto 0);                   -- Burst length (always 1).
+    m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);   -- Burst length (always 1).
     m_readdatavalid_i : in    std_logic;                                      -- Read-data valid strobe.
     m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)      -- Read-data return.
   );
@@ -185,7 +187,7 @@ begin
             m_address_o    <= wr_ptr;
             m_writedata_o  <= addr_to_data(wr_ptr);
             m_byteenable_o <= (others => '1');
-            m_burstcount_o <= X"01";
+            m_burstcount_o <= (0 => '1', others => '0');
             if G_DEBUG then
               report "Avalon MASTER " & G_NAME &
                      ": Write to address " & to_hstring(wr_ptr) &
@@ -200,7 +202,7 @@ begin
             m_read_o       <= '1';
             m_address_o    <= rd_ptr;
             m_byteenable_o <= (others => '1');
-            m_burstcount_o <= X"01";
+            m_burstcount_o <= (0 => '1', others => '0');
             if G_DEBUG then
               report "Avalon MASTER " & G_NAME &
                      ": Read from address " & to_hstring(rd_ptr);
@@ -232,7 +234,7 @@ begin
                 m_address_o    <= wr_ptr + 1;
                 m_writedata_o  <= addr_to_data(wr_ptr + 1);
                 m_byteenable_o <= (others => '1');
-                m_burstcount_o <= X"01";
+                m_burstcount_o <= (0 => '1', others => '0');
                 if G_DEBUG then
                   report "Avalon MASTER " & G_NAME &
                          ": Write to address " & to_hstring(wr_ptr + 1) &
@@ -246,7 +248,7 @@ begin
               m_read_o       <= '1';
               m_address_o    <= rd_ptr;
               m_byteenable_o <= (others => '1');
-              m_burstcount_o <= X"01";
+              m_burstcount_o <= (0 => '1', others => '0');
               if G_DEBUG then
                 report "Avalon MASTER " & G_NAME &
                        ": Read from address " & to_hstring(rd_ptr);
@@ -284,7 +286,7 @@ begin
               m_address_o    <= wr_ptr;
               m_writedata_o  <= addr_to_data(wr_ptr);
               m_byteenable_o <= (others => '1');
-              m_burstcount_o <= X"01";
+              m_burstcount_o <= (0 => '1', others => '0');
               if G_DEBUG then
                 report "Avalon MASTER " & G_NAME &
                        ": Write to address " & to_hstring(wr_ptr) &
@@ -297,7 +299,7 @@ begin
               m_read_o       <= '1';
               m_address_o    <= rd_ptr + 1;
               m_byteenable_o <= (others => '1');
-              m_burstcount_o <= X"01";
+              m_burstcount_o <= (0 => '1', others => '0');
               if G_DEBUG then
                 report "Avalon MASTER " & G_NAME &
                        ": Read from address " & to_hstring(rd_ptr + 1);

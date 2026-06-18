@@ -8,10 +8,11 @@ library ieee;
 
 entity avm_pause is
   generic (
-    G_SEED       : std_logic_vector(63 downto 0) := X"12345678AABBCCDD";
-    G_PAUSE_SIZE : natural;
-    G_ADDR_SIZE  : natural;
-    G_DATA_SIZE  : natural
+    G_BURST_WIDTH : natural                       := 8;
+    G_SEED        : std_logic_vector(63 downto 0) := X"12345678AABBCCDD";
+    G_PAUSE_SIZE  : natural;
+    G_ADDR_SIZE   : natural;
+    G_DATA_SIZE   : natural
   );
   port (
     clk_i             : in    std_logic;
@@ -23,7 +24,7 @@ entity avm_pause is
     s_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
     s_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
     s_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s_burstcount_i    : in    std_logic_vector(7 downto 0);
+    s_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
     s_readdatavalid_o : out   std_logic;
     s_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     -- Output
@@ -33,7 +34,7 @@ entity avm_pause is
     m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
     m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
     m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o    : out   std_logic_vector(7 downto 0);
+    m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);
     m_readdatavalid_i : in    std_logic;
     m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
   );
@@ -49,7 +50,7 @@ architecture synthesis of avm_pause is
   signal   req_delay  : natural range 0 to G_PAUSE_SIZE;
   signal   resp_delay : natural range 0 to G_PAUSE_SIZE;
 
-  signal   rd_burstcount : natural range 0 to 255;
+  signal   rd_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
   signal   allow         : std_logic;
 
   signal   s_readdatavalid : std_logic_vector(G_PAUSE_SIZE downto 0);
@@ -91,11 +92,11 @@ begin
       end if;
 
       if s_read_i and not s_waitrequest_o then
-        rd_burstcount <= to_integer(s_burstcount_i);
+        rd_burstcount <= s_burstcount_i;
       end if;
 
       if rst_i = '1' then
-        rd_burstcount <= 0;
+        rd_burstcount <= (others => '0');
       end if;
     end if;
   end process rd_burstcount_proc;

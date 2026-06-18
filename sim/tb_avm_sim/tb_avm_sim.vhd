@@ -8,6 +8,7 @@ library ieee;
 
 entity tb_avm_sim is
   generic (
+    G_BURST_WIDTH : natural;
     G_DEBUG       : boolean;
     G_DO_ABORT    : boolean;
     G_PAUSE_SIZE  : integer;
@@ -26,7 +27,7 @@ architecture simulation of tb_avm_sim is
   signal m_address       : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
   signal m_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal m_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal m_burstcount    : std_logic_vector(7 downto 0);
+  signal m_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
   signal m_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal m_readdatavalid : std_logic;
   signal m_waitrequest   : std_logic;
@@ -36,11 +37,10 @@ architecture simulation of tb_avm_sim is
   signal s_address       : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
   signal s_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal s_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal s_burstcount    : std_logic_vector(7 downto 0);
+  signal s_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
   signal s_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
   signal s_readdatavalid : std_logic;
   signal s_waitrequest   : std_logic;
-
 
 begin
 
@@ -58,10 +58,11 @@ begin
 
   avm_sim_inst : entity work.avm_sim
     generic map (
-      G_DEBUG      => G_DEBUG,
-      G_PAUSE_SIZE => 0,
-      G_ADDR_SIZE  => G_ADDR_SIZE,
-      G_DATA_SIZE  => G_DATA_SIZE
+      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_DEBUG       => G_DEBUG,
+      G_PAUSE_SIZE  => 0,
+      G_ADDR_SIZE   => G_ADDR_SIZE,
+      G_DATA_SIZE   => G_DATA_SIZE
     )
     port map (
       clk_i             => clk,
@@ -88,10 +89,11 @@ begin
 
   avm_pause_inst : entity work.avm_pause
     generic map (
-      G_SEED       => X"12345678AABBCCDD",
-      G_PAUSE_SIZE => G_PAUSE_SIZE,
-      G_ADDR_SIZE  => G_ADDR_SIZE,
-      G_DATA_SIZE  => G_DATA_SIZE
+      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_SEED        => X"12345678AABBCCDD",
+      G_PAUSE_SIZE  => G_PAUSE_SIZE,
+      G_ADDR_SIZE   => G_ADDR_SIZE,
+      G_DATA_SIZE   => G_DATA_SIZE
     )
     port map (
       clk_i             => clk,
