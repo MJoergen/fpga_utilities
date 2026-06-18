@@ -12,6 +12,7 @@ SRC += $(SIM_SRC_DIR)/avm_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_pause.vhd
+SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 
 # Top level entity
 DUT = avm_sim
@@ -21,6 +22,7 @@ STOP_TIME = 1000us
 
 # Test bench configuration
 GENERIC += -gG_BURST_WIDTH=4
+GENERIC += -gG_MAX_BURST=4
 GENERIC += -gG_DEBUG=false
 GENERIC += -gG_DO_ABORT=true
 GENERIC += -gG_PAUSE_SIZE=3

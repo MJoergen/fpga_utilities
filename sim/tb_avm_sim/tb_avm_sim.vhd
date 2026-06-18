@@ -9,6 +9,7 @@ library ieee;
 entity tb_avm_sim is
   generic (
     G_BURST_WIDTH : natural;
+    G_MAX_BURST   : natural;
     G_DEBUG       : boolean;
     G_DO_ABORT    : boolean;
     G_PAUSE_SIZE  : integer;
@@ -60,6 +61,7 @@ begin
   avm_sim_inst : entity work.avm_sim
     generic map (
       G_BURST_WIDTH => G_BURST_WIDTH,
+      G_MAX_BURST   => G_MAX_BURST,
       G_DEBUG       => G_DEBUG,
       G_PAUSE_SIZE  => 0,
       G_TIMEOUT_MAX => G_TIMEOUT_MAX,

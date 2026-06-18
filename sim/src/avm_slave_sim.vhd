@@ -117,12 +117,7 @@ begin
 
   -- waitrequest behavior:
   --   * Asserted during read burst response (no command acceptance)
-  --   * During write burst:
-  --       - Only write continuation beats are accepted
-  --       - Reads or idle cycles are stalled
   s_waitrequest_o      <= '1' when read_active_s = '1' else
-                          '1' when write_active_s = '1' and s_write_i = '0' else
-                          '1' when write_active_s = '1' and s_read_i  = '1' else
                           '0';
 
 

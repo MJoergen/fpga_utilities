@@ -9,6 +9,7 @@ library ieee;
 entity avm_sim is
   generic (
     G_BURST_WIDTH : natural := 8;
+    G_MAX_BURST   : natural := 8;
     G_DEBUG       : boolean;
     G_PAUSE_SIZE  : natural;
     G_TIMEOUT_MAX : natural := 0;
@@ -72,6 +73,7 @@ begin
   avm_master_sim_inst : entity work.avm_master_sim
     generic map (
       G_BURST_WIDTH => G_BURST_WIDTH,
+      G_MAX_BURST   => G_MAX_BURST,
       G_SEED        => X"DEADBEEFC007BABE",
       G_NAME        => "",
       G_DEBUG       => G_DEBUG,
@@ -102,6 +104,7 @@ begin
   avm_pause_m_inst : entity work.avm_pause
     generic map (
       G_BURST_WIDTH => G_BURST_WIDTH,
+      G_MAX_BURST   => G_MAX_BURST,
       G_SEED        => X"1234567888776655",
       G_PAUSE_SIZE  => G_PAUSE_SIZE,
       G_ADDR_SIZE   => G_ADDR_SIZE,
