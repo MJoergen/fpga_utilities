@@ -22,10 +22,11 @@ STOP_TIME = 1000us
 # Test bench configuration
 GENERIC += -gG_BURST_WIDTH=4
 GENERIC += -gG_DEBUG=false
+GENERIC += -gG_DO_ABORT=true
+GENERIC += -gG_PAUSE_SIZE=3
+GENERIC += -gG_TIMEOUT_MAX=100
 GENERIC += -gG_ADDR_SIZE=12
 GENERIC += -gG_DATA_SIZE=16
-GENERIC += -gG_PAUSE_SIZE=3
-GENERIC += -gG_DO_ABORT=true
 
 include ../Makefile.inc
 

@@ -12,6 +12,7 @@ entity tb_avm_sim is
     G_DEBUG       : boolean;
     G_DO_ABORT    : boolean;
     G_PAUSE_SIZE  : integer;
+    G_TIMEOUT_MAX : natural;
     G_ADDR_SIZE   : natural;
     G_DATA_SIZE   : natural
   );
@@ -61,6 +62,7 @@ begin
       G_BURST_WIDTH => G_BURST_WIDTH,
       G_DEBUG       => G_DEBUG,
       G_PAUSE_SIZE  => 0,
+      G_TIMEOUT_MAX => G_TIMEOUT_MAX,
       G_ADDR_SIZE   => G_ADDR_SIZE,
       G_DATA_SIZE   => G_DATA_SIZE
     )

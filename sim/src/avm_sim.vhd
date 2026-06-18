@@ -10,9 +10,10 @@ entity avm_sim is
   generic (
     G_BURST_WIDTH : natural := 8;
     G_DEBUG       : boolean;
-    G_PAUSE_SIZE  : integer;
-    G_ADDR_SIZE   : integer; -- Number of bits
-    G_DATA_SIZE   : integer  -- Number of bits
+    G_PAUSE_SIZE  : natural;
+    G_TIMEOUT_MAX : natural := 0;
+    G_ADDR_SIZE   : positive; -- Number of bits
+    G_DATA_SIZE   : positive  -- Number of bits
   );
   port (
     clk_i             : in    std_logic;
@@ -75,6 +76,7 @@ begin
       G_NAME        => "",
       G_DEBUG       => G_DEBUG,
       G_OFFSET      => 1234,
+      G_TIMEOUT_MAX => G_TIMEOUT_MAX,
       G_ADDR_SIZE   => G_ADDR_SIZE,
       G_DATA_SIZE   => G_DATA_SIZE
     )
