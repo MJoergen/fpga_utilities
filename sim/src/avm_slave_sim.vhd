@@ -46,22 +46,25 @@ end entity avm_slave_sim;
 
 architecture simulation of avm_slave_sim is
 
+  constant C_BYTES_PER_WORD : natural                              := G_DATA_SIZE / 8;
+  constant C_MEM_DEPTH      : natural                              := 2 ** G_ADDR_SIZE;
+
   -- This defines a type containing an array of words
-  type   mem_type is array (0 to 2 ** G_ADDR_SIZE - 1) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  type     mem_type is array (0 to C_MEM_DEPTH - 1) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
 
-  signal read_active_s  : std_logic;
-  signal write_active_s : std_logic;
+  signal   read_active_s  : std_logic;
+  signal   write_active_s : std_logic;
 
-  signal write_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0) := (others => '0');
-  signal write_address    : std_logic_vector(G_ADDR_SIZE - 1 downto 0)   := (others => '0');
+  signal   write_burstcount : unsigned(G_BURST_WIDTH - 1 downto 0) := (others => '0');
+  signal   write_address    : unsigned(G_ADDR_SIZE - 1 downto 0)   := (others => '0');
 
-  signal read_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0)  := (others => '0');
-  signal read_address    : std_logic_vector(G_ADDR_SIZE - 1 downto 0)    := (others => '0');
+  signal   read_burstcount : unsigned(G_BURST_WIDTH - 1 downto 0)  := (others => '0');
+  signal   read_address    : unsigned(G_ADDR_SIZE - 1 downto 0)    := (others => '0');
 
-  signal mem_write_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-  signal mem_read_burstcount  : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-  signal mem_write_address    : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal mem_read_address     : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal   mem_write_burstcount : unsigned(G_BURST_WIDTH - 1 downto 0);
+  signal   mem_read_burstcount  : unsigned(G_BURST_WIDTH - 1 downto 0);
+  signal   mem_write_address    : unsigned(G_ADDR_SIZE - 1 downto 0);
+  signal   mem_read_address     : unsigned(G_ADDR_SIZE - 1 downto 0);
 
 begin
 
@@ -70,19 +73,19 @@ begin
     severity failure;
 
 
-  read_active_s        <= '1' when unsigned(read_burstcount)  /= 0 else
+  read_active_s        <= '1' when read_burstcount  /= 0 else
                           '0';
-  write_active_s       <= '1' when unsigned(write_burstcount) /= 0 else
+  write_active_s       <= '1' when write_burstcount /= 0 else
                           '0';
 
 
-  mem_write_address    <= s_address_i when write_active_s = '0' else
+  mem_write_address    <= unsigned(s_address_i) when write_active_s = '0' else
                           write_address;
-  mem_read_address     <= s_address_i when read_active_s = '0' else
+  mem_read_address     <= unsigned(s_address_i) when read_active_s = '0' else
                           read_address;
-  mem_write_burstcount <= s_burstcount_i when write_active_s = '0' else
+  mem_write_burstcount <= unsigned(s_burstcount_i) when write_active_s = '0' else
                           write_burstcount;
-  mem_read_burstcount  <= s_burstcount_i when read_active_s = '0' else
+  mem_read_burstcount  <= unsigned(s_burstcount_i) when read_active_s = '0' else
                           read_burstcount;
 
   s_waitrequest_o      <= '1' when read_active_s = '1' else
@@ -129,8 +132,8 @@ begin
             severity failure;
         end if;
 
-        write_address    <= std_logic_vector(unsigned(mem_write_address) + 1);
-        write_burstcount <= std_logic_vector(unsigned(mem_write_burstcount) - 1);
+        write_address    <= mem_write_address + 1;
+        write_burstcount <= mem_write_burstcount - 1;
 
         if G_DEBUG then
           report "Avalon SLAVE " & G_NAME &
@@ -139,27 +142,27 @@ begin
                  " with remaining burstcount " & to_hstring(mem_write_burstcount) &
                  " and byteenable 0x" & to_hstring(s_byteenable_i);
         end if;
-        idx_v := to_integer(unsigned(mem_write_address));
+        idx_v := to_integer(mem_write_address);
 
         -- Byte lane b maps to data bits 8*b+7 downto 8*b.
         -- This follows the usual little-endian Avalon byte-enable convention.
-        for b in 0 to G_DATA_SIZE / 8 - 1 loop
+        for b in 0 to C_BYTES_PER_WORD - 1 loop
           if s_byteenable_i(b) = '1' then
             mem_v(idx_v)(8 * b + 7 downto 8 * b) := s_writedata_i(8 * b + 7 downto 8 * b);
           end if;
         end loop;
       end if;
 
-      if (s_read_i = '1' and s_waitrequest_o = '0') or unsigned(read_burstcount) > 0 then
+      if (s_read_i = '1' and s_waitrequest_o = '0') or read_active_s = '1' then
         if unsigned(s_burstcount_i) = 0 then
           report "Avalon SLAVE " & G_NAME & ": read with burstcount 0 is invalid"
             severity failure;
         end if;
 
-        read_address      <= std_logic_vector(unsigned(mem_read_address) + 1);
-        read_burstcount   <= std_logic_vector(unsigned(mem_read_burstcount) - 1);
+        read_address      <= mem_read_address + 1;
+        read_burstcount   <= mem_read_burstcount - 1;
 
-        idx_v             := to_integer(unsigned(mem_read_address));
+        idx_v             := to_integer(mem_read_address);
         s_readdatavalid_o <= '1';
         s_readdata_o      <= mem_v(idx_v);
 
