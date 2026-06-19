@@ -1,6 +1,7 @@
 # This Makefile runs through all the DUTs
 # and does Bounded Model Check on each of them.
 
+DUTS += avm_arbit
 DUTS += avm_readahead
 DUTS += axil_to_wbus
 DUTS += axip_arbiter
