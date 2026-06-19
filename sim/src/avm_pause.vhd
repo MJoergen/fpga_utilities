@@ -61,7 +61,7 @@ architecture synthesis of avm_pause is
   signal  axis_m_ready : std_logic;
   signal  axis_m_valid : std_logic;
   signal  axis_m_data  : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal  axis_fill    : natural range 0 to G_MAX_BURST - 1;
+  signal  axis_fill    : natural range 0 to G_MAX_BURST;
 
 begin
 
@@ -161,7 +161,7 @@ begin
 
     axis_fifo_inst : entity work.axis_fifo
       generic map (
-        G_RAM_DEPTH => G_MAX_BURST,
+        G_RAM_DEPTH => G_MAX_BURST + 1,
         G_DATA_SIZE => G_DATA_SIZE
       )
       port map (
@@ -186,7 +186,9 @@ begin
     begin
       if rising_edge(clk_i) then
         if m_readdatavalid_i = '1' then
-          assert axis_s_ready = '1';
+          assert axis_s_ready = '1'
+            report "avm_pause: read fifo full"
+              severity failure;
         end if;
 
         s_readdatavalid_o <= '0';

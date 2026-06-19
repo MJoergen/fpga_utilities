@@ -1,0 +1,155 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Jun 19 09:35:16 2026
+[*]
+[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_avm_readahead/tb_avm_readahead.ghw"
+[dumpfile_mtime] "Fri Jun 19 09:25:59 2026"
+[dumpfile_size] 2864088
+[savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_avm_readahead/tb_avm_readahead.gtkw"
+[timestart] 25266200000
+[size] 1372 982
+[pos] -138 -186
+*-25.554661 25276500000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_avm_readahead.
+[treeopen] top.tb_avm_readahead.avm_sim_inst.
+[treeopen] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.
+[sst_width] 297
+[signals_width] 259
+[sst_expanded] 1
+[sst_vpaned_height] 276
+@c00200
+-avm_readahead
+@28
+top.tb_avm_readahead.avm_readahead_inst.clk_i
+top.tb_avm_readahead.avm_readahead_inst.rst_i
+[color] 6
+top.tb_avm_readahead.avm_readahead_inst.s_avm_waitrequest_o
+[color] 2
+top.tb_avm_readahead.avm_readahead_inst.s_avm_write_i
+[color] 2
+top.tb_avm_readahead.avm_readahead_inst.s_avm_read_i
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[11:0]} top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[11] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[10] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[9] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[8] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[7] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[6] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[5] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[4] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[3] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[2] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[1] top.tb_avm_readahead.avm_readahead_inst.s_avm_address_i[0]
+#{top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[15:0]} top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[15] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[14] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[13] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[12] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[11] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[10] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[9] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[8] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[7] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[6] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[5] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[4] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[3] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[2] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[1] top.tb_avm_readahead.avm_readahead_inst.s_avm_writedata_i[0]
+@28
+#{top.tb_avm_readahead.avm_readahead_inst.s_avm_byteenable_i[1:0]} top.tb_avm_readahead.avm_readahead_inst.s_avm_byteenable_i[1] top.tb_avm_readahead.avm_readahead_inst.s_avm_byteenable_i[0]
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.s_avm_burstcount_i[3:0]} top.tb_avm_readahead.avm_readahead_inst.s_avm_burstcount_i[3] top.tb_avm_readahead.avm_readahead_inst.s_avm_burstcount_i[2] top.tb_avm_readahead.avm_readahead_inst.s_avm_burstcount_i[1] top.tb_avm_readahead.avm_readahead_inst.s_avm_burstcount_i[0]
+@28
+[color] 3
+top.tb_avm_readahead.avm_readahead_inst.s_avm_readdatavalid_o
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[15:0]} top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[15] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[14] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[13] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[12] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[11] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[10] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[9] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[8] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[7] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[6] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[5] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[4] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[3] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[2] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[1] top.tb_avm_readahead.avm_readahead_inst.s_avm_readdata_o[0]
+@28
+[color] 6
+top.tb_avm_readahead.avm_readahead_inst.m_avm_waitrequest_i
+[color] 2
+top.tb_avm_readahead.avm_readahead_inst.m_avm_write_o
+[color] 2
+top.tb_avm_readahead.avm_readahead_inst.m_avm_read_o
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[11:0]} top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[11] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[10] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[9] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[8] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[7] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[6] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[5] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[4] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[3] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[2] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[1] top.tb_avm_readahead.avm_readahead_inst.m_avm_address_o[0]
+#{top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[15:0]} top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[15] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[14] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[13] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[12] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[11] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[10] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[9] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[8] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[7] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[6] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[5] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[4] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[3] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[2] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[1] top.tb_avm_readahead.avm_readahead_inst.m_avm_writedata_o[0]
+@28
+#{top.tb_avm_readahead.avm_readahead_inst.m_avm_byteenable_o[1:0]} top.tb_avm_readahead.avm_readahead_inst.m_avm_byteenable_o[1] top.tb_avm_readahead.avm_readahead_inst.m_avm_byteenable_o[0]
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.m_avm_burstcount_o[3:0]} top.tb_avm_readahead.avm_readahead_inst.m_avm_burstcount_o[3] top.tb_avm_readahead.avm_readahead_inst.m_avm_burstcount_o[2] top.tb_avm_readahead.avm_readahead_inst.m_avm_burstcount_o[1] top.tb_avm_readahead.avm_readahead_inst.m_avm_burstcount_o[0]
+#{top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[15:0]} top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[15] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[14] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[13] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[12] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[11] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[10] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[9] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[8] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[7] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[6] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[5] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[4] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[3] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[2] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[1] top.tb_avm_readahead.avm_readahead_inst.m_avm_readdata_i[0]
+@28
+[color] 3
+top.tb_avm_readahead.avm_readahead_inst.m_avm_readdatavalid_i
+@800200
+-Internal
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.cache_addr[11:0]} top.tb_avm_readahead.avm_readahead_inst.cache_addr[11] top.tb_avm_readahead.avm_readahead_inst.cache_addr[10] top.tb_avm_readahead.avm_readahead_inst.cache_addr[9] top.tb_avm_readahead.avm_readahead_inst.cache_addr[8] top.tb_avm_readahead.avm_readahead_inst.cache_addr[7] top.tb_avm_readahead.avm_readahead_inst.cache_addr[6] top.tb_avm_readahead.avm_readahead_inst.cache_addr[5] top.tb_avm_readahead.avm_readahead_inst.cache_addr[4] top.tb_avm_readahead.avm_readahead_inst.cache_addr[3] top.tb_avm_readahead.avm_readahead_inst.cache_addr[2] top.tb_avm_readahead.avm_readahead_inst.cache_addr[1] top.tb_avm_readahead.avm_readahead_inst.cache_addr[0]
+@420
+top.tb_avm_readahead.avm_readahead_inst.cache_count
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.rd_burstcount[3:0]} top.tb_avm_readahead.avm_readahead_inst.rd_burstcount[3] top.tb_avm_readahead.avm_readahead_inst.rd_burstcount[2] top.tb_avm_readahead.avm_readahead_inst.rd_burstcount[1] top.tb_avm_readahead.avm_readahead_inst.rd_burstcount[0]
+@420
+top.tb_avm_readahead.avm_readahead_inst.state
+@22
+#{top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[11:0]} top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[11] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[10] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[9] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[8] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[7] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[6] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[5] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[4] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[3] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[2] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[1] top.tb_avm_readahead.avm_readahead_inst.cache_offset_s[0]
+@28
+top.tb_avm_readahead.avm_readahead_inst.cache_rd_hit_s
+top.tb_avm_readahead.avm_readahead_inst.cache_wr_hit_s
+top.tb_avm_readahead.avm_readahead_inst.cache_filled_s
+@1000200
+-Internal
+@1401200
+-avm_readahead
+@800200
+-avm_pause_m
+@28
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.clk_i
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.rst_i
+[color] 6
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_waitrequest_o
+[color] 2
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_write_i
+[color] 2
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_read_i
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[11:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_address_i[0]
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[15:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[15] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[14] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[13] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[12] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_writedata_i[0]
+@28
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_byteenable_i[1:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_byteenable_i[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_byteenable_i[0]
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_burstcount_i[3:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_burstcount_i[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_burstcount_i[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_burstcount_i[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_burstcount_i[0]
+@28
+[color] 3
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdatavalid_o
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[15:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[15] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[14] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[13] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[12] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.s_readdata_o[0]
+@28
+[color] 6
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_waitrequest_i
+[color] 2
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_write_o
+[color] 2
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_read_o
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[11:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_address_o[0]
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[15:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[15] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[14] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[13] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[12] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_writedata_o[0]
+@28
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_byteenable_o[1:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_byteenable_o[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_byteenable_o[0]
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_burstcount_o[3:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_burstcount_o[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_burstcount_o[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_burstcount_o[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_burstcount_o[0]
+@28
+[color] 3
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdatavalid_i
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[15:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[15] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[14] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[13] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[12] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.m_readdata_i[0]
+@800200
+-Internal
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[63:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[63] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[62] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[61] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[60] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[59] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[58] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[57] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[56] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[55] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[54] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[53] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[52] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[51] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[50] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[49] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[48] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[47] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[46] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[45] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[44] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[43] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[42] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[41] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[40] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[39] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[38] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[37] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[36] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[35] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[34] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[33] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[32] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[31] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[30] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[29] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[28] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[27] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[26] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[25] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[24] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[23] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[22] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[21] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[20] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[19] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[18] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[17] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[16] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[15] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[14] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[13] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[12] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.random_s[0]
+@420
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.req_delay
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.resp_delay
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.wr_burstcount[3:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.wr_burstcount[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.wr_burstcount[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.wr_burstcount[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.wr_burstcount[0]
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.rd_burstcount[3:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.rd_burstcount[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.rd_burstcount[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.rd_burstcount[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.rd_burstcount[0]
+@28
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.allow
+[color] 6
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_ready
+[color] 2
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_valid
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[15:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[15] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[14] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[13] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[12] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_s_data[0]
+@28
+[color] 6
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_ready
+[color] 2
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_valid
+@22
+#{top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[15:0]} top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[15] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[14] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[13] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[12] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[11] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[10] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[9] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[8] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[7] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[6] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[5] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[4] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[3] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[2] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[1] top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_m_data[0]
+@420
+top.tb_avm_readahead.avm_sim_inst.avm_pause_m_inst.axis_fill
+@1000200
+-Internal
+-avm_pause_m
+[pattern_trace] 1
+[pattern_trace] 0
