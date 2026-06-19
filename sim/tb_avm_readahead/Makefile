@@ -12,6 +12,8 @@ SRC += $(SIM_SRC_DIR)/avm_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_pause.vhd
+SRC += $(SIM_SRC_DIR)/avm_scoreboard_pkg.vhd
+SRC += $(SIM_SRC_DIR)/avm_scoreboard.vhd
 SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 SRC += $(SRC_DIR)/avm/avm_readahead.vhd
 

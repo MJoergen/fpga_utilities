@@ -56,7 +56,7 @@ begin
 
 
   --------------------------------
-  -- Instantiate DUT
+  -- Generate stimuli
   --------------------------------
 
   avm_sim_inst : entity work.avm_sim
@@ -92,6 +92,11 @@ begin
       s_waitrequest_o   => s_waitrequest
     ); -- avm_master_sim_inst : entity work.avm_master_sim
 
+
+  --------------------------------
+  -- Instantiate DUT
+  --------------------------------
+
   avm_readahead_inst : entity work.avm_readahead
     generic map (
       G_BURST_WIDTH  => G_BURST_WIDTH,
@@ -120,6 +125,31 @@ begin
       m_avm_readdata_i      => s_readdata,
       m_avm_readdatavalid_i => s_readdatavalid,
       m_avm_waitrequest_i   => s_waitrequest
+    ); -- avm_readahead_inst : entity work.avm_readahead
+
+
+  --------------------------------
+  -- Instantiate scoreboard
+  --------------------------------
+
+  avm_scoreboard_inst : entity work.avm_scoreboard
+    generic map (
+      G_BURST_WIDTH  => G_BURST_WIDTH,
+      G_ADDRESS_SIZE => G_ADDRESS_SIZE,
+      G_DATA_SIZE    => G_DATA_SIZE
+    )
+    port map (
+      clk_i                 => clk,
+      rst_i                 => rst,
+      s_avm_waitrequest_i   => m_waitrequest,
+      s_avm_write_i         => m_write,
+      s_avm_read_i          => m_read,
+      s_avm_address_i       => m_address,
+      s_avm_writedata_i     => m_writedata,
+      s_avm_byteenable_i    => m_byteenable,
+      s_avm_burstcount_i    => m_burstcount,
+      s_avm_readdata_i      => m_readdata,
+      s_avm_readdatavalid_i => m_readdatavalid
     ); -- avm_readahead_inst : entity work.avm_readahead
 
 end architecture simulation;
