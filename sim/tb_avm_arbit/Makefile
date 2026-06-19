@@ -24,6 +24,7 @@ DUT = avm_arbit
 STOP_TIME = 600us
 
 # Test bench configuration
+GENERIC += -gG_BURST_WIDTH=4
 GENERIC += -gG_PREFER_SWAP=true
 GENERIC += -gG_PAUSE_SIZE=3
 GENERIC += -gG_ADDR_SIZE=12
