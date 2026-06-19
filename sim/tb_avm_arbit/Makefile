@@ -15,12 +15,13 @@ SRC += $(SIM_SRC_DIR)/avm_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_slave_sim.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
+SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 
 # Top level entity
 DUT = avm_arbit
 
 # Test duration
-STOP_TIME = 500us
+STOP_TIME = 600us
 
 # Test bench configuration
 GENERIC += -gG_PREFER_SWAP=true

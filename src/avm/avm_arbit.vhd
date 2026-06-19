@@ -70,8 +70,15 @@ architecture synthesis of avm_arbit is
 
 begin
 
-  -- Validation check that the two Masters are not granted access at the same time.
-  assert not (s0_active_grant and s1_active_grant);
+  -- Sanity check: the two slave-side interfaces must never be granted simultaneously.
+  assert not (s0_active_grant = '1' and s1_active_grant = '1')
+    report "avm_arbit: s0_active_grant and s1_active_grant asserted in the same cycle"
+    severity failure;
+
+  -- Document the implicit width assumption used by m_byteenable_o.
+  assert (G_DATA_SIZE mod 8) = 0
+    report "avm_arbit: G_DATA_SIZE must be a multiple of 8"
+    severity failure;
 
   s0_waitrequest_o   <= m_waitrequest_i or not s0_active_grant;
   s1_waitrequest_o   <= m_waitrequest_i or not s1_active_grant;
@@ -85,12 +92,20 @@ begin
     if rising_edge(clk_i) then
       if s0_write_i = '1' and s0_waitrequest_o = '0' and unsigned(burstcount) = 0 then
         burstcount <= std_logic_vector(unsigned(s0_burstcount_i) - 1);
-      elsif s0_read_i and not s0_waitrequest_o then
-        burstcount <= s0_burstcount_i;
+      elsif s0_read_i = '1' and s0_waitrequest_o = '0' then
+        if m_readdatavalid_i = '1' then
+          burstcount <= std_logic_vector(unsigned(s0_burstcount_i) - 1);
+        else
+          burstcount <= s0_burstcount_i;
+        end if;
       elsif s1_write_i = '1' and s1_waitrequest_o = '0' and unsigned(burstcount) = 0 then
         burstcount <= std_logic_vector(unsigned(s1_burstcount_i) - 1);
-      elsif s1_read_i and not s1_waitrequest_o then
-        burstcount <= s1_burstcount_i;
+      elsif s1_read_i = '1' and s1_waitrequest_o = '0' then
+        if m_readdatavalid_i = '1' then
+          burstcount <= std_logic_vector(unsigned(s1_burstcount_i) - 1);
+        else
+          burstcount <= s1_burstcount_i;
+        end if;
       else
         if (s0_write_i and not s0_waitrequest_o) or
            s0_readdatavalid_o or
@@ -176,14 +191,15 @@ begin
 
             if G_PREFER_SWAP then
               -- If no pending requests, pre-emptively give grant to other
-              if s1_active_req = '0' and s0_active_req = '0' and swapped = '0' then
-                s1_active_grant <= '1';
-                last_grant      <= '1';
-                swapped         <= '1';
-              end if;
-              if s1_active_req = '0' and s0_active_req = '0' and swapped = '1' then
-                s0_active_grant <= '1';
-                last_grant      <= '0';
+              if s1_active_req = '0' and s0_active_req = '0' then
+                if swapped = '0' then
+                  s1_active_grant <= '1';
+                  last_grant      <= '1';
+                  swapped         <= '1';
+                else
+                  s0_active_grant <= '1';
+                  last_grant      <= '0';
+                end if;
               end if;
             else
               -- If no pending requests, keep the existing grant
@@ -207,14 +223,15 @@ begin
 
             if G_PREFER_SWAP then
               -- If no pending requests, pre-emptively give grant to other
-              if s1_active_req = '0' and s0_active_req = '0' and swapped = '0' then
-                s0_active_grant <= '1';
-                last_grant      <= '0';
-                swapped         <= '1';
-              end if;
-              if s1_active_req = '0' and s0_active_req = '0' and swapped = '1' then
-                s1_active_grant <= '1';
-                last_grant      <= '1';
+              if s1_active_req = '0' and s0_active_req = '0' then
+                if swapped = '0' then
+                  s0_active_grant <= '1';
+                  last_grant      <= '0';
+                  swapped         <= '1';
+                else
+                  s1_active_grant <= '1';
+                  last_grant      <= '1';
+                end if;
               end if;
             else
               -- If no pending requests, keep the existing grant
@@ -245,26 +262,20 @@ begin
   end process grant_proc;
 
   -- Generate output signals combinatorially
-  m_write_o          <= s0_write_i and s0_active_grant when last_grant = '0' else
-                        s1_write_i and s1_active_grant;
-  m_read_o           <= s0_read_i and s0_active_grant when last_grant = '0' else
-                        s1_read_i and s1_active_grant;
-  m_address_o        <= s0_address_i when last_grant = '0' else
-                        s1_address_i;
-  m_writedata_o      <= s0_writedata_i when last_grant = '0' else
-                        s1_writedata_i;
-  m_byteenable_o     <= s0_byteenable_i when last_grant = '0' else
-                        s1_byteenable_i;
-  m_burstcount_o     <= s0_burstcount_i when last_grant = '0' else
-                        s1_burstcount_i;
+  m_write_o          <= (s1_write_i and s1_active_grant) when s1_active_grant = '1' else
+                        (s0_write_i and s0_active_grant);
+  m_read_o           <= (s1_read_i  and s1_active_grant) when s1_active_grant = '1' else
+                        (s0_read_i  and s0_active_grant);
+  m_address_o        <= s1_address_i    when s1_active_grant = '1' else s0_address_i;
+  m_writedata_o      <= s1_writedata_i  when s1_active_grant = '1' else s0_writedata_i;
+  m_byteenable_o     <= s1_byteenable_i when s1_active_grant = '1' else s0_byteenable_i;
+  m_burstcount_o     <= s1_burstcount_i when s1_active_grant = '1' else s0_burstcount_i;
 
   s0_readdata_o      <= m_readdata_i;
-  s0_readdatavalid_o <= m_readdatavalid_i when last_grant = '0' else
-                        '0';
+  s0_readdatavalid_o <= m_readdatavalid_i when s0_active_grant = '1' else '0';
 
   s1_readdata_o      <= m_readdata_i;
-  s1_readdatavalid_o <= m_readdatavalid_i when last_grant = '1' else
-                        '0';
+  s1_readdatavalid_o <= m_readdatavalid_i when s1_active_grant = '1' else '0';
 
 end architecture synthesis;
 
