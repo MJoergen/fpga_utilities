@@ -8,6 +8,8 @@
 --
 --                  * Writes proceed sequentially from address 0 upward.
 --                  * Reads trail behind the write pointer, also sequentially.
+--                    During normal operation reads are chosen randomly; during drain
+--                    (after wr wrap) reads are forced until rd_ptr wraps too.
 --                  * Burst length is randomised per transaction in 1..G_MAX_BURST,
 --                    then clipped so writes never cross the address-space wrap
 --                    and reads never overtake the write pointer.
@@ -33,7 +35,8 @@
 --
 -- Limitations  : - Shadow memory is dense, sized 2**G_ADDR_SIZE entries.
 --                  Practical for G_ADDR_SIZE up to ~20.
---                - Reads always issue with byteenable = all-ones.
+--                - Reads always issue with byteenable = all-ones
+--                  (writes can be randomised; see G_RANDOM_BYTEENABLE).
 -- ---------------------------------------------------------------------------------------
 
 library ieee;
@@ -74,7 +77,7 @@ entity avm_master_sim is
     -- Maximum number of clock cycles to wait for a slave response
     -- (waitrequest deassert for a write beat, readdatavalid for a read
     -- beat) before the watchdog fires `severity failure`.
-    -- Set to 0 to disable the watchdog entirely.
+    -- Default is 0, i.e. watchdog disabled — set explicitly in your testbench to enable.
     G_TIMEOUT_MAX       : natural                       := 0;
 
     -- Width of the Avalon-MM address bus (bits).
@@ -94,7 +97,8 @@ entity avm_master_sim is
     m_read_o          : out   std_logic;                                      -- Read request strobe.
     m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);     -- Burst start address.
     m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);     -- Write data (per beat).
-    m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0); -- Byte-lane enables (always all-ones).
+    m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0); -- Byte-lane enables (all-ones for reads;
+    --   per-beat randomised for writes if G_RANDOM_BYTEENABLE = true).
     m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);   -- Burst length in beats.
     m_readdatavalid_i : in    std_logic;                                      -- Read-data valid strobe (per beat).
     m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)      -- Read-data return (per beat).
@@ -103,7 +107,7 @@ end entity avm_master_sim;
 
 architecture simulation of avm_master_sim is
 
-  constant C_BE_WIDTH : natural                                           := G_DATA_SIZE / 8;
+  constant C_BE_WIDTH : natural                                      := G_DATA_SIZE / 8;
 
   -- 64-bit PRNG output, updated every clock cycle.
   signal   random_s : std_logic_vector(63 downto 0);
@@ -115,10 +119,10 @@ architecture simulation of avm_master_sim is
   subtype  R_REQUEST is natural range 15 downto 15;
 
   -- Bit index within random_s that selects write (1) vs. read (0).
-  constant C_WRITE : natural                                              := 1;
+  constant C_WRITE : natural                                         := 1;
 
-  -- Constant byte-enable value reused for every transaction.
-  constant C_ALL_ONES_BE : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0) := (others => '1');
+  -- All-ones byte-enable used for every read burst, and for write bursts when G_RANDOM_BYTEENABLE = false.
+  constant C_ALL_ONES_BE : std_logic_vector(C_BE_WIDTH - 1 downto 0) := (others => '1');
 
   -- Combinational request enables -- true whenever the random gating bit(s)
   -- are '1' and the design is not in reset. do_write and do_read are
@@ -134,7 +138,7 @@ architecture simulation of avm_master_sim is
   --   DRAIN_ST   : All writes complete; issue read bursts until rd_ptr wraps.
   --   DONE_ST    : Both pointers have wrapped; simulation stops.
   type     state_type is (IDLE_ST, WRITING_ST, READING_ST, DRAIN_ST, DONE_ST);
-  signal   state : state_type                                             := IDLE_ST;
+  signal   state : state_type                                        := IDLE_ST;
 
   -- Sequential write and read address pointers.
   -- wr_ptr: next address to be written (addresses 0..wr_ptr-1 have been written).
@@ -148,21 +152,22 @@ architecture simulation of avm_master_sim is
   signal   diff_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
 
   -- Latched once wr_ptr wraps the address space.
-  signal   writes_done : std_logic                                        := '0';
+  signal   writes_done : std_logic                                   := '0';
 
   -- Watchdog counter. Increments while waiting in WRITING_ST or READING_ST;
   -- cleared on any state change or transaction beat acceptance.
-  signal   timeout_cnt : natural range 0 to G_TIMEOUT_MAX                 := 0;
+  signal   timeout_cnt : natural range 0 to G_TIMEOUT_MAX            := 0;
 
   -- Beats remaining in the in-flight burst (including the next beat to be
   -- accepted / received). Set when the burst is issued, decremented on each
   -- accepted write beat or readdatavalid pulse. Reaches 1 on the LAST beat.
-  signal   wr_beats_left : natural range 0 to G_MAX_BURST                 := 0;
-  signal   rd_beats_left : natural range 0 to G_MAX_BURST                 := 0;
+  signal   wr_beats_left : natural range 0 to G_MAX_BURST            := 0;
+  signal   rd_beats_left : natural range 0 to G_MAX_BURST            := 0;
 
-  -- Mirror of the byte-enable currently presented on the bus, so we can
-  -- read it back when a write beat is accepted and update the shadow mask.
-  signal   cur_be_s : std_logic_vector(C_BE_WIDTH - 1 downto 0)           := (others => '0');
+  -- Mirror of the byte-enable currently presented on the bus, so the WRITING_ST handler
+  -- can refer to the BE that was in effect during the just-accepted beat when updating
+  -- the shadow mask.
+  signal   cur_be_s : std_logic_vector(C_BE_WIDTH - 1 downto 0)      := (others => '0');
 
   -- ----------------------------------------------------------------------------------
   -- Shadow memory: tracks the expected payload and per-byte "written" mask
@@ -172,8 +177,8 @@ architecture simulation of avm_master_sim is
 
   type     shadow_mask_type is array (natural range <>) of std_logic_vector(C_BE_WIDTH - 1 downto 0);
 
-  signal   shadow_data : shadow_data_type(0 to 2 ** G_ADDR_SIZE - 1)      := (others => (others => '0'));
-  signal   shadow_mask : shadow_mask_type(0 to 2 ** G_ADDR_SIZE - 1)      := (others => (others => '0'));
+  signal   shadow_data : shadow_data_type(0 to 2 ** G_ADDR_SIZE - 1) := (others => (others => '0'));
+  signal   shadow_mask : shadow_mask_type(0 to 2 ** G_ADDR_SIZE - 1) := (others => (others => '0'));
 
   -- ----------------------------------------------------------------------------------
   -- Helper functions
@@ -208,6 +213,8 @@ architecture simulation of avm_master_sim is
   -- Choose a byte-enable for a write beat. When randomisation is off, always
   -- returns all-ones. When on, takes C_BE_WIDTH bits from `rnd` and forces
   -- at least one bit high so we never issue a degenerate no-op write.
+  -- Forcing bit 0 high when the random draw is zero adds a slight bias toward
+  -- patterns with bit 0 set; acceptable for stress testing.
 
   function pick_byteenable (
     rnd : std_logic_vector
@@ -248,7 +255,8 @@ architecture simulation of avm_master_sim is
       -- the count from `start` up to and including all-ones, which is
       --     2**G_ADDR_SIZE - to_integer(start) = to_integer(not start) + 1.
       -- This branch is only reached when start is within G_MAX_BURST of
-      -- end-of-space, so (not start) is small and the to_integer is safe.
+      -- end-of-space, so not start is in 0..G_MAX_BURST-1 and the to_integer
+      -- fits well within natural regardless of G_ADDR_SIZE.
       return to_integer(not start) + 1;
     end if;
   end function clip_write_burst;
@@ -273,7 +281,7 @@ architecture simulation of avm_master_sim is
     end if;
 
     -- Build `desired` as an slv of the address width to compare safely
-    -- (avail_v may be larger than naturalmax for big G_ADDR_SIZE).
+    -- (avail_v may be larger than natural'high for big G_ADDR_SIZE).
     desired_slv_v := std_logic_vector(to_unsigned(desired, desired_slv_v'length));
 
     if avail_v >= desired_slv_v then
@@ -343,15 +351,12 @@ begin
     variable len_v     : natural;
 
     -- ------------------------------------------------------------------
-    -- Issue the first beat of a write burst of length `len` starting
-    -- at `addr`. The remaining beats are presented automatically by the
-    -- WRITING_ST handler as each beat is accepted.
-    --
-    -- Avalon-MM convention: m_address_o holds the burst START address for
-    -- the whole burst; m_burstcount_o holds the total beat count; only
-    -- m_writedata_o changes per beat. m_write_o stays asserted until the
-    -- LAST beat has been accepted.
-    -- ------------------------------------------------------------------
+    -- Process-local procedures
+    --   shadow memory : record_write_beat, verify_read_beat
+    --   bus drivers   : issue_write_burst, issue_read_burst
+    --   decision      : start_next
+    --   reporting     : report_coverage
+    -- -------------------------------------------------------------
 
     -- Record a write beat into the shadow memory:
     --   * for every enabled byte lane, copy the data byte into shadow_data
@@ -411,6 +416,17 @@ begin
         end if;
       end loop;
     end procedure verify_read_beat;
+
+    -- ------------------------------------------------------------------
+    -- Issue the first beat of a write burst of length `len` starting
+    -- at `addr`. The remaining beats are presented automatically by the
+    -- WRITING_ST handler as each beat is accepted.
+    --
+    -- Avalon-MM convention: m_address_o holds the burst START address for
+    -- the whole burst; m_burstcount_o holds the total beat count; only
+    -- m_writedata_o changes per beat. m_write_o stays asserted until the
+    -- LAST beat has been accepted.
+    -- ------------------------------------------------------------------
 
     procedure issue_write_burst (
       addr : std_logic_vector;
@@ -477,9 +493,6 @@ begin
       wr_eff : std_logic_vector;
       rd_eff : std_logic_vector
     ) is
-      variable desired_v : natural;
-      variable len_v     : natural;
-      variable be_v      : std_logic_vector(C_BE_WIDTH - 1 downto 0);
     begin
       if do_write = '1' then
         desired_v := pick_burst_len(random_s(31 downto 16));
@@ -575,8 +588,8 @@ begin
         --   * On each accepted beat (waitrequest = '0'):
         --       - advance wr_ptr
         --       - decrement wr_beats_left
-        --       - if more beats remain, present the next writedata and
-        --         keep m_write_o asserted (last-assignment-wins below)
+        --       - keep m_write_o asserted (no assignment in this branch
+        --         overrides the '1' set by issue_write_burst).
         --       - if this was the LAST beat, deassert m_write_o, check
         --         for wrap, and either chain or enter drain.
         -- ============================================================
@@ -604,11 +617,10 @@ begin
               end if;
             -- state remains WRITING_ST
             else
-              -- LAST beat of the burst was just accepted. Deassert the
-              -- request strobe explicitly (we did NOT reach the
-              -- m_waitrequest='0' block above this case because there
-              -- isn't one any more -- the strobes are managed here per
-              -- burst boundary).
+              -- LAST beat of the burst was just accepted. Explicitly deassert m_write_o
+              -- here; unlike the single-beat version there is no blanket strobe-clear at
+              -- the top of the process, so each burst handler must release its own strobe
+              -- on its last beat.
               m_write_o <= '0';
 
               -- Wrap detection. wr_ptr (registered) was the address of
@@ -629,7 +641,7 @@ begin
         --   * deassert m_read_o as soon as the request is accepted
         --     (waitrequest = '0'), independent of readdatavalid;
         --   * on each readdatavalid pulse:
-        --       - verify the beat against the expected pattern
+        --       - verify the beat against the shadow-memory expected bytes (skipping never-written byte lanes).
         --       - advance rd_ptr
         --       - decrement rd_beats_left
         --       - on the LAST beat, chain or transition to DRAIN/DONE.
@@ -673,11 +685,8 @@ begin
         -- ============================================================
         when DRAIN_ST =>
           desired_v := pick_burst_len(random_s(31 downto 16));
-          -- Remaining count after wrap = (0 - rd_ptr) unsigned = -rd_ptr.
-          -- For the all-ones case (rd_ptr = 0 after a previous DONE check)
-          -- this branch is not reachable; we only enter DRAIN_ST while
-          -- rd_ptr /= 0 OR writes_done has just been set with rd_ptr = 0
-          -- and the full address space is yet to be drained.
+          -- len_v = 0 is not reachable except in the unusual case where DRAIN_ST is
+          -- entered with rd_ptr = 0 and writes have just wrapped.
           len_v     := clip_read_burst(rd_ptr, wr_ptr, desired_v);
 
           if len_v = 0 then
@@ -729,10 +738,7 @@ begin
       -- defined only by the initialisation in the signal declarations
       -- and the writes the master has performed so far. Clearing them
       -- here would lose history across mid-test resets (which is normally
-      -- not what you want for self-check). If you do want them cleared,
-      -- uncomment the two lines below.
-      --   shadow_data <= (others => (others => '0'));
-      --   shadow_mask <= (others => (others => '0'));
+      -- not what you want for self-check).
       end if;
     end if;
   end process avm_proc;
