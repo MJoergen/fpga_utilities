@@ -49,7 +49,7 @@ architecture synthesis of avm_decrease is
 
   -- Additional address bits on the master side. The compile-time assertion below requires
   -- 2**C_ADDRESS_SHIFT = C_RATIO.
-  constant C_ADDRESS_SHIFT : positive                                      := G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE;
+  constant C_ADDRESS_SHIFT : natural                                       := G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE;
 
   constant C_ZERO_ADDRESS : std_logic_vector(C_ADDRESS_SHIFT - 1 downto 0) := (others => '0');
 
@@ -76,6 +76,9 @@ begin
   -- Compile-time consistency checks
   -----------------------------------------
 
+  assert C_ADDRESS_SHIFT >= 1
+    report "avm_decrease: degenerate ratio 1 not supported; use a passthrough"
+    severity failure;
   assert C_RATIO = 2 ** C_ADDRESS_SHIFT
     severity failure;
   assert G_SLAVE_DATA_SIZE = C_RATIO * G_MASTER_DATA_SIZE
@@ -115,14 +118,13 @@ begin
             s_address    <= s_address_i;
             s_writedata  <= s_writedata_i;
             s_byteenable <= s_byteenable_i;
-            s_burstcount <= std_logic_vector(to_unsigned(C_RATIO * to_integer(unsigned(s_burstcount_i)), G_BURST_WIDTH));
+            s_burstcount <= s_burstcount_i sll C_ADDRESS_SHIFT;
+
             if s_write_i = '1' then
               s_write_pos <= 0;
               state       <= WRITING_ST;
             elsif s_read_pos /= 0 or m_readdatavalid_i = '1' then
               state <= READ_DRAIN_ST;
-            else
-              s_read_pos <= 0;
             end if;
           end if;
 
@@ -132,6 +134,11 @@ begin
 
             -- Override the default "deassert m_write on accepted beat" so that
             -- m_write_o remains asserted across all C_RATIO beats of the burst.
+            -- Note: the final beat (s_write_pos = C_RATIO - 1) is intentionally issued
+            -- in IDLE_ST. Outputs in that cycle use the registered s_writedata/address
+            -- captured before the previous edge, so they remain correct even if a new
+            -- transaction is latched on the same edge (which enables back-to-back bursts
+            -- with zero gap).
             s_write     <= s_write;
 
             if s_write_pos = C_RATIO - 2 then
@@ -139,6 +146,9 @@ begin
             end if;
           end if;
 
+        -- Wait for an in-flight read burst to finish reassembly before accepting another
+        -- request, to avoid issuing two read bursts whose responses would arrive on top
+        -- of an already-advancing s_read_pos.
         when READ_DRAIN_ST =>
           if s_read_pos = 0 then
             state <= IDLE_ST;
@@ -164,8 +174,10 @@ begin
   m_byteenable_o  <= s_byteenable(G_MASTER_DATA_SIZE / 8 * s_write_pos + G_MASTER_DATA_SIZE / 8 - 1 downto G_MASTER_DATA_SIZE / 8 * s_write_pos);
   m_burstcount_o  <= s_burstcount;
 
-  -- Block all requests outside the IDLE_ST
-  s_waitrequest_o <= ((m_write_o or m_read_o) and m_waitrequest_i) when state = IDLE_ST else
+  -- While a write burst is in progress (WRITING_ST) or a prior read burst is still
+  -- draining (READ_DRAIN_ST), block upstream requests. In IDLE_ST, forward the downstream
+  -- waitrequest only if an outgoing beat is being issued.
+  s_waitrequest_o <= ((s_write or s_read) and m_waitrequest_i) when state = IDLE_ST else
                      '1';
 
 end architecture synthesis;
