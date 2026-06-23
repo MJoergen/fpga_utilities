@@ -1,36 +1,60 @@
 # fpga_utilities
 
-This repo contains a collection of building blocks for FPGA development:
+A collection of small, reusable VHDL-2008 building blocks for FPGA
+development. The intent is to use these modules as "LEGO" bricks — drop
+them into your design wherever needed.
 
-The intention is to use these modules as "LEGO" bricks, i.e. to insert them in your design wherever needed.
+All modules are exercised with [GHDL simulation testbenches](sim/) and
+[SymbiYosys formal proofs](formal/).
 
-These modules are tested using [simulation testbenches](https://github.com/MJoergen/fpga_utilities/tree/main/sim) and [formal verification](https://github.com/MJoergen/fpga_utilities/tree/main/formal).
+**Status:** under active development. No tagged releases yet; module
+APIs may change. Pin to a commit SHA if you depend on this repo.
 
-This uses modern VHDL-2008 and uses GHDL as a simulator.
+## Repository layout
 
-Currently under development.
+- `src/`      — synthesisable VHDL (the "LEGO bricks")
+- `sim/`      — GHDL testbenches and bus-functional models
+- `formal/`   — SymbiYosys `.sby` configs and PSL properties
+- `interfaces.md` — interface specifications
+- `modules.md`    — per-module documentation
+
+## Tooling
+
+- Simulation: **GHDL** (VHDL-2008).
+- Formal: **SymbiYosys** with PSL properties via the yosys GHDL frontend.
+- Top-level `Makefile` plus `sim/Makefile` and `formal/Makefile` drive both
+  flows. From the repo root: `make sim`, `make formal`.
 
 ## Interfaces
-The modules make use of a small consistent set of interfaces:
 
-| Interface | Prefix used in file/entity names | Spec reference |
-| --------- | -------------------------------- | -------------- |
-| AXI streaming | axis_* | AMBA AXI4-Stream |
-| AXI packet    | axip_* | AXI streaming with packet boundaries / TLAST framing |
-| AXI Lite      | axil_* | AMBA AXI4-Lite   |
-| Wishbone      | wb_*   | Wishbone B4 / B3 |
+The modules use a small, consistent set of interfaces:
 
-Each of these interfaces are described in more detail in
-[interfaces.md](https://github.com/MJoergen/fpga_utilities/tree/main/interfaces.md).
+| Interface     | Prefix    | Spec reference                                       |
+| ------------- | --------- | ---------------------------------------------------- |
+| AXI streaming | `axis_*`  | AMBA AXI4-Stream                                     |
+| AXI packet    | `axip_*`  | Custom AXI4-Stream profile (mandatory TLAST framing) |
+| AXI Lite      | `axil_*`  | AMBA AXI4-Lite                                       |
+| Wishbone      | `wbus_*`  | Wishbone B4                                          |
+| Avalon-MM     | `avm_*`   | Intel Avalon Memory-Mapped                           |
+
+The full handshake contract for each interface is in [interfaces.md](interfaces.md).
 
 ## Modules
 
-There are modules specific for each type of interface, including
-* FIFO (synchronous and asynchronous)
-* pipelines (shallow FIFO)
-* arbiters
-* ... and more
+Per-interface modules currently include:
 
-Each of these modules are described in more detail in
-[modules.md](https://github.com/MJoergen/fpga_utilities/tree/main/modules.md).
+- **AXIS**: `axis_fifo`, `axis_arbiter`, `axis_arbiter_pair`,
+  `axis_dropper`, `axis_to_axip`
+- **AXIP**: `axip_arbiter`, `axip_insert_fixed_header`,
+  `axip_remove_fixed_header`, `axip_to_axis`, `axip_pipe_async`
+- **AXI-Lite ↔ Wishbone**: `axil_to_wbus`
+- **Wishbone**: `wbus_arbiter`
+- **Avalon-MM**: `avm_arbit`, `avm_increase`, `avm_readahead`
+
+Details (generics, ports, reset, clocking, verification scope, limits)
+are in [modules.md](modules.md).
+
+## License
+
+MIT — see [LICENSE](LICENSE).
 
