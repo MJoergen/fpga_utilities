@@ -2,7 +2,8 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
--- This reduces the data width of an Avalon Memory Map interface.
+-- This reduces the data width of an Avalon Memory-Mapped (Avalon-MM) bus.
+-- The master-side address width grows accordingly.
 
 entity avm_decrease is
   generic (
@@ -43,11 +44,12 @@ end entity avm_decrease;
 architecture synthesis of avm_decrease is
 
   -- Number of master words per slave word
-  constant C_RATIO        : positive                                       := G_SLAVE_DATA_SIZE / G_MASTER_DATA_SIZE;
+  -- Must be a power of two
+  constant C_RATIO : positive                                              := G_SLAVE_DATA_SIZE / G_MASTER_DATA_SIZE;
 
-  -- log2(C_RATIO); also the # of LSBs of the
-  -- master address that select the sub-slot.
-  constant C_ADDRESS_SHIFT : positive := G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE;
+  -- Additional address bits on the master side. The compile-time assertion below requires
+  -- 2**C_ADDRESS_SHIFT = C_RATIO.
+  constant C_ADDRESS_SHIFT : positive                                      := G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE;
 
   constant C_ZERO_ADDRESS : std_logic_vector(C_ADDRESS_SHIFT - 1 downto 0) := (others => '0');
 
@@ -61,7 +63,7 @@ architecture synthesis of avm_decrease is
   type     state_type is (
     IDLE_ST,
     WRITING_ST,
-    READING_ST
+    READ_DRAIN_ST
   );
   signal   state : state_type                                              := IDLE_ST;
 
@@ -71,7 +73,7 @@ architecture synthesis of avm_decrease is
 begin
 
   -----------------------------------------
-  -- Compile-time consistency checkes
+  -- Compile-time consistency checks
   -----------------------------------------
 
   assert C_RATIO = 2 ** C_ADDRESS_SHIFT
@@ -85,11 +87,14 @@ begin
     if rising_edge(clk_i) then
       s_readdatavalid_o <= '0';
 
+      -- transaction-accepted handshake
       if m_waitrequest_i = '0' then
         s_write <= '0';
         s_read  <= '0';
       end if;
 
+      -- reassemble C_RATIO narrow beats into one wide slave word, pulsing
+      -- s_readdatavalid_o at completion.
       if m_readdatavalid_i = '1' then
         s_readdata_o(G_MASTER_DATA_SIZE * s_read_pos + G_MASTER_DATA_SIZE - 1 downto G_MASTER_DATA_SIZE * s_read_pos) <= m_readdata_i;
 
@@ -115,7 +120,7 @@ begin
               s_write_pos <= 0;
               state       <= WRITING_ST;
             elsif s_read_pos /= 0 or m_readdatavalid_i = '1' then
-              state <= READING_ST;
+              state <= READ_DRAIN_ST;
             else
               s_read_pos <= 0;
             end if;
@@ -125,7 +130,8 @@ begin
           if m_waitrequest_i = '0' then
             s_write_pos <= s_write_pos + 1;
 
-            -- Preserve value from previous clock cycle
+            -- Override the default "deassert m_write on accepted beat" so that
+            -- m_write_o remains asserted across all C_RATIO beats of the burst.
             s_write     <= s_write;
 
             if s_write_pos = C_RATIO - 2 then
@@ -133,7 +139,7 @@ begin
             end if;
           end if;
 
-        when READING_ST =>
+        when READ_DRAIN_ST =>
           if s_read_pos = 0 then
             state <= IDLE_ST;
           end if;
@@ -141,10 +147,12 @@ begin
       end case;
 
       if rst_i = '1' then
-        s_write    <= '0';
-        s_read     <= '0';
-        s_read_pos <= 0;
-        state      <= IDLE_ST;
+        s_write           <= '0';
+        s_read            <= '0';
+        s_read_pos        <= 0;
+        s_write_pos       <= 0;
+        s_readdatavalid_o <= '0';
+        state             <= IDLE_ST;
       end if;
     end if;
   end process fsm_proc;
@@ -155,6 +163,8 @@ begin
   m_writedata_o   <= s_writedata(G_MASTER_DATA_SIZE * s_write_pos + G_MASTER_DATA_SIZE - 1 downto G_MASTER_DATA_SIZE * s_write_pos);
   m_byteenable_o  <= s_byteenable(G_MASTER_DATA_SIZE / 8 * s_write_pos + G_MASTER_DATA_SIZE / 8 - 1 downto G_MASTER_DATA_SIZE / 8 * s_write_pos);
   m_burstcount_o  <= s_burstcount;
+
+  -- Block all requests outside the IDLE_ST
   s_waitrequest_o <= ((m_write_o or m_read_o) and m_waitrequest_i) when state = IDLE_ST else
                      '1';
 
