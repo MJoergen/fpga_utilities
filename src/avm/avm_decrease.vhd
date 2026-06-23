@@ -16,7 +16,7 @@ entity avm_decrease is
     clk_i             : in    std_logic;
     rst_i             : in    std_logic;
 
-    -- Slave interface (input)
+    -- Slave port (faces upstream master) — wide side
     s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
@@ -27,7 +27,7 @@ entity avm_decrease is
     s_readdata_o      : out   std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
     s_readdatavalid_o : out   std_logic;
 
-    -- Master interface (output)
+    -- Master port (faces downstream slave) — narrow side
     m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
@@ -42,9 +42,14 @@ end entity avm_decrease;
 
 architecture synthesis of avm_decrease is
 
-  constant C_RATIO        : integer                                               := G_SLAVE_DATA_SIZE / G_MASTER_DATA_SIZE;
-  constant C_ZERO_DATA    : std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0)     := (others => '0');
-  constant C_ZERO_BYTE_EN : std_logic_vector(G_MASTER_DATA_SIZE / 8 - 1 downto 0) := (others => '0');
+  -- Number of master words per slave word
+  constant C_RATIO        : positive                                       := G_SLAVE_DATA_SIZE / G_MASTER_DATA_SIZE;
+
+  -- log2(C_RATIO); also the # of LSBs of the
+  -- master address that select the sub-slot.
+  constant C_ADDRESS_SHIFT : positive := G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE;
+
+  constant C_ZERO_ADDRESS : std_logic_vector(C_ADDRESS_SHIFT - 1 downto 0) := (others => '0');
 
   signal   s_write      : std_logic;
   signal   s_read       : std_logic;
@@ -53,20 +58,27 @@ architecture synthesis of avm_decrease is
   signal   s_byteenable : std_logic_vector(G_SLAVE_DATA_SIZE / 8 - 1 downto 0);
   signal   s_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
 
-  type     state_type is (IDLE_ST, WRITING_ST, READING_ST);
-  signal   state : state_type                                                     := IDLE_ST;
+  type     state_type is (
+    IDLE_ST,
+    WRITING_ST,
+    READING_ST
+  );
+  signal   state : state_type                                              := IDLE_ST;
 
-  signal   s_write_pos : integer range 0 to C_RATIO - 1                           := 0;
-  signal   s_read_pos  : integer range 0 to C_RATIO - 1                           := 0;
+  signal   s_write_pos : integer range 0 to C_RATIO - 1                    := 0;
+  signal   s_read_pos  : integer range 0 to C_RATIO - 1                    := 0;
 
 begin
 
-  assert C_RATIO > 1
+  -----------------------------------------
+  -- Compile-time consistency checkes
+  -----------------------------------------
+
+  assert C_RATIO = 2 ** C_ADDRESS_SHIFT
     severity failure;
   assert G_SLAVE_DATA_SIZE = C_RATIO * G_MASTER_DATA_SIZE
     severity failure;
-  assert G_SLAVE_DATA_SIZE * (2 ** G_SLAVE_ADDRESS_SIZE) = G_MASTER_DATA_SIZE * (2 ** G_MASTER_ADDRESS_SIZE)
-    severity failure;
+
 
   fsm_proc : process (clk_i)
   begin
@@ -81,7 +93,7 @@ begin
       if m_readdatavalid_i = '1' then
         s_readdata_o(G_MASTER_DATA_SIZE * s_read_pos + G_MASTER_DATA_SIZE - 1 downto G_MASTER_DATA_SIZE * s_read_pos) <= m_readdata_i;
 
-        if s_read_pos + 1 = C_RATIO then
+        if s_read_pos = C_RATIO - 1 then
           s_read_pos        <= 0;
           s_readdatavalid_o <= '1';
         else
@@ -116,7 +128,7 @@ begin
             -- Preserve value from previous clock cycle
             s_write     <= s_write;
 
-            if s_write_pos + 2 = C_RATIO then
+            if s_write_pos = C_RATIO - 2 then
               state <= IDLE_ST;
             end if;
           end if;
@@ -137,15 +149,14 @@ begin
     end if;
   end process fsm_proc;
 
-  m_write_o                                                                                  <= s_write;
-  m_read_o                                                                                   <= s_read;
-  m_address_o(G_MASTER_ADDRESS_SIZE - 1 downto G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE) <= s_address;
-  m_address_o(G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE - 1 downto 0)                     <= (others => '0');
-  m_writedata_o                                                                              <= s_writedata(G_MASTER_DATA_SIZE * s_write_pos + G_MASTER_DATA_SIZE - 1 downto G_MASTER_DATA_SIZE * s_write_pos);
-  m_byteenable_o                                                                             <= s_byteenable(G_MASTER_DATA_SIZE / 8 * s_write_pos + G_MASTER_DATA_SIZE / 8 - 1 downto G_MASTER_DATA_SIZE / 8 * s_write_pos);
-  m_burstcount_o                                                                             <= s_burstcount;
-  s_waitrequest_o                                                                            <= ((m_write_o or m_read_o) and m_waitrequest_i) when state = IDLE_ST else
-                                                                                                '1';
+  m_write_o       <= s_write;
+  m_read_o        <= s_read;
+  m_address_o     <= s_address & C_ZERO_ADDRESS;
+  m_writedata_o   <= s_writedata(G_MASTER_DATA_SIZE * s_write_pos + G_MASTER_DATA_SIZE - 1 downto G_MASTER_DATA_SIZE * s_write_pos);
+  m_byteenable_o  <= s_byteenable(G_MASTER_DATA_SIZE / 8 * s_write_pos + G_MASTER_DATA_SIZE / 8 - 1 downto G_MASTER_DATA_SIZE / 8 * s_write_pos);
+  m_burstcount_o  <= s_burstcount;
+  s_waitrequest_o <= ((m_write_o or m_read_o) and m_waitrequest_i) when state = IDLE_ST else
+                     '1';
 
 end architecture synthesis;
 
