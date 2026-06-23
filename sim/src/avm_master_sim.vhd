@@ -220,11 +220,13 @@ architecture simulation of avm_master_sim is
     rnd : std_logic_vector
   ) return std_logic_vector is
     variable be_v : std_logic_vector(C_BE_WIDTH - 1 downto 0);
+    variable rnd_v : std_logic_vector(15 downto 0);
   begin
     if not G_RANDOM_BYTEENABLE then
       return C_ALL_ONES_BE;
     end if;
-    be_v := rnd(C_BE_WIDTH - 1 downto 0);
+    rnd_v := rnd;
+    be_v := rnd_v(C_BE_WIDTH - 1 downto 0);
     if be_v = std_logic_vector(to_unsigned(0, C_BE_WIDTH)) then
       be_v(0) := '1';
     end if;
