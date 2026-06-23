@@ -4,7 +4,7 @@ This repo contains a collection of building blocks for FPGA development:
 
 The intention is to use these modules as "LEGO" bricks, i.e. to insert them in your design wherever needed.
 
-These modules are tested using [simulation testbenches](github.com/MJoergen/fpga_utilities/tree/main/sim) and [formal verification](github.com/MJoergen/fpga_utilities/tree/main/formal).
+These modules are tested using [simulation testbenches](https://github.com/MJoergen/fpga_utilities/tree/main/sim) and [formal verification](https://github.com/MJoergen/fpga_utilities/tree/main/formal).
 
 This uses modern VHDL-2008 and uses GHDL as a simulator.
 
@@ -21,7 +21,7 @@ The modules make use of a small consistent set of interfaces:
 | Wishbone      | wb_*   | Wishbone B4 / B3 |
 
 Each of these interfaces are described in more detail in
-[interfaces.md](github.com/MJoergen/fpga_utilities/tree/main/interfaces.md).
+[interfaces.md](https://github.com/MJoergen/fpga_utilities/tree/main/interfaces.md).
 
 ## Modules
 
@@ -32,5 +32,5 @@ There are modules specific for each type of interface, including
 * ... and more
 
 Each of these modules are described in more detail in
-[modules.md](github.com/MJoergen/fpga_utilities/tree/main/modules.md).
+[modules.md](https://github.com/MJoergen/fpga_utilities/tree/main/modules.md).
 
