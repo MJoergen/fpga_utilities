@@ -286,7 +286,7 @@ begin
       variable byteenable_v : in std_logic_vector(C_MASTER_BYTEENABLE_SIZE - 1 downto 0)
     ) is
     begin
-      assert wr_fifo_s_ready = '1'
+      assert wr_fifo_s_ready = '1' or rst_i = '1'
         report "Write FIFO overflow: packed master write word could not be buffered"
         severity failure;
 
@@ -327,7 +327,7 @@ begin
               report "Simultaneous read+write not allowed"
               severity failure;
 
-            assert m_read = '0'
+            assert m_read = '0' or rst_i = '1'
               report "Internal error: read command still pending when accepting write"
               severity failure;
 

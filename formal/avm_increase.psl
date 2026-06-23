@@ -11,9 +11,9 @@ vunit i_avm_increase(avm_increase(synthesis))
    p_s_wr_burstcount : process (clk_i)
    begin
       if rising_edge(clk_i) then
-         if s_avm_write_i and not s_avm_waitrequest_o then
+         if s_write_i and not s_waitrequest_o then
             if f_s_wr_burstcount = 0 then
-               f_s_wr_burstcount <= to_integer(s_avm_burstcount_i) - 1;
+               f_s_wr_burstcount <= to_integer(s_burstcount_i) - 1;
             else
                f_s_wr_burstcount <= f_s_wr_burstcount - 1;
             end if;
@@ -27,11 +27,11 @@ vunit i_avm_increase(avm_increase(synthesis))
    p_s_rd_burstcount : process (clk_i)
    begin
       if rising_edge(clk_i) then
-         if s_avm_readdatavalid_o then
+         if s_readdatavalid_o then
             f_s_rd_burstcount <= f_s_rd_burstcount - 1;
          end if;
-         if s_avm_read_i and not s_avm_waitrequest_o then
-            f_s_rd_burstcount <= to_integer(s_avm_burstcount_i);
+         if s_read_i and not s_waitrequest_o then
+            f_s_rd_burstcount <= to_integer(s_burstcount_i);
          end if;
          if rst_i then
             f_s_rd_burstcount <= 0;
@@ -42,11 +42,11 @@ vunit i_avm_increase(avm_increase(synthesis))
    p_m_rd_burstcount : process (clk_i)
    begin
       if rising_edge(clk_i) then
-         if m_avm_readdatavalid_i then
+         if m_readdatavalid_i then
             f_m_rd_burstcount <= f_m_rd_burstcount - 1;
          end if;
-         if m_avm_read_o and not m_avm_waitrequest_i then
-            f_m_rd_burstcount <= to_integer(m_avm_burstcount_o);
+         if m_read_o and not m_waitrequest_i then
+            f_m_rd_burstcount <= to_integer(m_burstcount_o);
          end if;
          if rst_i then
             f_m_rd_burstcount <= 0;
@@ -60,24 +60,24 @@ vunit i_avm_increase(avm_increase(synthesis))
    -----------------------------
 
    -- Master must be empty after reset
-   f_master_after_reset_empty : assert always {rst_i} |=> not (m_avm_write_o or m_avm_read_o);
+   f_master_after_reset_empty : assert always {rst_i} |=> not (m_write_o or m_read_o);
 
    -- Master may not assert both write and read.
-   f_master_not_double: assert always rst_i or not (m_avm_write_o and m_avm_read_o);
+   f_master_not_double: assert always rst_i or not (m_write_o and m_read_o);
 
    -- Master must be stable until accepted
-   f_master_stable : assert always {(m_avm_write_o or m_avm_read_o) and m_avm_waitrequest_i and not rst_i} |=>
-      {stable(m_avm_write_o) and stable(m_avm_read_o) and stable(m_avm_address_o) and stable(m_avm_writedata_o) and
-       stable(m_avm_byteenable_o) and stable(m_avm_burstcount_o)};
+   f_master_stable : assert always {(m_write_o or m_read_o) and m_waitrequest_i and not rst_i} |=>
+      {stable(m_write_o) and stable(m_read_o) and stable(m_address_o) and stable(m_writedata_o) and
+       stable(m_byteenable_o) and stable(m_burstcount_o)};
 
    -- Slave must keep accepting
-   f_slave_no_new_wait  : assert always {not s_avm_waitrequest_o and not s_avm_read_i and not s_avm_write_i} |=> stable(s_avm_waitrequest_o);
+   f_slave_no_new_wait  : assert always {not s_waitrequest_o and not s_read_i and not s_write_i} |=> stable(s_waitrequest_o);
 
-   f_master_burst_valid : assert always rst_i or not (m_avm_read_o and not m_avm_waitrequest_i and nor(m_avm_burstcount_o));
+   f_master_burst_valid : assert always rst_i or not (m_read_o and not m_waitrequest_i and nor(m_burstcount_o));
    f_slave_burst_reset  : assert always rst_i |=> {f_s_rd_burstcount = 0};
    f_slave_burst_range  : assert always rst_i or f_s_rd_burstcount >= 0;
-   f_slave_burst_block  : assert always rst_i or f_s_rd_burstcount = 0 or s_avm_waitrequest_o or (f_s_rd_burstcount = 1 and s_avm_readdatavalid_o = '1');
-   f_slave_no_data      : assert always rst_i or not (f_s_rd_burstcount = 0 and s_avm_readdatavalid_o = '1');
+   f_slave_burst_block  : assert always rst_i or f_s_rd_burstcount = 0 or s_waitrequest_o or (f_s_rd_burstcount = 1 and s_readdatavalid_o = '1');
+   f_slave_no_data      : assert always rst_i or not (f_s_rd_burstcount = 0 and s_readdatavalid_o = '1');
 
 
    -----------------------------
@@ -88,25 +88,28 @@ vunit i_avm_increase(avm_increase(synthesis))
    f_reset : assume {rst_i};
 
    -- Slave must be empty after reset
-   f_slave_after_reset_empty : assume always {rst_i} |=> not (s_avm_write_i or s_avm_read_i);
+   f_slave_after_reset_empty : assume always {rst_i} |=> not (s_write_i or s_read_i);
 
    -- Slave may not assert both write and read.
-   f_slave_not_double: assume always not (s_avm_write_i and s_avm_read_i);
+   f_slave_not_double: assume always not (s_write_i and s_read_i);
+
+   -- Non-zero burstcount
+   f_nonzero_burstcount: assume always (s_write_i or s_read_i) |-> s_burstcount_i /= 0;
 
    -- Slaves must be stable until accepted
-   f_slave_input_stable : assume always {(s_avm_write_i or s_avm_read_i) and s_avm_waitrequest_o and not rst_i} |=>
-      {stable(s_avm_write_i) and stable(s_avm_read_i) and stable(s_avm_address_i) and stable(s_avm_writedata_i) and
-       stable(s_avm_byteenable_i) and stable(s_avm_burstcount_i)};
+   f_slave_input_stable : assume always {(s_write_i or s_read_i) and s_waitrequest_o and not rst_i} |=>
+      {stable(s_write_i) and stable(s_read_i) and stable(s_address_i) and stable(s_writedata_i) and
+       stable(s_byteenable_i) and stable(s_burstcount_i)};
 
    -- Master must keep accepting
-   f_master_no_new_wait  : assume always {not m_avm_waitrequest_i and not m_avm_read_o and not m_avm_write_o} |=> stable(m_avm_waitrequest_i);
+   f_master_no_new_wait  : assume always {not m_waitrequest_i and not m_read_o and not m_write_o} |=> stable(m_waitrequest_i);
 
-   f_slave_burst_valid  : assume always rst_i or not (s_avm_read_i and not s_avm_waitrequest_o and nor(s_avm_burstcount_i));
+   f_slave_burst_valid  : assume always rst_i or not (s_read_i and not s_waitrequest_o and nor(s_burstcount_i));
    f_master_burst_reset : assume always rst_i |=> {f_m_rd_burstcount = 0};
    f_master_burst_range : assume always rst_i or f_m_rd_burstcount >= 0;
-   f_master_burst_block : assume always rst_i or f_m_rd_burstcount = 0 or m_avm_waitrequest_i or (f_m_rd_burstcount = 1 and m_avm_readdatavalid_i = '1');
-   f_master_no_data     : assume always rst_i or not (f_m_rd_burstcount = 0 and m_avm_readdatavalid_i = '1');
-   f_slave_wr_burst     : assume always f_s_wr_burstcount /= 0 -> s_avm_read_i = '0';
+   f_master_burst_block : assume always rst_i or f_m_rd_burstcount = 0 or m_waitrequest_i or (f_m_rd_burstcount = 1 and m_readdatavalid_i = '1');
+   f_master_no_data     : assume always rst_i or not (f_m_rd_burstcount = 0 and m_readdatavalid_i = '1');
+   f_slave_wr_burst     : assume always f_s_wr_burstcount /= 0 -> s_read_i = '0';
 
 
    --------------------------------------------

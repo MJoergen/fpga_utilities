@@ -14,6 +14,6 @@ prep -top avm_increase
 
 [files]
 avm_increase.psl
-../avm/avm_increase.vhd
-../axis/axis_fifo.vhd
+../src/avm/avm_increase.vhd
+../src/axis/axis_fifo.vhd
 
