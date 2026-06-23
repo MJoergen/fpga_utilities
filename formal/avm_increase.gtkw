@@ -1,0 +1,103 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Tue Jun 23 12:56:11 2026
+[*]
+[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/formal/avm_increase_bmc/engine_0/trace.vcd"
+[dumpfile_mtime] "Tue Jun 23 12:55:55 2026"
+[dumpfile_size] 7019
+[savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/formal/avm_increase.gtkw"
+[timestart] 0
+[size] 1588 1082
+[pos] -175 -219
+*-2.674230 16 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] avm_increase.
+[sst_width] 252
+[signals_width] 374
+[sst_expanded] 1
+[sst_vpaned_height] 130
+@800200
+-avm_increase
+@28
+avm_increase.clk_i
+avm_increase.rst_i
+[color] 6
+avm_increase.s_waitrequest_o
+[color] 2
+avm_increase.s_write_i
+[color] 2
+avm_increase.s_read_i
+@22
+avm_increase.s_address_i[9:0]
+avm_increase.s_writedata_i[7:0]
+@28
+avm_increase.s_byteenable_i
+@22
+avm_increase.s_burstcount_i[3:0]
+avm_increase.s_readdata_o[7:0]
+@28
+[color] 3
+avm_increase.s_readdatavalid_o
+[color] 6
+avm_increase.m_waitrequest_i
+[color] 2
+avm_increase.m_write_o
+[color] 2
+avm_increase.m_read_o
+@22
+avm_increase.m_address_o[8:0]
+avm_increase.m_writedata_o[15:0]
+@28
+avm_increase.m_byteenable_o[1:0]
+@22
+avm_increase.m_burstcount_o[3:0]
+avm_increase.m_readdata_i[15:0]
+@28
+[color] 3
+avm_increase.m_readdatavalid_i
+@800200
+-Internal
+@28
+avm_increase.state[2:0]
+avm_increase.offset
+@22
+avm_increase.s_burstcount[3:0]
+avm_increase.m_write_remaining[3:0]
+@28
+avm_increase.m_read
+@22
+avm_increase.m_address[8:0]
+avm_increase.m_burstcount[3:0]
+avm_increase.write_pack_data[15:0]
+@28
+avm_increase.write_pack_byteenable[1:0]
+[color] 6
+avm_increase.rd_fifo_s_ready
+@29
+[color] 6
+avm_increase.rd_fifo_m_ready
+@28
+[color] 2
+avm_increase.rd_fifo_m_valid
+@22
+avm_increase.rd_fifo_m_data[15:0]
+@28
+[color] 6
+avm_increase.wr_fifo_s_ready
+[color] 2
+avm_increase.wr_fifo_s_valid
+@22
+avm_increase.wr_fifo_s_data[17:0]
+@28
+[color] 6
+avm_increase.wr_fifo_m_ready
+[color] 2
+avm_increase.wr_fifo_m_valid
+@22
+avm_increase.wr_fifo_m_data[17:0]
+@28
+avm_increase.s_last_subslot
+@1000200
+-Internal
+-avm_increase
+[pattern_trace] 1
+[pattern_trace] 0
