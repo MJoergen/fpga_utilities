@@ -3,6 +3,7 @@
 
 DUTS += avm_arbit
 DUTS += avm_readahead
+DUTS += avm_increase
 DUTS += axil_to_wbus
 DUTS += axip_arbiter
 DUTS += axip_insert_fixed_header
