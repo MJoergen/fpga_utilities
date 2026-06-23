@@ -9,7 +9,7 @@ composing arbiters, distributors, and mappers from `src/`.
 For each interface this document describes only the subset actually used
 by the modules in this repository. Optional signals from the underlying
 standards (e.g. `tid`/`tdest`/`tuser` for AXI4‑Stream;
-`awprot`/`awcache` for AXI4‑Lite; `sel`/`err`/`rty`/tag signals for
+`awprot`/`awcache` for AXI4‑Lite; `sel`/`err`/`rty`/`tag` signals for
 Wishbone; write‑response signals for Avalon) are intentionally omitted.
 Deviations from the parent standard are listed at the end of each
 section.
@@ -35,7 +35,7 @@ is no notion of packet boundary; for framed data use AXI packet
 | ------- | -------------- | ------------------------------------------------------------------ |
 | `VALID` | Master → Slave | Master asserts when `DATA` is valid for the current cycle.         |
 | `READY` | Slave  → Master| Slave asserts when it can accept a transfer in the current cycle.  |
-| `DATA`  | Master → Slave | Payload, `G_DATA_BITS` bits wide **`[CONFIRM]`**.                   |
+| `DATA`  | Master → Slave | Payload, `G_DATA_SIZE` bits wide.                                  |
 
 A handshake (transfer) occurs on every rising edge of `clk_i` where
 `VALID` and `READY` are both asserted.
@@ -63,7 +63,7 @@ These rules are enforced by the formal properties under `../formal/`:
 
 | Generic         | Meaning                | Typical value |
 | --------------- | ---------------------- | ------------- |
-| `G_DATA_BITS` **`[CONFIRM]`** | Bus width in bits. | 8, 16, 32, 64 |
+| `G_DATA_SIZE`   | Bus width in bits. | 8, 16, 32, 64 |
 
 ### Deviations from AMBA AXI4‑Stream
 
@@ -102,9 +102,9 @@ without per-user configuration.
 | ------- | -------------- | --------------------------------------------------------------------------- |
 | `VALID` | Master → Slave | Master asserts when `DATA`, `LAST`, and `BYTES` are valid.                  |
 | `READY` | Slave  → Master| Slave asserts when it can accept a transfer in the current cycle.           |
-| `DATA`  | Master → Slave | Payload, `8*N` bits wide, where `N` is the byte width set by `G_DATA_BYTES` **`[CONFIRM]`**. Byte ordering: **left‑justified** (byte 0 occupies bits `[8*N-1 : 8*N-8]`). |
+| `DATA`  | Master → Slave | Payload, `8*N` bits wide, where `N` is the byte width set by `G_DATA_BYTES` . Byte ordering: **left‑justified** (byte 0 occupies bits `[8*N-1 : 8*N-8]`). |
 | `LAST`  | Master → Slave | Asserted on the final beat of a packet. Deasserted on all preceding beats.  |
-| `BYTES` | Master → Slave | Number of valid bytes in the current beat, width `ceil(log2(N+1))` bits **`[CONFIRM]`**. Only meaningful when `LAST = 1`; ignored by the slave when `LAST = 0`. |
+| `BYTES` | Master → Slave | Number of valid bytes in the current beat, a natural number in the range 0 to `G\_DATA\_BYTES`. Only meaningful when `LAST = 1`; ignored by the slave when `LAST = 0`. |
 
 A handshake (transfer) occurs on every rising edge of `clk_i` where
 `VALID` and `READY` are both asserted.
@@ -148,7 +148,7 @@ bit: 63        56 55        48 47        40 ... 7         0
 ### Framing rules
 
 1. **Packets are non-empty.** A packet consists of one or more beats. A
-   beat with `LAST = 1` and `BYTES = 0` is **illegal** **`[CONFIRM]`**.
+   beat with `LAST = 1` and `BYTES = 0` is **illegal**.
 2. **Full beats before `LAST`.** On every beat with `LAST = 0`, *all*
    `N` bytes of `DATA` are valid. Partial‑word framing is only
    permitted on the final beat, signalled by `BYTES`.
@@ -181,9 +181,9 @@ bit: 63        56 55        48 47        40 ... 7         0
 
 | Generic         | Meaning                              | Typical value |
 | --------------- | ------------------------------------ | ------------- |
-| `G_DATA_BYTES` **`[CONFIRM]`** | Bus width in bytes, `N`. | 1, 2, 4, 8    |
+| `G_DATA_BYTES`  | Bus width in bytes, `N`. | 1, 2, 4, 8    |
 
-Width of `BYTES` is derived: `ceil(log2(N+1))`.
+`BYTES` is declared as a natural in the range 0 to `G_DATA_BYTES`.
 
 ### Verification
 
@@ -196,7 +196,7 @@ Width of `BYTES` is derived: `ceil(log2(N+1))`.
   (combined wrapper).
 - **Back‑pressure injection:** `../sim/src/axip_pause.vhd`.
 - **Packet logger:** `../sim/src/axip_logger.vhd`.
-- **Types/records:** `../src/axip/axip_pkg.vhd` — must be `use`d by any
+- **Types/records:** `../src/axip/axip_pkg.vhd` — must be used by any
   code instantiating an `axip_*` entity.
 
 ---
@@ -215,21 +215,21 @@ read address (`AR`), and read data (`R`) — each carrying its own
 | ---------- | -------------- | ---------------------------------------------------------- |
 | `AWVALID`  | Master → Slave | Write address valid.                                       |
 | `AWREADY`  | Slave  → Master| Write address accepted.                                    |
-| `AWADDR`   | Master → Slave | Write address, `G_ADDR_BITS` bits wide **`[CONFIRM]`**.    |
+| `AWADDR`   | Master → Slave | Write address, `G_ADDR_SIZE` bits wide.                    |
 | `WVALID`   | Master → Slave | Write data valid.                                          |
 | `WREADY`   | Slave  → Master| Write data accepted.                                       |
-| `WDATA`    | Master → Slave | Write data, `G_DATA_BITS` bits wide **`[CONFIRM]`**.       |
-| `WSTRB`    | Master → Slave | Byte enables, `G_DATA_BITS/8` bits wide. Bit *k* enables byte *k* of `WDATA`. |
+| `WDATA`    | Master → Slave | Write data, `G_DATA_SIZE` bits wide.                       |
+| `WSTRB`    | Master → Slave | Byte enables, `G_DATA_SIZE/8` bits wide. Bit *k* enables byte *k* of `WDATA`. |
 | `BVALID`   | Slave  → Master| Write response valid.                                      |
 | `BREADY`   | Master → Slave | Write response accepted.                                   |
-| `BRESP`    | Slave  → Master| Write response code, 2 bits: `00`=OKAY, `10`=SLVERR. **`[CONFIRM]`** |
+| `BRESP`    | Slave  → Master| Write response code, 2 bits: `00`=OKAY, `10`=SLVERR.       |
 | `ARVALID`  | Master → Slave | Read address valid.                                        |
 | `ARREADY`  | Slave  → Master| Read address accepted.                                     |
-| `ARADDR`   | Master → Slave | Read address, `G_ADDR_BITS` bits wide.                     |
+| `ARADDR`   | Master → Slave | Read address, `G_ADDR_SIZE` bits wide.                     |
 | `RVALID`   | Slave  → Master| Read data valid.                                           |
 | `RREADY`   | Master → Slave | Read data accepted.                                        |
-| `RDATA`    | Slave  → Master| Read data, `G_DATA_BITS` bits wide.                        |
-| `RRESP`    | Slave  → Master| Read response code, 2 bits: `00`=OKAY, `10`=SLVERR. **`[CONFIRM]`** |
+| `RDATA`    | Slave  → Master| Read data, `G_DATA_SIZE` bits wide.                        |
+| `RRESP`    | Slave  → Master| Read response code, 2 bits: `00`=OKAY, `10`=SLVERR.        |
 
 Each channel handshakes independently using the same VALID/READY rules
 as AXI streaming.
@@ -278,17 +278,17 @@ as AXI streaming.
 | `10`    | `SLVERR` | Slave-side error (decode miss, write-protect, …).  |
 
 `EXOKAY` (`01`) and `DECERR` (`11`) are **not** generated by the slave
-models in this repository **`[CONFIRM]`**; masters must, however, be
+models in this repository; masters must, however, be
 tolerant of any 2-bit value.
 
 ### Parameterisation
 
 | Generic         | Meaning             | Typical value |
 | --------------- | ------------------- | ------------- |
-| `G_ADDR_BITS` **`[CONFIRM]`** | Address width.   | 12–32 |
-| `G_DATA_BITS` **`[CONFIRM]`** | Data width.      | 32, 64 |
+| `G_ADDR_SIZE`   | Address width.   | 12–32 |
+| `G_DATA_SIZE`   | Data width.      | 32, 64 |
 
-`WSTRB` width is derived: `G_DATA_BITS / 8`.
+`WSTRB` width is derived: `G_DATA_SIZE / 8`.
 
 ### Deviations from AMBA AXI4‑Lite
 
@@ -328,35 +328,17 @@ composing `../src/wbus/wbus_arbiter.vhd`,
 | `CYC`   | Master → Slave | Cycle in progress. Held asserted from the first request beat until the last response.    |
 | `STB`   | Master → Slave | Request strobe. One handshake per cycle in which `STB & ~STALL` is observed.             |
 | `STALL` | Slave  → Master| Back-pressure on the request channel. Meaningful only while `STB` is asserted.           |
-| `ADDR`  | Master → Slave | Request address, `G_ADDR_BITS` bits wide **`[CONFIRM]`**. Addressing is per **word**, not per byte **`[CONFIRM]`**. |
+| `ADDR`  | Master → Slave | Request address, `G_ADDR_SIZE` bits wide. Addressing is per byte.                        |
 | `WE`    | Master → Slave | `1` = write request, `0` = read request.                                                 |
-| `WRDAT` | Master → Slave | Write data, `G_DATA_BITS` bits wide **`[CONFIRM]`**.                                      |
-| `SEL`   | Master → Slave | Byte-enable for the write data. **Not implemented in this repository.** **`[CONFIRM]`** |
+| `WRDAT` | Master → Slave | Write data, `G_DATA_SIZE` bits wide.                                                     |
+| `SEL`   | Master → Slave | Byte-enable for the write data.                                                          |
 | `ACK`   | Slave  → Master| Response valid: one pulse per completed read or write.                                   |
 | `RDDAT` | Slave  → Master| Read data, valid on cycles where `ACK = 1` and the matching request had `WE = 0`.        |
 
 A request handshake occurs on any rising edge of `clk_i` where
 `CYC & STB & ~STALL` is true. A response handshake occurs on any rising
-edge of `clk_i` where `CYC & ACK` is true. Requests and responses are
-**decoupled**: the slave may absorb several requests before producing
-the first response, subject to the ordering rule below.
-
-### Byte enable
-
-The modules in this repository implement Wishbone **without `SEL`**:
-writes are always full-word, reads always return the full word, and
-sub-word access is not supported through this interface **`[CONFIRM]`**.
-This has two consequences:
-
-1. There is no on-wire byte-enable signal — `SEL` is omitted from every
-   `wbus_*` entity declaration.
-2. The `../src/converters/axil_to_wbus.vhd` must therefore reject
-   (or merge) AXI-Lite writes whose `WSTRB` is not all-ones. See that
-   module's documentation in [`modules.md`](modules.md#wishbone) for
-   the exact policy.
-
-If sub-word access is required, add a `SEL` port and re‑expose this
-section accordingly.
+edge of `clk_i` where `CYC & ACK` is true.
+Only a single outstanding request is required to be supported.
 
 ### Datasheet (per Wishbone B4 §1.4)
 
@@ -364,10 +346,10 @@ section accordingly.
 | ----------------------------- | -------------------------------------------------------- |
 | Type of interface             | MASTER and SLAVE                                         |
 | Wishbone version              | B4 (pipelined)                                           |
-| Port size (data width)        | `G_DATA_BITS` bits **`[CONFIRM]`**, default 32           |
-| Port granularity              | Equal to port size (full‑word only; no `SEL`) **`[CONFIRM]`** |
+| Port size (data width)        | `G_DATA_SIZE` bits, default 32                           |
+| Port granularity              | single byte                                              |
 | Maximum operand size          | Equal to port size                                       |
-| Data transfer ordering        | **`[CONFIRM]`** — typically little-endian                |
+| Data transfer ordering        | Little-endian                                            |
 | Data transfer sequencing      | Single read or single write per request beat             |
 | Supported cycle types         | Single read, single write, pipelined burst of either     |
 | Optional `ERR_O` / `ERR_I`    | **Not supported.** Errors are not signalled on this bus. |
@@ -387,7 +369,7 @@ section accordingly.
    is asserted; its value is don't‑care otherwise.
 4. **Request stability.** While `STB` is asserted and `STALL` is high
    (i.e. the master is being back‑pressured), `ADDR`, `WE`, and (on
-   writes) `WRDAT` must remain stable.
+   writes) `WRDAT` and `SEL` must remain stable.
 5. **Request acceptance.** A request beat is *accepted* on the cycle
    where `STB & ~STALL`. After acceptance the master is free to change
    `STB`, `ADDR`, `WE`, and `WRDAT` on the next cycle (typically to
@@ -398,9 +380,8 @@ section accordingly.
    don't-care for write requests.
 7. **In‑order responses.** `ACK`s are returned to the master in the
    same order the corresponding requests were accepted.
-8. **Pipelining.** The slave may accept a new request before the
-   previous response has been delivered, up to its internal capacity
-   (advertised via `STALL`).
+8. **Pipelining.** The slave is not required to accept a new request before the
+   previous response has been delivered.
 9. **Reset.** While `rst_i` is asserted the master must drive
    `CYC = 0`, `STB = 0`. The slave must drive `STALL = 0`, `ACK = 0`.
    All in-flight state is cleared; outstanding responses are *not*
@@ -419,8 +400,8 @@ minimum/maximum random latency for stress testing.
 
 | Generic          | Meaning                                | Typical value |
 | ---------------- | -------------------------------------- | ------------- |
-| `G_ADDR_BITS` **`[CONFIRM]`** | Address width in bits, word-addressed. | 16–32 |
-| `G_DATA_BITS` **`[CONFIRM]`** | Data width in bits.                    | 32    |
+| `G_ADDR_SIZE`    | Address width in bits, byte-addressed. | 16–32 |
+| `G_DATA_SIZE`    | Data width in bits.                    | 32    |
 
 ### Deviations from Wishbone B4
 
@@ -428,7 +409,6 @@ This implementation intentionally restricts the standard in the
 following ways. Each restriction simplifies the modules and their
 formal proofs; lift only after extending the proofs:
 
-- No `SEL` (no byte enables).
 - No `ERR` / `RTY` (no error or retry response).
 - No tag signals (`TGA_*`, `TGC_*`, `TGD_*`).
 - No classic B3 single-cycle handshake; B4 pipelined only.
@@ -445,8 +425,7 @@ provided:
   AXI‑Lite slave side downstream.
 
 The round-trip identity `wbus_to_axil o axil_to_wbus = id` is exercised
-by `../sim/tb_wbus_axil_wbus/` (within the restrictions listed in
-[#byte-enable](#byte-enable)).
+by `../sim/tb_wbus_axil_wbus/`.
 
 ### Verification
 
@@ -456,7 +435,7 @@ by `../sim/tb_wbus_axil_wbus/` (within the restrictions listed in
   `../sim/src/wbus_slave_sim.vhd`, `../sim/src/wbus_sim.vhd`
   (combined wrapper).
 - **Back‑pressure injection:** `../sim/src/wbus_pause.vhd`.
-- **Types/records:** `../src/wbus/wbus_pkg.vhd` — must be `use`d by
+- **Types/records:** `../src/wbus/wbus_pkg.vhd` — must be used by
   any code instantiating a `wbus_*` entity.
 
 ---
@@ -475,17 +454,17 @@ streaming use `axis` (see [#axi-streaming](#axi-streaming)).
 
 ### Signals
 
-| Signal           | Direction      | Description                                                                                                   |
-| ---------------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
-| `WRITE`          | Master → Slave | Write request.                                                                                                |
-| `READ`           | Master → Slave | Read request. `WRITE` and `READ` must never be asserted in the same cycle.                                    |
-| `ADDRESS`        | Master → Slave | Word address, `G_ADDR_BITS` bits wide **`[CONFIRM]`**.                                                         |
-| `WRITEDATA`      | Master → Slave | Write data, `G_DATA_BITS` bits wide **`[CONFIRM]`**.                                                           |
-| `BYTEENABLE`     | Master → Slave | Per-byte enables for `WRITEDATA`, `G_DATA_BITS/8` bits wide.                                                   |
-| `BURSTCOUNT`     | Master → Slave | Length of the burst in beats, `G_BURST_BITS` bits wide **`[CONFIRM]`**. Value `1` denotes a single-beat transfer. |
-| `WAITREQUEST`    | Slave  → Master| Slave back-pressure on the request channel. While asserted, the request is *not* accepted.                    |
-| `READDATA`       | Slave  → Master| Read data, valid on cycles where `READDATAVALID = 1`.                                                          |
-| `READDATAVALID`  | Slave  → Master| Asserted by the slave for each beat of returned read data.                                                     |
+| Signal           | Direction      | Description                                                                                        |
+| ---------------- | -------------- | -------------------------------------------------------------------------------------------------- |
+| `WRITE`          | Master → Slave | Write request.                                                                                     |
+| `READ`           | Master → Slave | Read request. `WRITE` and `READ` must never be asserted in the same cycle.                         |
+| `ADDRESS`        | Master → Slave | Word address, `G_ADDR_SIZE` bits wide.                                                             |
+| `WRITEDATA`      | Master → Slave | Write data, `G_DATA_SIZE` bits wide.                                                               |
+| `BYTEENABLE`     | Master → Slave | Per-byte enables for `WRITEDATA`, `G_DATA_BITS/8` bits wide.                                       |
+| `BURSTCOUNT`     | Master → Slave | Length of the burst in beats, `G_BURST_WIDTH` bits wide. Value `1` denotes a single-beat transfer. |
+| `WAITREQUEST`    | Slave  → Master| Slave back-pressure on the request channel. While asserted, the request is *not* accepted.         |
+| `READDATA`       | Slave  → Master| Read data, valid on cycles where `READDATAVALID = 1`.                                              |
+| `READDATAVALID`  | Slave  → Master| Asserted by the slave for each beat of returned read data.                                         |
 
 ### Handshake rules
 
@@ -526,7 +505,7 @@ streaming use `axis` (see [#axi-streaming](#axi-streaming)).
    accepted.
 4. **Address increment.** Burst beats access consecutive word
    addresses starting at `ADDRESS`. Address wrapping is not
-   supported **`[CONFIRM]`**.
+   supported.
 5. **In‑order responses.** Read responses are returned in the order
    the requests were accepted.
 6. **No overlap of read and write bursts.** The master must not issue
@@ -555,11 +534,11 @@ are not signalled.
 
 | Generic           | Meaning                  | Typical value |
 | ----------------- | ------------------------ | ------------- |
-| `G_ADDR_BITS` **`[CONFIRM]`**  | Address width in bits. | 16–32 |
-| `G_DATA_BITS` **`[CONFIRM]`**  | Data width in bits.    | 32, 64 |
-| `G_BURST_BITS` **`[CONFIRM]`** | `BURSTCOUNT` width.    | 4–8 |
+| `G_ADDR_SIZE`     | Address width in bits.   | 16–32 |
+| `G_DATA_SIZE`     | Data width in bits.      | 32, 64 |
+| `G_BURST_WIDTH`   | `BURSTCOUNT` width.      | 4–8 |
 
-`BYTEENABLE` width is derived: `G_DATA_BITS / 8`.
+`BYTEENABLE` width is derived: `G_DATA_SIZE / 8`.
 
 ### Deviations from the Avalon‑MM spec
 
@@ -567,7 +546,7 @@ are not signalled.
 - No `DEBUGACCESS`.
 - No `LOCK` / `BEGINBURSTTRANSFER` (the simpler `WAITREQUEST`-gated
   per-beat handshake is used uniformly).
-- Address is word-addressed, not byte-addressed **`[CONFIRM]`**.
+- Address is byte-addressed.
 
 ### Verification
 
@@ -577,32 +556,4 @@ are not signalled.
   `../sim/src/avm_slave_sim.vhd`, `../sim/src/avm_sim.vhd`
   (combined wrapper).
 - **Back‑pressure injection:** `../sim/src/avm_pause.vhd`.
-
----
-
-## Items to confirm against the VHDL
-
-Before merging, please verify each **`[CONFIRM]`** marker above against
-the actual entity declarations:
-
-1. **AXIS** — name of the data-width generic (`G_DATA_BITS`?).
-2. **AXIP** — name of the byte-width generic (`G_DATA_BYTES`?).
-3. **AXIP** — width of `BYTES` (assumed `ceil(log2(N+1))`).
-4. **AXIP** — whether `BYTES = 0 ∧ LAST = 1` is allowed.
-5. **AXIL** — names of address/data generics and exact widths used by
-   the slave models.
-6. **AXIL** — exact set of `BRESP`/`RRESP` codes the slave models can
-   generate.
-7. **Wishbone** — names of address/data generics.
-8. **Wishbone** — whether `SEL` is present in any of the `wbus_*`
-   entities.
-9. **Wishbone** — whether addressing is per word or per byte.
-10. **Wishbone** — endianness convention (almost universally
-    little‑endian, but worth pinning).
-11. **Avalon** — names and widths of the address, data, and burst
-    generics.
-12. **Avalon** — whether burst address wrapping is supported.
-13. **Avalon** — word vs. byte addressing on `ADDRESS`.
-14. **PSL property file names** — those referenced above are derived
-    from the file tree; confirm none have been renamed.
 
