@@ -3,6 +3,7 @@
 # Description: Makefile for simulating all the modules
 
 DUTS += tb_avm_arbit
+DUTS += tb_avm_increase
 DUTS += tb_avm_pipe
 DUTS += tb_avm_readahead
 DUTS += tb_avm_sim
