@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description: This is a simple AXI streaming synchronuous FIFO.
+-- Description: This is a simple AXI streaming synchronous FIFO.
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

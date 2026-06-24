@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description: This is a simple synchronuous AXI packet FIFO.
+-- Description: This is a simple synchronous AXI packet FIFO.
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

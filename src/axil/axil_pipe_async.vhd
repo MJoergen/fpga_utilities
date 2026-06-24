@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description: This provides a Clock Domain Crossing (i.e. an asynchronuous FIFO) for a
+-- Description: This provides a Clock Domain Crossing (i.e. an asynchronous FIFO) for a
 -- AXI Lite interface.  Each of the five channels (AW, W, B, AR, and R) use their own
 -- separate async FIFO, so you can not make any assumptions about the relative timings
 -- between these channels.

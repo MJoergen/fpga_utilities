@@ -71,7 +71,7 @@ begin
       m_rst <= (others => rst_i);
     end if;
 
-    -- Asynchronuous reset
+    -- Asynchronous reset
     if rst_i = '1' then
       m_rst <= (others => '1');
     end if;
