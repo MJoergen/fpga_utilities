@@ -10,7 +10,6 @@ DUTS += axip_insert_fixed_header
 DUTS += axip_remove_fixed_header
 DUTS += axip_to_axis
 DUTS += axis_arbiter
-DUTS += axis_arbiter_pair
 DUTS += axis_dropper
 DUTS += axis_fifo
 DUTS += axis_to_axip

@@ -1,6 +1,5 @@
 # Run all source files through yosys to check for synthesis
 
-SRC += axis_arbiter_pair.vhd
 SRC += axis_arbiter.vhd
 SRC += axis_distributor.vhd
 SRC += axis_dropper.vhd

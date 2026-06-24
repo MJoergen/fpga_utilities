@@ -46,7 +46,7 @@ The full handshake contract for each interface is in [interfaces.md](interfaces.
 
 Per-interface modules currently in the repo:
 
-- **AXIS** (`src/axis/`): `axis_arbiter`, `axis_arbiter_pair`,
+- **AXIS** (`src/axis/`): `axis_arbiter`,
   `axis_distributor`, `axis_dropper`, `axis_fifo`, `axis_fifo_async`,
   `axis_pipe`, `axis_pipe_async`, `axis_pipe_lite`
 - **AXIP** (`src/axip/`): `axip_arbiter`, `axip_arbiter_general`,

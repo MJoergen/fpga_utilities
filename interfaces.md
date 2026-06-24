@@ -75,7 +75,7 @@ These rules are enforced by the formal properties under `../formal/`:
 ### Verification
 
 - **Formal properties:** `../formal/axis_arbiter.psl`,
-  `../formal/axis_arbiter_pair.psl`, `../formal/axis_dropper.psl`,
+  `../formal/axis_dropper.psl`,
   `../formal/axis_fifo.psl`.
 - **Bus-functional models:** `../sim/src/axis_master_sim.vhd`,
   `../sim/src/axis_slave_sim.vhd`, `../sim/src/axis_sim.vhd`
