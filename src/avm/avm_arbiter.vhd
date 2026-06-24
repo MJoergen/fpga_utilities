@@ -32,14 +32,14 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity avm_arbit is
+entity avm_arbiter is
   generic (
     -- Burstcount width on all three Avalon-MM interfaces. Must match the downstream
     -- master and the two upstream slaves.
     G_BURST_WIDTH : positive := 8;
     G_PREFER_SWAP : boolean := true;
     G_ADDR_SIZE   : positive;
-    G_DATA_SIZE   : positive
+    G_DATA_SIZE   : positive := 8
   );
   port (
     clk_i              : in    std_logic;
@@ -78,9 +78,9 @@ entity avm_arbit is
     m_readdatavalid_i  : in    std_logic;
     m_readdata_i       : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
   );
-end entity avm_arbit;
+end entity avm_arbiter;
 
-architecture synthesis of avm_arbit is
+architecture synthesis of avm_arbiter is
 
   -- ----------------------------------------------------------------------------------
   -- "any request pending" per slave (combinational)
@@ -119,11 +119,11 @@ begin
   -- Top-level sanity checks. These fire only in simulation but document the contract.
   -- ------------------------------------------------------------------------------------
   assert not (s0_active_grant = '1' and s1_active_grant = '1')
-    report "avm_arbit: s0_active_grant and s1_active_grant asserted in the same cycle"
+    report "avm_arbiter: s0_active_grant and s1_active_grant asserted in the same cycle"
     severity failure;
 
   assert (G_DATA_SIZE mod 8) = 0
-    report "avm_arbit: G_DATA_SIZE must be a multiple of 8 (byteenable is G_DATA_SIZE/8 wide)"
+    report "avm_arbiter: G_DATA_SIZE must be a multiple of 8 (byteenable is G_DATA_SIZE/8 wide)"
     severity failure;
 
   -- ------------------------------------------------------------------------------------
@@ -373,7 +373,7 @@ begin
         when others =>
           -- Unreachable by construction (the top assert guards it). Be defensive
           -- in hardware anyway: drop both grants so we don't lock up.
-          report "avm_arbit: S0 and S1 both granted (active_grants = ""11"")"
+          report "avm_arbiter: S0 and S1 both granted (active_grants = ""11"")"
             severity failure;
           s0_active_grant <= '0';
           s1_active_grant <= '0';

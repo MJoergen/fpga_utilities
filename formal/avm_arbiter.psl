@@ -1,4 +1,4 @@
-vunit i_avm_arbit(avm_arbit(synthesis))
+vunit i_avm_arbiter(avm_arbiter(synthesis))
 {
    -- Additional signals used during formal verification
    signal f_count : integer range 0 to 3 := 0;
@@ -341,5 +341,5 @@ vunit i_avm_arbit(avm_arbit(synthesis))
    -- COVER STATEMENTS TO VERIFY REACHABILITY
    --------------------------------------------
 
-} -- vunit i_avm_arbit(avm_arbit(synthesis))
+} -- vunit i_avm_arbiter(avm_arbiter(synthesis))
 

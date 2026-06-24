@@ -5,6 +5,7 @@
 # List of source files
 SRC += $(SRC_DIR)/avm/avm_pipe.vhd
 SRC += $(SRC_DIR)/axis/axis_pipe.vhd
+SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 
 # List of test specific simulation files
 SRC += tb_avm_pipe.vhd

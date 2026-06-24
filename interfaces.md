@@ -559,7 +559,7 @@ are not signalled.
 
 ### Verification
 
-- **Formal properties:** `../formal/avm_arbit.psl`,
+- **Formal properties:** `../formal/avm_arbiter.psl`,
   `../formal/avm_increase.psl`, `../formal/avm_readahead.psl`.
 - **Bus-functional models:** `../sim/src/avm_master_sim.vhd`,
   `../sim/src/avm_slave_sim.vhd`, `../sim/src/avm_sim.vhd`

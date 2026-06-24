@@ -1,6 +1,6 @@
 # Run all source files through yosys to check for synthesis
 
-SRC += avm_arbit.vhd
+SRC += avm_arbiter.vhd
 SRC += avm_pipe.vhd
 
 TARGETS = $(patsubst %.vhd,%.edif,$(SRC))

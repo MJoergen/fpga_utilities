@@ -2,7 +2,7 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity tb_avm_arbit is
+entity tb_avm_arbiter is
   generic (
     G_BURST_WIDTH : positive;
     G_PREFER_SWAP : boolean;
@@ -10,9 +10,9 @@ entity tb_avm_arbit is
     G_ADDR_SIZE   : positive;
     G_DATA_SIZE   : positive
   );
-end entity tb_avm_arbit;
+end entity tb_avm_arbiter;
 
-architecture simulation of tb_avm_arbit is
+architecture simulation of tb_avm_arbiter is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -121,7 +121,7 @@ begin
   -- DUT
   ---------------------------------------------------------
 
-  avm_arbit_inst : entity work.avm_arbit
+  avm_arbiter_inst : entity work.avm_arbiter
     generic map (
       G_BURST_WIDTH => G_BURST_WIDTH,
       G_PREFER_SWAP => G_PREFER_SWAP,
@@ -158,7 +158,7 @@ begin
       m_burstcount_o     => s_burstcount,
       m_readdatavalid_i  => s_readdatavalid,
       m_readdata_i       => s_readdata
-    ); -- avm_arbit_inst : entity work.avm_arbit
+    ); -- avm_arbiter_inst : entity work.avm_arbiter
 
 
   ---------------------------------------------------------

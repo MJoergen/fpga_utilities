@@ -58,7 +58,7 @@ Per-interface modules currently in the repo:
   `axil_pipe_async`
 - **Wishbone** (`src/wbus/`): `wbus_arbiter`, `wbus_arbiter_general`,
   `wbus_mapper`
-- **Avalon-MM** (`src/avm/`): `avm_arbit`, `avm_decrease`,
+- **Avalon-MM** (`src/avm/`): `avm_arbiter`, `avm_decrease`,
   `avm_increase`, `avm_pipe`, `avm_readahead`
 - **Converters** (`src/converters/`): `axil_to_wbus`, `wbus_to_axil`,
   `axis_to_axip`, `axip_to_axis`

@@ -1,12 +1,12 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the avm_arbit.vhd file.
+# Description: Makefile for simulating the avm_arbiter.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/avm/avm_arbit.vhd
+SRC += $(SRC_DIR)/avm/avm_arbiter.vhd
 
 # List of test specific simulation files
-SRC += tb_avm_arbit.vhd
+SRC += tb_avm_arbiter.vhd
 
 # List of generic simulation files
 SRC += $(SIM_SRC_DIR)/avm_master_sim.vhd
@@ -18,7 +18,7 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 
 # Top level entity
-DUT = avm_arbit
+DUT = avm_arbiter
 
 # Test duration
 STOP_TIME = 600us

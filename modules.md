@@ -18,7 +18,7 @@ testbench are flagged as **unverified**.
 
 | Module                       | Formal proof | Testbench |
 | ---------------------------- | :----------: | :-------: |
-| `avm_arbit`                  | ✓ | `tb_avm_arbit` |
+| `avm_arbiter`                | ✓ | `tb_avm_arbiter` |
 | `avm_decrease`               | – | `tb_avm_decrease` |
 | `avm_increase`               | ✓ | `tb_avm_increase` |
 | `avm_pipe`                   | – | `tb_avm_pipe` |
@@ -186,7 +186,7 @@ Source: [`../src/avm/`](../src/avm/). All modules consume and produce
 the `avm` interface specified in
 [interfaces.md](interfaces.md#avalon).
 
-- [`avm_arbit.vhd`](../src/avm/avm_arbit.vhd): Arbiter merging two
+- [`avm_arbiter.vhd`](../src/avm/avm_arbiter.vhd): Arbiter merging two
   Avalon-MM masters onto a single Avalon-MM slave port. Burst-aware:
   once a burst starts, the grant is held until the burst completes.
 - [`avm_decrease.vhd`](../src/avm/avm_decrease.vhd): Data-width adapter
