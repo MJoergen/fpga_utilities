@@ -18,8 +18,8 @@ entity axil_master_sim is
     G_DEBUG     : boolean;
     G_RANDOM    : boolean;
     G_FAST      : boolean;
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_ADDR_BITS : natural;
+    G_DATA_BITS : natural
   );
   port (
     clk_i       : in    std_logic;
@@ -27,20 +27,20 @@ entity axil_master_sim is
 
     m_awready_i : in    std_logic;
     m_awvalid_o : out   std_logic;
-    m_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_awaddr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_wready_i  : in    std_logic;
     m_wvalid_o  : out   std_logic;
-    m_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    m_wdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_wstrb_o   : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
     m_bresp_i   : in    std_logic_vector(1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
-    m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_araddr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
-    m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_rresp_i   : in    std_logic_vector(1 downto 0)
   );
 end entity axil_master_sim;
@@ -63,16 +63,17 @@ architecture simulation of axil_master_sim is
   signal  write_req_cnt : natural range 0 to 100;
   signal  read_req_cnt  : natural range 0 to 100;
 
-  signal  wr_ptr_stim : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal  rd_ptr_stim : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal  wr_ptr_resp : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal  rd_ptr_resp : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal  wr_ptr_stim : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal  rd_ptr_stim : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal  wr_ptr_resp : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal  rd_ptr_resp : std_logic_vector(G_ADDR_BITS - 1 downto 0);
 
   pure function addr_to_data (
     addr : std_logic_vector
   ) return std_logic_vector is
   begin
-    return to_stdlogicvector(2 ** (G_DATA_SIZE - 1) + G_OFFSET - to_integer(addr), G_DATA_SIZE);
+    return to_stdlogicvector(2 ** (G_DATA_BITS - 1) + G_OFFSET - to_integer(addr),
+    G_DATA_BITS);
   end function addr_to_data;
 
 begin

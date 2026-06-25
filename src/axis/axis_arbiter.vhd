@@ -10,7 +10,7 @@ library ieee;
 
 entity axis_arbiter is
   generic (
-    G_DATA_SIZE : positive
+    G_DATA_BITS : positive
   );
   port (
     clk_i      : in    std_logic;
@@ -19,17 +19,17 @@ entity axis_arbiter is
     -- AXI stream input interface #0
     s0_ready_o : out   std_logic;
     s0_valid_i : in    std_logic;
-    s0_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s0_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- AXI stream input interface #1
     s1_ready_o : out   std_logic;
     s1_valid_i : in    std_logic;
-    s1_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s1_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- AXI stream output interface
     m_ready_i  : in    std_logic;
     m_valid_o  : out   std_logic;
-    m_data_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_data_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axis_arbiter;
 

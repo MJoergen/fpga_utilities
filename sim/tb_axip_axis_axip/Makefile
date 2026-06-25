@@ -24,7 +24,7 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 DUT = axip_axis_axip
 
 # Test duration
-STOP_TIME = 80us
+STOP_TIME = 90us
 
 # Test bench configuration
 GENERIC += -gG_PAUSE_SIZE=3

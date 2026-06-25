@@ -45,7 +45,7 @@ begin
 
   axis_pipe_inst : entity work.axis_pipe
     generic map (
-      G_DATA_SIZE => G_DATA_BYTES * 8 + 16
+      G_DATA_BITS => G_DATA_BYTES * 8 + 16
     )
     port map (
       clk_i     => clk_i,

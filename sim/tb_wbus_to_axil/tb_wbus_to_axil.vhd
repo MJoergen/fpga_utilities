@@ -12,8 +12,8 @@ entity tb_wbus_to_axil is
     G_DEBUG      : boolean;
     G_FAST       : boolean;
     G_PAUSE_SIZE : natural;
-    G_ADDR_SIZE  : natural;
-    G_DATA_SIZE  : natural
+    G_ADDR_BITS  : natural;
+    G_DATA_BITS  : natural
   );
 end entity tb_wbus_to_axil;
 
@@ -25,46 +25,46 @@ architecture simulation of tb_wbus_to_axil is
   signal m_wbus_cyc   : std_logic;
   signal m_wbus_stall : std_logic;
   signal m_wbus_stb   : std_logic;
-  signal m_wbus_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal m_wbus_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_wbus_we    : std_logic;
-  signal m_wbus_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m_wbus_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal m_wbus_ack   : std_logic;
-  signal m_wbus_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m_wbus_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal m_axil_awready : std_logic;
   signal m_axil_awvalid : std_logic;
-  signal m_axil_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal m_axil_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_axil_wready  : std_logic;
   signal m_axil_wvalid  : std_logic;
-  signal m_axil_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m_axil_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal m_axil_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal m_axil_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal m_axil_bready  : std_logic;
   signal m_axil_bvalid  : std_logic;
   signal m_axil_bresp   : std_logic_vector(1 downto 0);
   signal m_axil_arready : std_logic;
   signal m_axil_arvalid : std_logic;
-  signal m_axil_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal m_axil_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_axil_rready  : std_logic;
   signal m_axil_rvalid  : std_logic;
-  signal m_axil_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m_axil_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal m_axil_rresp   : std_logic_vector(1 downto 0);
 
   signal s_axil_awready : std_logic;
   signal s_axil_awvalid : std_logic;
-  signal s_axil_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_axil_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_axil_wready  : std_logic;
   signal s_axil_wvalid  : std_logic;
-  signal s_axil_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s_axil_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal s_axil_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s_axil_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal s_axil_bready  : std_logic;
   signal s_axil_bvalid  : std_logic;
   signal s_axil_bresp   : std_logic_vector(1 downto 0);
   signal s_axil_arready : std_logic;
   signal s_axil_arvalid : std_logic;
-  signal s_axil_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_axil_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_axil_rready  : std_logic;
   signal s_axil_rvalid  : std_logic;
-  signal s_axil_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s_axil_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal s_axil_rresp   : std_logic_vector(1 downto 0);
 
 begin
@@ -83,8 +83,8 @@ begin
 
   wbus_to_axil_inst : entity work.wbus_to_axil
     generic map (
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i            => clk,
@@ -119,8 +119,8 @@ begin
   axil_pause_inst : entity work.axil_pause
     generic map (
       G_SEED       => (others => '0'),
-      G_ADDR_SIZE  => G_ADDR_SIZE,
-      G_DATA_SIZE  => G_DATA_SIZE,
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -172,8 +172,8 @@ begin
       G_DEBUG     => false,
       G_OFFSET    => 1234,
       G_DO_ABORT  => G_DO_ABORT,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i     => clk,
@@ -197,8 +197,8 @@ begin
     generic map (
       G_DEBUG     => G_DEBUG,
       G_FAST      => G_FAST,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i       => clk,

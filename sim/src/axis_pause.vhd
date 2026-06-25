@@ -15,7 +15,7 @@ library ieee;
 entity axis_pause is
   generic (
     G_SEED       : std_logic_vector(63 downto 0);
-    G_DATA_SIZE  : integer;
+    G_DATA_BITS  : natural;
     G_PAUSE_SIZE : integer
   );
   port (
@@ -25,12 +25,12 @@ entity axis_pause is
     -- AXI streaming Input
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- AXI streaming Output
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axis_pause;
 

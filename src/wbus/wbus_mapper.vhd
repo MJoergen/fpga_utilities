@@ -14,8 +14,8 @@ entity wbus_mapper is
   generic (
     G_TIMEOUT          : positive := 100;
     G_NUM_SLAVES       : positive;
-    G_MASTER_ADDR_SIZE : positive;
-    G_SLAVE_ADDR_SIZE  : positive
+    G_MASTER_ADDR_BITS : positive;
+    G_SLAVE_ADDR_BITS  : positive
   );
   port (
     clk_i     : in    std_logic;
@@ -25,7 +25,7 @@ entity wbus_mapper is
     s_cyc_i   : in    std_logic;                                         -- Valid bus cycle
     s_stall_o : out   std_logic;
     s_stb_i   : in    std_logic;                                         -- Strobe signals / core select signal
-    s_addr_i  : in    std_logic_vector(G_MASTER_ADDR_SIZE - 1 downto 0); -- lower address bits
+    s_addr_i  : in    std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0); -- lower address bits
     s_we_i    : in    std_logic;                                         -- Write enable
     s_wrdat_i : in    std_logic_vector(31 downto 0);                     -- Write Databus
     s_ack_o   : out   std_logic;                                         -- Bus cycle acknowledge
@@ -36,7 +36,7 @@ entity wbus_mapper is
     m_cyc_o   : out   std_logic;                                         -- Valid bus cycle
     m_stall_i : in    std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Strobe signals / core select signal
     m_stb_o   : out   std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Strobe signals / core select signal
-    m_addr_o  : out   std_logic_vector(G_SLAVE_ADDR_SIZE - 1 downto 0);  -- lower address bits
+    m_addr_o  : out   std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);  -- lower address bits
     m_we_o    : out   std_logic;                                         -- Write enable
     m_wrdat_o : out   std_logic_vector(31 downto 0);                     -- Write Databus
     m_ack_i   : in    std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Bus cycle acknowledge
@@ -79,7 +79,7 @@ begin
 
 
   state_proc : process (clk_i)
-    variable slave_num_v : std_logic_vector(G_MASTER_ADDR_SIZE - G_SLAVE_ADDR_SIZE - 1 downto 0);
+    variable slave_num_v : std_logic_vector(G_MASTER_ADDR_BITS - G_SLAVE_ADDR_BITS - 1 downto 0);
     variable idx_v       : natural range 0 to G_NUM_SLAVES - 1;
   begin
     if rising_edge(clk_i) then
@@ -92,11 +92,11 @@ begin
 
         when IDLE_ST =>
           if s_cyc_i = '1' and s_stb_i = '1' then
-            slave_num_v := s_addr_i(G_MASTER_ADDR_SIZE - 1 downto G_SLAVE_ADDR_SIZE);
+            slave_num_v := s_addr_i(G_MASTER_ADDR_BITS - 1 downto G_SLAVE_ADDR_BITS);
             if to_integer(unsigned(slave_num_v)) < G_NUM_SLAVES then
               idx_v          := to_integer(unsigned(slave_num_v));
               slave_num      <= idx_v;
-              m_addr_o       <= s_addr_i(G_SLAVE_ADDR_SIZE - 1 downto 0);
+              m_addr_o       <= s_addr_i(G_SLAVE_ADDR_BITS - 1 downto 0);
               m_wrdat_o      <= s_wrdat_i;
               m_we_o         <= s_we_i;
               m_cyc_o        <= '1';

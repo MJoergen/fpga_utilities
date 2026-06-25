@@ -10,8 +10,8 @@ entity wbus_slave_sim is
   generic (
     G_NAME      : string  := "";
     G_DEBUG     : boolean := false;
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_ADDR_BITS : natural;
+    G_DATA_BITS : natural
   );
   port (
     clk_i     : in    std_logic;
@@ -19,18 +19,18 @@ entity wbus_slave_sim is
     s_cyc_i   : in    std_logic;
     s_stall_o : out   std_logic;
     s_stb_i   : in    std_logic;
-    s_addr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_we_i    : in    std_logic;
-    s_wrdat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_ack_o   : out   std_logic;
-    s_rddat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    s_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity wbus_slave_sim;
 
 architecture simulation of wbus_slave_sim is
 
-  type   ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal ram : ram_type(0 to 2 ** G_ADDR_SIZE - 1);
+  type   ram_type is array (natural range <>) of std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal ram : ram_type(0 to 2 ** G_ADDR_BITS - 1);
 
   signal req_active : std_logic := '0';
 

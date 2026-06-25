@@ -24,11 +24,11 @@ DUT = avm_arbiter
 STOP_TIME = 600us
 
 # Test bench configuration
-GENERIC += -gG_BURST_WIDTH=4
+GENERIC += -gG_BURST_BITS=4
 GENERIC += -gG_PREFER_SWAP=true
 GENERIC += -gG_PAUSE_SIZE=3
-GENERIC += -gG_ADDR_SIZE=12
-GENERIC += -gG_DATA_SIZE=16
+GENERIC += -gG_ADDR_BITS=12
+GENERIC += -gG_DATA_BITS=16
 
 include ../Makefile.inc
 

@@ -9,36 +9,36 @@ entity axis_fifo_async is
   generic (
     G_DEPTH     : positive;
     G_FILL_SIZE : positive;
-    G_DATA_SIZE : positive
+    G_DATA_BITS : positive
   );
   port (
     s_clk_i   : in    std_logic;
     s_rst_i   : in    std_logic;
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_fill_o  : out   std_logic_vector(G_FILL_SIZE - 1 downto 0);
     m_clk_i   : in    std_logic;
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_fill_o  : out   std_logic_vector(G_FILL_SIZE - 1 downto 0)
   );
 end entity axis_fifo_async;
 
 architecture synthesis of axis_fifo_async is
 
-  constant C_TDATA_WIDTH : natural := ((G_DATA_SIZE + 7) / 8) * 8;
+  constant C_TDATA_WIDTH : natural := ((G_DATA_BITS + 7) / 8) * 8;
 
   signal   s_data : std_logic_vector(C_TDATA_WIDTH - 1 downto 0);
   signal   m_data : std_logic_vector(C_TDATA_WIDTH - 1 downto 0);
 
 begin
 
-  s_data(G_DATA_SIZE - 1 downto 0)           <= s_data_i;
-  s_data(C_TDATA_WIDTH - 1 downto G_DATA_SIZE) <= (others => '0');
+  s_data(G_DATA_BITS - 1 downto 0)           <= s_data_i;
+  s_data(C_TDATA_WIDTH - 1 downto G_DATA_BITS) <= (others => '0');
 
-  m_data_o                                   <= m_data(G_DATA_SIZE - 1 downto 0);
+  m_data_o                                   <= m_data(G_DATA_BITS - 1 downto 0);
 
   xpm_fifo_axis_inst : component xpm_fifo_axis
     generic map (

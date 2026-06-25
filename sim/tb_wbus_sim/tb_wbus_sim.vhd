@@ -12,8 +12,8 @@ entity tb_wbus_sim is
     G_TIMEOUT_MAX : natural;
     G_DO_ABORT    : boolean;
     G_PAUSE_SIZE  : integer;
-    G_ADDR_SIZE   : natural;
-    G_DATA_SIZE   : natural
+    G_ADDR_BITS   : natural;
+    G_DATA_BITS   : natural
   );
 end entity tb_wbus_sim;
 
@@ -25,20 +25,20 @@ architecture simulation of tb_wbus_sim is
   signal m_cyc   : std_logic;
   signal m_stall : std_logic;
   signal m_stb   : std_logic;
-  signal m_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal m_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_we    : std_logic;
-  signal m_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal m_ack   : std_logic;
-  signal m_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal s_cyc   : std_logic;
   signal s_stall : std_logic;
   signal s_stb   : std_logic;
-  signal s_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_we    : std_logic;
-  signal s_wrdat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal s_ack   : std_logic;
-  signal s_rddat : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
 begin
 
@@ -64,8 +64,8 @@ begin
       G_LATENCY     => 3,
       G_TIMEOUT     => false,
       G_OFFSET      => 1234,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i     => clk,
@@ -92,8 +92,8 @@ begin
     generic map (
       G_SEED       => X"1122334455667788",
       G_PAUSE_SIZE => G_PAUSE_SIZE,
-      G_ADDR_SIZE  => G_ADDR_SIZE,
-      G_DATA_SIZE  => G_DATA_SIZE
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i     => clk,

@@ -19,7 +19,7 @@
 --      whole burst (true for all Avalon-MM masters we instantiate today).
 --   2. Reset is SYNCHRONOUS and active-high; it is applied at the END of each clocked
 --      process so that it overrides any case/elsif assignment in the same cycle.
---   3. G_DATA_SIZE is a multiple of 8 (m_byteenable_o is sized as G_DATA_SIZE/8).
+--   3. G_DATA_BITS is a multiple of 8 (m_byteenable_o is sized as G_DATA_BITS/8).
 --   4. The shared 'burstcount' register is safe because at most one of s0/s1 is granted at
 --      a time (enforced by grant_proc and by the top assertion).
 --   5. No write-response channel exists; write completion is implied by waitrequest
@@ -36,10 +36,10 @@ entity avm_arbiter is
   generic (
     -- Burstcount width on all three Avalon-MM interfaces. Must match the downstream
     -- master and the two upstream slaves.
-    G_BURST_WIDTH : positive := 8;
-    G_PREFER_SWAP : boolean := true;
-    G_ADDR_SIZE   : positive;
-    G_DATA_SIZE   : positive := 8
+    G_BURST_BITS  : positive := 8;
+    G_PREFER_SWAP : boolean  := true;
+    G_ADDR_BITS   : positive;
+    G_DATA_BITS   : positive := 8
   );
   port (
     clk_i              : in    std_logic;
@@ -49,34 +49,34 @@ entity avm_arbiter is
     s0_waitrequest_o   : out   std_logic;
     s0_write_i         : in    std_logic;
     s0_read_i          : in    std_logic;
-    s0_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s0_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s0_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s0_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    s0_address_i       : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    s0_writedata_i     : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s0_byteenable_i    : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    s0_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
     s0_readdatavalid_o : out   std_logic;
-    s0_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s0_readdata_o      : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- Slave-side interface 1 (input)
     s1_waitrequest_o   : out   std_logic;
     s1_write_i         : in    std_logic;
     s1_read_i          : in    std_logic;
-    s1_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s1_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s1_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s1_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    s1_address_i       : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    s1_writedata_i     : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s1_byteenable_i    : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    s1_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
     s1_readdatavalid_o : out   std_logic;
-    s1_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s1_readdata_o      : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- Master-side interface (output)
     m_waitrequest_i    : in    std_logic;
     m_write_o          : out   std_logic;
     m_read_o           : out   std_logic;
-    m_address_o        : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_writedata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_byteenable_o     : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o     : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    m_address_o        : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    m_writedata_o      : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_byteenable_o     : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    m_burstcount_o     : out   std_logic_vector(G_BURST_BITS - 1 downto 0);
     m_readdatavalid_i  : in    std_logic;
-    m_readdata_i       : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_readdata_i       : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity avm_arbiter;
 
@@ -111,7 +111,7 @@ architecture synthesis of avm_arbiter is
   --   * Read  address phase loads burstcount_i   (responses arrive later), unless
   --     readdatavalid arrives in the SAME cycle, in which case it pre-decrements.
   --   * Each subsequent accepted write beat or readdatavalid decrements by 1.
-  signal burstcount : unsigned(G_BURST_WIDTH - 1 downto 0);
+  signal burstcount : unsigned(G_BURST_BITS - 1 downto 0);
 
 begin
 
@@ -122,8 +122,8 @@ begin
     report "avm_arbiter: s0_active_grant and s1_active_grant asserted in the same cycle"
     severity failure;
 
-  assert (G_DATA_SIZE mod 8) = 0
-    report "avm_arbiter: G_DATA_SIZE must be a multiple of 8 (byteenable is G_DATA_SIZE/8 wide)"
+  assert (G_DATA_BITS mod 8) = 0
+    report "avm_arbiter: G_DATA_BITS must be a multiple of 8 (byteenable is G_DATA_BITS/8 wide)"
     severity failure;
 
   -- ------------------------------------------------------------------------------------
@@ -156,7 +156,7 @@ begin
       signal   write_i       : in  std_logic;
       signal   read_i        : in  std_logic;
       signal   waitrequest_o : in  std_logic;
-      signal   burstcount_i  : in  std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+      signal   burstcount_i  : in  std_logic_vector(G_BURST_BITS - 1 downto 0);
       variable handled       : out boolean
     ) is
     begin
@@ -176,18 +176,18 @@ begin
       end if;
     end procedure load_for_slave;
 
-    variable v_handled : boolean;
+    variable handled_v : boolean;
   begin
     if rising_edge(clk_i) then
       load_for_slave(s0_write_i, s0_read_i, s0_waitrequest_o,
-                     s0_burstcount_i, v_handled);
-      if not v_handled then
+                     s0_burstcount_i, handled_v);
+      if not handled_v then
         load_for_slave(s1_write_i, s1_read_i, s1_waitrequest_o,
-                       s1_burstcount_i, v_handled);
+                       s1_burstcount_i, handled_v);
       end if;
 
       -- No address-phase event this cycle: decrement for any accepted beat.
-      if not v_handled then
+      if not handled_v then
         if (s0_write_i and not s0_waitrequest_o) = '1' or
            s0_readdatavalid_o = '1' or
            (s1_write_i and not s1_waitrequest_o) = '1' or
@@ -223,7 +223,7 @@ begin
       signal   write_i      : in  std_logic;
       signal   readdv_o     : in  std_logic;
       signal   waitreq_o    : in  std_logic;
-      signal   burstcount_i : in  std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+      signal   burstcount_i : in  std_logic_vector(G_BURST_BITS - 1 downto 0);
       signal   last_o       : out std_logic
     ) is
     begin
@@ -282,7 +282,7 @@ begin
       signal   other_active_grant : out std_logic;
       constant self_last_id       : in  std_logic
     ) is
-      constant OTHER_LAST_ID : std_logic := not self_last_id;
+      constant C_OTHER_LAST_ID : std_logic := not self_last_id;
     begin
       -- Try to re-grant self first; otherwise hand over to other; otherwise see
       -- the "both idle" policy below.
@@ -291,10 +291,10 @@ begin
         self_active_grant <= '1';
         last_grant        <= self_last_id;
       elsif other_active_req = '1' and
-            not (last_grant = other_last_id and self_active_req = '1') then
+            not (last_grant = C_OTHER_LAST_ID and self_active_req = '1') then
         other_active_grant <= '1';
         self_active_grant  <= '0';
-        last_grant         <= other_last_id;
+        last_grant         <= C_OTHER_LAST_ID;
       end if;
 
       -- Both slaves idle: apply the configured fairness policy.
@@ -305,7 +305,7 @@ begin
           if swapped = '0' then
             other_active_grant <= '1';
             self_active_grant  <= '0';
-            last_grant         <= other_last_id;
+            last_grant         <= C_OTHER_LAST_ID;
             swapped            <= '1';
           else
             self_active_grant <= '1';

@@ -8,7 +8,7 @@ library ieee;
 
 entity axis_distributor is
   generic (
-    G_DATA_SIZE : positive
+    G_DATA_BITS : positive
   );
   port (
     clk_i      : in    std_logic;
@@ -16,16 +16,16 @@ entity axis_distributor is
 
     s_ready_o  : out   std_logic;
     s_valid_i  : in    std_logic;
-    s_data_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_data_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_dst_i    : in    std_logic;
 
     m0_ready_i : in    std_logic;
     m0_valid_o : out   std_logic;
-    m0_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m0_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     m1_ready_i : in    std_logic;
     m1_valid_o : out   std_logic;
-    m1_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m1_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axis_distributor;
 

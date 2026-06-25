@@ -11,8 +11,8 @@ entity axil_slave_sim is
   generic (
     G_DEBUG     : boolean;
     G_FAST      : boolean;
-    G_ADDR_SIZE : natural;
-    G_DATA_SIZE : natural
+    G_ADDR_BITS : natural;
+    G_DATA_BITS : natural
   );
   port (
     clk_i       : in    std_logic;
@@ -20,20 +20,20 @@ entity axil_slave_sim is
 
     s_awready_o : out   std_logic;
     s_awvalid_i : in    std_logic;
-    s_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_awaddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_wready_o  : out   std_logic;
     s_wvalid_i  : in    std_logic;
-    s_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    s_wdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_wstrb_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s_bready_i  : in    std_logic;
     s_bvalid_o  : out   std_logic;
     s_bresp_o   : out   std_logic_vector(1 downto 0);
     s_arready_o : out   std_logic;
     s_arvalid_i : in    std_logic;
-    s_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_araddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_rready_i  : in    std_logic;
     s_rvalid_o  : out   std_logic;
-    s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_rdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_rresp_o   : out   std_logic_vector(1 downto 0)
   );
 end entity axil_slave_sim;
@@ -41,12 +41,12 @@ end entity axil_slave_sim;
 architecture simulation of axil_slave_sim is
 
   signal s_awvalid : std_logic;
-  signal s_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_wvalid  : std_logic;
-  signal s_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal s_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
 
-  type   ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  type   ram_type is array (natural range <>) of std_logic_vector(G_DATA_BITS - 1 downto 0);
 
 begin
 
@@ -62,7 +62,7 @@ begin
                  (not s_rvalid_o);
 
   verify_proc : process (clk_i)
-    variable ram_v : ram_type(0 to 2 ** G_ADDR_SIZE - 1);
+    variable ram_v : ram_type(0 to 2 ** G_ADDR_BITS - 1);
   begin
     if rising_edge(clk_i) then
       if s_bready_i = '1' then

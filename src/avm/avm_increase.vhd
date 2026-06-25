@@ -7,16 +7,16 @@ library ieee;
 --
 -- Up-sizing bridge for the Avalon Memory-Mapped (Avalon-MM) protocol.
 --
---   * Slave  side : narrow data path (G_SLAVE_DATA_SIZE bits)
---   * Master side : wide   data path (G_MASTER_DATA_SIZE bits)
+--   * Slave  side : narrow data path (G_SLAVE_DATA_BITS bits)
+--   * Master side : wide   data path (G_MASTER_DATA_BITS bits)
 --
 -- Constraints (checked by assertions):
---   * G_MASTER_DATA_SIZE = C_RATIO * G_SLAVE_DATA_SIZE
+--   * G_MASTER_DATA_BITS = C_RATIO * G_SLAVE_DATA_BITS
 --   * C_RATIO must be a power of two and > 1
 --   * The total address space (size * 2**address) must match on both sides
 --
 -- Bursts:
---   * Up to (2**G_BURST_WIDTH - 1) slave beats are translated into the
+--   * Up to (2**G_BURST_BITS - 1) slave beats are translated into the
 --     minimum number of master beats required to cover the requested range.
 --   * Misaligned start addresses are supported; the first master beat may
 --     contain fewer than C_RATIO populated sub-slots.
@@ -35,19 +35,19 @@ library ieee;
 -- Limitations:
 --   * Reads and writes may not be issued simultaneously (asserted).
 --   * Both interfaces share clk_i / rst_i (no CDC).
---   * The internal read FIFO depth is 2**G_BURST_WIDTH master words
+--   * The internal read FIFO depth is 2**G_BURST_BITS master words
 --     (sized to absorb the worst-case master read burst).
---   * The internal write FIFO depth is also 2**G_BURST_WIDTH master words
+--   * The internal write FIFO depth is also 2**G_BURST_BITS master words
 --     (sized to buffer the complete packed write burst before master emission).
 --------------------------------------------------------------------------------
 
 entity avm_increase is
   generic (
-    G_BURST_WIDTH         : positive := 8;
-    G_SLAVE_ADDRESS_SIZE  : positive;
-    G_SLAVE_DATA_SIZE     : positive;
-    G_MASTER_ADDRESS_SIZE : positive;
-    G_MASTER_DATA_SIZE    : positive -- Must be an integer multiple of G_SLAVE_DATA_SIZE
+    G_BURST_BITS       : positive := 8;
+    G_SLAVE_ADDR_BITS  : positive;
+    G_SLAVE_DATA_BITS  : positive;
+    G_MASTER_ADDR_BITS : positive;
+    G_MASTER_DATA_BITS : positive -- Must be an integer multiple of G_SLAVE_DATA_BITS
   );
   port (
     clk_i             : in    std_logic;
@@ -57,48 +57,48 @@ entity avm_increase is
     s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
-    s_address_i       : in    std_logic_vector(G_SLAVE_ADDRESS_SIZE - 1 downto 0);
-    s_writedata_i     : in    std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
-    s_byteenable_i    : in    std_logic_vector(G_SLAVE_DATA_SIZE / 8 - 1 downto 0);
-    s_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-    s_readdata_o      : out   std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
+    s_address_i       : in    std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);
+    s_writedata_i     : in    std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
+    s_byteenable_i    : in    std_logic_vector(G_SLAVE_DATA_BITS / 8 - 1 downto 0);
+    s_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
+    s_readdata_o      : out   std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
     s_readdatavalid_o : out   std_logic;
 
     -- Master port (faces downstream slave) — wide side
     m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
-    m_address_o       : out   std_logic_vector(G_MASTER_ADDRESS_SIZE - 1 downto 0);
-    m_writedata_o     : out   std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
-    m_byteenable_o    : out   std_logic_vector(G_MASTER_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-    m_readdata_i      : in    std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
+    m_address_o       : out   std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0);
+    m_writedata_o     : out   std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
+    m_byteenable_o    : out   std_logic_vector(G_MASTER_DATA_BITS / 8 - 1 downto 0);
+    m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);
+    m_readdata_i      : in    std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
     m_readdatavalid_i : in    std_logic
   );
 end entity avm_increase;
 
 architecture synthesis of avm_increase is
 
-  -- 2**G_BURST_WIDTH — the smallest value that is NOT a representable
+  -- 2**G_BURST_BITS — the smallest value that is NOT a representable
   -- Avalon-MM burstcount. Used as FIFO depth to cover the worst-case burst.
-  constant C_BURST_LIMIT : positive            := 2 ** G_BURST_WIDTH;
+  constant C_BURST_LIMIT : positive            := 2 ** G_BURST_BITS;
 
   -- Number of slave words per master word.
-  constant C_RATIO : positive                  := G_MASTER_DATA_SIZE / G_SLAVE_DATA_SIZE;
+  constant C_RATIO : positive                  := G_MASTER_DATA_BITS / G_SLAVE_DATA_BITS;
 
   -- log2(C_RATIO); also the number of slave-address LSBs selecting the
   -- sub-slot within a master word.
-  constant C_ADDRESS_SHIFT : natural           := G_SLAVE_ADDRESS_SIZE - G_MASTER_ADDRESS_SIZE;
+  constant C_ADDR_SHIFT : natural              := G_SLAVE_ADDR_BITS - G_MASTER_ADDR_BITS;
 
-  constant C_SLAVE_BYTEENABLE_SIZE  : positive := G_SLAVE_DATA_SIZE / 8;
-  constant C_MASTER_BYTEENABLE_SIZE : positive := G_MASTER_DATA_SIZE / 8;
+  constant C_SLAVE_BYTEENABLE_BITS  : positive := G_SLAVE_DATA_BITS / 8;
+  constant C_MASTER_BYTEENABLE_BITS : positive := G_MASTER_DATA_BITS / 8;
 
   -- The write FIFO stores one packed master beat:
   --
   --   upper bits : m_writedata_o
   --   lower bits : m_byteenable_o
   --
-  constant C_WRITE_FIFO_DATA_SIZE : positive   := G_MASTER_DATA_SIZE + C_MASTER_BYTEENABLE_SIZE;
+  constant C_WRITE_FIFO_DATA_BITS : positive   := G_MASTER_DATA_BITS + C_MASTER_BYTEENABLE_BITS;
 
   type     state_type is (
     IDLE_ST,            -- No transaction in flight; accepting new read or write.
@@ -111,47 +111,47 @@ architecture synthesis of avm_increase is
   signal   state : state_type                  := IDLE_ST;
 
   -- Current sub-slot index within a master word.
-  signal   offset : std_logic_vector(C_ADDRESS_SHIFT - 1 downto 0);
+  signal   offset : std_logic_vector(C_ADDR_SHIFT - 1 downto 0);
 
   -- Remaining slave beats in the current write/read transaction.
-  signal   s_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal   s_burstcount : std_logic_vector(G_BURST_BITS - 1 downto 0);
 
   -- Remaining accepted master write beats in the current emitted master burst.
-  signal   m_write_remaining : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal   m_write_remaining : std_logic_vector(G_BURST_BITS - 1 downto 0);
 
   -- Registered master command metadata. For writes, these are held stable while
   -- the buffered write data is emitted from the write FIFO.
   signal   m_read       : std_logic;
-  signal   m_address    : std_logic_vector(G_MASTER_ADDRESS_SIZE - 1 downto 0);
-  signal   m_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal   m_address    : std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0);
+  signal   m_burstcount : std_logic_vector(G_BURST_BITS - 1 downto 0);
 
   -- Accumulates one packed master write beat while slave write beats are being
   -- accepted. Byte-enables are cleared between packed master words so partial
   -- leading/trailing master words are represented correctly.
-  signal   write_pack_data       : std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
-  signal   write_pack_byteenable : std_logic_vector(C_MASTER_BYTEENABLE_SIZE - 1 downto 0);
+  signal   write_pack_data       : std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
+  signal   write_pack_byteenable : std_logic_vector(C_MASTER_BYTEENABLE_BITS - 1 downto 0);
 
   -- Read FIFO signals.
   signal   rd_fifo_s_ready : std_logic;
   signal   rd_fifo_m_ready : std_logic;
   signal   rd_fifo_m_valid : std_logic;
-  signal   rd_fifo_m_data  : std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
+  signal   rd_fifo_m_data  : std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
 
   -- Write FIFO signals.
   signal   wr_fifo_s_ready : std_logic;
   signal   wr_fifo_s_valid : std_logic;
-  signal   wr_fifo_s_data  : std_logic_vector(C_WRITE_FIFO_DATA_SIZE - 1 downto 0);
+  signal   wr_fifo_s_data  : std_logic_vector(C_WRITE_FIFO_DATA_BITS - 1 downto 0);
   signal   wr_fifo_m_ready : std_logic;
   signal   wr_fifo_m_valid : std_logic;
-  signal   wr_fifo_m_data  : std_logic_vector(C_WRITE_FIFO_DATA_SIZE - 1 downto 0);
+  signal   wr_fifo_m_data  : std_logic_vector(C_WRITE_FIFO_DATA_BITS - 1 downto 0);
 
   -- High when the slave start address points at the last sub-slot of a master
   -- word, i.e. the first accepted slave beat completes a packed master beat.
   signal   s_last_subslot : std_logic;
 
   -- Local alias: slave address with the sub-slot bits removed.
-  alias    s_master_address : std_logic_vector(G_MASTER_ADDRESS_SIZE - 1 downto 0)
-                            is s_address_i(G_SLAVE_ADDRESS_SIZE - 1 downto C_ADDRESS_SHIFT);
+  alias    s_master_address : std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0)
+                            is s_address_i(G_SLAVE_ADDR_BITS - 1 downto C_ADDR_SHIFT);
 
 begin
 
@@ -160,27 +160,27 @@ begin
   ------------------------------
 
   assert C_RATIO > 1
-    report "C_RATIO must be greater than one (G_MASTER_DATA_SIZE > G_SLAVE_DATA_SIZE required)"
+    report "C_RATIO must be greater than one (G_MASTER_DATA_BITS > G_SLAVE_DATA_BITS required)"
     severity failure;
 
-  assert C_ADDRESS_SHIFT > 0
-    report "C_ADDRESS_SHIFT must be > 0 (G_SLAVE_ADDRESS_SIZE > G_MASTER_ADDRESS_SIZE required)"
+  assert C_ADDR_SHIFT > 0
+    report "C_ADDR_SHIFT must be > 0 (G_SLAVE_ADDR_BITS > G_MASTER_ADDR_BITS required)"
     severity failure;
 
-  assert G_MASTER_DATA_SIZE = C_RATIO * G_SLAVE_DATA_SIZE
-    report "G_MASTER_DATA_SIZE must be an integer multiple of G_SLAVE_DATA_SIZE"
+  assert G_MASTER_DATA_BITS = C_RATIO * G_SLAVE_DATA_BITS
+    report "G_MASTER_DATA_BITS must be an integer multiple of G_SLAVE_DATA_BITS"
     severity failure;
 
-  assert G_MASTER_DATA_SIZE * (2 ** G_MASTER_ADDRESS_SIZE) =
-         G_SLAVE_DATA_SIZE * (2 ** G_SLAVE_ADDRESS_SIZE)
+  assert G_MASTER_DATA_BITS * (2 ** G_MASTER_ADDR_BITS) =
+         G_SLAVE_DATA_BITS * (2 ** G_SLAVE_ADDR_BITS)
     report "Master and slave address spaces must describe the same total storage size"
     severity failure;
 
-  assert C_RATIO = 2 ** C_ADDRESS_SHIFT
+  assert C_RATIO = 2 ** C_ADDR_SHIFT
     report "Width ratio must be power-of-two"
     severity failure;
 
-  s_last_subslot    <= and (s_address_i(C_ADDRESS_SHIFT - 1 downto 0));
+  s_last_subslot    <= and (s_address_i(C_ADDR_SHIFT - 1 downto 0));
 
   --------------------------------------------------------------------
   -- Master output mapping
@@ -197,10 +197,11 @@ begin
   m_write_o         <= wr_fifo_m_valid when state = EMIT_WRITE_ST else
                        '0';
 
-  m_writedata_o     <= wr_fifo_m_data(C_WRITE_FIFO_DATA_SIZE - 1 downto C_MASTER_BYTEENABLE_SIZE);
+  m_writedata_o     <= wr_fifo_m_data(C_WRITE_FIFO_DATA_BITS - 1 downto
+                       C_MASTER_BYTEENABLE_BITS);
 
   m_byteenable_o    <= (others => '1') when m_read = '1' else
-                       wr_fifo_m_data(C_MASTER_BYTEENABLE_SIZE - 1 downto 0)
+                       wr_fifo_m_data(C_MASTER_BYTEENABLE_BITS - 1 downto 0)
                        when state = EMIT_WRITE_ST else
                        (others => '0');
 
@@ -238,12 +239,12 @@ begin
       address    : std_logic_vector;
       burstcount : std_logic_vector
     ) return std_logic_vector is
-      variable res_v : std_logic_vector(G_SLAVE_ADDRESS_SIZE + 1 downto 0);
+      variable res_v : std_logic_vector(G_SLAVE_ADDR_BITS + 1 downto 0);
     begin
       res_v := (("00" & address) + burstcount - 1) / C_RATIO -
                (("00" & address) / C_RATIO) + 1;
 
-      return res_v(G_BURST_WIDTH - 1 downto 0);
+      return res_v(G_BURST_BITS - 1 downto 0);
     end function calc_m_burstcount;
 
     ----------------------------------------------------------------------
@@ -256,18 +257,18 @@ begin
 
     procedure pack_write_slot (
       pos                   : natural range 0 to C_RATIO - 1;
-      variable data_v       : inout std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
-      variable byteenable_v : inout std_logic_vector(C_MASTER_BYTEENABLE_SIZE - 1 downto 0)
+      variable data_v       : inout std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
+      variable byteenable_v : inout std_logic_vector(C_MASTER_BYTEENABLE_BITS - 1 downto 0)
     ) is
     begin
       data_v(
-      G_SLAVE_DATA_SIZE * (pos + 1) - 1 downto
-      G_SLAVE_DATA_SIZE * pos
+      G_SLAVE_DATA_BITS * (pos + 1) - 1 downto
+      G_SLAVE_DATA_BITS * pos
       ) := s_writedata_i;
 
       byteenable_v(
-      C_SLAVE_BYTEENABLE_SIZE * (pos + 1) - 1 downto
-      C_SLAVE_BYTEENABLE_SIZE * pos
+      C_SLAVE_BYTEENABLE_BITS * (pos + 1) - 1 downto
+      C_SLAVE_BYTEENABLE_BITS * pos
       ) := s_byteenable_i;
     end procedure pack_write_slot;
 
@@ -282,8 +283,8 @@ begin
     ----------------------------------------------------------------------
 
     procedure push_write_word (
-      variable data_v       : in std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
-      variable byteenable_v : in std_logic_vector(C_MASTER_BYTEENABLE_SIZE - 1 downto 0)
+      variable data_v       : in std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
+      variable byteenable_v : in std_logic_vector(C_MASTER_BYTEENABLE_BITS - 1 downto 0)
     ) is
     begin
       assert wr_fifo_s_ready = '1' or rst_i = '1'
@@ -294,9 +295,9 @@ begin
       wr_fifo_s_data  <= data_v & byteenable_v;
     end procedure push_write_word;
 
-    variable pack_data_v       : std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
-    variable pack_byteenable_v : std_logic_vector(C_MASTER_BYTEENABLE_SIZE - 1 downto 0);
-    variable master_burst_v    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    variable pack_data_v       : std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
+    variable pack_byteenable_v : std_logic_vector(C_MASTER_BYTEENABLE_BITS - 1 downto 0);
+    variable master_burst_v    : std_logic_vector(G_BURST_BITS - 1 downto 0);
 
   begin
     if rising_edge(clk_i) then
@@ -341,7 +342,7 @@ begin
             pack_byteenable_v := (others => '0');
 
             pack_write_slot(
-                            to_integer(s_address_i(C_ADDRESS_SHIFT - 1 downto 0)),
+                            to_integer(s_address_i(C_ADDR_SHIFT - 1 downto 0)),
                             pack_data_v,
                             pack_byteenable_v
                           );
@@ -365,7 +366,7 @@ begin
               state <= WAIT_WRITE_FIFO_ST;
             else
               s_burstcount <= s_burstcount_i - 1;
-              offset       <= s_address_i(C_ADDRESS_SHIFT - 1 downto 0) + 1;
+              offset       <= s_address_i(C_ADDR_SHIFT - 1 downto 0) + 1;
               state        <= WRITING_ST;
             end if;
           elsif s_read_i = '1' and s_waitrequest_o = '0' then
@@ -382,7 +383,7 @@ begin
             m_burstcount <= calc_m_burstcount(s_address_i, s_burstcount_i);
 
             s_burstcount <= s_burstcount_i;
-            offset       <= s_address_i(C_ADDRESS_SHIFT - 1 downto 0);
+            offset       <= s_address_i(C_ADDR_SHIFT - 1 downto 0);
             state        <= READING_ST;
           end if;
 
@@ -532,8 +533,8 @@ begin
   -- it may present a slice of stale FIFO data, which is harmless because the
   -- upstream slave-side master is not allowed to sample it without valid.
   s_readdata_o      <= rd_fifo_m_data(
-                                      G_SLAVE_DATA_SIZE * (to_integer(offset) + 1) - 1 downto
-                                      G_SLAVE_DATA_SIZE * to_integer(offset)
+                                      G_SLAVE_DATA_BITS * (to_integer(offset) + 1) - 1 downto
+                                      G_SLAVE_DATA_BITS * to_integer(offset)
                                     );
 
   s_readdatavalid_o <= rd_fifo_m_valid when state = READING_ST else
@@ -589,7 +590,7 @@ begin
 
   read_axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_DATA_SIZE => G_MASTER_DATA_SIZE,
+      G_DATA_BITS => G_MASTER_DATA_BITS,
       G_RAM_DEPTH => C_BURST_LIMIT
     )
     port map (
@@ -609,7 +610,7 @@ begin
 
   write_axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_DATA_SIZE => C_WRITE_FIFO_DATA_SIZE,
+      G_DATA_BITS => C_WRITE_FIFO_DATA_BITS,
       G_RAM_DEPTH => C_BURST_LIMIT
     )
     port map (

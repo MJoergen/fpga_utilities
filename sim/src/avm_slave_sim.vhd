@@ -3,7 +3,7 @@
 --   Simulation-only Avalon-MM slave memory model.
 --
 --   The model implements a simple word-addressed memory with byte-enable support.
---   Each address corresponds to one G_DATA_SIZE-bit word. Burst transactions are
+--   Each address corresponds to one G_DATA_BITS-bit word. Burst transactions are
 --   supported by incrementing the address by one word for each accepted beat.
 --
 -- Behavior:
@@ -13,7 +13,7 @@
 --
 -- Important assumptions / limitations:
 --   * Address input is treated as a word address (not byte address).
---   * G_DATA_SIZE must be a multiple of 8 (byte-enable granularity).
+--   * G_DATA_BITS must be a multiple of 8 (byte-enable granularity).
 --   * Burstcount must be nonzero when a command is accepted.
 --   * Simultaneous read and write commands are not supported.
 --   * During a write burst:
@@ -33,11 +33,11 @@ library ieee;
 
 entity avm_slave_sim is
   generic (
-    G_BURST_WIDTH : positive := 8;
+    G_BURST_BITS : positive := 8;
     G_NAME        : string   := "";
     G_DEBUG       : boolean  := false;
-    G_ADDR_SIZE   : positive; -- Address width in bits (memory depth = 2**G_ADDR_SIZE words)
-    G_DATA_SIZE   : positive  -- Data width in bits (must be multiple of 8)
+    G_ADDR_BITS   : positive; -- Address width in bits (memory depth = 2**G_ADDR_BITS words)
+    G_DATA_BITS   : positive  -- Data width in bits (must be multiple of 8)
   );
   port (
     clk_i             : in    std_logic;
@@ -47,13 +47,13 @@ entity avm_slave_sim is
     s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
-    s_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    s_address_i       : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    s_writedata_i     : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_byteenable_i    : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    s_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
 
     s_readdatavalid_o : out   std_logic;
-    s_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    s_readdata_o      : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity avm_slave_sim;
 
@@ -61,39 +61,39 @@ end entity avm_slave_sim;
 architecture simulation of avm_slave_sim is
 
   -- Number of byte lanes per word (must be integer)
-  constant C_BYTES_PER_WORD : natural                              := G_DATA_SIZE / 8;
+  constant C_BYTES_PER_WORD : natural                              := G_DATA_BITS / 8;
 
   -- Number of addressable words in memory
-  constant C_MEM_DEPTH : natural                                   := 2 ** G_ADDR_SIZE;
+  constant C_MEM_DEPTH : natural                                   := 2 ** G_ADDR_BITS;
 
   -- Word-addressed memory array
   type     mem_type is array (0 to C_MEM_DEPTH - 1) of
-                     std_logic_vector(G_DATA_SIZE - 1 downto 0);
+                     std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   -- Burst activity flags (remaining beats > 0)
   signal   read_active_s  : std_logic;
   signal   write_active_s : std_logic;
 
   -- Internal burst state (remaining beats and current address)
-  signal   write_burstcount : unsigned(G_BURST_WIDTH - 1 downto 0) := (others => '0');
-  signal   write_address    : unsigned(G_ADDR_SIZE - 1 downto 0)   := (others => '0');
+  signal   write_burstcount : unsigned(G_BURST_BITS - 1 downto 0) := (others => '0');
+  signal   write_address    : unsigned(G_ADDR_BITS - 1 downto 0)   := (others => '0');
 
-  signal   read_burstcount : unsigned(G_BURST_WIDTH - 1 downto 0)  := (others => '0');
-  signal   read_address    : unsigned(G_ADDR_SIZE - 1 downto 0)    := (others => '0');
+  signal   read_burstcount : unsigned(G_BURST_BITS - 1 downto 0)  := (others => '0');
+  signal   read_address    : unsigned(G_ADDR_BITS - 1 downto 0)    := (others => '0');
 
   -- Muxed address/burstcount:
   --   * When no burst is active: use bus inputs
   --   * During burst: use internally updated state
-  signal   mem_write_burstcount : unsigned(G_BURST_WIDTH - 1 downto 0);
-  signal   mem_read_burstcount  : unsigned(G_BURST_WIDTH - 1 downto 0);
-  signal   mem_write_address    : unsigned(G_ADDR_SIZE - 1 downto 0);
-  signal   mem_read_address     : unsigned(G_ADDR_SIZE - 1 downto 0);
+  signal   mem_write_burstcount : unsigned(G_BURST_BITS - 1 downto 0);
+  signal   mem_read_burstcount  : unsigned(G_BURST_BITS - 1 downto 0);
+  signal   mem_write_address    : unsigned(G_ADDR_BITS - 1 downto 0);
+  signal   mem_read_address     : unsigned(G_ADDR_BITS - 1 downto 0);
 
 begin
 
   -- Enforce valid byte-enable configuration
-  assert G_DATA_SIZE mod 8 = 0
-    report "G_DATA_SIZE must be a multiple of 8"
+  assert G_DATA_BITS mod 8 = 0
+    report "G_DATA_BITS must be a multiple of 8"
     severity failure;
 
 

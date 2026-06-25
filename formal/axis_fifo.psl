@@ -9,8 +9,8 @@ vunit axis_fifo_inst(axis_fifo(synthesis))
    signal f_sampled_out_db : std_logic := '0';
 
 -- Two random values to be pushed into the FIFO
-   signal f_value_da : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-   signal f_value_db : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+   signal f_value_da : std_logic_vector(G_DATA_BITS - 1 downto 0);
+   signal f_value_db : std_logic_vector(G_DATA_BITS - 1 downto 0);
    attribute anyconst : boolean;
    attribute anyconst of f_value_da : signal is true;
    attribute anyconst of f_value_db : signal is true;

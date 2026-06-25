@@ -8,15 +8,15 @@ library ieee;
 
 entity tb_avm_decrease is
   generic (
-    G_BURST_WIDTH      : positive;
+    G_BURST_BITS      : positive;
     G_MAX_BURST        : positive;
     G_DEBUG            : boolean;
     G_PAUSE_SIZE       : integer;
     G_TIMEOUT_MAX      : natural;
-    G_SLAVE_ADDR_SIZE  : positive;
-    G_SLAVE_DATA_SIZE  : positive;
-    G_MASTER_ADDR_SIZE : positive;
-    G_MASTER_DATA_SIZE : positive
+    G_SLAVE_ADDR_BITS  : positive;
+    G_SLAVE_DATA_BITS  : positive;
+    G_MASTER_ADDR_BITS : positive;
+    G_MASTER_DATA_BITS : positive
   );
 end entity tb_avm_decrease;
 
@@ -27,21 +27,21 @@ architecture simulation of tb_avm_decrease is
 
   signal s_write         : std_logic;
   signal s_read          : std_logic;
-  signal s_address       : std_logic_vector(G_SLAVE_ADDR_SIZE - 1 downto 0);
-  signal s_writedata     : std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
-  signal s_byteenable    : std_logic_vector(G_SLAVE_DATA_SIZE / 8 - 1 downto 0);
-  signal s_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-  signal s_readdata      : std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
+  signal s_address       : std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);
+  signal s_writedata     : std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
+  signal s_byteenable    : std_logic_vector(G_SLAVE_DATA_BITS / 8 - 1 downto 0);
+  signal s_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
+  signal s_readdata      : std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
   signal s_readdatavalid : std_logic;
   signal s_waitrequest   : std_logic;
 
   signal m_write         : std_logic;
   signal m_read          : std_logic;
-  signal m_address       : std_logic_vector(G_MASTER_ADDR_SIZE - 1 downto 0);
-  signal m_writedata     : std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
-  signal m_byteenable    : std_logic_vector(G_MASTER_DATA_SIZE / 8 - 1 downto 0);
-  signal m_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-  signal m_readdata      : std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
+  signal m_address       : std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0);
+  signal m_writedata     : std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
+  signal m_byteenable    : std_logic_vector(G_MASTER_DATA_BITS / 8 - 1 downto 0);
+  signal m_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
+  signal m_readdata      : std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
   signal m_readdatavalid : std_logic;
   signal m_waitrequest   : std_logic;
 
@@ -61,11 +61,11 @@ begin
 
   avm_decrease_inst : entity work.avm_decrease
     generic map (
-      G_BURST_WIDTH         => G_BURST_WIDTH,
-      G_SLAVE_ADDRESS_SIZE  => G_SLAVE_ADDR_SIZE,
-      G_SLAVE_DATA_SIZE     => G_SLAVE_DATA_SIZE,
-      G_MASTER_ADDRESS_SIZE => G_MASTER_ADDR_SIZE,
-      G_MASTER_DATA_SIZE    => G_MASTER_DATA_SIZE
+      G_BURST_BITS         => G_BURST_BITS,
+      G_SLAVE_ADDRESS_BITS  => G_SLAVE_ADDR_BITS,
+      G_SLAVE_DATA_BITS     => G_SLAVE_DATA_BITS,
+      G_MASTER_ADDRESS_BITS => G_MASTER_ADDR_BITS,
+      G_MASTER_DATA_BITS    => G_MASTER_DATA_BITS
     )
     port map (
       clk_i             => clk,
@@ -97,7 +97,7 @@ begin
 
   avm_master_sim_inst : entity work.avm_master_sim
     generic map (
-      G_BURST_WIDTH       => G_BURST_WIDTH,
+      G_BURST_BITS        => G_BURST_BITS,
       G_MAX_BURST         => G_MAX_BURST,
       G_RANDOM_BYTEENABLE => false,
       G_SEED              => X"DEADBEEFC007BABE",
@@ -105,8 +105,8 @@ begin
       G_DEBUG             => G_DEBUG,
       G_OFFSET            => 1234,
       G_TIMEOUT_MAX       => 0,
-      G_ADDR_SIZE         => G_SLAVE_ADDR_SIZE,
-      G_DATA_SIZE         => G_SLAVE_DATA_SIZE
+      G_ADDR_BITS         => G_SLAVE_ADDR_BITS,
+      G_DATA_BITS         => G_SLAVE_DATA_BITS
     )
     port map (
       clk_i             => clk,
@@ -129,11 +129,11 @@ begin
 
   avm_slave_sim_inst : entity work.avm_slave_sim
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_BURST_BITS  => G_BURST_BITS,
       G_NAME        => "SLAVE",
       G_DEBUG       => G_DEBUG,
-      G_ADDR_SIZE   => G_MASTER_ADDR_SIZE,
-      G_DATA_SIZE   => G_MASTER_DATA_SIZE
+      G_ADDR_BITS   => G_MASTER_ADDR_BITS,
+      G_DATA_BITS   => G_MASTER_DATA_BITS
     )
     port map (
       clk_i             => clk,

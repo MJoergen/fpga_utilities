@@ -8,13 +8,13 @@ library ieee;
 
 entity avm_sim is
   generic (
-    G_BURST_WIDTH : natural := 8;
+    G_BURST_BITS : natural := 8;
     G_MAX_BURST   : natural := 8;
     G_DEBUG       : boolean;
     G_PAUSE_SIZE  : natural;
     G_TIMEOUT_MAX : natural := 0;
-    G_ADDR_SIZE   : positive; -- Number of bits
-    G_DATA_SIZE   : positive  -- Number of bits
+    G_ADDR_BITS   : positive; -- Number of bits
+    G_DATA_BITS   : positive  -- Number of bits
   );
   port (
     clk_i             : in    std_logic;
@@ -23,22 +23,22 @@ entity avm_sim is
     m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
-    m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    m_address_o       : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    m_writedata_o     : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_byteenable_o    : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);
     m_readdatavalid_i : in    std_logic;
-    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_readdata_i      : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     -- Output
     s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
-    s_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    s_address_i       : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    s_writedata_i     : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_byteenable_i    : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    s_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
     s_readdatavalid_o : out   std_logic;
-    s_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    s_readdata_o      : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity avm_sim;
 
@@ -47,22 +47,22 @@ architecture simulation of avm_sim is
   signal pause_m_waitrequest   : std_logic;
   signal pause_m_write         : std_logic;
   signal pause_m_read          : std_logic;
-  signal pause_m_address       : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal pause_m_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal pause_m_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal pause_m_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal pause_m_address       : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal pause_m_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal pause_m_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal pause_m_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal pause_m_readdatavalid : std_logic;
-  signal pause_m_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal pause_m_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal pause_s_waitrequest   : std_logic;
   signal pause_s_write         : std_logic;
   signal pause_s_read          : std_logic;
-  signal pause_s_address       : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal pause_s_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal pause_s_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal pause_s_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal pause_s_address       : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal pause_s_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal pause_s_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal pause_s_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal pause_s_readdatavalid : std_logic;
-  signal pause_s_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal pause_s_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
 begin
 
@@ -72,15 +72,15 @@ begin
 
   avm_master_sim_inst : entity work.avm_master_sim
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_BURST_BITS => G_BURST_BITS,
       G_MAX_BURST   => G_MAX_BURST,
       G_SEED        => X"DEADBEEFC007BABE",
       G_NAME        => "",
       G_DEBUG       => G_DEBUG,
       G_OFFSET      => 1234,
       G_TIMEOUT_MAX => G_TIMEOUT_MAX,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk_i,
@@ -103,12 +103,12 @@ begin
 
   avm_pause_m_inst : entity work.avm_pause
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_BURST_BITS => G_BURST_BITS,
       G_MAX_BURST   => G_MAX_BURST,
       G_SEED        => X"1234567888776655",
       G_PAUSE_SIZE  => G_PAUSE_SIZE,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk_i,
@@ -140,11 +140,11 @@ begin
 
   avm_pause_s_inst : entity work.avm_pause
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_BURST_BITS => G_BURST_BITS,
       G_SEED        => X"4433221187654321",
       G_PAUSE_SIZE  => G_PAUSE_SIZE,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk_i,
@@ -176,10 +176,10 @@ begin
 
   avm_slave_sim_inst : entity work.avm_slave_sim
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_BURST_BITS => G_BURST_BITS,
       G_DEBUG       => G_DEBUG,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk_i,

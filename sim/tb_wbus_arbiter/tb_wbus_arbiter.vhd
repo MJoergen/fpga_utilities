@@ -14,7 +14,7 @@ entity tb_wbus_arbiter is
     G_DEBUG     : boolean;
     G_DO_ABORT  : boolean;
     G_LATENCY   : natural;
-    G_ADDR_SIZE : natural
+    G_ADDR_BITS : natural
   );
 end entity tb_wbus_arbiter;
 
@@ -26,7 +26,7 @@ architecture simulation of tb_wbus_arbiter is
   signal s0_cyc   : std_logic;
   signal s0_stall : std_logic;
   signal s0_stb   : std_logic;
-  signal s0_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s0_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s0_we    : std_logic;
   signal s0_wrdat : std_logic_vector(31 downto 0);
   signal s0_ack   : std_logic;
@@ -35,7 +35,7 @@ architecture simulation of tb_wbus_arbiter is
   signal s1_cyc   : std_logic;
   signal s1_stall : std_logic;
   signal s1_stb   : std_logic;
-  signal s1_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s1_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s1_we    : std_logic;
   signal s1_wrdat : std_logic_vector(31 downto 0);
   signal s1_ack   : std_logic;
@@ -44,7 +44,7 @@ architecture simulation of tb_wbus_arbiter is
   signal m_cyc   : std_logic;
   signal m_stall : std_logic;
   signal m_stb   : std_logic;
-  signal m_addr  : std_logic_vector(G_ADDR_SIZE downto 0);
+  signal m_addr  : std_logic_vector(G_ADDR_BITS downto 0);
   signal m_we    : std_logic;
   signal m_wrdat : std_logic_vector(31 downto 0);
   signal m_ack   : std_logic;
@@ -54,7 +54,7 @@ architecture simulation of tb_wbus_arbiter is
   signal map_cyc   : std_logic;
   signal map_stall : std_logic_vector(1 downto 0);
   signal map_stb   : std_logic_vector(1 downto 0);
-  signal map_addr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal map_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal map_we    : std_logic;
   signal map_wrdat : std_logic_vector(31 downto 0);
   signal map_ack   : std_logic_vector(1 downto 0);
@@ -76,8 +76,8 @@ begin
 
   wbus_arbiter_inst : entity work.wbus_arbiter
     generic map (
-      G_ADDR_SIZE => G_ADDR_SIZE + 1,
-      G_DATA_SIZE => 32
+      G_ADDR_BITS => G_ADDR_BITS + 1,
+      G_DATA_BITS => 32
     )
     port map (
       clk_i      => clk,
@@ -111,8 +111,8 @@ begin
   wbus_mapper_inst : entity work.wbus_mapper
     generic map (
       G_NUM_SLAVES       => 2,
-      G_MASTER_ADDR_SIZE => G_ADDR_SIZE + 1,
-      G_SLAVE_ADDR_SIZE  => G_ADDR_SIZE
+      G_MASTER_ADDR_BITS => G_ADDR_BITS + 1,
+      G_SLAVE_ADDR_BITS  => G_ADDR_BITS
     )
     port map (
       clk_i     => clk,
@@ -151,8 +151,8 @@ begin
       G_LATENCY     => G_LATENCY,
       G_OFFSET      => 1234,
       G_DO_ABORT    => G_DO_ABORT,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => 32
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => 32
     )
     port map (
       clk_i     => clk,
@@ -185,8 +185,8 @@ begin
       G_LATENCY     => G_LATENCY,
       G_OFFSET      => 4321,
       G_DO_ABORT    => G_DO_ABORT,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => 32
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => 32
     )
     port map (
       clk_i     => clk,

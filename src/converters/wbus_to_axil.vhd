@@ -8,8 +8,8 @@ library ieee;
 
 entity wbus_to_axil is
   generic (
-    G_ADDR_SIZE : positive;
-    G_DATA_SIZE : positive
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive
   );
   port (
     clk_i            : in    std_logic;
@@ -19,29 +19,29 @@ entity wbus_to_axil is
     s_wbus_cyc_i     : in    std_logic;
     s_wbus_stall_o   : out   std_logic;
     s_wbus_stb_i     : in    std_logic;
-    s_wbus_addr_i    : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_wbus_addr_i    : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_wbus_we_i      : in    std_logic;
-    s_wbus_wrdat_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_wbus_wrdat_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_wbus_ack_o     : out   std_logic;
-    s_wbus_rddat_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_wbus_rddat_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- AXI Lite output
     m_axil_awready_i : in    std_logic;
     m_axil_awvalid_o : out   std_logic;
-    m_axil_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_axil_awaddr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_axil_wready_i  : in    std_logic;
     m_axil_wvalid_o  : out   std_logic;
-    m_axil_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_axil_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    m_axil_wdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_axil_wstrb_o   : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     m_axil_bready_o  : out   std_logic;
     m_axil_bvalid_i  : in    std_logic;
     m_axil_bresp_i   : in    std_logic_vector(1 downto 0);
     m_axil_arready_i : in    std_logic;
     m_axil_arvalid_o : out   std_logic;
-    m_axil_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_axil_araddr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_axil_rready_o  : out   std_logic;
     m_axil_rvalid_i  : in    std_logic;
-    m_axil_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_axil_rdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_axil_rresp_i   : in    std_logic_vector(1 downto 0)
   );
 end entity wbus_to_axil;

@@ -14,7 +14,7 @@
 --                    then clipped so writes never cross the address-space wrap
 --                    and reads never overtake the write pointer.
 --                  * The base expected pattern is
---                        data = resize(address, G_DATA_SIZE) + G_OFFSET.
+--                        data = resize(address, G_DATA_BITS) + G_OFFSET.
 --                  * When G_RANDOM_BYTEENABLE = true, byte enables are randomised
 --                    per beat (>=1 byte always enabled). The master records, for
 --                    every address, which bytes were actually written and verifies
@@ -33,8 +33,8 @@
 --                if a write beat is not accepted, or a read beat does not return,
 --                within the configured limit. Set G_TIMEOUT_MAX = 0 to disable.
 --
--- Limitations  : - Shadow memory is dense, sized 2**G_ADDR_SIZE entries.
---                  Practical for G_ADDR_SIZE up to ~20.
+-- Limitations  : - Shadow memory is dense, sized 2**G_ADDR_BITS entries.
+--                  Practical for G_ADDR_BITS up to ~20.
 --                - Reads always issue with byteenable = all-ones
 --                  (writes can be randomised; see G_RANDOM_BYTEENABLE).
 -- ---------------------------------------------------------------------------------------
@@ -47,12 +47,12 @@ library ieee;
 
 entity avm_master_sim is
   generic (
-    G_BURST_WIDTH       : positive                      := 8;
+    G_BURST_BITS       : positive                      := 8;
 
     -- Maximum burst length the master will ever request. Each transaction
     -- picks a random length in 1..G_MAX_BURST, then clips it to safe
     -- boundaries (address-space wrap for writes, write-pointer for reads).
-    -- Must satisfy 1 <= G_MAX_BURST < 2**G_BURST_WIDTH.
+    -- Must satisfy 1 <= G_MAX_BURST < 2**G_BURST_BITS.
     G_MAX_BURST         : positive                      := 8;
 
     -- When true, randomise byte enables per write beat (>=1 byte forced on).
@@ -70,7 +70,7 @@ entity avm_master_sim is
     G_DEBUG             : boolean                       := false;
 
     -- Constant offset added to the address to form the expected data
-    -- pattern: data = resize(addr, G_DATA_SIZE) + G_OFFSET.
+    -- pattern: data = resize(addr, G_DATA_BITS) + G_OFFSET.
     -- A non-zero offset helps catch address/data-bus cross-wiring.
     G_OFFSET            : natural                       := 1234;
 
@@ -81,11 +81,11 @@ entity avm_master_sim is
     G_TIMEOUT_MAX       : natural                       := 0;
 
     -- Width of the Avalon-MM address bus (bits).
-    G_ADDR_SIZE         : positive;
+    G_ADDR_BITS         : positive;
 
     -- Width of the Avalon-MM data bus (bits).
-    -- Must be a multiple of 8 (byte-enables = G_DATA_SIZE / 8).
-    G_DATA_SIZE         : positive
+    -- Must be a multiple of 8 (byte-enables = G_DATA_BITS / 8).
+    G_DATA_BITS         : positive
   );
   port (
     clk_i             : in    std_logic;
@@ -95,19 +95,19 @@ entity avm_master_sim is
     m_waitrequest_i   : in    std_logic;                                      -- Slave back-pressure.
     m_write_o         : out   std_logic;                                      -- Write request strobe.
     m_read_o          : out   std_logic;                                      -- Read request strobe.
-    m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);     -- Burst start address.
-    m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);     -- Write data (per beat).
-    m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0); -- Byte-lane enables (all-ones for reads;
+    m_address_o       : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);     -- Burst start address.
+    m_writedata_o     : out   std_logic_vector(G_DATA_BITS - 1 downto 0);     -- Write data (per beat).
+    m_byteenable_o    : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0); -- Byte-lane enables (all-ones for reads;
     --   per-beat randomised for writes if G_RANDOM_BYTEENABLE = true).
-    m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);   -- Burst length in beats.
+    m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);   -- Burst length in beats.
     m_readdatavalid_i : in    std_logic;                                      -- Read-data valid strobe (per beat).
-    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)      -- Read-data return (per beat).
+    m_readdata_i      : in    std_logic_vector(G_DATA_BITS - 1 downto 0)      -- Read-data return (per beat).
   );
 end entity avm_master_sim;
 
 architecture simulation of avm_master_sim is
 
-  constant C_BE_WIDTH : natural                                      := G_DATA_SIZE / 8;
+  constant C_BE_BITS : natural                                      := G_DATA_BITS / 8;
 
   -- 64-bit PRNG output, updated every clock cycle.
   signal   random_s : std_logic_vector(63 downto 0);
@@ -122,7 +122,7 @@ architecture simulation of avm_master_sim is
   constant C_WRITE : natural                                         := 1;
 
   -- All-ones byte-enable used for every read burst, and for write bursts when G_RANDOM_BYTEENABLE = false.
-  constant C_ALL_ONES_BE : std_logic_vector(C_BE_WIDTH - 1 downto 0) := (others => '1');
+  constant C_ALL_ONES_BE : std_logic_vector(C_BE_BITS - 1 downto 0) := (others => '1');
 
   -- Combinational request enables -- true whenever the random gating bit(s)
   -- are '1' and the design is not in reset. do_write and do_read are
@@ -145,11 +145,11 @@ architecture simulation of avm_master_sim is
   -- rd_ptr: next address to be read back (addresses 0..rd_ptr-1 have been verified).
   -- Invariant (pre-wrap): rd_ptr <= wr_ptr. After writes wrap, writes_done='1'
   -- and the FSM uses (wr_ptr - rd_ptr) [unsigned] as the remaining-reads count.
-  signal   wr_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal   rd_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal   wr_ptr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal   rd_ptr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
 
   -- Difference between write and read pointers -- exposed for waveform debugging.
-  signal   diff_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal   diff_ptr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
 
   -- Latched once wr_ptr wraps the address space.
   signal   writes_done : std_logic                                   := '0';
@@ -167,33 +167,33 @@ architecture simulation of avm_master_sim is
   -- Mirror of the byte-enable currently presented on the bus, so the WRITING_ST handler
   -- can refer to the BE that was in effect during the just-accepted beat when updating
   -- the shadow mask.
-  signal   cur_be_s : std_logic_vector(C_BE_WIDTH - 1 downto 0)      := (others => '0');
+  signal   cur_be_s : std_logic_vector(C_BE_BITS - 1 downto 0)      := (others => '0');
 
   -- ----------------------------------------------------------------------------------
   -- Shadow memory: tracks the expected payload and per-byte "written" mask
   -- for every address. Used to verify partial-byte writes correctly.
   -- ----------------------------------------------------------------------------------
-  type     shadow_data_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  type     shadow_data_type is array (natural range <>) of std_logic_vector(G_DATA_BITS - 1 downto 0);
 
-  type     shadow_mask_type is array (natural range <>) of std_logic_vector(C_BE_WIDTH - 1 downto 0);
+  type     shadow_mask_type is array (natural range <>) of std_logic_vector(C_BE_BITS - 1 downto 0);
 
-  signal   shadow_data : shadow_data_type(0 to 2 ** G_ADDR_SIZE - 1) := (others => (others => '0'));
-  signal   shadow_mask : shadow_mask_type(0 to 2 ** G_ADDR_SIZE - 1) := (others => (others => '0'));
+  signal   shadow_data : shadow_data_type(0 to 2 ** G_ADDR_BITS - 1) := (others => (others => '0'));
+  signal   shadow_mask : shadow_mask_type(0 to 2 ** G_ADDR_BITS - 1) := (others => (others => '0'));
 
   -- ----------------------------------------------------------------------------------
   -- Helper functions
   -- ----------------------------------------------------------------------------------
 
   -- Compute the expected data payload for a given address.
-  -- The pattern is the address zero-extended (or truncated) to G_DATA_SIZE
-  -- bits, plus the constant G_OFFSET. Note: if G_ADDR_SIZE > G_DATA_SIZE the
+  -- The pattern is the address zero-extended (or truncated) to G_DATA_BITS
+  -- bits, plus the constant G_OFFSET. Note: if G_ADDR_BITS > G_DATA_BITS the
   -- pattern truncates, which weakens the cross-wiring check.
 
   pure function addr_to_data (
     addr : std_logic_vector
   ) return std_logic_vector is
   begin
-    return resize(addr, G_DATA_SIZE) + G_OFFSET;
+    return resize(addr, G_DATA_BITS) + G_OFFSET;
   end function addr_to_data;
 
   -- Pick a desired burst length in 1..G_MAX_BURST from PRNG bits.
@@ -211,7 +211,7 @@ architecture simulation of avm_master_sim is
   end function pick_burst_len;
 
   -- Choose a byte-enable for a write beat. When randomisation is off, always
-  -- returns all-ones. When on, takes C_BE_WIDTH bits from `rnd` and forces
+  -- returns all-ones. When on, takes C_BE_BITS bits from `rnd` and forces
   -- at least one bit high so we never issue a degenerate no-op write.
   -- Forcing bit 0 high when the random draw is zero adds a slight bias toward
   -- patterns with bit 0 set; acceptable for stress testing.
@@ -219,15 +219,15 @@ architecture simulation of avm_master_sim is
   function pick_byteenable (
     rnd : std_logic_vector
   ) return std_logic_vector is
-    variable be_v : std_logic_vector(C_BE_WIDTH - 1 downto 0);
+    variable be_v : std_logic_vector(C_BE_BITS - 1 downto 0);
     variable rnd_v : std_logic_vector(15 downto 0);
   begin
     if not G_RANDOM_BYTEENABLE then
       return C_ALL_ONES_BE;
     end if;
     rnd_v := rnd;
-    be_v := rnd_v(C_BE_WIDTH - 1 downto 0);
-    if be_v = std_logic_vector(to_unsigned(0, C_BE_WIDTH)) then
+    be_v := rnd_v(C_BE_BITS - 1 downto 0);
+    if be_v = std_logic_vector(to_unsigned(0, C_BE_BITS)) then
       be_v(0) := '1';
     end if;
     return be_v;
@@ -255,10 +255,10 @@ architecture simulation of avm_master_sim is
     else
       -- Wrap occurred within `desired` beats. The maximum allowed length is
       -- the count from `start` up to and including all-ones, which is
-      --     2**G_ADDR_SIZE - to_integer(start) = to_integer(not start) + 1.
+      --     2**G_ADDR_BITS - to_integer(start) = to_integer(not start) + 1.
       -- This branch is only reached when start is within G_MAX_BURST of
       -- end-of-space, so not start is in 0..G_MAX_BURST-1 and the to_integer
-      -- fits well within natural regardless of G_ADDR_SIZE.
+      -- fits well within natural regardless of G_ADDR_BITS.
       return to_integer(not start) + 1;
     end if;
   end function clip_write_burst;
@@ -283,7 +283,7 @@ architecture simulation of avm_master_sim is
     end if;
 
     -- Build `desired` as an slv of the address width to compare safely
-    -- (avail_v may be larger than natural'high for big G_ADDR_SIZE).
+    -- (avail_v may be larger than natural'high for big G_ADDR_BITS).
     desired_slv_v := std_logic_vector(to_unsigned(desired, desired_slv_v'length));
 
     if avail_v >= desired_slv_v then
@@ -299,17 +299,17 @@ begin
   -- ----------------------------------------------------------------------------------
   -- Elaboration-time sanity checks
   -- ----------------------------------------------------------------------------------
-  assert (G_DATA_SIZE mod 8) = 0
-    report "avm_master_sim: G_DATA_SIZE must be a multiple of 8 (got "
-           & integer'image(G_DATA_SIZE) & ")"
+  assert (G_DATA_BITS mod 8) = 0
+    report "avm_master_sim: G_DATA_BITS must be a multiple of 8 (got "
+           & integer'image(G_DATA_BITS) & ")"
     severity failure;
-  assert G_MAX_BURST < 2 ** G_BURST_WIDTH
+  assert G_MAX_BURST < 2 ** G_BURST_BITS
     report "avm_master_sim: G_MAX_BURST (" & integer'image(G_MAX_BURST) &
-           ") must be representable in G_BURST_WIDTH (" &
-           integer'image(G_BURST_WIDTH) & ") bits"
+           ") must be representable in G_BURST_BITS (" &
+           integer'image(G_BURST_BITS) & ") bits"
     severity failure;
-  assert G_ADDR_SIZE <= 20
-    report "avm_master_sim: G_ADDR_SIZE > 20 with dense shadow memory may exhaust simulator memory"
+  assert G_ADDR_BITS <= 20
+    report "avm_master_sim: G_ADDR_BITS > 20 with dense shadow memory may exhaust simulator memory"
     severity warning;
 
   -- Combinational pointer difference for waveform inspection.
@@ -348,7 +348,7 @@ begin
 
   avm_proc : process (clk_i)
     variable first_v   : boolean := true;   -- One-shot flag for "test started" message.
-    variable be_v      : std_logic_vector(C_BE_WIDTH - 1 downto 0);
+    variable be_v      : std_logic_vector(C_BE_BITS - 1 downto 0);
     variable desired_v : natural;
     variable len_v     : natural;
 
@@ -371,14 +371,14 @@ begin
       be   : std_logic_vector
     ) is
       variable idx_v     : natural;
-      variable d_var_v   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-      variable m_var_v   : std_logic_vector(C_BE_WIDTH - 1 downto 0);
+      variable d_var_v   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+      variable m_var_v   : std_logic_vector(C_BE_BITS - 1 downto 0);
     begin
       idx_v   := to_integer(addr);
       d_var_v := shadow_data(idx_v);
       m_var_v := shadow_mask(idx_v);
 
-      for b in 0 to C_BE_WIDTH - 1 loop
+      for b in 0 to C_BE_BITS - 1 loop
         if be(b) = '1' then
           d_var_v(b * 8 + 7 downto b * 8) := data(b * 8 + 7 downto b * 8);
           m_var_v(b)                      := '1';
@@ -399,14 +399,14 @@ begin
       data : std_logic_vector
     ) is
       variable idx_v   : natural;
-      variable d_exp_v : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-      variable m_exp_v : std_logic_vector(C_BE_WIDTH - 1 downto 0);
+      variable d_exp_v : std_logic_vector(G_DATA_BITS - 1 downto 0);
+      variable m_exp_v : std_logic_vector(C_BE_BITS - 1 downto 0);
     begin
       idx_v   := to_integer(addr);
       d_exp_v := shadow_data(idx_v);
       m_exp_v := shadow_mask(idx_v);
 
-      for b in 0 to C_BE_WIDTH - 1 loop
+      for b in 0 to C_BE_BITS - 1 loop
         if m_exp_v(b) = '1' then
           assert data(b * 8 + 7 downto b * 8) = d_exp_v(b * 8 + 7 downto b * 8)
             report "Avalon MASTER " & G_NAME &
@@ -441,7 +441,7 @@ begin
       m_writedata_o  <= addr_to_data(addr);
       m_byteenable_o <= be;
       cur_be_s       <= be;
-      m_burstcount_o <= std_logic_vector(to_unsigned(len, G_BURST_WIDTH));
+      m_burstcount_o <= std_logic_vector(to_unsigned(len, G_BURST_BITS));
       wr_beats_left  <= len;
       if G_DEBUG then
         report "Avalon MASTER " & G_NAME &
@@ -469,7 +469,7 @@ begin
       m_address_o    <= addr;
       m_byteenable_o <= C_ALL_ONES_BE;
       cur_be_s       <= C_ALL_ONES_BE;
-      m_burstcount_o <= std_logic_vector(to_unsigned(len, G_BURST_WIDTH));
+      m_burstcount_o <= std_logic_vector(to_unsigned(len, G_BURST_BITS));
       rd_beats_left  <= len;
       if G_DEBUG then
         report "Avalon MASTER " & G_NAME &
@@ -525,15 +525,15 @@ begin
 
     -- End-of-test coverage report. Counts how many bytes of the address
     -- space were ever written (i.e. mask bit set) so the user can spot
-    -- pathological seeds. O(2**G_ADDR_SIZE * C_BE_WIDTH) -- run once at DONE.
+    -- pathological seeds. O(2**G_ADDR_BITS * C_BE_BITS) -- run once at DONE.
 
     procedure report_coverage is
       variable written_v : natural := 0;
       variable total_v   : natural;
     begin
-      total_v := (2 ** G_ADDR_SIZE) * C_BE_WIDTH;
-      for a in 0 to 2 ** G_ADDR_SIZE - 1 loop
-        for b in 0 to C_BE_WIDTH - 1 loop
+      total_v := (2 ** G_ADDR_BITS) * C_BE_BITS;
+      for a in 0 to 2 ** G_ADDR_BITS - 1 loop
+        for b in 0 to C_BE_BITS - 1 loop
           if shadow_mask(a)(b) = '1' then
             written_v := written_v + 1;
           end if;

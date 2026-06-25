@@ -43,10 +43,10 @@ library ieee;
 
 entity avm_readahead is
    generic (
-      G_BURST_WIDTH  : natural := 8; -- Number of bits in the *_burstcount_* ports
+      G_BURST_BITS  : natural := 8; -- Number of bits in the *_burstcount_* ports
       G_CACHE_SIZE   : natural;      -- Number of words in the buffer (must be even for sliding window)
-      G_ADDRESS_SIZE : natural;      -- Address width in bits
-      G_DATA_SIZE    : natural       -- Data word width in bits
+      G_ADDR_BITS    : natural;      -- Address width in bits
+      G_DATA_BITS    : natural       -- Data word width in bits
    );
    port (
       clk_i                 : in    std_logic;
@@ -56,29 +56,29 @@ entity avm_readahead is
       s_avm_waitrequest_o   : out   std_logic;
       s_avm_write_i         : in    std_logic;
       s_avm_read_i          : in    std_logic;
-      s_avm_address_i       : in    std_logic_vector(G_ADDRESS_SIZE - 1 downto 0);
-      s_avm_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-      s_avm_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-      s_avm_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-      s_avm_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+      s_avm_address_i       : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
+      s_avm_writedata_i     : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+      s_avm_byteenable_i    : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+      s_avm_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
+      s_avm_readdata_o      : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
       s_avm_readdatavalid_o : out   std_logic;
 
       -- Avalon-MM master interface (memory-facing)
       m_avm_waitrequest_i   : in    std_logic;
       m_avm_write_o         : out   std_logic;
       m_avm_read_o          : out   std_logic;
-      m_avm_address_o       : out   std_logic_vector(G_ADDRESS_SIZE - 1 downto 0);
-      m_avm_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-      m_avm_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-      m_avm_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-      m_avm_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+      m_avm_address_o       : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
+      m_avm_writedata_o     : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+      m_avm_byteenable_o    : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+      m_avm_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);
+      m_avm_readdata_i      : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
       m_avm_readdatavalid_i : in    std_logic
    );
 end entity avm_readahead;
 
 architecture synthesis of avm_readahead is
 
-   type   mem_type is array (0 to G_CACHE_SIZE - 1) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+   type   mem_type is array (0 to G_CACHE_SIZE - 1) of std_logic_vector(G_DATA_BITS - 1 downto 0);
 
    type   state_type is (IDLE_ST, READING_ST);
 
@@ -86,9 +86,9 @@ architecture synthesis of avm_readahead is
    -- Registers
    ---------------------------------------------------------------------------
    signal cache_data    : mem_type;                                       -- Buffer storage (one contiguous line of G_CACHE_SIZE words)
-   signal cache_addr    : std_logic_vector(G_ADDRESS_SIZE - 1 downto 0);  -- Base address of the currently cached region
+   signal cache_addr    : std_logic_vector(G_ADDR_BITS - 1 downto 0);  -- Base address of the currently cached region
    signal cache_count   : natural range 0 to G_CACHE_SIZE;                -- Number of valid words received so far (0 = empty, G_CACHE_SIZE = full)
-   signal rd_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0);   -- Remaining words to forward to the client for the current read burst.
+   signal rd_burstcount : std_logic_vector(G_BURST_BITS - 1 downto 0);   -- Remaining words to forward to the client for the current read burst.
                                                                           -- Loaded from s_avm_burstcount_i on a read miss.  Decremented each
                                                                           -- cycle a word is forwarded via s_avm_readdatavalid_o.  When a cache
                                                                           -- fill completes and rd_burstcount > 1 (accounting for the word
@@ -100,7 +100,7 @@ architecture synthesis of avm_readahead is
    ---------------------------------------------------------------------------
    -- Combinatorial signals
    ---------------------------------------------------------------------------
-   signal cache_offset_s : std_logic_vector(G_ADDRESS_SIZE - 1 downto 0); -- Offset of the requested address relative to cache_addr
+   signal cache_offset_s : std_logic_vector(G_ADDR_BITS - 1 downto 0); -- Offset of the requested address relative to cache_addr
    signal cache_rd_hit_s : std_logic;                                     -- Read hit indicator
    signal cache_wr_hit_s : std_logic;                                     -- Write hit indicator (for write-through update)
    signal cache_filled_s : std_logic;                                     -- Pulses high for one cycle when the last fill word arrives
@@ -114,26 +114,26 @@ begin
    assert G_CACHE_SIZE <= 255
       report "G_CACHE_SIZE must fit in 8-bit burstcount"
       severity failure;
-   assert G_CACHE_SIZE < 2 ** G_ADDRESS_SIZE
-      report "G_CACHE_SIZE must be < 2**G_ADDRESS_SIZE"
+   assert G_CACHE_SIZE < 2 ** G_ADDR_BITS
+      report "G_CACHE_SIZE must be < 2**G_ADDR_BITS"
       severity failure;
-   assert G_CACHE_SIZE < 2 ** G_BURST_WIDTH
-      report "G_CACHE_SIZE must be < 2**G_BURST_WIDTH"
+   assert G_CACHE_SIZE < 2 ** G_BURST_BITS
+      report "G_CACHE_SIZE must be < 2**G_BURST_BITS"
       severity failure;
 
-   -- Compile-Time Validation of G_DATA_SIZE
-   assert G_DATA_SIZE >= 8
-      report "G_DATA_SIZE must be >= 8"
+   -- Compile-Time Validation of G_DATA_BITS
+   assert G_DATA_BITS >= 8
+      report "G_DATA_BITS must be >= 8"
       severity failure;
-   assert G_DATA_SIZE mod 8 = 0
-      report "G_DATA_SIZE must be a multiple of 8"
+   assert G_DATA_BITS mod 8 = 0
+      report "G_DATA_BITS must be a multiple of 8"
       severity failure;
 
 
 
    ---------------------------------------------------------------------------
    -- Compute the offset of the requested address relative to the cache base.
-   -- Unsigned modular subtraction with natural wrap-around on G_ADDRESS_SIZE bits.
+   -- Unsigned modular subtraction with natural wrap-around on G_ADDR_BITS bits.
    ---------------------------------------------------------------------------
    cache_offset_s      <= std_logic_vector(unsigned(s_avm_address_i) - unsigned(cache_addr));
 
@@ -209,7 +209,7 @@ begin
          m_avm_byteenable_o <= s_avm_byteenable_i;
          m_avm_burstcount_o <= s_avm_burstcount_i;
          if cache_wr_hit_s = '1' then
-            for i in 0 to G_DATA_SIZE / 8 - 1 loop
+            for i in 0 to G_DATA_BITS / 8 - 1 loop
                if s_avm_byteenable_i(i) = '1' then
                   cache_data(to_integer(cache_offset_s))(8 * i + 7 downto 8 * i) <= s_avm_writedata_i(8 * i + 7 downto 8 * i);
                end if;
@@ -232,7 +232,7 @@ begin
          m_avm_read_o       <= '1';
          m_avm_byteenable_o <= (others => '1');
          m_avm_address_o    <= s_avm_address_i;
-         m_avm_burstcount_o <= std_logic_vector(to_unsigned(G_CACHE_SIZE, G_BURST_WIDTH));
+         m_avm_burstcount_o <= std_logic_vector(to_unsigned(G_CACHE_SIZE, G_BURST_BITS));
          rd_burstcount      <= s_avm_burstcount_i;
          cache_count        <= 0;
          cache_addr         <= s_avm_address_i;
@@ -339,7 +339,7 @@ begin
                         m_avm_read_o                          <= '1';
                         m_avm_byteenable_o                    <= (others => '1');
                         m_avm_address_o                       <= std_logic_vector(unsigned(cache_addr) + G_CACHE_SIZE);
-                        m_avm_burstcount_o                    <= std_logic_vector(to_unsigned(G_CACHE_SIZE / 2, G_BURST_WIDTH));
+                        m_avm_burstcount_o                    <= std_logic_vector(to_unsigned(G_CACHE_SIZE / 2, G_BURST_BITS));
                         -- Speculative prefetch: no client burst to forward data to
                         rd_burstcount                         <= (others => '0');
                         state                                 <= READING_ST;
@@ -406,7 +406,7 @@ begin
                         m_avm_read_o       <= '1';
                         m_avm_byteenable_o <= (others => '1');
                         m_avm_address_o    <= std_logic_vector(unsigned(cache_addr) + G_CACHE_SIZE);
-                        m_avm_burstcount_o <= std_logic_vector(to_unsigned(G_CACHE_SIZE, G_BURST_WIDTH));
+                        m_avm_burstcount_o <= std_logic_vector(to_unsigned(G_CACHE_SIZE, G_BURST_BITS));
                         cache_count        <= 0;
                         cache_addr         <= std_logic_vector(unsigned(cache_addr) + G_CACHE_SIZE);
                         state              <= READING_ST;

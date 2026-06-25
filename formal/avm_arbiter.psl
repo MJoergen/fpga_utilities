@@ -14,7 +14,7 @@ vunit i_avm_arbiter(avm_arbiter(synthesis))
 
    signal f_s0_wr_burstcount  : integer;   -- Remaining amount of write data
    signal f_s0_rd_burstcount  : integer;   -- Remaining amount of read data
-   signal f_s0_avm_address    : std_logic_vector(G_ADDR_SIZE-1 downto 0);
+   signal f_s0_avm_address    : std_logic_vector(G_ADDR_BITS-1 downto 0);
    signal f_s0_avm_burstcount : unsigned(7 downto 0);
 
    p_s0_wr_burstcount : process (clk_i)
@@ -65,7 +65,7 @@ vunit i_avm_arbiter(avm_arbiter(synthesis))
 
    signal f_s1_wr_burstcount  : integer;   -- Remaining amount of write data
    signal f_s1_rd_burstcount  : integer;   -- Remaining amount of read data
-   signal f_s1_avm_address    : std_logic_vector(G_ADDR_SIZE-1 downto 0);
+   signal f_s1_avm_address    : std_logic_vector(G_ADDR_BITS-1 downto 0);
    signal f_s1_avm_burstcount : unsigned(7 downto 0);
 
    p_s1_wr_burstcount : process (clk_i)
@@ -119,7 +119,7 @@ vunit i_avm_arbiter(avm_arbiter(synthesis))
 
    signal f_m_wr_burstcount  : integer;   -- Remaining amount of write data
    signal f_m_rd_burstcount  : integer;   -- Remaining amount of read data
-   signal f_m_avm_address    : std_logic_vector(G_ADDR_SIZE-1 downto 0);
+   signal f_m_avm_address    : std_logic_vector(G_ADDR_BITS-1 downto 0);
    signal f_m_avm_burstcount : unsigned(7 downto 0);
 
    p_m_wr_burstcount : process (clk_i)
@@ -280,11 +280,11 @@ vunit i_avm_arbiter(avm_arbiter(synthesis))
    -- Simulate a memory
    ---------------------
 
-   type f_mem_t is array (0 to 2**G_ADDR_SIZE-1) of std_logic_vector(G_DATA_SIZE-1 downto 0);
+   type f_mem_t is array (0 to 2**G_ADDR_BITS-1) of std_logic_vector(G_DATA_BITS-1 downto 0);
    signal f_mem_data               : f_mem_t;
-   signal f_mem_write_next_address : std_logic_vector(G_ADDR_SIZE-1 downto 0);
+   signal f_mem_write_next_address : std_logic_vector(G_ADDR_BITS-1 downto 0);
    signal f_mem_write_words_left   : unsigned(7 downto 0);
-   signal f_mem_read_next_address  : std_logic_vector(G_ADDR_SIZE-1 downto 0);
+   signal f_mem_read_next_address  : std_logic_vector(G_ADDR_BITS-1 downto 0);
    signal f_mem_read_words_left    : unsigned(7 downto 0);
 
    -- Block requests during a read burst
@@ -303,7 +303,7 @@ vunit i_avm_arbiter(avm_arbiter(synthesis))
             if f_mem_write_words_left = 0 then
                f_mem_write_next_address <= std_logic_vector(unsigned(m_address_o) + 1);
                f_mem_write_words_left   <= unsigned(m_burstcount_o) - 1;
-               for i in 0 to G_DATA_SIZE/8-1 loop
+               for i in 0 to G_DATA_BITS/8-1 loop
                   if m_byteenable_o(i) then
                      f_mem_data(to_integer(unsigned(m_address_o)))(8*i+7 downto 8*i) <= m_writedata_o(8*i+7 downto 8*i);
                   end if;
@@ -311,7 +311,7 @@ vunit i_avm_arbiter(avm_arbiter(synthesis))
             else
                f_mem_write_next_address <= std_logic_vector(unsigned(f_mem_write_next_address) + 1);
                f_mem_write_words_left   <= f_mem_write_words_left - 1;
-               for i in 0 to G_DATA_SIZE/8-1 loop
+               for i in 0 to G_DATA_BITS/8-1 loop
                   if m_byteenable_o(i) then
                      f_mem_data(to_integer(unsigned(f_mem_write_next_address)))(8*i+7 downto 8*i) <= m_writedata_o(8*i+7 downto 8*i);
                   end if;

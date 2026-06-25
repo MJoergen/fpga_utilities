@@ -50,7 +50,7 @@ begin
     generic map (
       G_RAM_STYLE => G_RAM_STYLE,
       G_RAM_DEPTH => G_RAM_DEPTH,
-      G_DATA_SIZE => G_DATA_BYTES * 8 + 16
+      G_DATA_BITS => G_DATA_BYTES * 8 + 16
     )
     port map (
       clk_i     => clk_i,

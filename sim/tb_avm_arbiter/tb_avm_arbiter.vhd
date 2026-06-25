@@ -4,11 +4,11 @@ library ieee;
 
 entity tb_avm_arbiter is
   generic (
-    G_BURST_WIDTH : positive;
+    G_BURST_BITS : positive;
     G_PREFER_SWAP : boolean;
     G_PAUSE_SIZE  : natural;
-    G_ADDR_SIZE   : positive;
-    G_DATA_SIZE   : positive
+    G_ADDR_BITS   : positive;
+    G_DATA_BITS   : positive
   );
 end entity tb_avm_arbiter;
 
@@ -20,42 +20,42 @@ architecture simulation of tb_avm_arbiter is
   signal m0_waitrequest   : std_logic;
   signal m0_write         : std_logic;
   signal m0_read          : std_logic;
-  signal m0_address       : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m0_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m0_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal m0_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal m0_address       : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal m0_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal m0_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal m0_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal m0_readdatavalid : std_logic;
-  signal m0_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m0_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal m1_waitrequest   : std_logic;
   signal m1_write         : std_logic;
   signal m1_read          : std_logic;
-  signal m1_address       : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal m1_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m1_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal m1_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal m1_address       : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal m1_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal m1_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal m1_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal m1_readdatavalid : std_logic;
-  signal m1_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m1_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal s_waitrequest   : std_logic;
   signal s_write         : std_logic;
   signal s_read          : std_logic;
-  signal s_address       : std_logic_vector(G_ADDR_SIZE downto 0);
-  signal s_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal s_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal s_address       : std_logic_vector(G_ADDR_BITS downto 0);
+  signal s_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal s_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal s_readdatavalid : std_logic;
-  signal s_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal pause_s_waitrequest   : std_logic;
   signal pause_s_write         : std_logic;
   signal pause_s_read          : std_logic;
-  signal pause_s_address       : std_logic_vector(G_ADDR_SIZE downto 0);
-  signal pause_s_writedata     : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal pause_s_byteenable    : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-  signal pause_s_burstcount    : std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+  signal pause_s_address       : std_logic_vector(G_ADDR_BITS downto 0);
+  signal pause_s_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal pause_s_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal pause_s_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal pause_s_readdatavalid : std_logic;
-  signal pause_s_readdata      : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal pause_s_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
 begin
 
@@ -73,9 +73,10 @@ begin
 
   avm_master_sim_0_inst : entity work.avm_master_sim
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_NAME        => "0",
+      G_BURST_BITS => G_BURST_BITS,
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk,
@@ -98,9 +99,10 @@ begin
 
   avm_master_sim_1_inst : entity work.avm_master_sim
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
-      G_ADDR_SIZE   => G_ADDR_SIZE,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_NAME        => "1",
+      G_BURST_BITS => G_BURST_BITS,
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk,
@@ -123,10 +125,10 @@ begin
 
   avm_arbiter_inst : entity work.avm_arbiter
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_BURST_BITS => G_BURST_BITS,
       G_PREFER_SWAP => G_PREFER_SWAP,
-      G_ADDR_SIZE   => G_ADDR_SIZE + 1,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_ADDR_BITS   => G_ADDR_BITS + 1,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i              => clk,
@@ -167,10 +169,10 @@ begin
 
   avm_pause_inst : entity work.avm_pause
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
+      G_BURST_BITS => G_BURST_BITS,
       G_PAUSE_SIZE  => G_PAUSE_SIZE,
-      G_ADDR_SIZE   => G_ADDR_SIZE + 1,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_ADDR_BITS   => G_ADDR_BITS + 1,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk,
@@ -202,9 +204,9 @@ begin
 
   avm_slave_sim_inst : entity work.avm_slave_sim
     generic map (
-      G_BURST_WIDTH => G_BURST_WIDTH,
-      G_ADDR_SIZE   => G_ADDR_SIZE + 1,
-      G_DATA_SIZE   => G_DATA_SIZE
+      G_BURST_BITS => G_BURST_BITS,
+      G_ADDR_BITS   => G_ADDR_BITS + 1,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i             => clk,

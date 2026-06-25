@@ -46,7 +46,7 @@ begin
   axis_pipe_async_inst : entity work.axis_pipe_async
     generic map (
       G_PIPE_SIZE => G_PIPE_SIZE,
-      G_DATA_SIZE => G_DATA_BYTES * 8 + 16
+      G_DATA_BITS => G_DATA_BYTES * 8 + 16
     )
     port map (
       s_clk_i   => s_clk_i,

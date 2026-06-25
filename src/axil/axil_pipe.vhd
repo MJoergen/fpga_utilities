@@ -8,8 +8,8 @@ library ieee;
 
 entity axil_pipe is
   generic (
-    G_ADDR_SIZE : positive;
-    G_DATA_SIZE : positive
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive
   );
   port (
     clk_i       : in    std_logic;
@@ -18,64 +18,64 @@ entity axil_pipe is
     -- Input
     s_awready_o : out   std_logic;
     s_awvalid_i : in    std_logic;
-    s_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_awaddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_wready_o  : out   std_logic;
     s_wvalid_i  : in    std_logic;
-    s_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    s_wdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_wstrb_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s_bready_i  : in    std_logic;
     s_bvalid_o  : out   std_logic;
     s_bresp_o   : out   std_logic_vector(1 downto 0);
     s_arready_o : out   std_logic;
     s_arvalid_i : in    std_logic;
-    s_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_araddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_rready_i  : in    std_logic;
     s_rvalid_o  : out   std_logic;
-    s_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_rdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_rresp_o   : out   std_logic_vector(1 downto 0);
 
     -- Output
     m_awready_i : in    std_logic;
     m_awvalid_o : out   std_logic;
-    m_awaddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_awaddr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_wready_i  : in    std_logic;
     m_wvalid_o  : out   std_logic;
-    m_wdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_wstrb_o   : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    m_wdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_wstrb_o   : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     m_bready_o  : out   std_logic;
     m_bvalid_i  : in    std_logic;
     m_bresp_i   : in    std_logic_vector(1 downto 0);
     m_arready_i : in    std_logic;
     m_arvalid_o : out   std_logic;
-    m_araddr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_araddr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_rready_o  : out   std_logic;
     m_rvalid_i  : in    std_logic;
-    m_rdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_rresp_i   : in    std_logic_vector(1 downto 0)
   );
 end entity axil_pipe;
 
 architecture synthesis of axil_pipe is
 
-  subtype R_WDATA is natural range G_DATA_SIZE - 1 downto 0;
+  subtype R_WDATA is natural range G_DATA_BITS - 1 downto 0;
 
-  subtype R_WSTRB is natural range G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto G_DATA_SIZE;
+  subtype R_WSTRB is natural range G_DATA_BITS + G_DATA_BITS / 8 - 1 downto G_DATA_BITS;
 
-  signal  s_w_in  : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
-  signal  m_w_out : std_logic_vector(G_DATA_SIZE + G_DATA_SIZE / 8 - 1 downto 0);
+  signal  s_w_in  : std_logic_vector(G_DATA_BITS + G_DATA_BITS / 8 - 1 downto 0);
+  signal  m_w_out : std_logic_vector(G_DATA_BITS + G_DATA_BITS / 8 - 1 downto 0);
 
-  subtype R_RDATA is natural range G_DATA_SIZE - 1 downto 0;
+  subtype R_RDATA is natural range G_DATA_BITS - 1 downto 0;
 
-  subtype R_RRESP is natural range G_DATA_SIZE + 1 downto G_DATA_SIZE;
+  subtype R_RRESP is natural range G_DATA_BITS + 1 downto G_DATA_BITS;
 
-  signal  m_r_in  : std_logic_vector(G_DATA_SIZE + 1 downto 0);
-  signal  s_r_out : std_logic_vector(G_DATA_SIZE + 1 downto 0);
+  signal  m_r_in  : std_logic_vector(G_DATA_BITS + 1 downto 0);
+  signal  s_r_out : std_logic_vector(G_DATA_BITS + 1 downto 0);
 
 begin
 
   axis_pipe_aw_inst : entity work.axis_pipe
     generic map (
-      G_DATA_SIZE => G_ADDR_SIZE
+      G_DATA_BITS => G_ADDR_BITS
     )
     port map (
       clk_i     => clk_i,
@@ -91,7 +91,7 @@ begin
 
   axis_pipe_ar_inst : entity work.axis_pipe
     generic map (
-      G_DATA_SIZE => G_ADDR_SIZE
+      G_DATA_BITS => G_ADDR_BITS
     )
     port map (
       clk_i     => clk_i,
@@ -107,7 +107,7 @@ begin
 
   axis_pipe_w_inst : entity work.axis_pipe
     generic map (
-      G_DATA_SIZE => G_DATA_SIZE + G_DATA_SIZE / 8
+      G_DATA_BITS => G_DATA_BITS + G_DATA_BITS / 8
     )
     port map (
       clk_i     => clk_i,
@@ -129,7 +129,7 @@ begin
 
   axis_pipe_b_inst : entity work.axis_pipe
     generic map (
-      G_DATA_SIZE => 2
+      G_DATA_BITS => 2
     )
     port map (
       clk_i     => clk_i,
@@ -145,7 +145,7 @@ begin
 
   axis_pipe_r_inst : entity work.axis_pipe
     generic map (
-      G_DATA_SIZE => G_DATA_SIZE + 2
+      G_DATA_BITS => G_DATA_BITS + 2
     )
     port map (
       clk_i     => clk_i,

@@ -23,8 +23,8 @@ STOP_TIME = 100us
 
 # Test specific generics
 GENERIC += -gG_DEBUG=false
-GENERIC += -gG_ADDR_SIZE=8
-GENERIC += -gG_DATA_SIZE=16
+GENERIC += -gG_ADDR_BITS=8
+GENERIC += -gG_DATA_BITS=16
 
 # Don't stop on errors
 #ASSERT_LEVEL = none

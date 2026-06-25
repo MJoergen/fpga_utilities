@@ -15,8 +15,8 @@ entity tb_axil_pipe is
     G_PAUSE_SIZE : natural;
     G_RANDOM     : boolean;
     G_FAST       : boolean;
-    G_ADDR_SIZE  : natural;
-    G_DATA_SIZE  : natural
+    G_ADDR_BITS  : natural;
+    G_DATA_BITS  : natural
   );
 end entity tb_axil_pipe;
 
@@ -27,38 +27,38 @@ architecture simulation of tb_axil_pipe is
 
   signal s_awready : std_logic;
   signal s_awvalid : std_logic;
-  signal s_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_wready  : std_logic;
   signal s_wvalid  : std_logic;
-  signal s_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal s_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal s_bready  : std_logic;
   signal s_bvalid  : std_logic;
   signal s_bresp   : std_logic_vector(1 downto 0);
   signal s_arready : std_logic;
   signal s_arvalid : std_logic;
-  signal s_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_rready  : std_logic;
   signal s_rvalid  : std_logic;
-  signal s_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal s_rresp   : std_logic_vector(1 downto 0);
 
   signal m_awready : std_logic;
   signal m_awvalid : std_logic;
-  signal m_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal m_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_wready  : std_logic;
   signal m_wvalid  : std_logic;
-  signal m_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal m_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal m_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal m_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal m_bready  : std_logic;
   signal m_bvalid  : std_logic;
   signal m_bresp   : std_logic_vector(1 downto 0);
   signal m_arready : std_logic;
   signal m_arvalid : std_logic;
-  signal m_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal m_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_rready  : std_logic;
   signal m_rvalid  : std_logic;
-  signal m_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal m_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal m_rresp   : std_logic_vector(1 downto 0);
 
   signal s0_busy : std_logic;
@@ -80,8 +80,8 @@ begin
 
   axil_pipe_inst : entity work.axil_pipe
     generic map (
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i       => clk,
@@ -134,8 +134,8 @@ begin
       G_DEBUG     => G_DEBUG,
       G_RANDOM    => G_RANDOM,
       G_FAST      => G_FAST,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i       => clk,

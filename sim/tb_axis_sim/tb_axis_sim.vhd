@@ -73,7 +73,7 @@ begin
   axis_pause_inst : entity work.axis_pause
     generic map (
       G_SEED       => X"CAFEBABE666B00B5",
-      G_DATA_SIZE  => G_DATA_BYTES * 8,
+      G_DATA_BITS  => G_DATA_BYTES * 8,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (

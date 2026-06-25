@@ -10,7 +10,7 @@ entity axis_fifo is
   generic (
     G_RAM_STYLE : string := "auto";
     G_RAM_DEPTH : positive;
-    G_DATA_SIZE : positive
+    G_DATA_BITS : positive
   );
   port (
     clk_i     : in    std_logic;
@@ -20,12 +20,12 @@ entity axis_fifo is
     -- AXI stream input interface
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- AXI stream output interface
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axis_fifo;
 

@@ -56,7 +56,7 @@ begin
 
   axis_arbiter_inst : entity work.axis_arbiter
     generic map (
-      G_DATA_SIZE => G_DATA_BYTES * 8 + 1
+      G_DATA_BITS => G_DATA_BYTES * 8 + 1
     )
     port map (
       clk_i      => clk,
@@ -79,7 +79,7 @@ begin
 
   axis_distributor_inst : entity work.axis_distributor
     generic map (
-      G_DATA_SIZE => G_DATA_BYTES * 8
+      G_DATA_BITS => G_DATA_BYTES * 8
     )
     port map (
       clk_i      => clk,

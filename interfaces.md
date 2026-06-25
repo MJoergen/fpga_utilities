@@ -35,7 +35,7 @@ is no notion of packet boundary; for framed data use AXI packet
 | ------- | -------------- | ------------------------------------------------------------------ |
 | `VALID` | Master → Slave | Master asserts when `DATA` is valid for the current cycle.         |
 | `READY` | Slave  → Master| Slave asserts when it can accept a transfer in the current cycle.  |
-| `DATA`  | Master → Slave | Payload, `G_DATA_SIZE` bits wide.                                  |
+| `DATA`  | Master → Slave | Payload, `G_DATA_BITS` bits wide.                                  |
 
 A handshake (transfer) occurs on every rising edge of `clk_i` where
 `VALID` and `READY` are both asserted.
@@ -63,7 +63,7 @@ These rules are enforced by the formal properties under `../formal/`:
 
 | Generic         | Meaning                | Typical value |
 | --------------- | ---------------------- | ------------- |
-| `G_DATA_SIZE`   | Bus width in bits.     | 8, 16, 32, 64 |
+| `G_DATA_BITS`   | Bus width in bits.     | 8, 16, 32, 64 |
 
 ### Deviations from AMBA AXI4-Stream
 
@@ -215,20 +215,20 @@ read address (`AR`), and read data (`R`) — each carrying its own
 | ---------- | -------------- | ---------------------------------------------------------- |
 | `AWVALID`  | Master → Slave | Write address valid.                                       |
 | `AWREADY`  | Slave  → Master| Write address accepted.                                    |
-| `AWADDR`   | Master → Slave | Write address, `G_ADDR_SIZE` bits wide.                    |
+| `AWADDR`   | Master → Slave | Write address, `G_ADDR_BITS` bits wide.                    |
 | `WVALID`   | Master → Slave | Write data valid.                                          |
 | `WREADY`   | Slave  → Master| Write data accepted.                                       |
-| `WDATA`    | Master → Slave | Write data, `G_DATA_SIZE` bits wide.                       |
-| `WSTRB`    | Master → Slave | Byte enables, `G_DATA_SIZE/8` bits wide. Bit *k* enables byte *k* of `WDATA`. |
+| `WDATA`    | Master → Slave | Write data, `G_DATA_BITS` bits wide.                       |
+| `WSTRB`    | Master → Slave | Byte enables, `G_DATA_BITS/8` bits wide. Bit *k* enables byte *k* of `WDATA`. |
 | `BVALID`   | Slave  → Master| Write response valid.                                      |
 | `BREADY`   | Master → Slave | Write response accepted.                                   |
 | `BRESP`    | Slave  → Master| Write response code, 2 bits: `00`=OKAY, `10`=SLVERR.       |
 | `ARVALID`  | Master → Slave | Read address valid.                                        |
 | `ARREADY`  | Slave  → Master| Read address accepted.                                     |
-| `ARADDR`   | Master → Slave | Read address, `G_ADDR_SIZE` bits wide.                     |
+| `ARADDR`   | Master → Slave | Read address, `G_ADDR_BITS` bits wide.                     |
 | `RVALID`   | Slave  → Master| Read data valid.                                           |
 | `RREADY`   | Master → Slave | Read data accepted.                                        |
-| `RDATA`    | Slave  → Master| Read data, `G_DATA_SIZE` bits wide.                        |
+| `RDATA`    | Slave  → Master| Read data, `G_DATA_BITS` bits wide.                        |
 | `RRESP`    | Slave  → Master| Read response code, 2 bits: `00`=OKAY, `10`=SLVERR.        |
 
 Each channel handshakes independently using the same VALID/READY rules
@@ -285,10 +285,10 @@ tolerant of any 2-bit value.
 
 | Generic         | Meaning             | Typical value |
 | --------------- | ------------------- | ------------- |
-| `G_ADDR_SIZE`   | Address width.      | 12–32         |
-| `G_DATA_SIZE`   | Data width.         | 32, 64        |
+| `G_ADDR_BITS`   | Address width.      | 12–32         |
+| `G_DATA_BITS`   | Data width.         | 32, 64        |
 
-`WSTRB` width is derived: `G_DATA_SIZE / 8`.
+`WSTRB` width is derived: `G_DATA_BITS / 8`.
 
 ### Deviations from AMBA AXI4-Lite
 
@@ -328,10 +328,10 @@ composing `../src/wbus/wbus_arbiter.vhd`,
 | `CYC`   | Master → Slave | Cycle in progress. Held asserted from the first request beat until the last response.    |
 | `STB`   | Master → Slave | Request strobe. One handshake per cycle in which `STB & ~STALL` is observed.             |
 | `STALL` | Slave  → Master| Back-pressure on the request channel. Meaningful only while `STB` is asserted.           |
-| `ADDR`  | Master → Slave | Request address, `G_ADDR_SIZE` bits wide. Addressing is per byte.                        |
+| `ADDR`  | Master → Slave | Request address, `G_ADDR_BITS` bits wide. Addressing is per byte.                        |
 | `WE`    | Master → Slave | `1` = write request, `0` = read request.                                                 |
-| `WRDAT` | Master → Slave | Write data, `G_DATA_SIZE` bits wide.                                                     |
-| `SEL`   | Master → Slave | Byte-enable, `G_DATA_SIZE/8` bits wide. Bit *k* selects byte *k* of `WRDAT` (writes) or of the returned `RDDAT` (reads). Non-selected byte lanes are don't-care on the wire and must be ignored by the receiver. |
+| `WRDAT` | Master → Slave | Write data, `G_DATA_BITS` bits wide.                                                     |
+| `SEL`   | Master → Slave | Byte-enable, `G_DATA_BITS/8` bits wide. Bit *k* selects byte *k* of `WRDAT` (writes) or of the returned `RDDAT` (reads). Non-selected byte lanes are don't-care on the wire and must be ignored by the receiver. |
 | `ACK`   | Slave  → Master| Response valid: one pulse per completed read or write.                                   |
 | `RDDAT` | Slave  → Master| Read data, valid on cycles where `ACK = 1` and the matching request had `WE = 0`. Only the lanes selected by `SEL` of the matching request are guaranteed valid. |
 
@@ -346,9 +346,9 @@ Only a single outstanding request is required to be supported.
 | ----------------------------- | -------------------------------------------------------- |
 | Type of interface             | MASTER and SLAVE                                         |
 | Wishbone version              | B4 (pipelined)                                           |
-| Port size (data width)        | `G_DATA_SIZE` bits, default 32                           |
+| Port size (data width)        | `G_DATA_BITS` bits, default 32                           |
 | Port granularity              | 8 bits                                                   |
-| Maximum operand size          | `G_DATA_SIZE` bits                                       |
+| Maximum operand size          | `G_DATA_BITS` bits                                       |
 | Data transfer ordering        | Little-endian                                            |
 | Data transfer sequencing      | Single read or single write per request beat             |
 | Supported cycle types         | Single read, single write. Back-to-back single transfers are allowed (one outstanding request at a time). |
@@ -403,10 +403,10 @@ stress testing.
 
 | Generic          | Meaning                                | Typical value |
 | ---------------- | -------------------------------------- | ------------- |
-| `G_ADDR_SIZE`    | Address width in bits, byte-addressed. | 16–32         |
-| `G_DATA_SIZE`    | Data width in bits.                    | 32            |
+| `G_ADDR_BITS`    | Address width in bits, byte-addressed. | 16–32         |
+| `G_DATA_BITS`    | Data width in bits.                    | 32            |
 
-`SEL` width is derived: `G_DATA_SIZE / 8`.
+`SEL` width is derived: `G_DATA_BITS / 8`.
 
 ### Deviations from Wishbone B4
 
@@ -466,10 +466,10 @@ streaming use `axis` (see [#axi-streaming](#axi-streaming)).
 | ---------------- | -------------- | -------------------------------------------------------------------------------------------------- |
 | `WRITE`          | Master → Slave | Write request.                                                                                     |
 | `READ`           | Master → Slave | Read request. `WRITE` and `READ` must never be asserted in the same cycle.                         |
-| `ADDRESS`        | Master → Slave | Byte address, `G_ADDR_SIZE` bits wide. The low `log2(G_DATA_SIZE/8)` bits must be zero (naturally aligned). |
-| `WRITEDATA`      | Master → Slave | Write data, `G_DATA_SIZE` bits wide.                                                               |
-| `BYTEENABLE`     | Master → Slave | Per-byte enables for `WRITEDATA`, `G_DATA_SIZE/8` bits wide.                                       |
-| `BURSTCOUNT`     | Master → Slave | Length of the burst in beats, `G_BURST_SIZE` bits wide. Value `1` denotes a single-beat transfer.  |
+| `ADDRESS`        | Master → Slave | Byte address, `G_ADDR_BITS` bits wide. The low `log2(G_DATA_BITS/8)` bits must be zero (naturally aligned). |
+| `WRITEDATA`      | Master → Slave | Write data, `G_DATA_BITS` bits wide.                                                               |
+| `BYTEENABLE`     | Master → Slave | Per-byte enables for `WRITEDATA`, `G_DATA_BITS/8` bits wide.                                       |
+| `BURSTCOUNT`     | Master → Slave | Length of the burst in beats, `G_BURST_BITS` bits wide. Value `1` denotes a single-beat transfer.  |
 | `WAITREQUEST`    | Slave  → Master| Slave back-pressure on the request channel. While asserted, the request is *not* accepted.         |
 | `READDATA`       | Slave  → Master| Read data, valid on cycles where `READDATAVALID = 1`.                                              |
 | `READDATAVALID`  | Slave  → Master| Asserted by the slave for each beat of returned read data.                                         |
@@ -512,7 +512,7 @@ streaming use `axis` (see [#axi-streaming](#axi-streaming)).
    `ADDRESS`, and `BURSTCOUNT` need not be held after the request is
    accepted.
 4. **Address increment.** Burst beats access consecutive addresses,
-   incrementing by `G_DATA_SIZE/8` bytes per beat starting at
+   incrementing by `G_DATA_BITS/8` bytes per beat starting at
    `ADDRESS`. Address wrapping is not supported.
 5. **In-order responses.** Read responses are returned in the order
    the requests were accepted.
@@ -542,11 +542,11 @@ are not signalled.
 
 | Generic          | Meaning                  | Typical value |
 | ---------------- | ------------------------ | ------------- |
-| `G_ADDR_SIZE`    | Address width in bits.   | 16–32         |
-| `G_DATA_SIZE`    | Data width in bits.      | 32, 64        |
-| `G_BURST_SIZE`   | `BURSTCOUNT` width.      | 4–8           |
+| `G_ADDR_BITS`    | Address width in bits.   | 16–32         |
+| `G_DATA_BITS`    | Data width in bits.      | 32, 64        |
+| `G_BURST_BITS`   | `BURSTCOUNT` width.      | 4–8           |
 
-`BYTEENABLE` width is derived: `G_DATA_SIZE / 8`.
+`BYTEENABLE` width is derived: `G_DATA_BITS / 8`.
 
 ### Deviations from the Avalon-MM spec
 

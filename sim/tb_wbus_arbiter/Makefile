@@ -27,7 +27,7 @@ STOP_TIME = 1200us
 GENERIC += -gG_DEBUG=false
 GENERIC += -gG_DO_ABORT=true
 GENERIC += -gG_LATENCY=2
-GENERIC += -gG_ADDR_SIZE=12
+GENERIC += -gG_ADDR_BITS=12
 
 # Don't stop on errors
 #ASSERT_LEVEL = none

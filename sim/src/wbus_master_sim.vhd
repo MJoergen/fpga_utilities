@@ -17,8 +17,8 @@ entity wbus_master_sim is
     G_DEBUG       : boolean                       := false;
     G_DO_ABORT    : boolean                       := false;
     G_OFFSET      : natural                       := 1234;
-    G_ADDR_SIZE   : natural;
-    G_DATA_SIZE   : natural
+    G_ADDR_BITS   : natural;
+    G_DATA_BITS   : natural
   );
   port (
     clk_i     : in    std_logic;
@@ -26,11 +26,11 @@ entity wbus_master_sim is
     m_cyc_o   : out   std_logic;                                  -- Valid bus cycle
     m_stall_i : in    std_logic;
     m_stb_o   : out   std_logic;                                  -- Strobe signals / core select signal
-    m_addr_o  : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0); -- lower address bits
+    m_addr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0); -- lower address bits
     m_we_o    : out   std_logic;                                  -- Write enable
-    m_wrdat_o : out   std_logic_vector(G_DATA_SIZE - 1 downto 0); -- Write Databus
+    m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0); -- Write Databus
     m_ack_i   : in    std_logic;                                  -- Bus cycle acknowledge
-    m_rddat_i : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)  -- Read Databus
+    m_rddat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0)  -- Read Databus
   );
 end entity wbus_master_sim;
 
@@ -44,16 +44,16 @@ architecture simulation of wbus_master_sim is
   type     state_type is (IDLE_ST, WRITING_ST, READING_ST, DONE_ST);
   signal   state : state_type      := IDLE_ST;
 
-  signal   wr_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-  signal   rd_ptr : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal   wr_ptr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal   rd_ptr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
 
   pure function addr_to_data (
     addr : std_logic_vector
   ) return std_logic_vector is
-    variable addr_v : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    variable data_v : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    variable addr_v : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    variable data_v : std_logic_vector(G_DATA_BITS - 1 downto 0);
   begin
-    return resize(addr, G_DATA_SIZE) + G_OFFSET;
+    return resize(addr, G_DATA_BITS) + G_OFFSET;
   end function addr_to_data;
 
   signal   do_read  : std_logic;

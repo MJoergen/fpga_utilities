@@ -7,7 +7,7 @@ vunit axis_arbiter_inst(axis_arbiter(synthesis))
    signal f_sampled_in1 : boolean := false;
    signal f_sampled_out : boolean := false;
 
-   signal f_value : std_logic_vector(G_DATA_SIZE-1 downto 0);
+   signal f_value : std_logic_vector(G_DATA_BITS-1 downto 0);
    attribute anyconst : boolean;
    attribute anyconst of f_value : signal is true;
 

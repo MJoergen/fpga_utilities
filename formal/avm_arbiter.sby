@@ -12,7 +12,7 @@ cover: depth 9
 smtbmc
 
 [script]
-ghdl --std=08 -gG_ADDR_SIZE=4 -gG_DATA_SIZE=8  avm_arbiter.vhd avm_arbiter.psl -e avm_arbiter
+ghdl --std=08 -gG_ADDR_BITS=4 -gG_DATA_BITS=8  avm_arbiter.vhd avm_arbiter.psl -e avm_arbiter
 prep -top avm_arbiter
 
 [files]

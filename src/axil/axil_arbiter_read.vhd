@@ -7,8 +7,8 @@ library ieee;
 
 entity axil_arbiter_read is
   generic (
-    G_ADDR_SIZE : positive;
-    G_DATA_SIZE : positive
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive
   );
   port (
     clk_i        : in    std_logic;
@@ -17,29 +17,29 @@ entity axil_arbiter_read is
     -- Input
     s0_arready_o : out   std_logic;
     s0_arvalid_i : in    std_logic;
-    s0_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s0_araddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s0_rready_i  : in    std_logic;
     s0_rvalid_o  : out   std_logic;
-    s0_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s0_rdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     s0_rresp_o   : out   std_logic_vector(1 downto 0);
     s0_writing_i : in    std_logic;
 
     s1_arready_o : out   std_logic;
     s1_arvalid_i : in    std_logic;
-    s1_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s1_araddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s1_rready_i  : in    std_logic;
     s1_rvalid_o  : out   std_logic;
-    s1_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s1_rdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     s1_rresp_o   : out   std_logic_vector(1 downto 0);
     s1_writing_i : in    std_logic;
 
     -- Output
     m_arready_i  : in    std_logic;
     m_arvalid_o  : out   std_logic;
-    m_araddr_o   : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_araddr_o   : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_rready_o   : out   std_logic;
     m_rvalid_i   : in    std_logic;
-    m_rdata_i    : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rdata_i    : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_rresp_i    : in    std_logic_vector(1 downto 0)
   );
 end entity axil_arbiter_read;

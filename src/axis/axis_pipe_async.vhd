@@ -9,19 +9,19 @@ library ieee;
 entity axis_pipe_async is
   generic (
     G_PIPE_SIZE : positive range 2 to 16;
-    G_DATA_SIZE : positive
+    G_DATA_BITS : positive
   );
   port (
     -- Input AXI stream
     s_clk_i   : in    std_logic;
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     -- Output AXI stream
     m_clk_i   : in    std_logic;
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axis_pipe_async;
 
@@ -48,7 +48,7 @@ architecture synthesis of axis_pipe_async is
   -- Dual-port LUTRAM memory to contain the FIFO data.
   -- We use LUTRAM instead of registers to save space in the FPGA.
   -- We could use BRAM, but there is a higher delay writing to BRAM than to LUTRAM.
-  type     ram_type is array (natural range <>) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  type     ram_type is array (natural range <>) of std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal   dpram : ram_type(0 to C_PIPE_SIZE - 1);
   attribute ram_style : string;
   attribute ram_style of dpram          : signal is "distributed";

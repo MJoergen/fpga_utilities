@@ -11,8 +11,8 @@ library ieee;
 
 entity axis_dropper is
   generic (
-    G_DATA_SIZE : positive; -- Size of each byte
-    G_ADDR_SIZE : positive; -- Controls size of frame buffer
+    G_DATA_BITS : positive; -- Size of each byte
+    G_ADDR_BITS : positive; -- Controls size of frame buffer
     G_RAM_DEPTH : positive  -- Set to ratio between longest and shortest frame length possible
   );
   port (
@@ -22,14 +22,14 @@ entity axis_dropper is
     -- Input interface
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_last_i  : in    std_logic;
     s_drop_i  : in    std_logic; -- Sampled when s_last_i = 1
 
     -- Output interface
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_last_o  : out   std_logic
   );
 end entity axis_dropper;
@@ -38,26 +38,26 @@ architecture synthesis of axis_dropper is
 
   -- Buffer containing the packet data
   -- This is not a regular FIFO, because the data may be intentionally overwritten (in case s_drop_i = 1).
-  type   buf_type is array (0 to 2 ** G_ADDR_SIZE - 1) of std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  type   buf_type is array (0 to 2 ** G_ADDR_BITS - 1) of std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal rx_buf : buf_type                                   := (others => (others => '0'));
 
   -- Current write pointer.
-  signal wrptr : natural range 0 to 2 ** G_ADDR_SIZE - 1     := 0;
+  signal wrptr : natural range 0 to 2 ** G_ADDR_BITS - 1     := 0;
 
   -- Current read pointer.
-  signal rdptr : natural range 0 to 2 ** G_ADDR_SIZE - 1     := 0;
+  signal rdptr : natural range 0 to 2 ** G_ADDR_BITS - 1     := 0;
 
   -- Pointer to first word of current frame.
-  signal first_ptr : natural range 0 to 2 ** G_ADDR_SIZE - 1 := 0;
+  signal first_ptr : natural range 0 to 2 ** G_ADDR_BITS - 1 := 0;
 
   -- Pointer to last word of current frame (s_last_i = '1').
-  signal last_ptr : natural range 0 to 2 ** G_ADDR_SIZE - 1  := 0;
+  signal last_ptr : natural range 0 to 2 ** G_ADDR_BITS - 1  := 0;
 
   signal fifo_wr_ready : std_logic;
   signal fifo_wr_valid : std_logic;
-  signal fifo_wr_data  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal fifo_wr_data  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal fifo_rd_ready : std_logic;
-  signal fifo_rd_data  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal fifo_rd_data  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal fifo_rd_valid : std_logic;
 
   type   fsm_state_type is (IDLE_ST, FWD_ST);
@@ -89,7 +89,7 @@ begin
             wrptr <= first_ptr;
           else
             -- Store current "end pointer" in FIFO
-            fifo_wr_data  <= std_logic_vector(to_unsigned(wrptr, G_ADDR_SIZE));
+            fifo_wr_data  <= std_logic_vector(to_unsigned(wrptr, G_ADDR_BITS));
             fifo_wr_valid <= '1';
             -- Prepare for next frame
             first_ptr     <= wrptr + 1;
@@ -112,7 +112,7 @@ begin
 
   axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_DATA_SIZE => G_ADDR_SIZE,
+      G_DATA_BITS => G_ADDR_BITS,
       G_RAM_DEPTH => G_RAM_DEPTH
     )
     port map (

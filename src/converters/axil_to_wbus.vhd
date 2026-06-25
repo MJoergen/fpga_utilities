@@ -9,8 +9,8 @@ library ieee;
 entity axil_to_wbus is
   generic (
     G_TIMEOUT   : positive := 100;
-    G_ADDR_SIZE : positive;
-    G_DATA_SIZE : positive
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive
   );
   port (
     clk_i            : in    std_logic;
@@ -19,31 +19,31 @@ entity axil_to_wbus is
     -- AXI Lite input
     s_axil_awready_o : out   std_logic;
     s_axil_awvalid_i : in    std_logic;
-    s_axil_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_axil_awaddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_axil_wready_o  : out   std_logic;
     s_axil_wvalid_i  : in    std_logic;
-    s_axil_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_axil_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    s_axil_wdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_axil_wstrb_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s_axil_bready_i  : in    std_logic;
     s_axil_bvalid_o  : out   std_logic;
     s_axil_bresp_o   : out   std_logic_vector(1 downto 0);
     s_axil_arready_o : out   std_logic;
     s_axil_arvalid_i : in    std_logic;
-    s_axil_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s_axil_araddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_axil_rready_i  : in    std_logic;
     s_axil_rvalid_o  : out   std_logic;
-    s_axil_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_axil_rdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_axil_rresp_o   : out   std_logic_vector(1 downto 0);
 
     -- Wishbone output
     m_wbus_cyc_o     : out   std_logic;
     m_wbus_stall_i   : in    std_logic;
     m_wbus_stb_o     : out   std_logic;
-    m_wbus_addr_o    : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_wbus_addr_o    : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_wbus_we_o      : out   std_logic;
-    m_wbus_wrdat_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_wbus_wrdat_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_wbus_ack_i     : in    std_logic;
-    m_wbus_rddat_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_wbus_rddat_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axil_to_wbus;
 
@@ -110,7 +110,7 @@ begin
             -- Both AW and W streams are valid.
             m_wbus_cyc_o   <= '1';
             m_wbus_stb_o   <= '1';
-            m_wbus_addr_o  <= s_axil_awaddr_i(G_ADDR_SIZE - 1 downto 0);
+            m_wbus_addr_o  <= s_axil_awaddr_i(G_ADDR_BITS - 1 downto 0);
             m_wbus_we_o    <= '1';
             m_wbus_wrdat_o <= s_axil_wdata_i;
             state          <= WRITING_ST;
@@ -119,7 +119,7 @@ begin
             -- AR stream valid
             m_wbus_cyc_o  <= '1';
             m_wbus_stb_o  <= '1';
-            m_wbus_addr_o <= s_axil_araddr_i(G_ADDR_SIZE - 1 downto 0);
+            m_wbus_addr_o <= s_axil_araddr_i(G_ADDR_BITS - 1 downto 0);
             m_wbus_we_o   <= '0';
             state         <= READING_ST;
           end if;

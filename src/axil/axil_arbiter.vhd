@@ -15,8 +15,8 @@ library ieee;
 
 entity axil_arbiter is
   generic (
-    G_ADDR_SIZE : positive;
-    G_DATA_SIZE : positive
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive
   );
   port (
     clk_i        : in    std_logic;
@@ -25,57 +25,57 @@ entity axil_arbiter is
     -- Input
     s0_awready_o : out   std_logic;
     s0_awvalid_i : in    std_logic;
-    s0_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s0_awaddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s0_wready_o  : out   std_logic;
     s0_wvalid_i  : in    std_logic;
-    s0_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s0_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    s0_wdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s0_wstrb_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s0_bready_i  : in    std_logic;
     s0_bvalid_o  : out   std_logic;
     s0_bresp_o   : out   std_logic_vector(1 downto 0);
     s0_arready_o : out   std_logic;
     s0_arvalid_i : in    std_logic;
-    s0_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s0_araddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s0_rready_i  : in    std_logic;
     s0_rvalid_o  : out   std_logic;
-    s0_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s0_rdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     s0_rresp_o   : out   std_logic_vector(1 downto 0);
 
     s1_awready_o : out   std_logic;
     s1_awvalid_i : in    std_logic;
-    s1_awaddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s1_awaddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s1_wready_o  : out   std_logic;
     s1_wvalid_i  : in    std_logic;
-    s1_wdata_i   : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s1_wstrb_i   : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    s1_wdata_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s1_wstrb_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s1_bready_i  : in    std_logic;
     s1_bvalid_o  : out   std_logic;
     s1_bresp_o   : out   std_logic_vector(1 downto 0);
     s1_arready_o : out   std_logic;
     s1_arvalid_i : in    std_logic;
-    s1_araddr_i  : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    s1_araddr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s1_rready_i  : in    std_logic;
     s1_rvalid_o  : out   std_logic;
-    s1_rdata_o   : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s1_rdata_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     s1_rresp_o   : out   std_logic_vector(1 downto 0);
 
     -- Output
     m_awready_i  : in    std_logic;
     m_awvalid_o  : out   std_logic;
-    m_awaddr_o   : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_awaddr_o   : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_wready_i   : in    std_logic;
     m_wvalid_o   : out   std_logic;
-    m_wdata_o    : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_wstrb_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+    m_wdata_o    : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_wstrb_o    : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     m_bready_o   : out   std_logic;
     m_bvalid_i   : in    std_logic;
     m_bresp_i    : in    std_logic_vector(1 downto 0);
     m_arready_i  : in    std_logic;
     m_arvalid_o  : out   std_logic;
-    m_araddr_o   : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+    m_araddr_o   : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_rready_o   : out   std_logic;
     m_rvalid_i   : in    std_logic;
-    m_rdata_i    : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    m_rdata_i    : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     m_rresp_i    : in    std_logic_vector(1 downto 0)
   );
 end entity axil_arbiter;
@@ -86,8 +86,8 @@ begin
 
   axil_arbiter_write_inst : entity work.axil_arbiter_write
     generic map (
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i        => clk_i,
@@ -126,8 +126,8 @@ begin
 
   axil_arbiter_read_inst : entity work.axil_arbiter_read
     generic map (
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i        => clk_i,

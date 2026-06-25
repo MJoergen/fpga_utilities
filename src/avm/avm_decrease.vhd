@@ -8,7 +8,7 @@
 -- Avalon-MM slave. Each wide-side transaction is expanded into C_RATIO
 -- narrow-side beats, where:
 --
---     C_RATIO = G_SLAVE_DATA_SIZE / G_MASTER_DATA_SIZE  (must be a power of 2)
+--     C_RATIO = G_SLAVE_DATA_BITS / G_MASTER_DATA_BITS  (must be a power of 2)
 --
 -- Address mapping: the master-side address has C_ADDRESS_SHIFT more LSBs than
 -- the slave-side address. Those LSBs are driven to 0 by this block, because the
@@ -16,7 +16,7 @@
 --
 -- Burst-count mapping: the slave-side burstcount is multiplied by C_RATIO to
 -- produce the master-side burstcount, i.e. one wide beat -> C_RATIO narrow
--- beats. The shared port width G_BURST_WIDTH must be sized to hold the *master*
+-- beats. The shared port width G_BURST_BITS must be sized to hold the *master*
 -- (multiplied) count without overflow.
 --
 -- Write path:
@@ -50,18 +50,18 @@ entity avm_decrease is
     -- Width of both s_burstcount_i and m_burstcount_o. Must be wide enough to
     -- hold the master-side count, i.e. (max slave burstcount) * C_RATIO without
     -- wrapping.
-    G_BURST_WIDTH         : positive := 8;
+    G_BURST_BITS         : positive := 8;
 
     -- Address and data widths.
     -- Constraints (enforced by assertions in the architecture):
-    --   * G_SLAVE_DATA_SIZE = C_RATIO * G_MASTER_DATA_SIZE
+    --   * G_SLAVE_DATA_BITS = C_RATIO * G_MASTER_DATA_BITS
     --   * C_RATIO is a power of two (i.e. 2**C_ADDRESS_SHIFT = C_RATIO)
-    --   * G_MASTER_ADDRESS_SIZE = G_SLAVE_ADDRESS_SIZE + log2(C_RATIO)
+    --   * G_MASTER_ADDRESS_BITS = G_SLAVE_ADDRESS_BITS + log2(C_RATIO)
     -- A degenerate ratio of 1 is rejected; use a passthrough wrapper instead.
-    G_SLAVE_ADDRESS_SIZE  : positive;
-    G_SLAVE_DATA_SIZE     : positive; -- power-of-two multiple of G_MASTER_DATA_SIZE
-    G_MASTER_ADDRESS_SIZE : positive;
-    G_MASTER_DATA_SIZE    : positive
+    G_SLAVE_ADDRESS_BITS  : positive;
+    G_SLAVE_DATA_BITS     : positive; -- power-of-two multiple of G_MASTER_DATA_BITS
+    G_MASTER_ADDRESS_BITS : positive;
+    G_MASTER_DATA_BITS    : positive
   );
   port (
     clk_i             : in    std_logic;
@@ -76,11 +76,11 @@ entity avm_decrease is
     s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
-    s_address_i       : in    std_logic_vector(G_SLAVE_ADDRESS_SIZE - 1 downto 0);
-    s_writedata_i     : in    std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
-    s_byteenable_i    : in    std_logic_vector(G_SLAVE_DATA_SIZE / 8 - 1 downto 0);
-    s_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-    s_readdata_o      : out   std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
+    s_address_i       : in    std_logic_vector(G_SLAVE_ADDRESS_BITS - 1 downto 0);
+    s_writedata_i     : in    std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
+    s_byteenable_i    : in    std_logic_vector(G_SLAVE_DATA_BITS / 8 - 1 downto 0);
+    s_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
+    s_readdata_o      : out   std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
     s_readdatavalid_o : out   std_logic;
 
     --------------------------------------------------------------------------
@@ -91,11 +91,11 @@ entity avm_decrease is
     m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
-    m_address_o       : out   std_logic_vector(G_MASTER_ADDRESS_SIZE - 1 downto 0);
-    m_writedata_o     : out   std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
-    m_byteenable_o    : out   std_logic_vector(G_MASTER_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);
-    m_readdata_i      : in    std_logic_vector(G_MASTER_DATA_SIZE - 1 downto 0);
+    m_address_o       : out   std_logic_vector(G_MASTER_ADDRESS_BITS - 1 downto 0);
+    m_writedata_o     : out   std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
+    m_byteenable_o    : out   std_logic_vector(G_MASTER_DATA_BITS / 8 - 1 downto 0);
+    m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);
+    m_readdata_i      : in    std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
     m_readdatavalid_i : in    std_logic
   );
 end entity avm_decrease;
@@ -107,12 +107,12 @@ architecture synthesis of avm_decrease is
   --   C_RATIO = 2 ** C_ADDRESS_SHIFT
   -- below (it fires only if both data sizes are themselves powers of two and
   -- consistent with the address widths).
-  constant C_RATIO : positive                                              := G_SLAVE_DATA_SIZE / G_MASTER_DATA_SIZE;
+  constant C_RATIO : positive                                              := G_SLAVE_DATA_BITS / G_MASTER_DATA_BITS;
 
   -- Extra address LSBs present on the master side, i.e. log2(C_RATIO).
   -- Derived from the address-width difference and cross-checked against
   -- C_RATIO by an assertion below.
-  constant C_ADDRESS_SHIFT : natural                                       := G_MASTER_ADDRESS_SIZE - G_SLAVE_ADDRESS_SIZE;
+  constant C_ADDRESS_SHIFT : natural                                       := G_MASTER_ADDRESS_BITS - G_SLAVE_ADDRESS_BITS;
 
   -- Fixed all-zero pattern concatenated as the LSBs of m_address_o so that the
   -- downstream burst engine starts at the aligned base of the wide word.
@@ -125,10 +125,10 @@ architecture synthesis of avm_decrease is
   -- write burst, see comment there).
   signal   s_write      : std_logic;
   signal   s_read       : std_logic;
-  signal   s_address    : std_logic_vector(G_SLAVE_ADDRESS_SIZE - 1 downto 0);
-  signal   s_writedata  : std_logic_vector(G_SLAVE_DATA_SIZE - 1 downto 0);
-  signal   s_byteenable : std_logic_vector(G_SLAVE_DATA_SIZE / 8 - 1 downto 0);
-  signal   s_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0); -- master-side count (= slave count * C_RATIO)
+  signal   s_address    : std_logic_vector(G_SLAVE_ADDRESS_BITS - 1 downto 0);
+  signal   s_writedata  : std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
+  signal   s_byteenable : std_logic_vector(G_SLAVE_DATA_BITS / 8 - 1 downto 0);
+  signal   s_burstcount : std_logic_vector(G_BURST_BITS - 1 downto 0); -- master-side count (= slave count * C_RATIO)
 
   -- FSM state.
   --   IDLE_ST       : ready to accept a new wide transaction. Also the state in
@@ -178,7 +178,7 @@ begin
     severity failure;
 
   -- Confirm the integer division above was exact.
-  assert G_SLAVE_DATA_SIZE = C_RATIO * G_MASTER_DATA_SIZE
+  assert G_SLAVE_DATA_BITS = C_RATIO * G_MASTER_DATA_BITS
     severity failure;
 
 
@@ -221,7 +221,7 @@ begin
       -- word is complete: emit s_readdatavalid_o and wrap s_read_pos to 0
       -- ready for the next wide read.
       if m_readdatavalid_i = '1' then
-        s_readdata_o(G_MASTER_DATA_SIZE * s_read_pos + G_MASTER_DATA_SIZE - 1 downto G_MASTER_DATA_SIZE * s_read_pos) <= m_readdata_i;
+        s_readdata_o(G_MASTER_DATA_BITS * s_read_pos + G_MASTER_DATA_BITS - 1 downto G_MASTER_DATA_BITS * s_read_pos) <= m_readdata_i;
 
         if s_read_pos = C_RATIO - 1 then
           s_read_pos        <= 0;
@@ -249,8 +249,8 @@ begin
             -- master burstcount. Implemented as a left-shift by
             -- C_ADDRESS_SHIFT = log2(C_RATIO).
             -- CAVEAT: this silently wraps if the slave burstcount is so
-            -- large that the result does not fit in G_BURST_WIDTH bits.
-            -- The integrator must size G_BURST_WIDTH for the master side.
+            -- large that the result does not fit in G_BURST_BITS bits.
+            -- The integrator must size G_BURST_BITS for the master side.
             s_burstcount <= s_burstcount_i sll C_ADDRESS_SHIFT;
 
             if s_write_i = '1' then
@@ -340,10 +340,10 @@ begin
   m_address_o     <= s_address & C_ZERO_ADDRESS;
 
   -- Select the s_write_pos-th narrow slice of the wide write data.
-  m_writedata_o   <= s_writedata(G_MASTER_DATA_SIZE * s_write_pos + G_MASTER_DATA_SIZE - 1 downto G_MASTER_DATA_SIZE * s_write_pos);
+  m_writedata_o   <= s_writedata(G_MASTER_DATA_BITS * s_write_pos + G_MASTER_DATA_BITS - 1 downto G_MASTER_DATA_BITS * s_write_pos);
 
-  -- Same slicing for byte enables (G_MASTER_DATA_SIZE / 8 bytes per beat).
-  m_byteenable_o  <= s_byteenable(G_MASTER_DATA_SIZE / 8 * s_write_pos + G_MASTER_DATA_SIZE / 8 - 1 downto G_MASTER_DATA_SIZE / 8 * s_write_pos);
+  -- Same slicing for byte enables (G_MASTER_DATA_BITS / 8 bytes per beat).
+  m_byteenable_o  <= s_byteenable(G_MASTER_DATA_BITS / 8 * s_write_pos + G_MASTER_DATA_BITS / 8 - 1 downto G_MASTER_DATA_BITS / 8 * s_write_pos);
 
   -- Master burstcount is held for the full burst (already the multiplied
   -- value computed in IDLE_ST).

@@ -8,12 +8,12 @@ library ieee;
 
 entity avm_pause is
   generic (
-    G_BURST_WIDTH : natural                       := 8;
+    G_BURST_BITS : natural                       := 8;
     G_MAX_BURST   : natural                       := 8;
     G_SEED        : std_logic_vector(63 downto 0) := X"12345678AABBCCDD";
     G_PAUSE_SIZE  : natural;
-    G_ADDR_SIZE   : natural;
-    G_DATA_SIZE   : natural
+    G_ADDR_BITS   : natural;
+    G_DATA_BITS   : natural
   );
   port (
     clk_i             : in    std_logic;
@@ -22,22 +22,22 @@ entity avm_pause is
     s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
-    s_address_i       : in    std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    s_writedata_i     : in    std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    s_byteenable_i    : in    std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    s_burstcount_i    : in    std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    s_address_i       : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    s_writedata_i     : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_byteenable_i    : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    s_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
     s_readdatavalid_o : out   std_logic;
-    s_readdata_o      : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
+    s_readdata_o      : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
     -- Output
     m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
-    m_address_o       : out   std_logic_vector(G_ADDR_SIZE - 1 downto 0);
-    m_writedata_o     : out   std_logic_vector(G_DATA_SIZE - 1 downto 0);
-    m_byteenable_o    : out   std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
-    m_burstcount_o    : out   std_logic_vector(G_BURST_WIDTH - 1 downto 0);
+    m_address_o       : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    m_writedata_o     : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_byteenable_o    : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);
     m_readdatavalid_i : in    std_logic;
-    m_readdata_i      : in    std_logic_vector(G_DATA_SIZE - 1 downto 0)
+    m_readdata_i      : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity avm_pause;
 
@@ -51,16 +51,16 @@ architecture synthesis of avm_pause is
   signal  req_delay  : natural range 0 to G_PAUSE_SIZE;
   signal  resp_delay : natural range 0 to G_PAUSE_SIZE;
 
-  signal  wr_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0) := (others => '0');
-  signal  rd_burstcount : std_logic_vector(G_BURST_WIDTH - 1 downto 0) := (others => '0');
+  signal  wr_burstcount : std_logic_vector(G_BURST_BITS - 1 downto 0) := (others => '0');
+  signal  rd_burstcount : std_logic_vector(G_BURST_BITS - 1 downto 0) := (others => '0');
   signal  allow         : std_logic;
 
   signal  axis_s_ready : std_logic;
   signal  axis_s_valid : std_logic;
-  signal  axis_s_data  : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal  axis_s_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal  axis_m_ready : std_logic;
   signal  axis_m_valid : std_logic;
-  signal  axis_m_data  : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal  axis_m_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal  axis_fill    : natural range 0 to G_MAX_BURST;
 
 begin
@@ -162,7 +162,7 @@ begin
     axis_fifo_inst : entity work.axis_fifo
       generic map (
         G_RAM_DEPTH => G_MAX_BURST + 1,
-        G_DATA_SIZE => G_DATA_SIZE
+        G_DATA_BITS => G_DATA_BITS
       )
       port map (
         clk_i     => clk_i,

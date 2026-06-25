@@ -15,8 +15,8 @@ entity tb_axil_arbiter is
     G_PAUSE_SIZE : natural;
     G_RANDOM     : boolean;
     G_FAST       : boolean;
-    G_ADDR_SIZE  : natural;
-    G_DATA_SIZE  : natural
+    G_ADDR_BITS  : natural;
+    G_DATA_BITS  : natural
   );
 end entity tb_axil_arbiter;
 
@@ -27,110 +27,110 @@ architecture simulation of tb_axil_arbiter is
 
   signal s0_awready : std_logic;
   signal s0_awvalid : std_logic;
-  signal s0_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s0_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s0_wready  : std_logic;
   signal s0_wvalid  : std_logic;
-  signal s0_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s0_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal s0_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s0_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal s0_bready  : std_logic;
   signal s0_bvalid  : std_logic;
   signal s0_bresp   : std_logic_vector(1 downto 0);
   signal s0_arready : std_logic;
   signal s0_arvalid : std_logic;
-  signal s0_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s0_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s0_rready  : std_logic;
   signal s0_rvalid  : std_logic;
-  signal s0_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s0_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal s0_rresp   : std_logic_vector(1 downto 0);
 
   signal s1_awready : std_logic;
   signal s1_awvalid : std_logic;
-  signal s1_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s1_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s1_wready  : std_logic;
   signal s1_wvalid  : std_logic;
-  signal s1_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal s1_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal s1_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s1_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal s1_bready  : std_logic;
   signal s1_bvalid  : std_logic;
   signal s1_bresp   : std_logic_vector(1 downto 0);
   signal s1_arready : std_logic;
   signal s1_arvalid : std_logic;
-  signal s1_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal s1_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s1_rready  : std_logic;
   signal s1_rvalid  : std_logic;
-  signal s1_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal s1_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal s1_rresp   : std_logic_vector(1 downto 0);
 
   signal p0_awready : std_logic;
   signal p0_awvalid : std_logic;
-  signal p0_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal p0_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal p0_wready  : std_logic;
   signal p0_wvalid  : std_logic;
-  signal p0_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal p0_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal p0_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal p0_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal p0_bready  : std_logic;
   signal p0_bvalid  : std_logic;
   signal p0_bresp   : std_logic_vector(1 downto 0);
   signal p0_arready : std_logic;
   signal p0_arvalid : std_logic;
-  signal p0_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal p0_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal p0_rready  : std_logic;
   signal p0_rvalid  : std_logic;
-  signal p0_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal p0_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal p0_rresp   : std_logic_vector(1 downto 0);
 
   signal p1_awready : std_logic;
   signal p1_awvalid : std_logic;
-  signal p1_awaddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal p1_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal p1_wready  : std_logic;
   signal p1_wvalid  : std_logic;
-  signal p1_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal p1_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal p1_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal p1_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal p1_bready  : std_logic;
   signal p1_bvalid  : std_logic;
   signal p1_bresp   : std_logic_vector(1 downto 0);
   signal p1_arready : std_logic;
   signal p1_arvalid : std_logic;
-  signal p1_araddr  : std_logic_vector(G_ADDR_SIZE - 1 downto 0);
+  signal p1_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal p1_rready  : std_logic;
   signal p1_rvalid  : std_logic;
-  signal p1_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal p1_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal p1_rresp   : std_logic_vector(1 downto 0);
 
   signal d_awready : std_logic;
   signal d_awvalid : std_logic;
-  signal d_awaddr  : std_logic_vector(G_ADDR_SIZE downto 0);
+  signal d_awaddr  : std_logic_vector(G_ADDR_BITS downto 0);
   signal d_wready  : std_logic;
   signal d_wvalid  : std_logic;
-  signal d_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal d_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal d_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal d_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal d_bready  : std_logic;
   signal d_bvalid  : std_logic;
   signal d_bresp   : std_logic_vector(1 downto 0);
   signal d_arready : std_logic;
   signal d_arvalid : std_logic;
-  signal d_araddr  : std_logic_vector(G_ADDR_SIZE downto 0);
+  signal d_araddr  : std_logic_vector(G_ADDR_BITS downto 0);
   signal d_rready  : std_logic;
   signal d_rvalid  : std_logic;
-  signal d_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal d_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal d_rresp   : std_logic_vector(1 downto 0);
 
   signal p_awready : std_logic;
   signal p_awvalid : std_logic;
-  signal p_awaddr  : std_logic_vector(G_ADDR_SIZE downto 0);
+  signal p_awaddr  : std_logic_vector(G_ADDR_BITS downto 0);
   signal p_wready  : std_logic;
   signal p_wvalid  : std_logic;
-  signal p_wdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
-  signal p_wstrb   : std_logic_vector(G_DATA_SIZE / 8 - 1 downto 0);
+  signal p_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal p_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal p_bready  : std_logic;
   signal p_bvalid  : std_logic;
   signal p_bresp   : std_logic_vector(1 downto 0);
   signal p_arready : std_logic;
   signal p_arvalid : std_logic;
-  signal p_araddr  : std_logic_vector(G_ADDR_SIZE downto 0);
+  signal p_araddr  : std_logic_vector(G_ADDR_BITS downto 0);
   signal p_rready  : std_logic;
   signal p_rvalid  : std_logic;
-  signal p_rdata   : std_logic_vector(G_DATA_SIZE - 1 downto 0);
+  signal p_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal p_rresp   : std_logic_vector(1 downto 0);
 
   signal s0_busy : std_logic;
@@ -152,8 +152,8 @@ begin
 
   axil_arbiter_inst : entity work.axil_arbiter
     generic map (
-      G_ADDR_SIZE => G_ADDR_SIZE + 1,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS + 1,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i        => clk,
@@ -224,8 +224,8 @@ begin
       G_DEBUG     => G_DEBUG,
       G_RANDOM    => G_RANDOM,
       G_FAST      => G_FAST,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i       => clk,
@@ -257,8 +257,8 @@ begin
       G_DEBUG     => G_DEBUG,
       G_RANDOM    => G_RANDOM,
       G_FAST      => G_FAST,
-      G_ADDR_SIZE => G_ADDR_SIZE,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i       => clk,
@@ -290,8 +290,8 @@ begin
   axil_pause_0_inst : entity work.axil_pause
     generic map (
       G_SEED       => X"8765432112345678",
-      G_ADDR_SIZE  => G_ADDR_SIZE,
-      G_DATA_SIZE  => G_DATA_SIZE,
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -336,8 +336,8 @@ begin
   axil_pause_1_inst : entity work.axil_pause
     generic map (
       G_SEED       => X"ABCDEFABCDEFABCD",
-      G_ADDR_SIZE  => G_ADDR_SIZE,
-      G_DATA_SIZE  => G_DATA_SIZE,
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -382,8 +382,8 @@ begin
   axil_pause_d_inst : entity work.axil_pause
     generic map (
       G_SEED       => X"DEADBEEFC007BABE",
-      G_ADDR_SIZE  => G_ADDR_SIZE + 1,
-      G_DATA_SIZE  => G_DATA_SIZE,
+      G_ADDR_BITS  => G_ADDR_BITS + 1,
+      G_DATA_BITS  => G_DATA_BITS,
       G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
@@ -434,8 +434,8 @@ begin
     generic map (
       G_DEBUG     => G_DEBUG,
       G_FAST      => G_FAST,
-      G_ADDR_SIZE => G_ADDR_SIZE + 1,
-      G_DATA_SIZE => G_DATA_SIZE
+      G_ADDR_BITS => G_ADDR_BITS + 1,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i       => clk,
