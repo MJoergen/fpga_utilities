@@ -37,14 +37,14 @@ end entity axis_arbiter;
 
 architecture rtl of axis_arbiter is
 
-  type   state_type is (INPUT_0_ST, INPUT_1_ST);
-  signal state : state_type := INPUT_0_ST;
+  type   state_type is (S0_ST, S1_ST);
+  signal state : state_type := S0_ST;
 
 begin
 
-  s0_ready_o <= (m_ready_i or not m_valid_o) when state = INPUT_0_ST else
+  s0_ready_o <= (m_ready_i or not m_valid_o) when state = S0_ST else
                 '0';
-  s1_ready_o <= (m_ready_i or not m_valid_o) when state = INPUT_1_ST else
+  s1_ready_o <= (m_ready_i or not m_valid_o) when state = S1_ST else
                 '0';
 
   fsm_proc : process (clk_i)
@@ -56,24 +56,24 @@ begin
 
       case state is
 
-        when INPUT_0_ST =>
+        when S0_ST =>
           if s0_valid_i = '1' and s0_ready_o = '1' then
             m_data_o  <= s0_data_i;
             m_valid_o <= '1';
           end if;
 
           if s1_valid_i = '1' then
-            state <= INPUT_1_ST;
+            state <= S1_ST;
           end if;
 
-        when INPUT_1_ST =>
+        when S1_ST =>
           if s1_valid_i = '1' and s1_ready_o = '1' then
             m_data_o  <= s1_data_i;
             m_valid_o <= '1';
           end if;
 
           if s0_valid_i = '1' then
-            state <= INPUT_0_ST;
+            state <= S0_ST;
           end if;
 
       end case;
@@ -81,7 +81,7 @@ begin
       if rst_i = '1' then
         -- Reset clears only handshake/control signals; data is don't-care while valid is low
         m_valid_o <= '0';
-        state     <= INPUT_0_ST;
+        state     <= S0_ST;
       end if;
     end if;
   end process fsm_proc;

@@ -44,16 +44,16 @@ architecture rtl of axip_arbiter is
   -- If both Masters need to deliver data simultaneously then
   -- additional FIFOs can be inserted before this arbiter.
 
-  type   state_type is (MASTER_0_ST, MASTER_1_ST);
-  signal state : state_type := MASTER_0_ST;
+  type   state_type is (S0_ST, S1_ST);
+  signal state : state_type := S0_ST;
 
 begin
 
   -- Data is accepted only when we can process it, i.e. when m_valid_o is 0 or will be set
   -- to zero in this clock cycle.
-  s0_ready_o <= (m_ready_i or not m_valid_o) when state = MASTER_0_ST else
+  s0_ready_o <= (m_ready_i or not m_valid_o) when state = S0_ST else
                 '0';
-  s1_ready_o <= (m_ready_i or not m_valid_o) when state = MASTER_1_ST else
+  s1_ready_o <= (m_ready_i or not m_valid_o) when state = S1_ST else
                 '0';
 
   fsm_proc : process (clk_i)
@@ -66,7 +66,7 @@ begin
 
       case state is
 
-        when MASTER_0_ST =>
+        when S0_ST =>
           -- Accept data from Master 0
           if s0_valid_i = '1' and s0_ready_o = '1' then
             m_valid_o <= '1';
@@ -75,16 +75,16 @@ begin
             m_bytes_o <= s0_bytes_i;
 
             if s1_valid_i = '1' and s0_last_i = '1' then
-              state <= MASTER_1_ST;
+              state <= S1_ST;
             end if;
           end if;
 
           -- Grant access to Master 1 on next clock cycle, if requested
           if s0_valid_i = '0' and s1_valid_i = '1' and m_last_o = '1' then
-            state <= MASTER_1_ST;
+            state <= S1_ST;
           end if;
 
-        when MASTER_1_ST =>
+        when S1_ST =>
           -- Accept data from Master 1
           if s1_valid_i = '1' and s1_ready_o = '1' then
             m_valid_o <= '1';
@@ -93,13 +93,13 @@ begin
             m_bytes_o <= s1_bytes_i;
 
             if s0_valid_i = '1' and s1_last_i = '1' then
-              state <= MASTER_0_ST;
+              state <= S0_ST;
             end if;
           end if;
 
           -- Grant access to Master 0 on next clock cycle, if requested
           if s0_valid_i = '1' and s1_valid_i = '0' and m_last_o = '1' then
-            state <= MASTER_0_ST;
+            state <= S0_ST;
           end if;
 
       end case;
@@ -107,7 +107,7 @@ begin
       if rst_i = '1' then
         m_valid_o <= '0';
         m_last_o  <= '1';
-        state     <= MASTER_0_ST;
+        state     <= S0_ST;
       end if;
     end if;
   end process fsm_proc;

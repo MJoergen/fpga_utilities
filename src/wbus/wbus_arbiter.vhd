@@ -53,8 +53,8 @@ end entity wbus_arbiter;
 
 architecture rtl of wbus_arbiter is
 
-  type   state_type is (INPUT_0_IDLE_ST, INPUT_1_IDLE_ST, INPUT_0_BUSY_ST, INPUT_1_BUSY_ST);
-  signal state : state_type := INPUT_0_IDLE_ST;
+  type   state_type is (S0_IDLE_ST, S1_IDLE_ST, S0_BUSY_ST, S1_BUSY_ST);
+  signal state : state_type := S0_IDLE_ST;
 
 begin
 
@@ -62,17 +62,17 @@ begin
     report "wbus_arbiter: Invariant error where both slaves are ACK'ed"
     severity failure;
 
-  assert s0_ack_o /= '1' or state /= INPUT_0_BUSY_ST
-    report "wbus_arbiter: Invariant error in state INPUT_0_BUSY_ST"
+  assert s0_ack_o /= '1' or state /= S0_BUSY_ST
+    report "wbus_arbiter: Invariant error in state S0_BUSY_ST"
     severity failure;
 
-  assert s1_ack_o /= '1' or state /= INPUT_1_BUSY_ST
-    report "wbus_arbiter: Invariant error in state INPUT_1_BUSY_ST"
+  assert s1_ack_o /= '1' or state /= S1_BUSY_ST
+    report "wbus_arbiter: Invariant error in state S1_BUSY_ST"
     severity failure;
 
-  s0_stall_o <= '0' when state = INPUT_0_IDLE_ST else
+  s0_stall_o <= '0' when state = S0_IDLE_ST else
                 '1';
-  s1_stall_o <= '0' when state = INPUT_1_IDLE_ST else
+  s1_stall_o <= '0' when state = S1_IDLE_ST else
                 '1';
 
   fsm_proc : process (clk_i)
@@ -92,14 +92,14 @@ begin
 
       case state is
 
-        when INPUT_0_IDLE_ST =>
+        when S0_IDLE_ST =>
           -- Validate invariant
           assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1'
-            report "wbus_arbiter: Invariant error in state INPUT_0_IDLE_ST"
+            report "wbus_arbiter: Invariant error in state S0_IDLE_ST"
             severity failure;
 
           if s0_cyc_i = '0' and s1_cyc_i = '1' then
-            state <= INPUT_1_IDLE_ST;
+            state <= S1_IDLE_ST;
           elsif s0_cyc_i = '1' and s0_stb_i = '1' then
             m_cyc_o   <= s0_cyc_i;
             m_stb_o   <= s0_stb_i;
@@ -107,17 +107,17 @@ begin
             m_we_o    <= s0_we_i;
             m_wrdat_o <= s0_wrdat_i;
             m_sel_o   <= s0_sel_i;
-            state     <= INPUT_0_BUSY_ST;
+            state     <= S0_BUSY_ST;
           end if;
 
-        when INPUT_1_IDLE_ST =>
+        when S1_IDLE_ST =>
           -- Validate invariant
           assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1'
-            report "wbus_arbiter: Invariant error in state INPUT_1_IDLE_ST"
+            report "wbus_arbiter: Invariant error in state S1_IDLE_ST"
             severity failure;
 
           if s0_cyc_i = '1' and s1_cyc_i = '0' then
-            state <= INPUT_0_IDLE_ST;
+            state <= S0_IDLE_ST;
           elsif s1_cyc_i = '1' and s1_stb_i = '1' then
             m_cyc_o   <= s1_cyc_i;
             m_stb_o   <= s1_stb_i;
@@ -125,33 +125,33 @@ begin
             m_we_o    <= s1_we_i;
             m_wrdat_o <= s1_wrdat_i;
             m_sel_o   <= s1_sel_i;
-            state     <= INPUT_1_BUSY_ST;
+            state     <= S1_BUSY_ST;
           end if;
 
-        when INPUT_0_BUSY_ST =>
+        when S0_BUSY_ST =>
           if m_ack_i = '1' then
             s0_ack_o   <= '1';
             s0_rddat_o <= m_rddat_i;
-            state      <= INPUT_1_IDLE_ST;
+            state      <= S1_IDLE_ST;
           end if;
           if s0_cyc_i = '0' then
             m_cyc_o  <= '0';
             m_stb_o  <= '0';
             s0_ack_o <= '0';
-            state    <= INPUT_1_IDLE_ST;
+            state    <= S1_IDLE_ST;
           end if;
 
-        when INPUT_1_BUSY_ST =>
+        when S1_BUSY_ST =>
           if m_ack_i = '1' then
             s1_ack_o   <= '1';
             s1_rddat_o <= m_rddat_i;
-            state      <= INPUT_0_IDLE_ST;
+            state      <= S0_IDLE_ST;
           end if;
           if s1_cyc_i = '0' then
             m_cyc_o  <= '0';
             m_stb_o  <= '0';
             s1_ack_o <= '0';
-            state    <= INPUT_0_IDLE_ST;
+            state    <= S0_IDLE_ST;
           end if;
 
       end case;
@@ -162,7 +162,7 @@ begin
         m_stb_o  <= '0';
         s0_ack_o <= '0';
         s1_ack_o <= '0';
-        state    <= INPUT_0_IDLE_ST;
+        state    <= S0_IDLE_ST;
       end if;
     end if;
   end process fsm_proc;
