@@ -30,6 +30,7 @@ entity wbus_mapper is
     s_addr_i  : in    std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0); -- lower address bits
     s_we_i    : in    std_logic;                                         -- Write enable
     s_wrdat_i : in    std_logic_vector(31 downto 0);                     -- Write Databus
+    s_sel_i   : in    std_logic_vector(3 downto 0);                      -- Write Byteenable
     s_ack_o   : out   std_logic;                                         -- Bus cycle acknowledge
     s_rddat_o : out   std_logic_vector(31 downto 0);                     -- Read Databus
 
@@ -41,6 +42,7 @@ entity wbus_mapper is
     m_addr_o  : out   std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);  -- lower address bits
     m_we_o    : out   std_logic;                                         -- Write enable
     m_wrdat_o : out   std_logic_vector(31 downto 0);                     -- Write Databus
+    m_sel_o   : out   std_logic_vector(3 downto 0);                      -- Write Byteenable
     m_ack_i   : in    std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Bus cycle acknowledge
     m_rddat_i : in    slv32_array_type(G_NUM_SLAVES - 1 downto 0)        -- Read Databus
   );
@@ -100,6 +102,7 @@ begin
               slave_num      <= idx_v;
               m_addr_o       <= s_addr_i(G_SLAVE_ADDR_BITS - 1 downto 0);
               m_wrdat_o      <= s_wrdat_i;
+              m_sel_o        <= s_sel_i;
               m_we_o         <= s_we_i;
               m_cyc_o        <= '1';
               m_stb_o        <= (others => '0');

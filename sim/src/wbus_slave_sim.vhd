@@ -24,6 +24,7 @@ entity wbus_slave_sim is
     s_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_we_i    : in    std_logic;
     s_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_sel_i   : in    std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
     s_ack_o   : out   std_logic;
     s_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );

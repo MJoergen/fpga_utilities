@@ -28,6 +28,7 @@ architecture simulation of tb_wbus_sim is
   signal m_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_we    : std_logic;
   signal m_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal m_sel   : std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
   signal m_ack   : std_logic;
   signal m_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -37,6 +38,7 @@ architecture simulation of tb_wbus_sim is
   signal s_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_we    : std_logic;
   signal s_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s_sel   : std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
   signal s_ack   : std_logic;
   signal s_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -76,6 +78,7 @@ begin
       m_addr_o  => m_addr,
       m_we_o    => m_we,
       m_wrdat_o => m_wrdat,
+      m_sel_o   => m_sel,
       m_ack_i   => m_ack,
       m_rddat_i => m_rddat,
       s_cyc_i   => s_cyc,
@@ -84,6 +87,7 @@ begin
       s_addr_i  => s_addr,
       s_we_i    => s_we,
       s_wrdat_i => s_wrdat,
+      s_sel_i   => s_sel,
       s_ack_o   => s_ack,
       s_rddat_o => s_rddat
     ); -- wbus_master_sim_inst : entity work.wbus_master_sim
@@ -104,6 +108,7 @@ begin
       s_addr_i  => m_addr,
       s_we_i    => m_we,
       s_wrdat_i => m_wrdat,
+      s_sel_i   => m_sel,
       s_ack_o   => m_ack,
       s_rddat_o => m_rddat,
       m_cyc_o   => s_cyc,
@@ -112,6 +117,7 @@ begin
       m_addr_o  => s_addr,
       m_we_o    => s_we,
       m_wrdat_o => s_wrdat,
+      m_sel_o   => s_sel,
       m_ack_i   => s_ack,
       m_rddat_i => s_rddat
     ); -- wbus_pause_inst : entity work.wbus_pause

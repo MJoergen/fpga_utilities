@@ -28,6 +28,7 @@ architecture simulation of tb_wbus_to_axil is
   signal m_wbus_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_wbus_we    : std_logic;
   signal m_wbus_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal m_wbus_sel   : std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
   signal m_wbus_ack   : std_logic;
   signal m_wbus_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -95,6 +96,7 @@ begin
       s_wbus_addr_i    => m_wbus_addr,
       s_wbus_we_i      => m_wbus_we,
       s_wbus_wrdat_i   => m_wbus_wrdat,
+      s_wbus_sel_i     => m_wbus_sel,
       s_wbus_ack_o     => m_wbus_ack,
       s_wbus_rddat_o   => m_wbus_rddat,
       m_axil_awready_i => m_axil_awready,
@@ -184,6 +186,7 @@ begin
       m_addr_o  => m_wbus_addr,
       m_we_o    => m_wbus_we,
       m_wrdat_o => m_wbus_wrdat,
+      m_sel_o   => m_wbus_sel,
       m_ack_i   => m_wbus_ack,
       m_rddat_i => m_wbus_rddat
     ); -- wbus_master_sim_inst : entity work.wbus_master_sim

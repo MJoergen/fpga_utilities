@@ -25,14 +25,15 @@ entity wbus_master_sim is
   port (
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
-    m_cyc_o   : out   std_logic;                                  -- Valid bus cycle
+    m_cyc_o   : out   std_logic;                                    -- Valid bus cycle
     m_stall_i : in    std_logic;
-    m_stb_o   : out   std_logic;                                  -- Strobe signals / core select signal
-    m_addr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0); -- lower address bits
-    m_we_o    : out   std_logic;                                  -- Write enable
-    m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0); -- Write Databus
-    m_ack_i   : in    std_logic;                                  -- Bus cycle acknowledge
-    m_rddat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0)  -- Read Databus
+    m_stb_o   : out   std_logic;                                    -- Strobe signals / core select signal
+    m_addr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);   -- lower address bits
+    m_we_o    : out   std_logic;                                    -- Write enable
+    m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);   -- Write Databus
+    m_sel_o   : out   std_logic_vector(G_DATA_BITS/8 - 1 downto 0); -- Write Byteenable
+    m_ack_i   : in    std_logic;                                    -- Bus cycle acknowledge
+    m_rddat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0)    -- Read Databus
   );
 end entity wbus_master_sim;
 
@@ -95,6 +96,7 @@ begin
         m_addr_o  <= (others => '0');
         m_we_o    <= '0';
         m_wrdat_o <= (others => '0');
+        m_sel_o   <= (others => '0');
       end if;
 
       if m_ack_i = '1' then
@@ -114,6 +116,7 @@ begin
               m_addr_o  <= wr_ptr;
               m_we_o    <= '1';
               m_wrdat_o <= addr_to_data(wr_ptr);
+              m_sel_o   <= (others => '1');
               if G_DEBUG then
                 report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr) & " with data " & to_hstring(addr_to_data(wr_ptr));
               end if;
@@ -143,6 +146,7 @@ begin
                 m_addr_o  <= wr_ptr + 1;
                 m_we_o    <= '1';
                 m_wrdat_o <= addr_to_data(wr_ptr + 1);
+                m_sel_o   <= (others => '1');
                 if G_DEBUG then
                   report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr + 1) & " with data " & to_hstring(addr_to_data(wr_ptr + 1));
                 end if;
@@ -180,6 +184,7 @@ begin
                 m_addr_o  <= wr_ptr;
                 m_we_o    <= '1';
                 m_wrdat_o <= addr_to_data(wr_ptr);
+                m_sel_o   <= (others => '1');
                 if G_DEBUG then
                   report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr) & " with data " & to_hstring(addr_to_data(wr_ptr));
                 end if;

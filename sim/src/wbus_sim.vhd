@@ -30,6 +30,7 @@ entity wbus_sim is
     m_addr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_we_o    : out   std_logic;
     m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_sel_o   : out   std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
     m_ack_i   : in    std_logic;
     m_rddat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
     s_cyc_i   : in    std_logic;
@@ -38,6 +39,7 @@ entity wbus_sim is
     s_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_we_i    : in    std_logic;
     s_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_sel_i   : in    std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
     s_ack_o   : out   std_logic;
     s_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
@@ -71,6 +73,7 @@ begin
       m_addr_o  => m_addr_o,
       m_we_o    => m_we_o,
       m_wrdat_o => m_wrdat_o,
+      m_sel_o   => m_sel_o,
       m_ack_i   => m_ack_i,
       m_rddat_i => m_rddat_i
     ); -- wbus_master_sim_inst : entity work.wbus_master_sim
@@ -95,6 +98,7 @@ begin
       s_addr_i  => s_addr_i,
       s_we_i    => s_we_i,
       s_wrdat_i => s_wrdat_i,
+      s_sel_i   => s_sel_i,
       s_ack_o   => s_ack_o,
       s_rddat_o => s_rddat_o
     ); -- wbus_slave_sim_inst : entity work.wbus_slave_sim

@@ -10,6 +10,7 @@ library ieee;
 
 library work;
   use work.wbus_pkg.slv32_array_type;
+  use work.wbus_pkg.slv4_array_type;
 
 entity wbus_arbiter_general is
   generic (
@@ -26,6 +27,7 @@ entity wbus_arbiter_general is
     s_addr_i  : in    slv32_array_type(G_NUM_MASTERS - 1 downto 0);
     s_we_i    : in    std_logic_vector(G_NUM_MASTERS - 1 downto 0);
     s_wrdat_i : in    slv32_array_type(G_NUM_MASTERS - 1 downto 0);
+    s_sel_i   : in    slv4_array_type (G_NUM_MASTERS - 1 downto 0);
     s_ack_o   : out   std_logic_vector(G_NUM_MASTERS - 1 downto 0);
     s_rddat_o : out   slv32_array_type(G_NUM_MASTERS - 1 downto 0);
 
@@ -36,6 +38,7 @@ entity wbus_arbiter_general is
     m_addr_o  : out   std_logic_vector(31 downto 0);
     m_we_o    : out   std_logic;
     m_wrdat_o : out   std_logic_vector(31 downto 0);
+    m_sel_o   : out   std_logic_vector(3 downto 0);
     m_ack_i   : in    std_logic;
     m_rddat_i : in    std_logic_vector(31 downto 0)
   );
@@ -56,6 +59,7 @@ architecture rtl of wbus_arbiter_general is
   signal   left_addr  : std_logic_vector(31 downto 0);
   signal   left_we    : std_logic;
   signal   left_wrdat : std_logic_vector(31 downto 0);
+  signal   left_sel   : std_logic_vector(3 downto 0);
   signal   left_ack   : std_logic;
   signal   left_rddat : std_logic_vector(31 downto 0);
 
@@ -65,6 +69,7 @@ architecture rtl of wbus_arbiter_general is
   signal   right_addr  : std_logic_vector(31 downto 0);
   signal   right_we    : std_logic;
   signal   right_wrdat : std_logic_vector(31 downto 0);
+  signal   right_sel   : std_logic_vector(3 downto 0);
   signal   right_ack   : std_logic;
   signal   right_rddat : std_logic_vector(31 downto 0);
 
@@ -98,6 +103,7 @@ begin
         s0_addr_i  => s_addr_i(0),
         s0_we_i    => s_we_i(0),
         s0_wrdat_i => s_wrdat_i(0),
+        s0_sel_i   => s_sel_i(0),
         s0_ack_o   => s_ack_o(0),
         s0_rddat_o => s_rddat_o(0),
         s1_cyc_i   => s_cyc_i(1),
@@ -106,6 +112,7 @@ begin
         s1_addr_i  => s_addr_i(1),
         s1_we_i    => s_we_i(1),
         s1_wrdat_i => s_wrdat_i(1),
+        s1_sel_i   => s_sel_i(1),
         s1_ack_o   => s_ack_o(1),
         s1_rddat_o => s_rddat_o(1),
         m_cyc_o    => m_cyc_o,
@@ -114,6 +121,7 @@ begin
         m_addr_o   => m_addr_o,
         m_we_o     => m_we_o,
         m_wrdat_o  => m_wrdat_o,
+        m_sel_o    => m_sel_o,
         m_ack_i    => m_ack_i,
         m_rddat_i  => m_rddat_i
       ); -- wbus_arbiter_inst : entity work.wbus_arbiter
@@ -135,6 +143,7 @@ begin
         s_addr_i  => s_addr_i(R_LEFT),
         s_we_i    => s_we_i(R_LEFT),
         s_wrdat_i => s_wrdat_i(R_LEFT),
+        s_sel_i   => s_sel_i(R_LEFT),
         s_ack_o   => s_ack_o(R_LEFT),
         s_rddat_o => s_rddat_o(R_LEFT),
         m_cyc_o   => left_cyc,
@@ -143,6 +152,7 @@ begin
         m_addr_o  => left_addr,
         m_we_o    => left_we,
         m_wrdat_o => left_wrdat,
+        m_sel_o   => left_sel,
         m_ack_i   => left_ack,
         m_rddat_i => left_rddat
       ); -- wbus_arbiter_general_left_inst : entity work.wbus_arbiter_general
@@ -160,6 +170,7 @@ begin
         s_addr_i  => s_addr_i(R_RIGHT),
         s_we_i    => s_we_i(R_RIGHT),
         s_wrdat_i => s_wrdat_i(R_RIGHT),
+        s_sel_i   => s_sel_i(R_RIGHT),
         s_ack_o   => s_ack_o(R_RIGHT),
         s_rddat_o => s_rddat_o(R_RIGHT),
         m_cyc_o   => right_cyc,
@@ -168,6 +179,7 @@ begin
         m_addr_o  => right_addr,
         m_we_o    => right_we,
         m_wrdat_o => right_wrdat,
+        m_sel_o   => right_sel,
         m_ack_i   => right_ack,
         m_rddat_i => right_rddat
       ); -- wbus_arbiter_general_right_inst : entity work.wbus_arbiter_general
@@ -187,6 +199,7 @@ begin
         s0_addr_i  => left_addr,
         s0_we_i    => left_we,
         s0_wrdat_i => left_wrdat,
+        s0_sel_i   => left_sel,
         s0_ack_o   => left_ack,
         s0_rddat_o => left_rddat,
         s1_cyc_i   => right_cyc,
@@ -195,6 +208,7 @@ begin
         s1_addr_i  => right_addr,
         s1_we_i    => right_we,
         s1_wrdat_i => right_wrdat,
+        s1_sel_i   => right_sel,
         s1_ack_o   => right_ack,
         s1_rddat_o => right_rddat,
         m_cyc_o    => m_cyc_o,
@@ -203,6 +217,7 @@ begin
         m_addr_o   => m_addr_o,
         m_we_o     => m_we_o,
         m_wrdat_o  => m_wrdat_o,
+        m_sel_o    => m_sel_o,
         m_ack_i    => m_ack_i,
         m_rddat_i  => m_rddat_i
       ); -- wbus_arbiter_inst : entity work.wbus_arbiter

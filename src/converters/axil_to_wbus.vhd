@@ -44,6 +44,7 @@ entity axil_to_wbus is
     m_wbus_addr_o    : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_wbus_we_o      : out   std_logic;
     m_wbus_wrdat_o   : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_wbus_sel_o     : out   std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
     m_wbus_ack_i     : in    std_logic;
     m_wbus_rddat_i   : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
@@ -115,6 +116,7 @@ begin
             m_wbus_addr_o  <= s_axil_awaddr_i(G_ADDR_BITS - 1 downto 0);
             m_wbus_we_o    <= '1';
             m_wbus_wrdat_o <= s_axil_wdata_i;
+            m_wbus_sel_o   <= s_axil_wstrb_i;
             state          <= WRITING_ST;
           end if;
           if s_axil_arvalid_i = '1' and s_axil_arready_o = '1' then

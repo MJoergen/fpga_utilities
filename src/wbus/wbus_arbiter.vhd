@@ -24,6 +24,7 @@ entity wbus_arbiter is
     s0_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s0_we_i    : in    std_logic;
     s0_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s0_sel_i   : in    std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
     s0_ack_o   : out   std_logic;
     s0_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -33,6 +34,7 @@ entity wbus_arbiter is
     s1_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s1_we_i    : in    std_logic;
     s1_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s1_sel_i   : in    std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
     s1_ack_o   : out   std_logic;
     s1_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -43,6 +45,7 @@ entity wbus_arbiter is
     m_addr_o   : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_we_o     : out   std_logic;
     m_wrdat_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_sel_o    : out   std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
     m_ack_i    : in    std_logic;
     m_rddat_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
@@ -87,6 +90,7 @@ begin
             m_addr_o  <= s0_addr_i;
             m_we_o    <= s0_we_i;
             m_wrdat_o <= s0_wrdat_i;
+            m_sel_o   <= s0_sel_i;
             state     <= INPUT_0_BUSY_ST;
           end if;
 
@@ -102,6 +106,7 @@ begin
             m_addr_o  <= s1_addr_i;
             m_we_o    <= s1_we_i;
             m_wrdat_o <= s1_wrdat_i;
+            m_sel_o   <= s1_sel_i;
             state     <= INPUT_1_BUSY_ST;
           end if;
 

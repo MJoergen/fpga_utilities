@@ -25,6 +25,7 @@ architecture simulation of tb_wbus_axil_wbus is
   signal tb_wbus_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal tb_wbus_we    : std_logic;
   signal tb_wbus_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal tb_wbus_sel   : std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
   signal tb_wbus_ack   : std_logic;
   signal tb_wbus_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -34,6 +35,7 @@ architecture simulation of tb_wbus_axil_wbus is
   signal mem_wbus_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal mem_wbus_we    : std_logic;
   signal mem_wbus_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal mem_wbus_sel   : std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
   signal mem_wbus_ack   : std_logic;
   signal mem_wbus_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -83,6 +85,7 @@ begin
       s_wbus_addr_i    => tb_wbus_addr,
       s_wbus_we_i      => tb_wbus_we,
       s_wbus_wrdat_i   => tb_wbus_wrdat,
+      s_wbus_sel_i     => tb_wbus_sel,
       s_wbus_ack_o     => tb_wbus_ack,
       s_wbus_rddat_o   => tb_wbus_rddat,
       m_axil_awready_i => axil_awready,
@@ -136,6 +139,7 @@ begin
       m_wbus_addr_o    => mem_wbus_addr,
       m_wbus_we_o      => mem_wbus_we,
       m_wbus_wrdat_o   => mem_wbus_wrdat,
+      m_wbus_sel_o     => mem_wbus_sel,
       m_wbus_ack_i     => mem_wbus_ack,
       m_wbus_rddat_i   => mem_wbus_rddat
     ); -- axil_to_wbus_inst : entity work.axil_to_wbus
@@ -161,6 +165,7 @@ begin
       m_addr_o  => tb_wbus_addr,
       m_we_o    => tb_wbus_we,
       m_wrdat_o => tb_wbus_wrdat,
+      m_sel_o   => tb_wbus_sel,
       m_ack_i   => tb_wbus_ack,
       m_rddat_i => tb_wbus_rddat
     ); -- wbus_master_sim_inst : entity work.wbus_master_sim
@@ -180,6 +185,7 @@ begin
       s_addr_i  => mem_wbus_addr,
       s_we_i    => mem_wbus_we,
       s_wrdat_i => mem_wbus_wrdat,
+      s_sel_i   => mem_wbus_sel,
       s_ack_o   => mem_wbus_ack,
       s_rddat_o => mem_wbus_rddat
     ); -- wbus_slave_sim_inst : entity work.wbus_slave_sim

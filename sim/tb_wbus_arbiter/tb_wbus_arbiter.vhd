@@ -29,6 +29,7 @@ architecture simulation of tb_wbus_arbiter is
   signal s0_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s0_we    : std_logic;
   signal s0_wrdat : std_logic_vector(31 downto 0);
+  signal s0_sel   : std_logic_vector(3 downto 0);
   signal s0_ack   : std_logic;
   signal s0_rddat : std_logic_vector(31 downto 0);
 
@@ -38,6 +39,7 @@ architecture simulation of tb_wbus_arbiter is
   signal s1_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s1_we    : std_logic;
   signal s1_wrdat : std_logic_vector(31 downto 0);
+  signal s1_sel   : std_logic_vector(3 downto 0);
   signal s1_ack   : std_logic;
   signal s1_rddat : std_logic_vector(31 downto 0);
 
@@ -47,6 +49,7 @@ architecture simulation of tb_wbus_arbiter is
   signal m_addr  : std_logic_vector(G_ADDR_BITS downto 0);
   signal m_we    : std_logic;
   signal m_wrdat : std_logic_vector(31 downto 0);
+  signal m_sel   : std_logic_vector(3 downto 0);
   signal m_ack   : std_logic;
   signal m_rddat : std_logic_vector(31 downto 0);
 
@@ -57,6 +60,7 @@ architecture simulation of tb_wbus_arbiter is
   signal map_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal map_we    : std_logic;
   signal map_wrdat : std_logic_vector(31 downto 0);
+  signal map_sel   : std_logic_vector(3 downto 0);
   signal map_ack   : std_logic_vector(1 downto 0);
   signal map_rddat : slv32_array_type(1 downto 0);
 
@@ -88,6 +92,7 @@ begin
       s0_addr_i  => "0" & s0_addr,
       s0_we_i    => s0_we,
       s0_wrdat_i => s0_wrdat,
+      s0_sel_i   => s0_sel,
       s0_ack_o   => s0_ack,
       s0_rddat_o => s0_rddat,
       s1_cyc_i   => s1_cyc,
@@ -96,6 +101,7 @@ begin
       s1_addr_i  => "1" & s1_addr,
       s1_we_i    => s1_we,
       s1_wrdat_i => s1_wrdat,
+      s1_sel_i   => s1_sel,
       s1_ack_o   => s1_ack,
       s1_rddat_o => s1_rddat,
       m_cyc_o    => m_cyc,
@@ -104,6 +110,7 @@ begin
       m_addr_o   => m_addr,
       m_we_o     => m_we,
       m_wrdat_o  => m_wrdat,
+      m_sel_o    => m_sel,
       m_ack_i    => m_ack,
       m_rddat_i  => m_rddat
     ); -- wbus_arbiter_inst : entity work.wbus_arbiter
@@ -123,6 +130,7 @@ begin
       s_addr_i  => m_addr,
       s_we_i    => m_we,
       s_wrdat_i => m_wrdat,
+      s_sel_i   => m_sel,
       s_ack_o   => m_ack,
       s_rddat_o => m_rddat,
       m_rst_o   => map_rst,
@@ -132,6 +140,7 @@ begin
       m_addr_o  => map_addr,
       m_we_o    => map_we,
       m_wrdat_o => map_wrdat,
+      m_sel_o   => map_sel,
       m_ack_i   => map_ack,
       m_rddat_i => map_rddat
     ); -- wbus_mapper_inst : entity work.wbus_mapper
@@ -163,6 +172,7 @@ begin
       m_addr_o  => s0_addr,
       m_we_o    => s0_we,
       m_wrdat_o => s0_wrdat,
+      m_sel_o   => s0_sel,
       m_ack_i   => s0_ack,
       m_rddat_i => s0_rddat,
       s_cyc_i   => map_cyc,
@@ -171,6 +181,7 @@ begin
       s_addr_i  => map_addr,
       s_we_i    => map_we,
       s_wrdat_i => map_wrdat,
+      s_sel_i   => map_sel,
       s_ack_o   => map_ack(0),
       s_rddat_o => map_rddat(0)
     ); -- wbus_sim_0_inst : entity work.wbus_sim
@@ -197,6 +208,7 @@ begin
       m_addr_o  => s1_addr,
       m_we_o    => s1_we,
       m_wrdat_o => s1_wrdat,
+      m_sel_o   => s1_sel,
       m_ack_i   => s1_ack,
       m_rddat_i => s1_rddat,
       s_cyc_i   => map_cyc,
@@ -205,6 +217,7 @@ begin
       s_addr_i  => map_addr,
       s_we_i    => map_we,
       s_wrdat_i => map_wrdat,
+      s_sel_i   => map_sel,
       s_ack_o   => map_ack(1),
       s_rddat_o => map_rddat(1)
     ); -- wbus_sim_1_inst : entity work.wbus_sim
