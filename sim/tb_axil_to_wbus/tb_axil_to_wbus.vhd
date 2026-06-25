@@ -47,7 +47,7 @@ architecture simulation of tb_axil_to_wbus is
   signal wbus_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal wbus_we    : std_logic;
   signal wbus_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
-  signal wbus_sel   : std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
+  signal wbus_sel   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal wbus_ack   : std_logic;
   signal wbus_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -108,34 +108,34 @@ begin
       G_DATA_BITS => G_DATA_BITS
     )
     port map (
-      clk_i            => clk,
-      rst_i            => rst,
-      s_axil_awready_o => axil_awready,
-      s_axil_awvalid_i => axil_awvalid,
-      s_axil_awaddr_i  => axil_awaddr,
-      s_axil_wready_o  => axil_wready,
-      s_axil_wvalid_i  => axil_wvalid,
-      s_axil_wdata_i   => axil_wdata,
-      s_axil_wstrb_i   => axil_wstrb,
-      s_axil_bready_i  => axil_bready,
-      s_axil_bvalid_o  => axil_bvalid,
-      s_axil_bresp_o   => axil_bresp,
-      s_axil_arready_o => axil_arready,
-      s_axil_arvalid_i => axil_arvalid,
-      s_axil_araddr_i  => axil_araddr,
-      s_axil_rready_i  => axil_rready,
-      s_axil_rvalid_o  => axil_rvalid,
-      s_axil_rdata_o   => axil_rdata,
-      s_axil_rresp_o   => axil_rresp,
-      m_wbus_cyc_o     => wbus_cyc,
-      m_wbus_stall_i   => wbus_stall,
-      m_wbus_stb_o     => wbus_stb,
-      m_wbus_addr_o    => wbus_addr,
-      m_wbus_we_o      => wbus_we,
-      m_wbus_wrdat_o   => wbus_wrdat,
-      m_wbus_sel_o     => wbus_sel,
-      m_wbus_ack_i     => wbus_ack,
-      m_wbus_rddat_i   => wbus_rddat
+      clk_i       => clk,
+      rst_i       => rst,
+      s_awready_o => axil_awready,
+      s_awvalid_i => axil_awvalid,
+      s_awaddr_i  => axil_awaddr,
+      s_wready_o  => axil_wready,
+      s_wvalid_i  => axil_wvalid,
+      s_wdata_i   => axil_wdata,
+      s_wstrb_i   => axil_wstrb,
+      s_bready_i  => axil_bready,
+      s_bvalid_o  => axil_bvalid,
+      s_bresp_o   => axil_bresp,
+      s_arready_o => axil_arready,
+      s_arvalid_i => axil_arvalid,
+      s_araddr_i  => axil_araddr,
+      s_rready_i  => axil_rready,
+      s_rvalid_o  => axil_rvalid,
+      s_rdata_o   => axil_rdata,
+      s_rresp_o   => axil_rresp,
+      m_cyc_o     => wbus_cyc,
+      m_stall_i   => wbus_stall,
+      m_stb_o     => wbus_stb,
+      m_addr_o    => wbus_addr,
+      m_we_o      => wbus_we,
+      m_wrdat_o   => wbus_wrdat,
+      m_sel_o     => wbus_sel,
+      m_ack_i     => wbus_ack,
+      m_rddat_i   => wbus_rddat
     ); -- axil_to_wbus_inst : entity work.axil_to_wbus
 
 

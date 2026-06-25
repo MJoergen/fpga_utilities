@@ -28,7 +28,7 @@ architecture simulation of tb_wbus_to_axil is
   signal m_wbus_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_wbus_we    : std_logic;
   signal m_wbus_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
-  signal m_wbus_sel   : std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
+  signal m_wbus_sel   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal m_wbus_ack   : std_logic;
   signal m_wbus_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -88,34 +88,34 @@ begin
       G_DATA_BITS => G_DATA_BITS
     )
     port map (
-      clk_i            => clk,
-      rst_i            => rst,
-      s_wbus_cyc_i     => m_wbus_cyc,
-      s_wbus_stall_o   => m_wbus_stall,
-      s_wbus_stb_i     => m_wbus_stb,
-      s_wbus_addr_i    => m_wbus_addr,
-      s_wbus_we_i      => m_wbus_we,
-      s_wbus_wrdat_i   => m_wbus_wrdat,
-      s_wbus_sel_i     => m_wbus_sel,
-      s_wbus_ack_o     => m_wbus_ack,
-      s_wbus_rddat_o   => m_wbus_rddat,
-      m_axil_awready_i => m_axil_awready,
-      m_axil_awvalid_o => m_axil_awvalid,
-      m_axil_awaddr_o  => m_axil_awaddr,
-      m_axil_wready_i  => m_axil_wready,
-      m_axil_wvalid_o  => m_axil_wvalid,
-      m_axil_wdata_o   => m_axil_wdata,
-      m_axil_wstrb_o   => m_axil_wstrb,
-      m_axil_bready_o  => m_axil_bready,
-      m_axil_bvalid_i  => m_axil_bvalid,
-      m_axil_bresp_i   => m_axil_bresp,
-      m_axil_arready_i => m_axil_arready,
-      m_axil_arvalid_o => m_axil_arvalid,
-      m_axil_araddr_o  => m_axil_araddr,
-      m_axil_rready_o  => m_axil_rready,
-      m_axil_rvalid_i  => m_axil_rvalid,
-      m_axil_rdata_i   => m_axil_rdata,
-      m_axil_rresp_i   => m_axil_rresp
+      clk_i       => clk,
+      rst_i       => rst,
+      s_cyc_i     => m_wbus_cyc,
+      s_stall_o   => m_wbus_stall,
+      s_stb_i     => m_wbus_stb,
+      s_addr_i    => m_wbus_addr,
+      s_we_i      => m_wbus_we,
+      s_wrdat_i   => m_wbus_wrdat,
+      s_sel_i     => m_wbus_sel,
+      s_ack_o     => m_wbus_ack,
+      s_rddat_o   => m_wbus_rddat,
+      m_awready_i => m_axil_awready,
+      m_awvalid_o => m_axil_awvalid,
+      m_awaddr_o  => m_axil_awaddr,
+      m_wready_i  => m_axil_wready,
+      m_wvalid_o  => m_axil_wvalid,
+      m_wdata_o   => m_axil_wdata,
+      m_wstrb_o   => m_axil_wstrb,
+      m_bready_o  => m_axil_bready,
+      m_bvalid_i  => m_axil_bvalid,
+      m_bresp_i   => m_axil_bresp,
+      m_arready_i => m_axil_arready,
+      m_arvalid_o => m_axil_arvalid,
+      m_araddr_o  => m_axil_araddr,
+      m_rready_o  => m_axil_rready,
+      m_rvalid_i  => m_axil_rvalid,
+      m_rdata_i   => m_axil_rdata,
+      m_rresp_i   => m_axil_rresp
     ); -- wbus_to_axil_inst : entity work.wbus_to_axil
 
   axil_pause_inst : entity work.axil_pause
@@ -196,7 +196,7 @@ begin
   -- Instantiate AXI Lite Slave
   --------------------------------
 
-  axil_slave_sim : entity work.axil_slave_sim
+  axil_slave_sim_inst : entity work.axil_slave_sim
     generic map (
       G_DEBUG     => G_DEBUG,
       G_FAST      => G_FAST,
@@ -221,7 +221,7 @@ begin
       s_rready_i  => s_axil_rready,
       s_rvalid_o  => s_axil_rvalid,
       s_rdata_o   => s_axil_rdata
-    ); -- axil_slave_sim : entity work.axil_slave_sim
+    ); -- axil_slave_sim_inst : entity work.axil_slave_sim
 
 end architecture simulation;
 
