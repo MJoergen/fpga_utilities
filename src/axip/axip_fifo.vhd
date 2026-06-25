@@ -55,6 +55,7 @@ begin
     port map (
       clk_i     => clk_i,
       rst_i     => rst_i,
+      fill_o    => fill_o,
       s_ready_o => s_ready_o,
       s_valid_i => s_valid_i,
       s_data_i  => s_data_in,

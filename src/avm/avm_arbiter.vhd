@@ -103,7 +103,7 @@ architecture synthesis of avm_arbiter is
   -- Fairness state. 'last_grant' = id of the slave whose burst we most recently
   -- granted; used as a tie-breaker when both sides request from idle. 'swapped' is
   -- only meaningful when G_PREFER_SWAP=true (see policy comment above).
-  signal last_grant : std_logic      := '0';
+  signal last_grant : std_logic      := '1';
   signal swapped    : std_logic      := '0';
 
   -- Remaining beats of the currently granted burst.

@@ -108,9 +108,9 @@ begin
   count_proc : process (all)
   begin
     if head < tail then
-      count <= head - tail + G_RAM_DEPTH;
+      count <= integer(head) - integer(tail) + G_RAM_DEPTH;
     else
-      count <= head - tail;
+      count <= integer(head) - integer(tail);
     end if;
   end process count_proc;
 
