@@ -79,6 +79,7 @@ begin
       end case;
 
       if rst_i = '1' then
+        -- Reset clears only handshake/control signals; data is don't-care while valid is low
         m_valid_o <= '0';
         state     <= INPUT_0_ST;
       end if;

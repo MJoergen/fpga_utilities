@@ -24,7 +24,7 @@ entity wbus_arbiter is
     s0_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s0_we_i    : in    std_logic;
     s0_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
-    s0_sel_i   : in    std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
+    s0_sel_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s0_ack_o   : out   std_logic;
     s0_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -34,7 +34,7 @@ entity wbus_arbiter is
     s1_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s1_we_i    : in    std_logic;
     s1_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
-    s1_sel_i   : in    std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
+    s1_sel_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s1_ack_o   : out   std_logic;
     s1_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -45,7 +45,7 @@ entity wbus_arbiter is
     m_addr_o   : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_we_o     : out   std_logic;
     m_wrdat_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
-    m_sel_o    : out   std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
+    m_sel_o    : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     m_ack_i    : in    std_logic;
     m_rddat_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
@@ -58,6 +58,18 @@ architecture rtl of wbus_arbiter is
 
 begin
 
+  assert s0_ack_o /= '1' or s1_ack_o /= '1'
+    report "wbus_arbiter: Invariant error where both slaves are ACK'ed"
+    severity failure;
+
+  assert s0_ack_o /= '1' or state /= INPUT_0_BUSY_ST
+    report "wbus_arbiter: Invariant error in state INPUT_0_BUSY_ST"
+    severity failure;
+
+  assert s1_ack_o /= '1' or state /= INPUT_1_BUSY_ST
+    report "wbus_arbiter: Invariant error in state INPUT_1_BUSY_ST"
+    severity failure;
+
   s0_stall_o <= '0' when state = INPUT_0_IDLE_ST else
                 '1';
   s1_stall_o <= '0' when state = INPUT_1_IDLE_ST else
@@ -66,6 +78,8 @@ begin
   fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
+      -- Single outstanding request only (see interfaces.md#wishbone).
+      -- Bursts (multiple stb under one cyc) are NOT supported by this arbiter.
       if m_ack_i = '1' then
         m_cyc_o <= '0';
       end if;
@@ -80,7 +94,9 @@ begin
 
         when INPUT_0_IDLE_ST =>
           -- Validate invariant
-          f_slave0 : assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1';
+          assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1'
+            report "wbus_arbiter: Invariant error in state INPUT_0_IDLE_ST"
+            severity failure;
 
           if s0_cyc_i = '0' and s1_cyc_i = '1' then
             state <= INPUT_1_IDLE_ST;
@@ -96,7 +112,9 @@ begin
 
         when INPUT_1_IDLE_ST =>
           -- Validate invariant
-          f_slave1 : assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1';
+          assert (m_cyc_o = '0' and m_stb_o = '0') or rst_i = '1'
+            report "wbus_arbiter: Invariant error in state INPUT_1_IDLE_ST"
+            severity failure;
 
           if s0_cyc_i = '1' and s1_cyc_i = '0' then
             state <= INPUT_0_IDLE_ST;
@@ -139,6 +157,7 @@ begin
       end case;
 
       if rst_i = '1' then
+        -- Reset clears only handshake/control signals; data is don't-care while cyc/stb is low
         m_cyc_o  <= '0';
         m_stb_o  <= '0';
         s0_ack_o <= '0';

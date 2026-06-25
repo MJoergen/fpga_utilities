@@ -36,12 +36,12 @@ library ieee;
 
 entity avm_arbiter is
   generic (
+    G_ADDR_BITS   : positive;
+    G_DATA_BITS   : positive := 8;
     -- Burstcount width on all three Avalon-MM interfaces. Must match the downstream
     -- master and the two upstream slaves.
     G_BURST_BITS  : positive := 8;
-    G_PREFER_SWAP : boolean  := true;
-    G_ADDR_BITS   : positive;
-    G_DATA_BITS   : positive := 8
+    G_PREFER_SWAP : boolean  := true
   );
   port (
     clk_i              : in    std_logic;
