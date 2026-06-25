@@ -8,14 +8,16 @@ library ieee;
 
 package axip_pkg is
 
-  subtype nat16_type is natural range 0 to 65535;
+  subtype bytes_type is natural range 0 to 65535;
 
-  type nat16_array_type is array (natural range <>) of nat16_type;
+  type bytes_array_type is array (natural range <>) of bytes_type;
 
 end package axip_pkg;
 
 
 package body axip_pkg is
+
+  -- empty
 
 end package body axip_pkg;
 

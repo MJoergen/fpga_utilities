@@ -7,8 +7,8 @@ library ieee;
   use ieee.numeric_std.all;
 
 library work;
-  use work.axip_pkg.nat16_type;
-  use work.axip_pkg.nat16_array_type;
+  use work.axip_pkg.bytes_type;
+  use work.axip_pkg.bytes_array_type;
 
 entity axip_arbiter_general is
   generic (
@@ -23,13 +23,13 @@ entity axip_arbiter_general is
     s_valid_i : in    std_logic_vector(G_NUM_MASTERS - 1 downto 0);
     s_data_i  : in    std_logic_vector(G_NUM_MASTERS * G_DATA_BYTES * 8 - 1 downto 0);
     s_last_i  : in    std_logic_vector(G_NUM_MASTERS - 1 downto 0);
-    s_bytes_i : in    nat16_array_type(G_NUM_MASTERS - 1 downto 0);
+    s_bytes_i : in    bytes_array_type(G_NUM_MASTERS - 1 downto 0);
 
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
     m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
     m_last_o  : out   std_logic;
-    m_bytes_o : out   nat16_type
+    m_bytes_o : out   bytes_type
   );
 end entity axip_arbiter_general;
 
@@ -48,13 +48,13 @@ architecture synthesis of axip_arbiter_general is
   signal   left_valid : std_logic;
   signal   left_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
   signal   left_last  : std_logic;
-  signal   left_bytes : nat16_type;
+  signal   left_bytes : bytes_type;
 
   signal   right_ready : std_logic;
   signal   right_valid : std_logic;
   signal   right_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
   signal   right_last  : std_logic;
-  signal   right_bytes : nat16_type;
+  signal   right_bytes : bytes_type;
 
   subtype  BYTES_TYPE is natural range 0 to G_DATA_BYTES;
 
@@ -83,17 +83,17 @@ begin
         s0_valid_i            => s_valid_i(0),
         s0_data_i             => s_data_i(R_RIGHT_DATA),
         s0_last_i             => s_last_i(0),
-        s0_bytes_i            => nat16_type(s_bytes_i(0)),
+        s0_bytes_i            => bytes_type(s_bytes_i(0)),
         s1_ready_o            => s_ready_o(1),
         s1_valid_i            => s_valid_i(1),
         s1_data_i             => s_data_i(R_LEFT_DATA),
         s1_last_i             => s_last_i(1),
-        s1_bytes_i            => nat16_type(s_bytes_i(1)),
+        s1_bytes_i            => bytes_type(s_bytes_i(1)),
         m_ready_i             => m_ready_i,
         m_valid_o             => m_valid_o,
         m_data_o              => m_data_o,
         m_last_o              => m_last_o,
-        nat16_type(m_bytes_o) => m_bytes_o
+        bytes_type(m_bytes_o) => m_bytes_o
       ); -- axip_arbiter_inst : entity work.axip_arbiter
 
   else generate
@@ -161,7 +161,7 @@ begin
         m_valid_o             => m_valid_o,
         m_data_o              => m_data_o,
         m_last_o              => m_last_o,
-        nat16_type(m_bytes_o) => m_bytes_o
+        bytes_type(m_bytes_o) => m_bytes_o
       ); -- axip_arbiter_inst : entity work.axip_arbiter
 
   end generate iterate_gen;
