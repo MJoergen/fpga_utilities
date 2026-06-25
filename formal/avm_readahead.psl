@@ -1,4 +1,4 @@
-vunit i_avm_readahead(avm_readahead(synthesis))
+vunit i_avm_readahead(avm_readahead(rtl))
 {
    -- set all declarations to run on clk_i
    default clock is rising_edge(clk_i);
@@ -353,5 +353,5 @@ vunit i_avm_readahead(avm_readahead(synthesis))
                    s_avm_readdatavalid_o = '1'
                    };
 
-} -- vunit i_avm_readahead(avm_readahead(synthesis))
+} -- vunit i_avm_readahead(avm_readahead(rtl))
 

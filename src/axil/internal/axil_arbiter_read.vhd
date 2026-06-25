@@ -45,7 +45,7 @@ entity axil_arbiter_read is
   );
 end entity axil_arbiter_read;
 
-architecture synthesis of axil_arbiter_read is
+architecture rtl of axil_arbiter_read is
 
   type   rx_state_type is (
     RX_INPUT_0_IDLE_ST, RX_INPUT_0_READING_ST,
@@ -136,5 +136,5 @@ begin
   s0_rresp_o   <= m_rresp_i;
   s1_rresp_o   <= m_rresp_i;
 
-end architecture synthesis;
+end architecture rtl;
 

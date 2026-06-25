@@ -30,7 +30,7 @@ entity axip_pipe_async is
   );
 end entity axip_pipe_async;
 
-architecture synthesis of axip_pipe_async is
+architecture rtl of axip_pipe_async is
 
   subtype  R_DATA is natural range G_DATA_BYTES * 8 - 1 downto 0;
 
@@ -66,5 +66,5 @@ begin
   m_bytes_o     <= to_integer(unsigned(m_out(R_BYTES)));
   m_last_o      <= m_out(C_LAST);
 
-end architecture synthesis;
+end architecture rtl;
 

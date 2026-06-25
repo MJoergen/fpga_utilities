@@ -1,4 +1,4 @@
-vunit i_avm_increase(avm_increase(synthesis))
+vunit i_avm_increase(avm_increase(rtl))
 {
    -- set all declarations to run on clk_i
    default clock is rising_edge(clk_i);
@@ -116,5 +116,5 @@ vunit i_avm_increase(avm_increase(synthesis))
    -- COVER STATEMENTS TO VERIFY REACHABILITY
    --------------------------------------------
 
-} -- vunit i_avm_increase(avm_increase(synthesis))
+} -- vunit i_avm_increase(avm_increase(rtl))
 

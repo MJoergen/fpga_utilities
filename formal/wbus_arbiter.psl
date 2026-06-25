@@ -1,4 +1,4 @@
-vunit wbus_arbiter_inst(wbus_arbiter(synthesis))
+vunit wbus_arbiter_inst(wbus_arbiter(rtl))
 {
    -- set all declarations to run on clk
    default clock is rising_edge(clk_i);
@@ -149,5 +149,5 @@ vunit wbus_arbiter_inst(wbus_arbiter(synthesis))
 --   f_wbus_response : assume always {wbus_stb_o and not rst_i} |=> {wbus_ack_i};
 
 
-} -- vunit wbus_arbiter_inst(cmd(synthesis))
+} -- vunit wbus_arbiter_inst(cmd(rtl))
 

@@ -80,7 +80,7 @@ entity avm_arbiter is
   );
 end entity avm_arbiter;
 
-architecture synthesis of avm_arbiter is
+architecture rtl of avm_arbiter is
 
   -- ----------------------------------------------------------------------------------
   -- "any request pending" per slave (combinational)
@@ -431,5 +431,5 @@ begin
   s1_readdatavalid_o <= m_readdatavalid_i when s1_active_grant = '1' else
                         '0';
 
-end architecture synthesis;
+end architecture rtl;
 

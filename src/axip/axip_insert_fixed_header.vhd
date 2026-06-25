@@ -36,7 +36,7 @@ entity axip_insert_fixed_header is
   );
 end entity axip_insert_fixed_header;
 
-architecture synthesis of axip_insert_fixed_header is
+architecture rtl of axip_insert_fixed_header is
 
   type    state_type is (IDLE_ST, WAIT_HEADER_ST, WAIT_DATA_ST, BUSY_ST, LAST_ST);
   signal  state : state_type := IDLE_ST;
@@ -191,5 +191,5 @@ begin
     end if;
   end process state_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

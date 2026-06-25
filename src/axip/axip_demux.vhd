@@ -35,7 +35,7 @@ entity axip_demux is
   );
 end entity axip_demux;
 
-architecture synthesis of axip_demux is
+architecture rtl of axip_demux is
 
   signal s_first : std_logic := '1';
   signal s_dst   : std_logic := '0';
@@ -92,5 +92,5 @@ begin
   m0_bytes_o <= s_bytes_i;
   m1_bytes_o <= s_bytes_i;
 
-end architecture synthesis;
+end architecture rtl;
 

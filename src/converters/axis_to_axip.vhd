@@ -31,7 +31,7 @@ entity axis_to_axip is
   );
 end entity axis_to_axip;
 
-architecture synthesis of axis_to_axip is
+architecture rtl of axis_to_axip is
 
   type     state_type is (IDLE_ST, FWD_ST);
   signal   state : state_type                                          := IDLE_ST;
@@ -102,5 +102,5 @@ begin
     end if;
   end process fsm_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

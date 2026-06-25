@@ -44,7 +44,7 @@ entity wbus_mapper is
   );
 end entity wbus_mapper;
 
-architecture synthesis of wbus_mapper is
+architecture rtl of wbus_mapper is
 
   type   state_type is (IDLE_ST, BUSY_ST);
   signal state : state_type                                  := IDLE_ST;
@@ -139,5 +139,5 @@ begin
     end if;
   end process state_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

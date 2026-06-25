@@ -21,7 +21,7 @@ entity axil_busy is
   );
 end entity axil_busy;
 
-architecture synthesis of axil_busy is
+architecture rtl of axil_busy is
 
   signal aw_accept : std_logic;
   signal w_accept  : std_logic;
@@ -70,5 +70,5 @@ begin
     end if;
   end process state_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

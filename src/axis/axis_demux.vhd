@@ -29,7 +29,7 @@ entity axis_demux is
   );
 end entity axis_demux;
 
-architecture synthesis of axis_demux is
+architecture rtl of axis_demux is
 
 begin
 
@@ -43,5 +43,5 @@ begin
   m0_data_o  <= s_data_i;
   m1_data_o  <= s_data_i;
 
-end architecture synthesis;
+end architecture rtl;
 

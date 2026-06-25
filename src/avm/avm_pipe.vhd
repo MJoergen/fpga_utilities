@@ -31,7 +31,7 @@ entity avm_pipe is
   );
 end entity avm_pipe;
 
-architecture synthesis of avm_pipe is
+architecture rtl of avm_pipe is
 
   subtype  R_ADDRESS    is natural range G_ADDR_BITS - 1 downto 0;
   subtype  R_WRITEDATA  is natural range R_ADDRESS'left    + G_DATA_BITS     downto R_ADDRESS'left + 1;
@@ -96,5 +96,5 @@ begin
       m_data_o  => s_readdata_o
     ); -- axis_pipe_rd_inst : entity work.axis_pipe
 
-end architecture synthesis;
+end architecture rtl;
 

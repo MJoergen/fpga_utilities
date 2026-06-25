@@ -1,4 +1,4 @@
-vunit axip_arbiter_inst(axip_arbiter(synthesis))
+vunit axip_arbiter_inst(axip_arbiter(rtl))
 {
    -- set all declarations to run on clk
    default clock is rising_edge(clk_i);
@@ -80,5 +80,5 @@ vunit axip_arbiter_inst(axip_arbiter(synthesis))
    -- ADDITIONAL ASSUMES HELPFUL WHEN DEBUGGING
    ----------------------------------------------
 
-} -- vunit axip_arbiter_inst(axip_arbiter(synthesis))
+} -- vunit axip_arbiter_inst(axip_arbiter(rtl))
 

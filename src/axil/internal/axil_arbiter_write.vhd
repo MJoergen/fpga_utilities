@@ -52,7 +52,7 @@ entity axil_arbiter_write is
   );
 end entity axil_arbiter_write;
 
-architecture synthesis of axil_arbiter_write is
+architecture rtl of axil_arbiter_write is
 
   type   tx_state_type is (
     TX_INPUT_0_IDLE_ST, TX_INPUT_0_AW_BUSY_ST, TX_INPUT_0_W_BUSY_ST, TX_INPUT_0_WRITING_ST,
@@ -204,5 +204,5 @@ begin
   s0_bresp_o   <= m_bresp_i;
   s1_bresp_o   <= m_bresp_i;
 
-end architecture synthesis;
+end architecture rtl;
 

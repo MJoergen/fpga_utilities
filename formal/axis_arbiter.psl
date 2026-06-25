@@ -1,4 +1,4 @@
-vunit axis_arbiter_inst(axis_arbiter(synthesis))
+vunit axis_arbiter_inst(axis_arbiter(rtl))
 {
    -- set all declarations to run on clk
    default clock is rising_edge(clk_i);
@@ -68,5 +68,5 @@ vunit axis_arbiter_inst(axis_arbiter(synthesis))
    -- AXI streaming output is asserted and then not asserted.
    f_wbus_request : cover {m_valid_o and not rst_i; not m_valid_o};
 
-} -- vunit axis_arbiter_inst(axis_arbiter(synthesis))
+} -- vunit axis_arbiter_inst(axis_arbiter(rtl))
 

@@ -18,7 +18,7 @@ entity random is
   );
 end entity random;
 
-architecture synthesis of random is
+architecture rtl of random is
 
   -- See https://users.ece.cmu.edu/~koopman/lfsr/64.txt
   constant C_TAPS1 : std_logic_vector(63 downto 0) := X"80000000000019E2";
@@ -70,5 +70,5 @@ begin
 
   output_o <= random1 + reverse(random2);
 
-end architecture synthesis;
+end architecture rtl;
 

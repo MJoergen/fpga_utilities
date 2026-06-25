@@ -46,7 +46,7 @@ entity wbus_arbiter is
   );
 end entity wbus_arbiter;
 
-architecture synthesis of wbus_arbiter is
+architecture rtl of wbus_arbiter is
 
   type   state_type is (INPUT_0_IDLE_ST, INPUT_1_IDLE_ST, INPUT_0_BUSY_ST, INPUT_1_BUSY_ST);
   signal state : state_type := INPUT_0_IDLE_ST;
@@ -141,5 +141,5 @@ begin
     end if;
   end process fsm_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

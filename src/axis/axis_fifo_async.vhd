@@ -26,7 +26,7 @@ entity axis_fifo_async is
   );
 end entity axis_fifo_async;
 
-architecture synthesis of axis_fifo_async is
+architecture rtl of axis_fifo_async is
 
   constant C_TDATA_WIDTH : natural := ((G_DATA_BITS + 7) / 8) * 8;
 
@@ -94,5 +94,5 @@ begin
       wr_data_count_axis => s_fill_o
     ); -- xpm_fifo_axis_inst
 
-end architecture synthesis;
+end architecture rtl;
 

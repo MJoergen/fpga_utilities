@@ -34,7 +34,7 @@ entity axis_dropper is
   );
 end entity axis_dropper;
 
-architecture synthesis of axis_dropper is
+architecture rtl of axis_dropper is
 
   -- Buffer containing the packet data
   -- This is not a regular FIFO, because the data may be intentionally overwritten (in case s_drop_i = 1).
@@ -182,5 +182,5 @@ begin
     end if;
   end process output_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

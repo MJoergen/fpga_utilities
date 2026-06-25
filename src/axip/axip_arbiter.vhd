@@ -35,7 +35,7 @@ entity axip_arbiter is
   );
 end entity axip_arbiter;
 
-architecture synthesis of axip_arbiter is
+architecture rtl of axip_arbiter is
 
   -- The state determines which Master is granted access.
   -- Note: Only one Master may be granted access at a time.
@@ -110,5 +110,5 @@ begin
     end if;
   end process fsm_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

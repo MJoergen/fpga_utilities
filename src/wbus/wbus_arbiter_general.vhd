@@ -39,7 +39,7 @@ entity wbus_arbiter_general is
   );
 end entity wbus_arbiter_general;
 
-architecture synthesis of wbus_arbiter_general is
+architecture rtl of wbus_arbiter_general is
 
   subtype  R_LEFT is natural range G_NUM_MASTERS - 1 downto G_NUM_MASTERS / 2;
 
@@ -207,5 +207,5 @@ begin
 
   end generate iterate_gen;
 
-end architecture synthesis;
+end architecture rtl;
 

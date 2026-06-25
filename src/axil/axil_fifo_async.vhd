@@ -61,7 +61,7 @@ entity axil_fifo_async is
   );
 end entity axil_fifo_async;
 
-architecture synthesis of axil_fifo_async is
+architecture rtl of axil_fifo_async is
 
   subtype R_WDATA is natural range G_DATA_BITS - 1 downto 0;
 
@@ -213,5 +213,5 @@ begin
   s_rdata_o       <= s_r_out(R_RDATA);
   s_rresp_o       <= s_r_out(R_RRESP);
 
-end architecture synthesis;
+end architecture rtl;
 

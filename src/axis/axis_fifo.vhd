@@ -29,7 +29,7 @@ entity axis_fifo is
   );
 end entity axis_fifo;
 
-architecture synthesis of axis_fifo is
+architecture rtl of axis_fifo is
 
   -- The FIFO is full when the RAM contains G_RAM_DEPTH-1 elements
   type    ram_type is array (0 to G_RAM_DEPTH - 1) of std_logic_vector(s_data_i'range);
@@ -179,5 +179,5 @@ begin
     end if;
   end process read_while_write_d_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

@@ -41,7 +41,7 @@ entity avm_pause is
   );
 end entity avm_pause;
 
-architecture synthesis of avm_pause is
+architecture rtl of avm_pause is
 
   signal  random_s : std_logic_vector(63 downto 0);
 
@@ -210,5 +210,5 @@ begin
 
   end generate pause_gen;
 
-end architecture synthesis;
+end architecture rtl;
 

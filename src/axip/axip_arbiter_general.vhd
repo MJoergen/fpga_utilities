@@ -33,7 +33,7 @@ entity axip_arbiter_general is
   );
 end entity axip_arbiter_general;
 
-architecture synthesis of axip_arbiter_general is
+architecture rtl of axip_arbiter_general is
 
   constant C_NUM_RIGHT : natural := G_NUM_MASTERS / 2;
   constant C_NUM_LEFT  : natural := G_NUM_MASTERS - C_NUM_RIGHT;
@@ -166,5 +166,5 @@ begin
 
   end generate iterate_gen;
 
-end architecture synthesis;
+end architecture rtl;
 

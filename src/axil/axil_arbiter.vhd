@@ -80,7 +80,7 @@ entity axil_arbiter is
   );
 end entity axil_arbiter;
 
-architecture synthesis of axil_arbiter is
+architecture rtl of axil_arbiter is
 
 begin
 
@@ -157,5 +157,5 @@ begin
       m_rresp_i    => m_rresp_i
     ); -- axil_arbiter_read_inst : entity work.axil_arbiter_read
 
-end architecture synthesis;
+end architecture rtl;
 

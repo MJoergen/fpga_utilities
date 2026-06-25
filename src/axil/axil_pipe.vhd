@@ -55,7 +55,7 @@ entity axil_pipe is
   );
 end entity axil_pipe;
 
-architecture synthesis of axil_pipe is
+architecture rtl of axil_pipe is
 
   subtype R_WDATA is natural range G_DATA_BITS - 1 downto 0;
 
@@ -164,5 +164,5 @@ begin
   s_rdata_o       <= s_r_out(R_RDATA);
   s_rresp_o       <= s_r_out(R_RRESP);
 
-end architecture synthesis;
+end architecture rtl;
 

@@ -1,4 +1,4 @@
-vunit axil_to_wbus_inst(axil_to_wbus(synthesis))
+vunit axil_to_wbus_inst(axil_to_wbus(rtl))
 {
 -- set all declarations to run on clk
    default clock is rising_edge(clk_i);
@@ -65,5 +65,5 @@ vunit axil_to_wbus_inst(axil_to_wbus(synthesis))
 -- ADDITIONAL ASSUMES HELPFUL WHEN DEBUGGING
 ----------------------------------------------
 
-} -- vunit vunit axil_to_wbus_inst(axil_to_wbus(synthesis))
+} -- vunit vunit axil_to_wbus_inst(axil_to_wbus(rtl))
 

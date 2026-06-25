@@ -47,7 +47,7 @@ entity axil_to_wbus is
   );
 end entity axil_to_wbus;
 
-architecture synthesis of axil_to_wbus is
+architecture rtl of axil_to_wbus is
 
   type     state_type is (IDLE_ST, WRITING_ST, READING_ST);
   signal   state : state_type                           := IDLE_ST;
@@ -175,5 +175,5 @@ begin
     end if;
   end process fsm_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

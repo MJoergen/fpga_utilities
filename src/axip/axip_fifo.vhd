@@ -33,7 +33,7 @@ entity axip_fifo is
   );
 end entity axip_fifo;
 
-architecture synthesis of axip_fifo is
+architecture rtl of axip_fifo is
 
   signal   s_data_in  : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
   signal   m_data_out : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
@@ -72,5 +72,5 @@ begin
   m_last_o                    <= m_data_out(C_AXI_FIFO_LAST);
   m_bytes_o                   <= to_integer(unsigned(m_data_out(R_AXI_FIFO_BYTES)));
 
-end architecture synthesis;
+end architecture rtl;
 

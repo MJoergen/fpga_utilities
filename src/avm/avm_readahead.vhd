@@ -76,7 +76,7 @@ entity avm_readahead is
    );
 end entity avm_readahead;
 
-architecture synthesis of avm_readahead is
+architecture rtl of avm_readahead is
 
    type   mem_type is array (0 to G_CACHE_SIZE - 1) of std_logic_vector(G_DATA_BITS - 1 downto 0);
 
@@ -481,5 +481,5 @@ begin
       end if;
    end process fsm_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

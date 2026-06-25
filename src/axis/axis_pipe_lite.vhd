@@ -29,7 +29,7 @@ entity axis_pipe_lite is
   );
 end entity axis_pipe_lite;
 
-architecture synthesis of axis_pipe_lite is
+architecture rtl of axis_pipe_lite is
 
 begin
 
@@ -55,5 +55,5 @@ begin
     end if;
   end process m_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

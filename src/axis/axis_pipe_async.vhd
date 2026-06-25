@@ -25,7 +25,7 @@ entity axis_pipe_async is
   );
 end entity axis_pipe_async;
 
-architecture synthesis of axis_pipe_async is
+architecture rtl of axis_pipe_async is
 
   pure function log2 (
     arg : positive
@@ -232,5 +232,5 @@ begin
     end if;
   end process m_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

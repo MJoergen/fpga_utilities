@@ -30,7 +30,7 @@ entity axip_fifo_async is
   );
 end entity axip_fifo_async;
 
-architecture synthesis of axip_fifo_async is
+architecture rtl of axip_fifo_async is
 
   pure function keep2bytes (
     keep : std_logic_vector
@@ -115,5 +115,5 @@ begin
       wr_data_count_axis       => s_fill_o
     ); -- xpm_fifo_axis_inst
 
-end architecture synthesis;
+end architecture rtl;
 

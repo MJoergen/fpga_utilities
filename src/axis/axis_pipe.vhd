@@ -28,7 +28,7 @@ entity axis_pipe is
   );
 end entity axis_pipe;
 
-architecture synthesis of axis_pipe is
+architecture rtl of axis_pipe is
 
   -- Input registers
   signal s_data : std_logic_vector(G_DATA_BITS - 1 downto 0);
@@ -81,5 +81,5 @@ begin
     end if;
   end process m_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

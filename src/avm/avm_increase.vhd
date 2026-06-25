@@ -77,7 +77,7 @@ entity avm_increase is
   );
 end entity avm_increase;
 
-architecture synthesis of avm_increase is
+architecture rtl of avm_increase is
 
   -- 2**G_BURST_BITS — the smallest value that is NOT a representable
   -- Avalon-MM burstcount. Used as FIFO depth to cover the worst-case burst.
@@ -624,5 +624,5 @@ begin
       m_data_o  => wr_fifo_m_data
     );
 
-end architecture synthesis;
+end architecture rtl;
 

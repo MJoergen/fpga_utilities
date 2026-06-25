@@ -33,7 +33,7 @@ entity axis_arbiter is
   );
 end entity axis_arbiter;
 
-architecture synthesis of axis_arbiter is
+architecture rtl of axis_arbiter is
 
   type   state_type is (INPUT_0_ST, INPUT_1_ST);
   signal state : state_type := INPUT_0_ST;
@@ -83,5 +83,5 @@ begin
     end if;
   end process fsm_proc;
 
-end architecture synthesis;
+end architecture rtl;
 

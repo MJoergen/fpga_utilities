@@ -100,7 +100,7 @@ entity avm_decrease is
   );
 end entity avm_decrease;
 
-architecture synthesis of avm_decrease is
+architecture rtl of avm_decrease is
 
   -- Expansion ratio: number of narrow (master) words per wide (slave) word.
   -- Required to be a power of two; this is enforced by the assertion
@@ -360,5 +360,5 @@ begin
   s_waitrequest_o <= ((s_write or s_read) and m_waitrequest_i) when state = IDLE_ST else
                      '1';
 
-end architecture synthesis;
+end architecture rtl;
 
