@@ -140,7 +140,7 @@ begin
   -- Instantiate AXI distributor
   --------------------------------
 
-  axip_distributor_inst : entity work.axip_distributor
+  axip_demux_inst : entity work.axip_demux
     generic map (
       G_DATA_BYTES => G_DATA_BYTES
     )
@@ -163,7 +163,7 @@ begin
       m1_data_o  => m1_data,
       m1_last_o  => m1_last,
       m1_bytes_o => m1_bytes
-    ); -- axis_distributor_inst : entity work.axis_distributor
+    ); -- axip_demux_inst : entity work.axip_demux
 
 
   --------------------------------

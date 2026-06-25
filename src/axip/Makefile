@@ -2,7 +2,7 @@
 
 SRC += axip_arbiter_general.vhd
 SRC += axip_arbiter.vhd
-SRC += axip_distributor.vhd
+SRC += axip_demux.vhd
 #SRC += axip_fifo_async.vhd         # Uses XPM, not supported by yosys
 SRC += axip_fifo.vhd
 SRC += axip_insert_fixed_header.vhd

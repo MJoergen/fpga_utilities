@@ -4,7 +4,7 @@
 
 # List of source files
 SRC += $(SRC_DIR)/axip/axip_arbiter.vhd
-SRC += $(SRC_DIR)/axip/axip_distributor.vhd
+SRC += $(SRC_DIR)/axip/axip_demux.vhd
 SRC += $(SRC_DIR)/axip/axip_insert_fixed_header.vhd
 SRC += $(SRC_DIR)/axip/axip_remove_fixed_header.vhd
 

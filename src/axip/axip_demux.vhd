@@ -6,7 +6,7 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity axip_distributor is
+entity axip_demux is
   generic (
     G_DATA_BYTES : positive
   );
@@ -33,9 +33,9 @@ entity axip_distributor is
     m1_last_o  : out   std_logic;
     m1_bytes_o : out   natural range 0 to G_DATA_BYTES
   );
-end entity axip_distributor;
+end entity axip_demux;
 
-architecture synthesis of axip_distributor is
+architecture synthesis of axip_demux is
 
   signal s_first : std_logic := '1';
   signal s_dst   : std_logic := '0';

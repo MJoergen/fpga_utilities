@@ -1,7 +1,7 @@
 # Run all source files through yosys to check for synthesis
 
 SRC += axis_arbiter.vhd
-SRC += axis_distributor.vhd
+SRC += axis_demux.vhd
 SRC += axis_dropper.vhd
 #SRC += axis_fifo_async.vhd   # Uses XPM, not supported by yosys
 SRC += axis_fifo.vhd

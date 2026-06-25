@@ -31,7 +31,7 @@ testbench are flagged as **unverified**.
 | `axil_pipe_async`            | – | **unverified** |
 | `axip_arbiter`               | ✓ | `tb_axip_arbiter` |
 | `axip_arbiter_general`       | – | **unverified** |
-| `axip_distributor`           | – | **unverified** |
+| `axip_demux`                 | – | **unverified** |
 | `axip_fifo`                  | – | `tb_axip_fifo` |
 | `axip_fifo_async`            | – | **unverified** |
 | `axip_insert_fixed_header`   | ✓ | `tb_axip_insert_fixed_header`, `tb_axip_fixed_header` |
@@ -39,7 +39,7 @@ testbench are flagged as **unverified**.
 | `axip_pipe_async`            | – | `tb_axip_pipe_async` |
 | `axip_remove_fixed_header`   | ✓ | `tb_axip_remove_fixed_header`, `tb_axip_fixed_header` |
 | `axis_arbiter`               | ✓ | `tb_axis_arbiter` |
-| `axis_distributor`           | – | **unverified** |
+| `axis_demux`                 | – | **unverified** |
 | `axis_dropper`               | ✓ | **unverified** |
 | `axis_fifo`                  | ✓ | `tb_axis_fifo` |
 | `axis_fifo_async`            | – | **unverified** |
@@ -69,7 +69,7 @@ the `axis` interface specified in
   arbiter that merges two AXIS sources onto a single
   downstream AXIS sink. Generic-parameterised data width; selection is
   packet-unaware (single-beat granularity).
-- [`axis_distributor.vhd`](../src/axis/axis_distributor.vhd): Demultiplexes a
+- [`axis_demux.vhd`](../src/axis/axis_demux.vhd): Demultiplexes a
   single AXIS source onto two AXIS sinks, selected by an external
   control input. **Unverified — no testbench or formal proof.**
 - [`axis_dropper.vhd`](../src/axis/axis_dropper.vhd): Drops selected
@@ -108,7 +108,7 @@ compile order before any `axip_*` instance.
 - [`axip_arbiter_general.vhd`](../src/axip/axip_arbiter_general.vhd):
   N-input variant of `axip_arbiter`. The number of inputs is a generic.
   **Unverified — no testbench or formal proof.**
-- [`axip_distributor.vhd`](../src/axip/axip_distributor.vhd): Demultiplexes
+- [`axip_demux.vhd`](../src/axip/axip_demux.vhd): Demultiplexes
   a single AXIP source onto two AXIP sinks, selected at packet
   granularity by an external control input.
   **Unverified.**

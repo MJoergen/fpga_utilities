@@ -174,9 +174,9 @@ top.tb_axil_arbiter.axil_slave_sim_inst.s_rvalid_o
 @1401200
 -axil_slave_sim
 @c00200
--axis_distributor_r
+-axis_demux_r
 @1401200
--axis_distributor_r
+-axis_demux_r
 @c00200
 -axis_arbiter_ar
 @1401200

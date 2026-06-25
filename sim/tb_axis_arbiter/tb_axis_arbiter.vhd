@@ -77,7 +77,7 @@ begin
   -- Instantiate AXI distributor
   --------------------------------
 
-  axis_distributor_inst : entity work.axis_distributor
+  axis_demux_inst : entity work.axis_demux
     generic map (
       G_DATA_BITS => G_DATA_BYTES * 8
     )
@@ -94,7 +94,7 @@ begin
       m1_ready_i => m1_ready,
       m1_valid_o => m1_valid,
       m1_data_o  => m1_data
-    ); -- axis_distributor_inst : entity work.axis_distributor
+    ); -- axis_demux_inst : entity work.axis_demux
 
 
   --------------------------------

@@ -6,7 +6,7 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-entity axis_distributor is
+entity axis_demux is
   generic (
     G_DATA_BITS : positive
   );
@@ -27,9 +27,9 @@ entity axis_distributor is
     m1_valid_o : out   std_logic;
     m1_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
-end entity axis_distributor;
+end entity axis_demux;
 
-architecture synthesis of axis_distributor is
+architecture synthesis of axis_demux is
 
 begin
 

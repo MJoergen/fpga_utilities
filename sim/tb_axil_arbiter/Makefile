@@ -6,7 +6,7 @@ SRC += $(SRC_DIR)/axil/axil_arbiter.vhd
 SRC += $(SRC_DIR)/axil/axil_arbiter_write.vhd
 SRC += $(SRC_DIR)/axil/axil_arbiter_read.vhd
 SRC += $(SRC_DIR)/axil/axil_pipe.vhd
-SRC += $(SRC_DIR)/axis/axis_distributor.vhd
+SRC += $(SRC_DIR)/axis/axis_demux.vhd
 SRC += $(SRC_DIR)/axis/axis_pipe.vhd
 
 # List of test specific simulation files
