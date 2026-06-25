@@ -3,6 +3,8 @@
 -- interface.  It generates a sequence of Writes and Reads, and verifies that the values
 -- returned from Read matches the corresponding values during Write.  This module may
 -- generate simultaneous read and write requests, without first waiting for a response.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

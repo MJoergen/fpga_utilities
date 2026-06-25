@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This provides stimulus to and verifies response from an AXI streaming interface.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

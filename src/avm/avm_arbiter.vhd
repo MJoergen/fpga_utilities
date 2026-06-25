@@ -26,6 +26,8 @@
 --      handshake.
 --   6. 'readdatavalid' for a granted read can arrive in the SAME cycle as the address
 --      phase; burstcount_proc handles that explicitly.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

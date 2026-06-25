@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Arbitrate between several different AXI packet masters
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

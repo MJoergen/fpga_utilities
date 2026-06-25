@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Determine whether we are waiting on one of AW and W data.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

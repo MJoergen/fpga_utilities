@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
--- Description: This is a simple AXI streaming synchronous FIFO.
+-- Description: This is a simple synchronous AXI streaming FIFO.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

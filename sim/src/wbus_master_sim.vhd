@@ -2,6 +2,8 @@
 -- Description: This simulates a Wishbone Master.  It generates a sequence of Writes and
 -- Reads, and verifies that the values returned from Read matches the corresponding values
 -- during Write.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

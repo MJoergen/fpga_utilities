@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This simulates an AXI lite slave.  It emulates a simple RAM and responds
 -- to Write and Read requests.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

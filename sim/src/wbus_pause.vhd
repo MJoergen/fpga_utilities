@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This adds pauses into Wishbone requests and responses
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

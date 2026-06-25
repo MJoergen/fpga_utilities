@@ -2,6 +2,8 @@
 -- Description: This module generates a stream of bytes from a wider bus interface.  The
 -- first byte sent is read from MSB, i.e. s_data_o(G_DATA_BYTES*8-1 downto
 -- G_DATA_BYTES*8-8);
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

@@ -4,6 +4,8 @@
 -- s_bytes_i is only valid when s_last_i is 1.
 -- m_bytes_o is only valid when m_last_o is 1.
 -- If the input packet is less than the header size, then m_bytes_o is set to 0.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Wishbone mapper. Connect multiple Wishbone Slaves to a single Wishbone
 -- Master.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

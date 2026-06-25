@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Arbitrate between two different Wishbone masters
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

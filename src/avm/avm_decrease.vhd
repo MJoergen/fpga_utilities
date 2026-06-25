@@ -39,6 +39,8 @@
 --   * Avalon-MM compliant: read responses are returned in request order.
 --   * Accepts m_burstcount_o held stable for the duration of the burst.
 --   * Honours m_byteenable_o per beat.
+--
+-- SPDX-License-Identifier: MIT
 --------------------------------------------------------------------------------
 
 library ieee;

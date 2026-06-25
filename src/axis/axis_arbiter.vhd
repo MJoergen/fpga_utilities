@@ -2,6 +2,8 @@
 -- Description: Arbitrate between two different AXI Streams.  The arbitration is
 -- round-robin, so if both inputs want to forward data, then they are alternately granted
 -- access.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

@@ -34,6 +34,8 @@
 --   m_avm_* : Avalon-MM master (toward the memory / downstream slave)
 --
 -- Created by Michael Jørgensen in 2022 (mjoergen.github.io/HyperRAM).
+--
+-- SPDX-License-Identifier: MIT
 -------------------------------------------------------------------------------
 
 library ieee;

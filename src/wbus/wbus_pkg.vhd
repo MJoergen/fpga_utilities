@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description:
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;
@@ -14,6 +16,8 @@ end package wbus_pkg;
 
 
 package body wbus_pkg is
+
+  -- empty
 
 end package body wbus_pkg;
 

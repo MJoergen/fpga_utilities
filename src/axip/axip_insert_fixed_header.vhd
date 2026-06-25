@@ -3,6 +3,8 @@
 -- to the start of the packet.  First byte is in the left-most (MSB) position.
 -- s_bytes_i is only valid when s_last_i is 1.
 -- m_bytes_o is only valid when m_last_o is 1.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

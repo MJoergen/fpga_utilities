@@ -7,6 +7,8 @@
 --
 -- For additional information, see:
 -- https://www.itdev.co.uk/blog/pipelining-axi-buses-registered-ready-signals
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

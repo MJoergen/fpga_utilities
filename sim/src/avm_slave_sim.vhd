@@ -25,6 +25,7 @@
 --   * Intended for simulation only (not synthesizable).
 --   * Memory contents are initialized to zero at elaboration and are not reset.
 --
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

@@ -6,6 +6,8 @@
 -- * Setting it to 10 inserts empty cycles approximately every tenth cycle, i.e. 90 % throughput.
 -- * Setting it to -10 inserts empty cycles except approximately every tenth cycle, i.e. 10 % throughput.
 -- * Etc.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

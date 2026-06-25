@@ -37,6 +37,8 @@
 --                  Practical for G_ADDR_BITS up to ~20.
 --                - Reads always issue with byteenable = all-ones
 --                  (writes can be randomised; see G_RANDOM_BYTEENABLE).
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

@@ -1,7 +1,3 @@
-library ieee;
-  use ieee.std_logic_1164.all;
-  use ieee.numeric_std_unsigned.all;
-
 --------------------------------------------------------------------------------
 -- avm_increase
 --
@@ -39,7 +35,13 @@ library ieee;
 --     (sized to absorb the worst-case master read burst).
 --   * The internal write FIFO depth is also 2**G_BURST_BITS master words
 --     (sized to buffer the complete packed write burst before master emission).
+--
+-- SPDX-License-Identifier: MIT
 --------------------------------------------------------------------------------
+
+library ieee;
+  use ieee.std_logic_1164.all;
+  use ieee.numeric_std_unsigned.all;
 
 entity avm_increase is
   generic (

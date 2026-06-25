@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Arbitrate between two different AXI masters If both Masters request
 -- simultaneously, then they are granted access alternately.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

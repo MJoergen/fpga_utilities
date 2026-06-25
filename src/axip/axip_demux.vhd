@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Distribute AXI packet to two different AXI masters
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

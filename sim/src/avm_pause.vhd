@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This module inserts empty wait cycles into an Avalon interface.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

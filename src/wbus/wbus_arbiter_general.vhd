@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Allows several Wushbone Masters to interact with a single Wishbone Slave.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

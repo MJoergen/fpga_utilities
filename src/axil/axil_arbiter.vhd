@@ -7,6 +7,8 @@
 --
 -- The implementation is split into writing and reading, each of which is handled
 -- separately and (almost) independently.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

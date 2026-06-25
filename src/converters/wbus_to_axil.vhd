@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This allows an AXI Lite Slave to be connected to a Wishbone Master
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

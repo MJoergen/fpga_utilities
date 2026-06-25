@@ -3,6 +3,8 @@
 -- word, before deciding whether to forward the packet.  Since multiple (short) packets
 -- may be received while forwarding a single (long) frame, the "end pointer" of each
 -- received valid frame must be stored in a separate FIFO.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

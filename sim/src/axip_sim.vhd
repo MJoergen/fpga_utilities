@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Generates a stream of random packets and verifies the response.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

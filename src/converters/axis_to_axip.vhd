@@ -2,6 +2,8 @@
 -- Description: This module converts a stream of bytes into a wider bus interface.  The
 -- first byte received is placed in MSB, i.e.  m_data_o(G_DATA_BYTES*8-1 downto
 -- G_DATA_BYTES*8-8);
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

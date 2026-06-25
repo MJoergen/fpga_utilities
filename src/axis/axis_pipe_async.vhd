@@ -1,5 +1,7 @@
 -------------------------------------------------------------
 -- Description: An AXI stream asynchronous pipe (shallow FIFO).
+--
+-- SPDX-License-Identifier: MIT
 -------------------------------------------------------------
 
 library ieee;
