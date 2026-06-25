@@ -124,6 +124,7 @@ begin
 
       if rst_i = '1' then
         s_ack_o     <= '0';
+        -- s_rddat_o is don't care when s_ack_o is 0.
         m_awvalid_o <= '0';
         m_wvalid_o  <= '0';
         m_arvalid_o <= '0';

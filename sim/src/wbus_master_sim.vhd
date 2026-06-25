@@ -13,31 +13,34 @@ library ieee;
 
 entity wbus_master_sim is
   generic (
+    G_ADDR_BITS   : natural;
+    G_DATA_BITS   : natural;
+    G_RANDOM_SEL  : boolean                       := false;
     G_SEED        : std_logic_vector(63 downto 0) := X"DEADBEEFC007BABE";
     G_NAME        : string                        := "";
-    G_TIMEOUT_MAX : natural                       := 200;
+    G_TIMEOUT_MAX : natural                       := 0;
     G_DEBUG       : boolean                       := false;
     G_DO_ABORT    : boolean                       := false;
-    G_OFFSET      : natural                       := 1234;
-    G_ADDR_BITS   : natural;
-    G_DATA_BITS   : natural
+    G_OFFSET      : natural                       := 1234
   );
   port (
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
-    m_cyc_o   : out   std_logic;                                    -- Valid bus cycle
+    m_cyc_o   : out   std_logic;
     m_stall_i : in    std_logic;
-    m_stb_o   : out   std_logic;                                    -- Strobe signals / core select signal
-    m_addr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);   -- lower address bits
-    m_we_o    : out   std_logic;                                    -- Write enable
-    m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);   -- Write Databus
-    m_sel_o   : out   std_logic_vector(G_DATA_BITS/8 - 1 downto 0); -- Write Byteenable
-    m_ack_i   : in    std_logic;                                    -- Bus cycle acknowledge
-    m_rddat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0)    -- Read Databus
+    m_stb_o   : out   std_logic;
+    m_addr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
+    m_we_o    : out   std_logic;
+    m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_sel_o   : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    m_ack_i   : in    std_logic;
+    m_rddat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity wbus_master_sim;
 
 architecture simulation of wbus_master_sim is
+
+  constant C_REP_STR : string      := "WBUS MASTER " & G_NAME;
 
   constant C_RANDOM_SIZE : natural := 16;
   signal   random_s      : std_logic_vector(63 downto 0);
@@ -47,14 +50,14 @@ architecture simulation of wbus_master_sim is
   type     state_type is (IDLE_ST, WRITING_ST, READING_ST, DONE_ST);
   signal   state : state_type      := IDLE_ST;
 
-  signal   wr_ptr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
-  signal   rd_ptr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal   wr_ptr      : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal   wr_ptr_next : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal   rd_ptr      : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal   rd_ptr_next : std_logic_vector(G_ADDR_BITS - 1 downto 0);
 
   pure function addr_to_data (
     addr : std_logic_vector
   ) return std_logic_vector is
-    variable addr_v : std_logic_vector(G_ADDR_BITS - 1 downto 0);
-    variable data_v : std_logic_vector(G_DATA_BITS - 1 downto 0);
   begin
     return resize(addr, G_DATA_BITS) + G_OFFSET;
   end function addr_to_data;
@@ -67,6 +70,9 @@ architecture simulation of wbus_master_sim is
   signal   timeout_cnt : natural range 0 to G_TIMEOUT_MAX;
 
 begin
+
+  wr_ptr_next <= wr_ptr + 1;
+  rd_ptr_next <= rd_ptr + 1;
 
   --------------------------------
   -- Instantiate random number generator
@@ -83,12 +89,53 @@ begin
       output_o => random_s
     ); -- random_inst : entity work.random
 
+  -- do_write / do_read each fire with ~1/4 probability per cycle (top bit of the random
+  -- word selects 'fire'; bit 0 selects write vs. read);
+  -- do_abort fires with 1/128 probability (AND of 7 bits) when G_DO_ABORT = true.
   do_read  <= random_s(C_RANDOM_SIZE - 1) and random_s(0) and not rst_i;
   do_write <= random_s(C_RANDOM_SIZE - 1) and not random_s(0) and not rst_i;
   do_abort <= and(random_s(R_ABORT)) when G_DO_ABORT else
               '0';
 
+  -- writes append to address wr_ptr with data addr_to_data(wr_ptr); reads from address
+  -- rd_ptr (with rd_ptr < wr_ptr) must return addr_to_data(rd_ptr). End of test is when
+  -- the writer wraps.
   wbus_proc : process (clk_i)
+    --
+
+    procedure issue_write (
+      signal addr : in std_logic_vector
+    ) is
+    begin
+      m_cyc_o   <= '1';
+      m_stb_o   <= '1';
+      m_addr_o  <= addr;
+      m_we_o    <= '1';
+      m_wrdat_o <= addr_to_data(addr);
+      m_sel_o   <= (others => '1');
+      if G_DEBUG then
+        report C_REP_STR &
+               ": Write to address " & to_hstring(addr) &
+               " with data " & to_hstring(addr_to_data(addr));
+      end if;
+    end procedure issue_write;
+
+    procedure issue_read (
+      signal addr : in std_logic_vector
+    ) is
+    begin
+      m_cyc_o   <= '1';
+      m_stb_o   <= '1';
+      m_addr_o  <= addr;
+      m_we_o    <= '0';
+      m_wrdat_o <= (others => '0');
+      m_sel_o   <= (others => '1');
+      if G_DEBUG then
+        report C_REP_STR &
+               ": Read from address " & to_hstring(addr);
+      end if;
+    end procedure issue_read;
+
   begin
     if rising_edge(clk_i) then
       if m_stall_i = '0' then
@@ -111,25 +158,11 @@ begin
             if wr_ptr + 1 = 0 then
               state <= DONE_ST;
             else
-              m_cyc_o   <= '1';
-              m_stb_o   <= '1';
-              m_addr_o  <= wr_ptr;
-              m_we_o    <= '1';
-              m_wrdat_o <= addr_to_data(wr_ptr);
-              m_sel_o   <= (others => '1');
-              if G_DEBUG then
-                report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr) & " with data " & to_hstring(addr_to_data(wr_ptr));
-              end if;
+              issue_write(wr_ptr);
               state <= WRITING_ST;
             end if;
           elsif do_read = '1' and rd_ptr < wr_ptr then
-            m_cyc_o  <= '1';
-            m_stb_o  <= '1';
-            m_addr_o <= rd_ptr;
-            m_we_o   <= '0';
-            if G_DEBUG then
-              report "WBUS MASTER " & G_NAME & ": Read from address " & to_hstring(rd_ptr);
-            end if;
+            issue_read(rd_ptr);
             state <= READING_ST;
           end if;
 
@@ -138,28 +171,15 @@ begin
             wr_ptr <= wr_ptr + 1;
 
             if do_write = '1' then
+              -- address-space-wraparound termination condition
               if wr_ptr + 1 = 0 then
                 state <= DONE_ST;
               else
-                m_cyc_o   <= '1';
-                m_stb_o   <= '1';
-                m_addr_o  <= wr_ptr + 1;
-                m_we_o    <= '1';
-                m_wrdat_o <= addr_to_data(wr_ptr + 1);
-                m_sel_o   <= (others => '1');
-                if G_DEBUG then
-                  report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr + 1) & " with data " & to_hstring(addr_to_data(wr_ptr + 1));
-                end if;
+                issue_write(wr_ptr_next);
                 state <= WRITING_ST;
               end if;
             elsif do_read = '1' and rd_ptr < wr_ptr + 1 then
-              m_cyc_o  <= '1';
-              m_stb_o  <= '1';
-              m_addr_o <= rd_ptr;
-              m_we_o   <= '0';
-              if G_DEBUG then
-                report "WBUS MASTER " & G_NAME & ": Read from address " & to_hstring(rd_ptr);
-              end if;
+              issue_read(rd_ptr);
               state <= READING_ST;
             else
               state <= IDLE_ST;
@@ -169,7 +189,7 @@ begin
         when READING_ST =>
           if m_ack_i = '1' then
             assert m_rddat_i = addr_to_data(rd_ptr)
-              report "WBUS MASTER " & G_NAME &
+              report C_REP_STR &
                      ": Read failure from address " & to_hstring(rd_ptr) &
                      ". Got " & to_hstring(m_rddat_i) &
                      ", expected " & to_hstring(addr_to_data(rd_ptr));
@@ -179,25 +199,11 @@ begin
               if wr_ptr + 1 = 0 then
                 state <= DONE_ST;
               else
-                m_cyc_o   <= '1';
-                m_stb_o   <= '1';
-                m_addr_o  <= wr_ptr;
-                m_we_o    <= '1';
-                m_wrdat_o <= addr_to_data(wr_ptr);
-                m_sel_o   <= (others => '1');
-                if G_DEBUG then
-                  report "WBUS MASTER " & G_NAME & ": Write to address " & to_hstring(wr_ptr) & " with data " & to_hstring(addr_to_data(wr_ptr));
-                end if;
+                issue_write(wr_ptr);
                 state <= WRITING_ST;
               end if;
             elsif do_read = '1' and rd_ptr + 1 < wr_ptr then
-              m_cyc_o  <= '1';
-              m_stb_o  <= '1';
-              m_addr_o <= rd_ptr + 1;
-              m_we_o   <= '0';
-              if G_DEBUG then
-                report "WBUS MASTER " & G_NAME & ": Read from address " & to_hstring(rd_ptr + 1);
-              end if;
+              issue_read(rd_ptr_next);
               state <= READING_ST;
             else
               state <= IDLE_ST;
@@ -205,7 +211,7 @@ begin
           end if;
 
         when DONE_ST =>
-          report "WBUS MASTER " & G_NAME & ": Done";
+          report C_REP_STR & ": Done";
           stop;
 
       end case;
@@ -226,18 +232,19 @@ begin
   end process wbus_proc;
 
 
+  -- At any time, at most one Wishbone request is outstanding.
   assert_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
       if m_cyc_o = '1' and m_stall_i = '0' and m_stb_o = '1' then
         assert req_active = '0'
-          report "WBUS MASTER " & G_NAME & ": Repeated access received";
+          report C_REP_STR & ": Master started a new request before previous one was acked";
         req_active <= '1';
       end if;
 
       if m_cyc_o = '1' and m_ack_i = '1' then
         assert req_active = '1' or m_stall_i = '1'
-          report "WBUS MASTER " & G_NAME & ": Missing access";
+          report C_REP_STR & ": Slave acked a request that wasn't outstanding";
         req_active <= '0';
       end if;
 
@@ -247,23 +254,28 @@ begin
     end if;
   end process assert_proc;
 
-  timeout_proc : process (clk_i)
-  begin
-    if rising_edge(clk_i) then
-      assert timeout_cnt < G_TIMEOUT_MAX
-        report "WBUS MASTER " & G_NAME & ": Timeout waiting for response";
+  timeout_gen : if G_TIMEOUT_MAX > 0 generate
 
-      if req_active = '1' then
-        timeout_cnt <= timeout_cnt + 1;
-      else
-        timeout_cnt <= 0;
-      end if;
+    timeout_proc : process (clk_i)
+    begin
+      if rising_edge(clk_i) then
+        assert timeout_cnt < G_TIMEOUT_MAX or rst_i = '1'
+          report C_REP_STR & ": Timeout waiting for response"
+          severity failure;
 
-      if rst_i = '1' then
-        timeout_cnt <= 0;
+        if req_active = '1' then
+          timeout_cnt <= timeout_cnt + 1;
+        else
+          timeout_cnt <= 0;
+        end if;
+
+        if rst_i = '1' then
+          timeout_cnt <= 0;
+        end if;
       end if;
-    end if;
-  end process timeout_proc;
+    end process timeout_proc;
+
+  end generate timeout_gen;
 
 end architecture simulation;
 
