@@ -13,8 +13,8 @@ library ieee;
 
 entity axip_insert_fixed_header is
   generic (
-    G_DATA_BYTES   : positive;
-    G_HEADER_BYTES : positive
+    G_DATA_BYTES   : positive := 8;
+    G_HEADER_BYTES : positive := 2
   );
   port (
     clk_i     : in    std_logic;
@@ -53,14 +53,26 @@ architecture rtl of axip_insert_fixed_header is
 
 begin
 
+  -- ------------------------------------------------------------------------------------
+  -- Top-level sanity checks. These fire only in simulation but document the contract.
+  -- ------------------------------------------------------------------------------------
+  assert G_HEADER_BYTES < G_DATA_BYTES
+    report "axip_insert_fixed_header: G_HEADER_BYTES must be strictly less than G_DATA_BYTES"
+    severity failure;
+
+
   s_ready_o <= (m_ready_i or not m_valid_o) when state = IDLE_ST or state = WAIT_DATA_ST or state = BUSY_ST else
                '0';
   h_ready_o <= (m_ready_i or not m_valid_o) when state = IDLE_ST or state = WAIT_HEADER_ST else
                '0';
 
-  state_proc : process (clk_i)
+  fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
+      assert not (s_valid_i = '1' and s_last_i = '1' and s_bytes_i = 0 and rst_i = '0')
+        report "axip_insert_fixed_header: last beat with bytes=0 (illegal per spec)"
+        severity failure;
+
       if m_ready_i = '1' then
         m_valid_o <= '0';
       end if;
@@ -176,9 +188,9 @@ begin
           end if;
 
         when LAST_ST =>
-          if m_ready_i or not m_valid_o then
+          if m_ready_i = '1' or m_valid_o = '0' then
             m_valid_o <= '1';
-            m_data_o  <= s_data(R_HEADER) & s_data_i(R_DATA);
+            m_data_o  <= s_data(R_HEADER) & s_data(R_DATA);
             m_last_o  <= '1';
             m_bytes_o <= s_bytes - (G_DATA_BYTES - G_HEADER_BYTES);
             state     <= IDLE_ST;
@@ -191,7 +203,7 @@ begin
         state     <= IDLE_ST;
       end if;
     end if;
-  end process state_proc;
+  end process fsm_proc;
 
 end architecture rtl;
 

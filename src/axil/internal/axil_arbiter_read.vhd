@@ -79,7 +79,7 @@ begin
                            rx_state = RX_INPUT_0_READING_ST else
                   '0';
 
-  rx_state_proc : process (clk_i)
+  fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
 
@@ -121,7 +121,7 @@ begin
         rx_state <= RX_INPUT_0_IDLE_ST;
       end if;
     end if;
-  end process rx_state_proc;
+  end process fsm_proc;
 
   m_arvalid_o  <= (s0_arvalid_i and accept_ar_0) or (s1_arvalid_i and accept_ar_1);
   m_araddr_o   <= s0_araddr_i when rx_select_0 = '1' else

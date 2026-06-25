@@ -82,7 +82,7 @@ begin
   end process rst_proc;
 
 
-  state_proc : process (clk_i)
+  fsm_proc : process (clk_i)
     variable slave_num_v : std_logic_vector(G_MASTER_ADDR_BITS - G_SLAVE_ADDR_BITS - 1 downto 0);
     variable idx_v       : natural range 0 to G_NUM_SLAVES - 1;
   begin
@@ -142,7 +142,7 @@ begin
         state       <= IDLE_ST;
       end if;
     end if;
-  end process state_proc;
+  end process fsm_proc;
 
 end architecture rtl;
 

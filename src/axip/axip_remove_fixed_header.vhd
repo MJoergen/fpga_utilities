@@ -62,7 +62,7 @@ begin
                                                                                   state = BUSY_ST else
                '0';
 
-  state_proc : process (clk_i)
+  fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
       if m_ready_i = '1' then
@@ -114,7 +114,7 @@ begin
             if s_last_i = '1' then
               -- Do we need an extra clock cycle?
               state <= LAST_ST;
-              if s_bytes_i < G_HEADER_BYTES then
+              if s_bytes_i <= G_HEADER_BYTES then
                 -- Packet is finished
                 m_last_o  <= '1';
                 m_bytes_o <= (G_DATA_BYTES - G_HEADER_BYTES) + s_bytes_i;
@@ -140,7 +140,7 @@ begin
         state     <= IDLE_ST;
       end if;
     end if;
-  end process state_proc;
+  end process fsm_proc;
 
 end architecture rtl;
 

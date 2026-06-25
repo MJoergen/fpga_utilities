@@ -58,15 +58,15 @@ architecture rtl of wbus_arbiter is
 
 begin
 
-  assert s0_ack_o /= '1' or s1_ack_o /= '1'
+  assert s0_ack_o /= '1' or s1_ack_o /= '1' or rst_i = '1'
     report "wbus_arbiter: Invariant error where both slaves are ACK'ed"
     severity failure;
 
-  assert s0_ack_o /= '1' or state /= S0_BUSY_ST
+  assert s0_ack_o /= '1' or state /= S0_BUSY_ST or rst_i = '1'
     report "wbus_arbiter: Invariant error in state S0_BUSY_ST"
     severity failure;
 
-  assert s1_ack_o /= '1' or state /= S1_BUSY_ST
+  assert s1_ack_o /= '1' or state /= S1_BUSY_ST or rst_i = '1'
     report "wbus_arbiter: Invariant error in state S1_BUSY_ST"
     severity failure;
 

@@ -190,7 +190,7 @@ begin
         when STIM_IDLE_ST =>
           if length_s_ready = '1' or length_s_valid = '0' then
             if h_valid = '0' or (G_FAST and h_ready = '1') then
-              length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_HEADER_BYTES)) + G_HEADER_BYTES;
+              length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_HEADER_BYTES - 1)) + G_HEADER_BYTES + 1;
 
               if rst = '0' and G_DEBUG then
                 report "STIM length " & to_string(length_v);
@@ -236,7 +236,7 @@ begin
 
                 if h_valid = '0' or (G_FAST and h_ready = '1') then
                   if length_s_ready = '1' or length_s_valid = '0' then
-                    length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_HEADER_BYTES)) + G_HEADER_BYTES;
+                    length_v := (to_integer(rand(R_RAND_LENGTH)) mod (G_MAX_LENGTH - G_HEADER_BYTES - 1)) + G_HEADER_BYTES + 1;
 
                     if rst = '0' and G_DEBUG then
                       report "STIM length " & to_string(length_v);

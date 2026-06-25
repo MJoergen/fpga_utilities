@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: An elastic pipeline for an AXI Packet interface.
+-- s_bytes_i is only valid when s_last_i is 1.
+-- m_bytes_o is only valid when m_last_o is 1.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------

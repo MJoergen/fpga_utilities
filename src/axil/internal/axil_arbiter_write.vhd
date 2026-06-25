@@ -105,7 +105,7 @@ begin
                            tx_state = TX_INPUT_1_AW_BUSY_ST else
                   '0';
 
-  tx_state_proc : process (clk_i)
+  fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
 
@@ -183,7 +183,7 @@ begin
         tx_state <= TX_INPUT_0_IDLE_ST;
       end if;
     end if;
-  end process tx_state_proc;
+  end process fsm_proc;
 
 
   m_awvalid_o  <= (s0_awvalid_i and accept_aw_0) or (s1_awvalid_i and accept_aw_1);

@@ -39,7 +39,7 @@ begin
   aw_accept <= awvalid_i and awready_i;
   w_accept  <= wvalid_i and wready_i;
 
-  state_proc : process (clk_i)
+  fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
 
@@ -70,7 +70,7 @@ begin
         state <= IDLE_ST;
       end if;
     end if;
-  end process state_proc;
+  end process fsm_proc;
 
 end architecture rtl;
 

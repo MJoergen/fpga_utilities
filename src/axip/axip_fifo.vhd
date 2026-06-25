@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This is a simple synchronous AXI packet FIFO.
+-- s_bytes_i is only valid when s_last_i is 1.
+-- m_bytes_o is only valid when m_last_o is 1.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -40,11 +42,11 @@ architecture rtl of axip_fifo is
   signal   s_data_in  : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
   signal   m_data_out : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
 
-  subtype  R_AXI_FIFO_DATA is natural range G_DATA_BYTES * 8 - 1 downto 0;
+  subtype  R_DATA is natural range G_DATA_BYTES * 8 - 1 downto 0;
 
-  subtype  R_AXI_FIFO_BYTES is natural range G_DATA_BYTES * 8 + 14 downto G_DATA_BYTES * 8;
+  subtype  R_BYTES is natural range G_DATA_BYTES * 8 + 14 downto G_DATA_BYTES * 8;
 
-  constant C_AXI_FIFO_LAST : natural := G_DATA_BYTES * 8 + 15;
+  constant C_LAST : natural := G_DATA_BYTES * 8 + 15;
 
 begin
 
@@ -66,13 +68,13 @@ begin
       m_data_o  => m_data_out
     ); -- axis_fifo_inst : entity work.axis_fifo
 
-  s_data_in(R_AXI_FIFO_DATA)  <= s_data_i;
-  s_data_in(C_AXI_FIFO_LAST)  <= s_last_i;
-  s_data_in(R_AXI_FIFO_BYTES) <= std_logic_vector(to_unsigned(s_bytes_i, 15));
+  s_data_in(R_DATA)  <= s_data_i;
+  s_data_in(C_LAST)  <= s_last_i;
+  s_data_in(R_BYTES) <= std_logic_vector(to_unsigned(s_bytes_i, 15));
 
-  m_data_o                    <= m_data_out(R_AXI_FIFO_DATA);
-  m_last_o                    <= m_data_out(C_AXI_FIFO_LAST);
-  m_bytes_o                   <= to_integer(unsigned(m_data_out(R_AXI_FIFO_BYTES)));
+  m_data_o           <= m_data_out(R_DATA);
+  m_last_o           <= m_data_out(C_LAST);
+  m_bytes_o          <= to_integer(unsigned(m_data_out(R_BYTES)));
 
 end architecture rtl;
 

@@ -2,6 +2,9 @@
 -- Description: Arbitrate between two different AXI masters If both Masters request
 -- simultaneously, then they are granted access alternately.
 --
+-- s?_bytes_i is only valid when s?_last_i is 1.
+-- m_bytes_o is only valid when m_last_o is 1.
+--
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
