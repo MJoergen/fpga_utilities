@@ -1,8 +1,6 @@
 # Run all source files through yosys to check for synthesis
 
-SRC += axil_arbiter_read.vhd
 SRC += axil_arbiter.vhd
-SRC += axil_arbiter_write.vhd
 #SRC += axil_fifo_async.vhd
 SRC += axil_pipe_async.vhd
 SRC += axil_pipe.vhd
@@ -12,7 +10,7 @@ TARGETS = $(patsubst %.vhd,%.edif,$(SRC))
 all: $(TARGETS)
 
 # Explicitly handle dependencies
-axil_arbiter.edif: axil_arbiter_read.vhd axil_arbiter.vhd axil_arbiter_write.vhd
+axil_arbiter.edif: internal/axil_arbiter_read.vhd internal/axil_arbiter_write.vhd axil_arbiter.vhd
 axil_pipe_async.edif: axil_pipe_async.vhd ../axis/axis_pipe_async.vhd
 axil_pipe.edif: axil_pipe.vhd ../axis/axis_pipe.vhd
 

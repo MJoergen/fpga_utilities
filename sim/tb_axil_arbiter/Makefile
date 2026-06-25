@@ -2,9 +2,9 @@
 #
 # Description: Makefile for simulating the axil_sim.vhd file.
 
+SRC += $(SRC_DIR)/axil/internal/axil_arbiter_write.vhd
+SRC += $(SRC_DIR)/axil/internal/axil_arbiter_read.vhd
 SRC += $(SRC_DIR)/axil/axil_arbiter.vhd
-SRC += $(SRC_DIR)/axil/axil_arbiter_write.vhd
-SRC += $(SRC_DIR)/axil/axil_arbiter_read.vhd
 SRC += $(SRC_DIR)/axil/axil_pipe.vhd
 SRC += $(SRC_DIR)/axis/axis_demux.vhd
 SRC += $(SRC_DIR)/axis/axis_pipe.vhd
