@@ -1,5 +1,8 @@
 -- ---------------------------------------------------------------------------------------
--- Description: This simulates a Wishbone Slave.
+-- Description:
+-- Single-outstanding-request Wishbone slave with a memory backing store. Accepts a
+-- request on the cycle it asserts stall=0 and stb=1, returns ack on the next cycle. Stall
+-- is asserted while the previous transaction is in flight.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -24,7 +27,7 @@ entity wbus_slave_sim is
     s_addr_i  : in    std_logic_vector(G_ADDR_BITS - 1 downto 0);
     s_we_i    : in    std_logic;
     s_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
-    s_sel_i   : in    std_logic_vector(G_DATA_BITS/8 - 1 downto 0);
+    s_sel_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     s_ack_o   : out   std_logic;
     s_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
@@ -49,27 +52,36 @@ begin
   begin
     if rising_edge(clk_i) then
       s_ack_o <= '0';
-      if s_cyc_i = '1' and s_stall_o = '0' and s_stb_i = '1' and s_we_i = '1' then
-        ram(to_integer(s_addr_i)) <= s_wrdat_i;
-        s_ack_o                   <= '1';
-        if G_DEBUG then
-          report "WBUS SLAVE " & G_NAME &
-                 ": Write " & to_hstring(s_wrdat_i) &
-                 " to address " & to_hstring(s_addr_i);
-        end if;
-      end if;
-      if s_cyc_i = '1' and s_stall_o = '0' and s_stb_i = '1' and s_we_i = '0' then
-        s_rddat_o <= ram(to_integer(s_addr_i));
-        s_ack_o   <= '1';
-        if G_DEBUG then
-          report "WBUS SLAVE " & G_NAME &
-                 ": Read  " & to_hstring(ram(to_integer(s_addr_i))) &
-                 " from address " & to_hstring(s_addr_i);
+      if s_cyc_i = '1' and s_stall_o = '0' and s_stb_i = '1' then
+        -- A request is accepted.
+        req_active <= '1';
+        if s_we_i = '1' then
+          for i in s_sel_i'range loop
+            if s_sel_i(i) = '1' then
+              ram(to_integer(s_addr_i))(i * 8 + 7 downto i * 8) <= s_wrdat_i(i * 8 + 7 downto i * 8);
+            end if;
+          end loop;
+          s_ack_o <= '1';
+          if G_DEBUG then
+            report "WBUS SLAVE " & G_NAME &
+                   ": Write " & to_hstring(s_wrdat_i) &
+                   " sel " & to_hstring(s_sel_i) &
+                   " to address " & to_hstring(s_addr_i);
+          end if;
+        else
+          s_rddat_o <= ram(to_integer(s_addr_i));
+          s_ack_o   <= '1';
+          if G_DEBUG then
+            report "WBUS SLAVE " & G_NAME &
+                   ": Read  " & to_hstring(ram(to_integer(s_addr_i))) &
+                   " from address " & to_hstring(s_addr_i);
+          end if;
         end if;
       end if;
 
-      if rst_i = '1' or s_cyc_i = '0' then
-        s_ack_o <= '0';
+      if rst_i = '1' or s_cyc_i = '0' or s_ack_o = '1' then
+        req_active <= '0';
+        s_ack_o    <= '0';
       end if;
     end if;
   end process ram_proc;
@@ -86,18 +98,12 @@ begin
         assert req_active = '0'
           report "WBUS SLAVE " & G_NAME &
                  ": Repeated access received";
-        req_active <= '1';
       end if;
 
       if s_ack_o = '1' then
         assert req_active = '1'
           report "WBUS SLAVE " & G_NAME &
                  ": Missing access";
-        req_active <= '0';
-      end if;
-
-      if rst_i = '1' or s_cyc_i = '0' then
-        req_active <= '0';
       end if;
     end if;
   end process assert_proc;
