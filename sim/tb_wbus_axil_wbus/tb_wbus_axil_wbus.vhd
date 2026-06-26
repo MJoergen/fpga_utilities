@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Simple testbench for the AXI-Lite to WBUS and WBUS to AXI-Lite converters
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

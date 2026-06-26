@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Verify axip_remove_fixed_header and axip_insert_fixed_header
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

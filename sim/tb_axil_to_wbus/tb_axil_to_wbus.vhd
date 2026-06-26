@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Comprehensive test of the AXI-Lite to WBUS.  The axil_master_sim module
 -- used here generates multiple accesses simultaneously.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;

@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: A simple testbench to verify the two converters: axip_to_axis.vhd and
 -- axis_to_axip.vhd.
+--
+-- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
 library ieee;
