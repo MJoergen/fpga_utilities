@@ -16,8 +16,8 @@ library ieee;
 
 entity axil_pipe_async is
   generic (
-    G_ADDR_BITS : positive;
-    G_DATA_BITS : positive;
+    G_ADDR_BITS : positive := 16;
+    G_DATA_BITS : positive := 32;
     G_PIPE_SIZE : positive range 2 to 16
   );
   port (

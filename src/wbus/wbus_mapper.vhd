@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------------------
--- Description: Wishbone mapper. Connect multiple Wishbone Slaves to a single Wishbone
--- Master.
+-- Description: Wishbone address decoder. Routes transactions from one upstream Wishbone
+-- master to one of G_NUM_SLAVES downstream slaves, selected by the high bits of the
+-- address. Unknown addresses return C_BAD_SLAVE (low bits of x"BAD51A73"); timeouts
+-- return C_TIMEOUT (low bits of x"DEADBEEF").
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -10,45 +12,56 @@ library ieee;
   use ieee.numeric_std.all;
 
 library work;
-  use work.wbus_pkg.slv32_array_type;
+  use work.wbus_pkg.all;
 
 entity wbus_mapper is
   generic (
     G_TIMEOUT          : positive := 100;
-    G_NUM_SLAVES       : positive;
-    G_MASTER_ADDR_BITS : positive;
-    G_SLAVE_ADDR_BITS  : positive
+    G_NUM_SLAVES       : positive := 2;
+    G_MASTER_ADDR_BITS : positive := 16;
+    G_SLAVE_ADDR_BITS  : positive := 12;
+    G_DATA_BITS        : positive := 32
   );
   port (
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
 
-    -- Wishbone bus Slave interface
-    s_cyc_i   : in    std_logic;                                         -- Valid bus cycle
+    -- Wishbone bus Slave interface (single upstream Wishbone master)
+    s_cyc_i   : in    std_logic;
     s_stall_o : out   std_logic;
-    s_stb_i   : in    std_logic;                                         -- Strobe signals / core select signal
-    s_addr_i  : in    std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0); -- lower address bits
-    s_we_i    : in    std_logic;                                         -- Write enable
-    s_wrdat_i : in    std_logic_vector(31 downto 0);                     -- Write Databus
-    s_sel_i   : in    std_logic_vector(3 downto 0);                      -- Write Byteenable
-    s_ack_o   : out   std_logic;                                         -- Bus cycle acknowledge
-    s_rddat_o : out   std_logic_vector(31 downto 0);                     -- Read Databus
+    s_stb_i   : in    std_logic;
+    s_addr_i  : in    std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0);
+    s_we_i    : in    std_logic;
+    s_wrdat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
+    s_sel_i   : in    std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    s_ack_o   : out   std_logic;
+    s_rddat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
-    -- Wishbone bus Master interface
-    m_rst_o   : out   std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Synchronous reset
-    m_cyc_o   : out   std_logic;                                         -- Valid bus cycle
-    m_stall_i : in    std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Strobe signals / core select signal
-    m_stb_o   : out   std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Strobe signals / core select signal
-    m_addr_o  : out   std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);  -- lower address bits
-    m_we_o    : out   std_logic;                                         -- Write enable
-    m_wrdat_o : out   std_logic_vector(31 downto 0);                     -- Write Databus
-    m_sel_o   : out   std_logic_vector(3 downto 0);                      -- Write Byteenable
-    m_ack_i   : in    std_logic_vector(G_NUM_SLAVES - 1 downto 0);       -- Bus cycle acknowledge
-    m_rddat_i : in    slv32_array_type(G_NUM_SLAVES - 1 downto 0)        -- Read Databus
+    -- Wishbone bus Master interface (G_NUM_SLAVES downstream Wishbone slaves)
+    m_rst_o   : out   std_logic_vector(G_NUM_SLAVES - 1 downto 0);
+    m_cyc_o   : out   std_logic;
+    m_stall_i : in    std_logic_vector(G_NUM_SLAVES - 1 downto 0);
+    m_stb_o   : out   std_logic_vector(G_NUM_SLAVES - 1 downto 0);
+    m_addr_o  : out   std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);
+    m_we_o    : out   std_logic;
+    m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_sel_o   : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+    m_ack_i   : in    std_logic_vector(G_NUM_SLAVES - 1 downto 0);
+    m_rddat_i : in    slv_array_type(G_NUM_SLAVES - 1 downto 0)(G_DATA_BITS - 1 downto 0)
   );
 end entity wbus_mapper;
 
 architecture rtl of wbus_mapper is
+
+  -- Diagnostic responses, sized to G_DATA_BITS. Low bits of well-known constants are
+  -- preserved; wider buses zero-extend, narrower buses truncate to the low bits.
+  constant C_BAD_SLAVE_RAW : std_logic_vector(31 downto 0)               := x"BAD51A73";
+  constant C_TIMEOUT_RAW   : std_logic_vector(31 downto 0)               := x"DEADBEEF";
+
+  constant C_BAD_SLAVE     : std_logic_vector(G_DATA_BITS - 1 downto 0)  :=
+    std_logic_vector(resize(unsigned(C_BAD_SLAVE_RAW), G_DATA_BITS));
+  constant C_TIMEOUT       : std_logic_vector(G_DATA_BITS - 1 downto 0)  :=
+    std_logic_vector(resize(unsigned(C_TIMEOUT_RAW), G_DATA_BITS));
 
   type   state_type is (IDLE_ST, BUSY_ST);
   signal state : state_type                                  := IDLE_ST;
@@ -63,6 +76,15 @@ architecture rtl of wbus_mapper is
   attribute keep of m_rst : signal is "true";
 
 begin
+
+  -- Elaboration-time constraints
+  assert (G_DATA_BITS mod 8) = 0
+    report "wbus_mapper: G_DATA_BITS must be a multiple of 8"
+    severity failure;
+
+  assert G_MASTER_ADDR_BITS > G_SLAVE_ADDR_BITS
+    report "wbus_mapper: G_MASTER_ADDR_BITS must be greater than G_SLAVE_ADDR_BITS"
+    severity failure;
 
   s_stall_o <= '0' when state = IDLE_ST else
                '1';
@@ -110,7 +132,7 @@ begin
               timeout_cnt    <= 0;
               state          <= BUSY_ST;
             else
-              s_rddat_o <= x"BAD51A73"; -- "Bad Slave"
+              s_rddat_o <= C_BAD_SLAVE;
               s_ack_o   <= '1';
               state     <= IDLE_ST;
             end if;
@@ -126,7 +148,7 @@ begin
           if timeout_cnt < G_TIMEOUT then
             timeout_cnt <= timeout_cnt + 1;
           else
-            s_rddat_o <= x"DEADBEEF";
+            s_rddat_o <= C_TIMEOUT;
             s_ack_o   <= '1';
             m_cyc_o   <= '0';
             state     <= IDLE_ST;

@@ -10,8 +10,8 @@ library ieee;
 
 entity axil_pipe is
   generic (
-    G_ADDR_BITS : positive;
-    G_DATA_BITS : positive
+    G_ADDR_BITS : positive := 16;
+    G_DATA_BITS : positive := 32
   );
   port (
     clk_i       : in    std_logic;

@@ -9,7 +9,7 @@ library ieee;
   use ieee.numeric_std.all;
 
 library work;
-  use work.wbus_pkg.slv32_array_type;
+  use work.wbus_pkg.all;
 
 entity tb_wbus_arbiter is
   generic (
@@ -64,7 +64,7 @@ architecture tb of tb_wbus_arbiter is
   signal map_wrdat : std_logic_vector(31 downto 0);
   signal map_sel   : std_logic_vector(3 downto 0);
   signal map_ack   : std_logic_vector(1 downto 0);
-  signal map_rddat : slv32_array_type(1 downto 0);
+  signal map_rddat : slv_array_type(1 downto 0)(31 downto 0);
 
 begin
 
