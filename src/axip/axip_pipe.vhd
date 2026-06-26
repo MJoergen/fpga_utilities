@@ -24,6 +24,7 @@ entity axip_pipe is
     s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
     s_last_i  : in    std_logic;
     s_bytes_i : in    natural range 0 to G_DATA_BYTES;
+    s_fill_o  : out   std_logic_vector(1 downto 0);
 
     -- AXI packet output interface
     m_ready_i : in    std_logic;
@@ -57,7 +58,7 @@ begin
       s_ready_o => s_ready_o,
       s_valid_i => s_valid_i,
       s_data_i  => s_in,
-      s_fill_o  => open,
+      s_fill_o  => s_fill_o,
       m_ready_i => m_ready_i,
       m_valid_o => m_valid_o,
       m_data_o  => m_out

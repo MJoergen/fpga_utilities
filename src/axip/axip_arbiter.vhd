@@ -109,6 +109,8 @@ begin
 
       if rst_i = '1' then
         m_valid_o <= '0';
+        -- after reset, treat the bus as if the previous packet had just ended, so the
+        -- arbiter is willing to switch masters on the next cycle
         m_last_o  <= '1';
         state     <= S0_ST;
       end if;

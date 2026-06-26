@@ -1,8 +1,12 @@
 -- ---------------------------------------------------------------------------------------
--- Description: An AXI packet stream asynchronous pipe (shallow FIFO).
+-- Description: An AXI packet stream asynchronous FIFO. Wrapper for the Xilinx
+-- xpm_fifo_axis primitive; not portable to non-Xilinx targets.
+-- s_bytes_i is only valid when s_last_i is 1.
+-- m_bytes_o is only valid when m_last_o is 1.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
+
 
 library ieee;
   use ieee.std_logic_1164.all;

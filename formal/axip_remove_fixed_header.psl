@@ -161,7 +161,7 @@ vunit axip_remove_fixed_header_inst(axip_remove_fixed_header(rtl))
    f_reset : assume {rst_i};
 
 -- Input bytes must be a valid number.
-   f_slave_bytes_range : assume always {s_bytes_i <= G_DATA_BYTES};
+   f_slave_bytes_range : assume always {s_bytes_i <= G_DATA_BYTES and s_bytes_i > 0};
 
 -- Input bytes must be a valid number.
    f_slave_bytes_valid : assume always {s_last_i = '0'} |-> {s_bytes_i = G_DATA_BYTES};

@@ -144,10 +144,10 @@ the `axil` interface specified in
 - [`axil_arbiter.vhd`](../src/axil/axil_arbiter.vhd): Arbiter merging
   two AXI-Lite masters onto a single AXI-Lite slave port. Internally
   instantiates `axil_arbiter_read` and `axil_arbiter_write`.
-- [`axil_arbiter_read.vhd`](../src/axil/axil_arbiter_read.vhd): Internal
+- [`axil_arbiter_read.vhd`](../src/axil/internal/axil_arbiter_read.vhd): Internal
   helper — read-channel arbitration only (`AR` / `R`). Typically
   instantiated via `axil_arbiter`.
-- [`axil_arbiter_write.vhd`](../src/axil/axil_arbiter_write.vhd):
+- [`axil_arbiter_write.vhd`](../src/axil/internal/axil_arbiter_write.vhd):
   Internal helper — write-channel arbitration only (`AW` / `W` / `B`).
   Typically instantiated via `axil_arbiter`.
 - [`axil_fifo_async.vhd`](../src/axil/axil_fifo_async.vhd): Asynchronous

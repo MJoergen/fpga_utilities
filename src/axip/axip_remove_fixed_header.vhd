@@ -56,7 +56,9 @@ architecture rtl of axip_remove_fixed_header is
 
 begin
 
-  assert G_DATA_BYTES >= G_HEADER_BYTES;
+  assert G_DATA_BYTES >= G_HEADER_BYTES
+    report "axip_remove_fixed_header.vhd: G_DATA_BYTES must be >= G_HEADER_BYTES"
+    severity failure;
 
   s_ready_o <= (m_ready_i or not m_valid_o) and (h_ready_i or not h_valid_o) when state = IDLE_ST or
                                                                                   state = BUSY_ST else
@@ -72,6 +74,10 @@ begin
       if h_ready_i = '1' then
         h_valid_o <= '0';
       end if;
+
+      assert not (s_valid_i = '1' and s_bytes_i = 0 and rst_i = '0')
+        report "axip_remove_fixed_header: BYTES = 0 is not allowed"
+        severity failure;
 
       case state is
 

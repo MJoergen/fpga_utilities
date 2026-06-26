@@ -1,6 +1,8 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Distribute AXI packet to two different AXI masters
 --
+-- s_dst_i must obey the same stability rule as s_data_i / s_last_i / s_bytes_i
+--
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
@@ -46,32 +48,23 @@ architecture rtl of axip_demux is
 begin
 
   -- s_first is asserted on the first clock cycle of the next packet
-  first_proc : process (clk_i)
+  -- s_dst_i is sampled on the first clock cycle of the packet, and remembered
+  state_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
       if s_valid_i = '1' and s_ready_o = '1' then
         s_first <= s_last_i;
+        if s_first = '1' then
+          s_dst_r <= s_dst_i;
+        end if;
       end if;
 
       if rst_i = '1' then
         s_first <= '1';
-      end if;
-    end if;
-  end process first_proc;
-
-  -- s_dst_i is sampled on the first clock cycle of the packet, and remembered
-  dst_proc : process (clk_i)
-  begin
-    if rising_edge(clk_i) then
-      if s_valid_i = '1' and s_ready_o = '1' and s_first = '1' then
-        s_dst_r <= s_dst_i;
-      end if;
-
-      if rst_i = '1' then
         s_dst_r <= '0';
       end if;
     end if;
-  end process dst_proc;
+  end process state_proc;
 
   -- Only change direction when a new packet starts
   s_dst      <= s_dst_i when s_first = '1' else

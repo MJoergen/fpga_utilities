@@ -1,6 +1,9 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Arbitrate between several different AXI packet masters
 --
+-- masters are ordered low-bits-first in s_data_i: master k occupies bits [k *
+-- G_DATA_BYTES * 8 + G_DATA_BYTES * 8 - 1 : k * G_DATA_BYTES * 8]
+--
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
@@ -9,8 +12,7 @@ library ieee;
   use ieee.numeric_std.all;
 
 library work;
-  use work.axip_pkg.bytes_type;
-  use work.axip_pkg.bytes_array_type;
+  use work.axip_pkg.all;
 
 entity axip_arbiter_general is
   generic (
@@ -58,8 +60,6 @@ architecture rtl of axip_arbiter_general is
   signal   right_last  : std_logic;
   signal   right_bytes : bytes_type;
 
-  subtype  BYTES_TYPE is natural range 0 to G_DATA_BYTES;
-
 begin
 
   iterate_gen : if G_NUM_MASTERS = 1 generate
@@ -100,7 +100,7 @@ begin
 
   else generate
 
-    assert G_NUM_MASTERS > 2;
+    -- G_NUM_MASTERS > 2
 
     axip_arbiter_general_left_inst : entity work.axip_arbiter_general
       generic map (

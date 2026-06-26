@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
+-- Description: Shared types and helpers for the axip_* family.
+--   bytes_type       — natural-range encoding of an AXIP BYTES port.
+--   bytes_array_type — unconstrained array of bytes_type, used by axip_arbiter_general.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
