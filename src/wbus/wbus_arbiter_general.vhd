@@ -9,11 +9,12 @@ library ieee;
   use ieee.numeric_std.all;
 
 library work;
-  use work.wbus_pkg.slv32_array_type;
-  use work.wbus_pkg.slv4_array_type;
+  use work.wbus_pkg.all;
 
 entity wbus_arbiter_general is
   generic (
+    G_ADDR_BITS   : natural := 32;
+    G_DATA_BITS   : natural := 32;
     G_NUM_MASTERS : positive
   );
   port (
@@ -24,12 +25,12 @@ entity wbus_arbiter_general is
     s_cyc_i   : in    std_logic_vector(G_NUM_MASTERS - 1 downto 0);
     s_stall_o : out   std_logic_vector(G_NUM_MASTERS - 1 downto 0);
     s_stb_i   : in    std_logic_vector(G_NUM_MASTERS - 1 downto 0);
-    s_addr_i  : in    slv32_array_type(G_NUM_MASTERS - 1 downto 0);
+    s_addr_i  : in    slv_array_type(G_NUM_MASTERS - 1 downto 0)(G_ADDR_BITS - 1 downto 0);
     s_we_i    : in    std_logic_vector(G_NUM_MASTERS - 1 downto 0);
-    s_wrdat_i : in    slv32_array_type(G_NUM_MASTERS - 1 downto 0);
-    s_sel_i   : in    slv4_array_type (G_NUM_MASTERS - 1 downto 0);
+    s_wrdat_i : in    slv_array_type(G_NUM_MASTERS - 1 downto 0)(G_DATA_BITS - 1 downto 0);
+    s_sel_i   : in    slv_array_type (G_NUM_MASTERS - 1 downto 0)(G_DATA_BITS / 8 - 1 downto 0);
     s_ack_o   : out   std_logic_vector(G_NUM_MASTERS - 1 downto 0);
-    s_rddat_o : out   slv32_array_type(G_NUM_MASTERS - 1 downto 0);
+    s_rddat_o : out   slv_array_type(G_NUM_MASTERS - 1 downto 0)(G_DATA_BITS - 1 downto 0);
 
     -- Wishbone bus Master interface
     m_cyc_o   : out   std_logic;
