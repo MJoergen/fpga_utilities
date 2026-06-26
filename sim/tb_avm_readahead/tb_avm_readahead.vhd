@@ -102,26 +102,26 @@ begin
       G_DATA_BITS  => G_DATA_BITS
     )
     port map (
-      clk_i                 => clk,
-      rst_i                 => rst,
-      s_avm_write_i         => m_write,
-      s_avm_read_i          => m_read,
-      s_avm_address_i       => m_address,
-      s_avm_writedata_i     => m_writedata,
-      s_avm_byteenable_i    => m_byteenable,
-      s_avm_burstcount_i    => m_burstcount,
-      s_avm_readdata_o      => m_readdata,
-      s_avm_readdatavalid_o => m_readdatavalid,
-      s_avm_waitrequest_o   => m_waitrequest,
-      m_avm_write_o         => s_write,
-      m_avm_read_o          => s_read,
-      m_avm_address_o       => s_address,
-      m_avm_writedata_o     => s_writedata,
-      m_avm_byteenable_o    => s_byteenable,
-      m_avm_burstcount_o    => s_burstcount,
-      m_avm_readdata_i      => s_readdata,
-      m_avm_readdatavalid_i => s_readdatavalid,
-      m_avm_waitrequest_i   => s_waitrequest
+      clk_i             => clk,
+      rst_i             => rst,
+      s_write_i         => m_write,
+      s_read_i          => m_read,
+      s_address_i       => m_address,
+      s_writedata_i     => m_writedata,
+      s_byteenable_i    => m_byteenable,
+      s_burstcount_i    => m_burstcount,
+      s_readdata_o      => m_readdata,
+      s_readdatavalid_o => m_readdatavalid,
+      s_waitrequest_o   => m_waitrequest,
+      m_write_o         => s_write,
+      m_read_o          => s_read,
+      m_address_o       => s_address,
+      m_writedata_o     => s_writedata,
+      m_byteenable_o    => s_byteenable,
+      m_burstcount_o    => s_burstcount,
+      m_readdata_i      => s_readdata,
+      m_readdatavalid_i => s_readdatavalid,
+      m_waitrequest_i   => s_waitrequest
     ); -- avm_readahead_inst : entity work.avm_readahead
 
 end architecture tb;
