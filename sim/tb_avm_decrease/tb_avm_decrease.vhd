@@ -63,11 +63,11 @@ begin
 
   avm_decrease_inst : entity work.avm_decrease
     generic map (
-      G_BURST_BITS         => G_BURST_BITS,
-      G_SLAVE_ADDRESS_BITS  => G_SLAVE_ADDR_BITS,
-      G_SLAVE_DATA_BITS     => G_SLAVE_DATA_BITS,
-      G_MASTER_ADDRESS_BITS => G_MASTER_ADDR_BITS,
-      G_MASTER_DATA_BITS    => G_MASTER_DATA_BITS
+      G_BURST_BITS       => G_BURST_BITS,
+      G_SLAVE_ADDR_BITS  => G_SLAVE_ADDR_BITS,
+      G_SLAVE_DATA_BITS  => G_SLAVE_DATA_BITS,
+      G_MASTER_ADDR_BITS => G_MASTER_ADDR_BITS,
+      G_MASTER_DATA_BITS => G_MASTER_DATA_BITS
     )
     port map (
       clk_i             => clk,

@@ -10,7 +10,7 @@
 --
 --     C_RATIO = G_SLAVE_DATA_BITS / G_MASTER_DATA_BITS  (must be a power of 2)
 --
--- Address mapping: the master-side address has C_ADDRESS_SHIFT more LSBs than
+-- Address mapping: the master-side address has C_ADDR_SHIFT more LSBs than
 -- the slave-side address. Those LSBs are driven to 0 by this block, because the
 -- downstream slave's burst engine increments the address per beat.
 --
@@ -52,18 +52,18 @@ entity avm_decrease is
     -- Width of both s_burstcount_i and m_burstcount_o. Must be wide enough to
     -- hold the master-side count, i.e. (max slave burstcount) * C_RATIO without
     -- wrapping.
-    G_BURST_BITS         : positive := 8;
+    G_BURST_BITS       : positive := 8;
 
     -- Address and data widths.
     -- Constraints (enforced by assertions in the architecture):
     --   * G_SLAVE_DATA_BITS = C_RATIO * G_MASTER_DATA_BITS
-    --   * C_RATIO is a power of two (i.e. 2**C_ADDRESS_SHIFT = C_RATIO)
-    --   * G_MASTER_ADDRESS_BITS = G_SLAVE_ADDRESS_BITS + log2(C_RATIO)
+    --   * C_RATIO is a power of two (i.e. 2**C_ADDR_SHIFT = C_RATIO)
+    --   * G_MASTER_ADDR_BITS = G_SLAVE_ADDR_BITS + log2(C_RATIO)
     -- A degenerate ratio of 1 is rejected; use a passthrough wrapper instead.
-    G_SLAVE_ADDRESS_BITS  : positive;
-    G_SLAVE_DATA_BITS     : positive; -- power-of-two multiple of G_MASTER_DATA_BITS
-    G_MASTER_ADDRESS_BITS : positive;
-    G_MASTER_DATA_BITS    : positive
+    G_SLAVE_ADDR_BITS  : positive;
+    G_SLAVE_DATA_BITS  : positive; -- power-of-two multiple of G_MASTER_DATA_BITS
+    G_MASTER_ADDR_BITS : positive;
+    G_MASTER_DATA_BITS : positive
   );
   port (
     clk_i             : in    std_logic;
@@ -78,7 +78,7 @@ entity avm_decrease is
     s_waitrequest_o   : out   std_logic;
     s_write_i         : in    std_logic;
     s_read_i          : in    std_logic;
-    s_address_i       : in    std_logic_vector(G_SLAVE_ADDRESS_BITS - 1 downto 0);
+    s_address_i       : in    std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);
     s_writedata_i     : in    std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
     s_byteenable_i    : in    std_logic_vector(G_SLAVE_DATA_BITS / 8 - 1 downto 0);
     s_burstcount_i    : in    std_logic_vector(G_BURST_BITS - 1 downto 0);
@@ -93,7 +93,7 @@ entity avm_decrease is
     m_waitrequest_i   : in    std_logic;
     m_write_o         : out   std_logic;
     m_read_o          : out   std_logic;
-    m_address_o       : out   std_logic_vector(G_MASTER_ADDRESS_BITS - 1 downto 0);
+    m_address_o       : out   std_logic_vector(G_MASTER_ADDR_BITS - 1 downto 0);
     m_writedata_o     : out   std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0);
     m_byteenable_o    : out   std_logic_vector(G_MASTER_DATA_BITS / 8 - 1 downto 0);
     m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);
@@ -106,19 +106,19 @@ architecture rtl of avm_decrease is
 
   -- Expansion ratio: number of narrow (master) words per wide (slave) word.
   -- Required to be a power of two; this is enforced by the assertion
-  --   C_RATIO = 2 ** C_ADDRESS_SHIFT
+  --   C_RATIO = 2 ** C_ADDR_SHIFT
   -- below (it fires only if both data sizes are themselves powers of two and
   -- consistent with the address widths).
-  constant C_RATIO : positive                                              := G_SLAVE_DATA_BITS / G_MASTER_DATA_BITS;
+  constant C_RATIO : positive                                           := G_SLAVE_DATA_BITS / G_MASTER_DATA_BITS;
 
   -- Extra address LSBs present on the master side, i.e. log2(C_RATIO).
   -- Derived from the address-width difference and cross-checked against
   -- C_RATIO by an assertion below.
-  constant C_ADDRESS_SHIFT : natural                                       := G_MASTER_ADDRESS_BITS - G_SLAVE_ADDRESS_BITS;
+  constant C_ADDR_SHIFT : natural                                       := G_MASTER_ADDR_BITS - G_SLAVE_ADDR_BITS;
 
   -- Fixed all-zero pattern concatenated as the LSBs of m_address_o so that the
   -- downstream burst engine starts at the aligned base of the wide word.
-  constant C_ZERO_ADDRESS : std_logic_vector(C_ADDRESS_SHIFT - 1 downto 0) := (others => '0');
+  constant C_ZERO_ADDRESS : std_logic_vector(C_ADDR_SHIFT - 1 downto 0) := (others => '0');
 
   -- Registered copies of the currently in-flight transaction, captured when the
   -- request is accepted in IDLE_ST. They drive the master-side outputs until
@@ -127,7 +127,7 @@ architecture rtl of avm_decrease is
   -- write burst, see comment there).
   signal   s_write      : std_logic;
   signal   s_read       : std_logic;
-  signal   s_address    : std_logic_vector(G_SLAVE_ADDRESS_BITS - 1 downto 0);
+  signal   s_address    : std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);
   signal   s_writedata  : std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
   signal   s_byteenable : std_logic_vector(G_SLAVE_DATA_BITS / 8 - 1 downto 0);
   signal   s_burstcount : std_logic_vector(G_BURST_BITS - 1 downto 0); -- master-side count (= slave count * C_RATIO)
@@ -145,7 +145,7 @@ architecture rtl of avm_decrease is
     WRITING_ST,
     READ_DRAIN_ST
   );
-  signal   state : state_type                                              := IDLE_ST;
+  signal   state : state_type                                           := IDLE_ST;
 
   -- Sub-word indices into the wide slave word.
   --   s_write_pos selects which narrow slice of s_writedata / s_byteenable is
@@ -155,8 +155,8 @@ architecture rtl of avm_decrease is
   --   s_read_pos selects which narrow slice of s_readdata_o is written with the
   --   next m_readdata_i. Advances on each master read response; rollover from
   --   C_RATIO-1 to 0 pulses s_readdatavalid_o.
-  signal   s_write_pos : integer range 0 to C_RATIO - 1                    := 0;
-  signal   s_read_pos  : integer range 0 to C_RATIO - 1                    := 0;
+  signal   s_write_pos : integer range 0 to C_RATIO - 1                 := 0;
+  signal   s_read_pos  : integer range 0 to C_RATIO - 1                 := 0;
 
 begin
 
@@ -169,14 +169,14 @@ begin
 
   -- Reject the degenerate 1:1 ratio. A pass-through is the right tool for
   -- that case; this block assumes at least one extra address LSB.
-  assert C_ADDRESS_SHIFT >= 1
+  assert C_ADDR_SHIFT >= 1
     report "avm_decrease: degenerate ratio 1 not supported; use a passthrough"
     severity failure;
 
-  -- Enforce C_RATIO power-of-two (i.e. C_RATIO = 2**C_ADDRESS_SHIFT).
+  -- Enforce C_RATIO power-of-two (i.e. C_RATIO = 2**C_ADDR_SHIFT).
   -- Also implicitly cross-checks the slave/master address-width difference
   -- against the data-size ratio.
-  assert C_RATIO = 2 ** C_ADDRESS_SHIFT
+  assert C_RATIO = 2 ** C_ADDR_SHIFT
     severity failure;
 
   -- Confirm the integer division above was exact.
@@ -249,11 +249,11 @@ begin
 
             -- Multiply the slave burstcount by C_RATIO to obtain the
             -- master burstcount. Implemented as a left-shift by
-            -- C_ADDRESS_SHIFT = log2(C_RATIO).
+            -- C_ADDR_SHIFT = log2(C_RATIO).
             -- CAVEAT: this silently wraps if the slave burstcount is so
             -- large that the result does not fit in G_BURST_BITS bits.
             -- The integrator must size G_BURST_BITS for the master side.
-            s_burstcount <= s_burstcount_i sll C_ADDRESS_SHIFT;
+            s_burstcount <= s_burstcount_i sll C_ADDR_SHIFT;
 
             if s_write_i = '1' then
               -- Begin a new write burst at sub-word 0.
