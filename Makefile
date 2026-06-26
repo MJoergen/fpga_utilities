@@ -1,6 +1,8 @@
 # Author:  Michael Jørgensen
+# SPDX-License-Identifier: MIT
 #
 # Description: Makefile for testing all the modules
+
 
 TARGETS += src
 TARGETS += sim

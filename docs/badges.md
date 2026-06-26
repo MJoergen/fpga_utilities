@@ -26,8 +26,6 @@ goes red if **any** testbench fails, which means at least one of:
 
 - A `report ... severity failure` fired, e.g. a protocol violation
   detected by one of the BFM `assert_proc` blocks.
-- A `report ... severity error` fired (default severity) and the
-  test runner is configured to treat errors as failure.
 - A testbench exceeded `G_TIMEOUT_MAX` waiting for a response.
 - GHDL refused to compile a file (rare, but possible after a refactor).
 
@@ -118,6 +116,8 @@ for the open architectural questions that block tagging.
 ## How the badges are generated
 
 The three CI badges use the GitHub Actions badge URL:
+
+In the URL pattern below, replace <owner>, <repo>, <file>, and <job-name>.
 
 ```
 https://github.com/<owner>/<repo>/actions/workflows/<file>/badge.svg?branch=main&job=<job-name>

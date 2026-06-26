@@ -4,7 +4,7 @@ This document specifies the wire-level interfaces used by the modules in
 this repository. All interfaces are point-to-point and directional: every
 signal group has a single master (or sender) and a single slave (or
 receiver). Multi-master and multi-slave topologies are built by
-composing arbiters, distributors, and mappers from `src/`.
+composing arbiters, demultiplexers, and mappers from `src/`.
 
 For each interface this document describes only the subset actually used
 by the modules in this repository. Optional signals from the underlying

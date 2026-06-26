@@ -40,7 +40,7 @@ testbench are flagged as **unverified**.
 | `axip_remove_fixed_header`   | ✓ | `tb_axip_remove_fixed_header`, `tb_axip_fixed_header` |
 | `axis_arbiter`               | ✓ | `tb_axis_arbiter` |
 | `axis_demux`                 | – | **unverified** |
-| `axis_dropper`               | ✓ | **unverified** |
+| `axis_dropper`               | ✓ | **no testbench** |
 | `axis_fifo`                  | ✓ | `tb_axis_fifo` |
 | `axis_fifo_async`            | – | **unverified** |
 | `axis_pipe`                  | – | `tb_axis_pipe` |

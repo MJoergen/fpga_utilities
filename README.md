@@ -36,7 +36,7 @@ matrix in [modules.md](modules.md#verification-coverage-matrix).
 - `src/`           — synthesisable VHDL (the "LEGO bricks")
 - `sim/`           — GHDL testbenches and bus-functional models
 - `formal/`        — SymbiYosys `.sby` configs and PSL properties
-- `Makefile`       — top-level driver for `make sim` / `make formal`
+- `Makefile`       — top-level driver for `make sim`, `make formal`, and `make src`
 - `interfaces.md`  — interface specifications
 - `modules.md`     — per-module documentation
 - `CODING_STYLE.md` — VHDL coding conventions used throughout
@@ -47,7 +47,7 @@ matrix in [modules.md](modules.md#verification-coverage-matrix).
 - Simulation: **GHDL** (VHDL-2008).
 - Formal: **SymbiYosys** with PSL properties via the yosys GHDL frontend.
 - Top-level `Makefile` plus `sim/Makefile` and `formal/Makefile` drive both
-  flows. From the repo root: `make sim`, `make formal`.
+  flows. From the repo root: `make sim`, `make formal`, `make src`.
 
 ## Interfaces
 

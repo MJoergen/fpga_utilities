@@ -117,7 +117,7 @@ Use the `G_` prefix and SCREAMING_SNAKE_CASE.
 | Burst-count field width (bits)   | `G_BURST_BITS`    |
 | FIFO/RAM depth (entries)         | `G_RAM_DEPTH`     |
 | RAM-style attribute              | `G_RAM_STYLE`     |
-| Timeout (cycles)                 | `G_TIMEOUT`       |
+| Timeout (cycles)                 | `G_TIMEOUT_MAX`   |
 | Random seed                      | `G_SEED`          |
 | Name (for BFM diagnostic prints) | `G_NAME`          |
 | Debug verbosity                  | `G_DEBUG`         |
@@ -290,13 +290,13 @@ Do not add per-port trailing comments. Refer to
 | Constant                      | `UPPER_SNAKE_CASE`      | `C_RESP_OKAY`          |
 | Function / procedure          | `lower_snake_case`      | `next_index`           |
 | Process                       | `lower_snake_case_proc` | `fsm_proc`             |
-| Generic                       | `G_UPPER_SNAKE_CASE`    | `G_DATA_SIZE`          |
+| Generic                       | `G_UPPER_SNAKE_CASE`    | `G_DATA_BITS`          |
 | Range subtype (slice helper)  | `R_UPPER_SNAKE_CASE`    | `R_DATA`, `R_HEADER`   |
 
 State enum values end in `_ST`:
 
 ```vhdl
-type state_t is (IDLE_ST, WRITING_ST, READING_ST, ABORTING_ST, DONE_ST);
+type state_type is (IDLE_ST, WRITING_ST, READING_ST, ABORTING_ST, DONE_ST);
 ```
 
 State enums use names that mirror the role they represent. For arbiters

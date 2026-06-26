@@ -6,7 +6,20 @@ outside WSL.
 
 Tested on Ubuntu 22.04 LTS. Other Linux distributions and macOS
 should work; please open an issue if they don't.
-The build system has not been tested on Windows
+The build system has not been tested on Windows.
+
+---
+
+## 1. Prerequisites
+
+You need:
+
+- **GHDL** with VHDL-2008 support. The reference invocation is
+  `ghdl --std=08`.
+- **GNU Make** (3.81+).
+- **GTKWave** (optional, but recommended for inspecting test failures).
+- **SymbiYosys** + **Yosys** with the GHDL frontend, for formal
+  verification. The reference invocation is `sby -f <module>.sby`.
 
 ---
 
@@ -24,7 +37,7 @@ sim/
   src/         bus-functional models and helpers
   tb_<m>/      one testbench per module
 formal/        SymbiYosys configs and PSL properties
-Makefile       top-level driver: `make sim`, `make formal`
+Makefile       top-level driver: `make sim`, `make formal`, and `make src`
 ```
 
 Every file lives in exactly one of these places. If you're not sure
@@ -39,12 +52,13 @@ From the repo root:
 ```sh
 make sim       # run all GHDL testbenches
 make formal    # run all SymbiYosys proofs
-make           # both
+make src       # run synthesis on all source files
+make           # all three
 ```
 
 A regression run produces no output other than per-testbench progress;
 any failure prints a `report ... severity failure;` line and a non-zero
-exit. **All of `make sim` and `make formal` must pass on `main`.**
+exit. **All of `make sim`, `make formal`, and `make src` must pass on `main`.**
 
 To run a single testbench:
 
@@ -429,17 +443,4 @@ the *interface contracts* every module must obey, see
 [interfaces.md](interfaces.md). For the *current module inventory*, see
 [modules.md](modules.md). This document does not duplicate any of
 those; it points at them.
-
----
-
-## 1. Prerequisites
-
-You need:
-
-- **GHDL** with VHDL-2008 support. The reference invocation is
-  `ghdl --std=08`.
-- **GNU Make** (3.81+).
-- **GTKWave** (optional, but recommended for inspecting test failures).
-- **SymbiYosys** + **Yosys** with the GHDL frontend, for formal
-  verification. The reference invocation is `sby -f <module>.sby`.
 
