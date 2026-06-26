@@ -157,16 +157,8 @@ begin
 
       end case;
 
-      -- functional reset on bus idle
-      if s_cyc_i = '0' then
-        m_stb_o     <= (others => '0');
-        m_cyc_o     <= '0';
-        timeout_cnt <= 0;
-        state       <= IDLE_ST;
-      end if;
-
-      -- synchronous reset, per clause 7
-      if rst_i = '1' then
+      -- synchronous reset, per clause 7, and functional reset on bus idle
+      if rst_i = '1' or s_cyc_i = '0' then
         s_ack_o     <= '0';
         m_stb_o     <= (others => '0');
         m_cyc_o     <= '0';
