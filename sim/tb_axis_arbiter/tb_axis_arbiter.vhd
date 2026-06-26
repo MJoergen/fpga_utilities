@@ -10,10 +10,9 @@ library ieee;
 
 entity tb_axis_arbiter is
   generic (
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
-    G_CNT_SIZE   : natural;
-    G_DATA_BYTES : natural
+    G_RANDOM    : boolean;
+    G_FAST      : boolean;
+    G_DATA_BITS : natural
   );
 end entity tb_axis_arbiter;
 
@@ -24,23 +23,23 @@ architecture tb of tb_axis_arbiter is
 
   signal s0_ready : std_logic;
   signal s0_valid : std_logic;
-  signal s0_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal s0_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal s1_ready : std_logic;
   signal s1_valid : std_logic;
-  signal s1_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal s1_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal d_ready : std_logic;
   signal d_valid : std_logic;
-  signal d_data  : std_logic_vector(G_DATA_BYTES * 8 downto 0);
+  signal d_data  : std_logic_vector(G_DATA_BITS downto 0);
 
   signal m0_ready : std_logic;
   signal m0_valid : std_logic;
-  signal m0_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal m0_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal m1_ready : std_logic;
   signal m1_valid : std_logic;
-  signal m1_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal m1_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
 begin
 
@@ -58,7 +57,7 @@ begin
 
   axis_arbiter_inst : entity work.axis_arbiter
     generic map (
-      G_DATA_BITS => G_DATA_BYTES * 8 + 1
+      G_DATA_BITS => G_DATA_BITS + 1
     )
     port map (
       clk_i      => clk,
@@ -81,15 +80,15 @@ begin
 
   axis_demux_inst : entity work.axis_demux
     generic map (
-      G_DATA_BITS => G_DATA_BYTES * 8
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i      => clk,
       rst_i      => rst,
       s_ready_o  => d_ready,
       s_valid_i  => d_valid,
-      s_data_i   => d_data(G_DATA_BYTES * 8 - 1 downto 0),
-      s_dst_i    => d_data(G_DATA_BYTES * 8),
+      s_data_i   => d_data(G_DATA_BITS - 1 downto 0),
+      s_dst_i    => d_data(G_DATA_BITS),
       m0_ready_i => m0_ready,
       m0_valid_o => m0_valid,
       m0_data_o  => m0_data,
@@ -108,8 +107,7 @@ begin
       G_SEED       => X"1122334455667788",
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i     => clk,
@@ -127,8 +125,7 @@ begin
       G_SEED       => X"1234567812345678",
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i     => clk,

@@ -10,12 +10,11 @@ library ieee;
 
 entity tb_axis_pipe_async is
   generic (
-    G_RATIO      : natural;
-    G_PIPE_SIZE  : natural;
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
-    G_CNT_SIZE   : natural;
-    G_DATA_BYTES : natural
+    G_RATIO     : natural;
+    G_PIPE_SIZE : natural;
+    G_RANDOM    : boolean;
+    G_FAST      : boolean;
+    G_DATA_BITS : natural
   );
 end entity tb_axis_pipe_async;
 
@@ -26,14 +25,14 @@ architecture tb of tb_axis_pipe_async is
 
   signal s_ready : std_logic;
   signal s_valid : std_logic;
-  signal s_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal s_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal m_clk : std_logic := '1';
   signal m_rst : std_logic := '1';
 
   signal m_ready : std_logic;
   signal m_valid : std_logic;
-  signal m_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal m_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   constant C_S_PERIOD : time := 5 ns;
   constant C_M_PERIOD : time := (C_S_PERIOD * G_RATIO) / 100;
@@ -58,7 +57,7 @@ begin
   axis_pipe_async_inst : entity work.axis_pipe_async
     generic map (
       G_PIPE_SIZE => G_PIPE_SIZE,
-      G_DATA_BITS => G_DATA_BYTES * 8
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       s_clk_i   => s_clk,
@@ -78,10 +77,9 @@ begin
 
   axis_master_sim_inst : entity work.axis_master_sim
     generic map (
-      G_RANDOM     => G_RANDOM,
-      G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_RANDOM    => G_RANDOM,
+      G_FAST      => G_FAST,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i     => s_clk,
@@ -98,9 +96,8 @@ begin
 
   axis_slave_sim_inst : entity work.axis_slave_sim
     generic map (
-      G_RANDOM     => G_RANDOM,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_RANDOM    => G_RANDOM,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i     => m_clk,

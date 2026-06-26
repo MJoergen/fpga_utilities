@@ -15,8 +15,7 @@ entity axis_slave_sim is
   generic (
     G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
     G_RANDOM     : boolean;
-    G_CNT_SIZE   : natural;
-    G_DATA_BYTES : natural
+    G_DATA_BITS  : natural
   );
   port (
     clk_i     : in    std_logic;
@@ -25,14 +24,14 @@ entity axis_slave_sim is
     -- Response
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0)
+    s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axis_slave_sim;
 
 architecture simulation of axis_slave_sim is
 
   -- State machine for controlling reception and verification of packets.
-  signal  verf_cnt : std_logic_vector(G_CNT_SIZE - 1 downto 0);
+  signal  verf_cnt : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   -- Randomness
   signal  rand : std_logic_vector(63 downto 0);
@@ -71,17 +70,15 @@ begin
     if rising_edge(clk_i) then
       if s_valid_i = '1' and s_ready_o = '1' then
 
-        for i in 0 to G_DATA_BYTES - 1 loop
-          assert s_data_i((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8) = verf_cnt(7 downto 0) + i
-            report "Verify byte " & to_string(i) &
-                   ". Received " & to_hstring(s_data_i(i * 8 + 7 downto i * 8)) &
-                   ", expected " & to_hstring(verf_cnt(7 downto 0) + i);
-        end loop;
+          assert s_data_i = verf_cnt
+            report "axis_slave_sim ERROR: " &
+                   "Received " & to_hstring(s_data_i) &
+                   ", expected " & to_hstring(verf_cnt);
 
-        verf_cnt <= verf_cnt + G_DATA_BYTES;
+        verf_cnt <= verf_cnt + 1;
 
         -- Check for wrap-around
-        if verf_cnt > verf_cnt + G_DATA_BYTES then
+        if verf_cnt > verf_cnt + 1 then
           report "Test finished";
           stop;
         end if;

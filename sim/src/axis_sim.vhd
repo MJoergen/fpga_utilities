@@ -13,8 +13,7 @@ entity axis_sim is
     G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
     G_RANDOM     : boolean;
     G_FAST       : boolean;
-    G_CNT_SIZE   : positive;
-    G_DATA_BYTES : positive
+    G_DATA_BITS  : positive
   );
   port (
     clk_i     : in    std_logic;
@@ -23,12 +22,12 @@ entity axis_sim is
     -- Stimulus
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+    m_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
 
     -- Response
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0)
+    s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity axis_sim;
 
@@ -41,8 +40,7 @@ begin
       G_SEED       => G_SEED,
       G_RANDOM     => G_RANDOM,
       G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i     => clk_i,
@@ -56,8 +54,7 @@ begin
     generic map (
       G_SEED       => G_SEED,
       G_RANDOM     => G_RANDOM,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i     => clk_i,

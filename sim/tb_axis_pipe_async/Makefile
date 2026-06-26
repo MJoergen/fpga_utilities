@@ -18,14 +18,13 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 DUT = axis_pipe_async
 
 # Test duration
-STOP_TIME = 100us
+STOP_TIME = 60us
 
 # Test bench configuration
 GENERIC += -gG_PIPE_SIZE=4
 GENERIC += -gG_RANDOM=true
 GENERIC += -gG_FAST=true
-GENERIC += -gG_CNT_SIZE=14
-GENERIC += -gG_DATA_BYTES=3
+GENERIC += -gG_DATA_BITS=12
 GENERIC += -gG_RATIO=80
 
 # Don't stop on errors

@@ -13,11 +13,10 @@ library std;
 
 entity tb_axis_fifo is
   generic (
-    G_RAM_DEPTH  : natural;
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
-    G_CNT_SIZE   : natural;
-    G_DATA_BYTES : natural
+    G_RAM_DEPTH : natural;
+    G_RANDOM    : boolean;
+    G_FAST      : boolean;
+    G_DATA_BITS : natural
   );
 end entity tb_axis_fifo;
 
@@ -28,11 +27,11 @@ architecture tb of tb_axis_fifo is
 
   signal s_ready : std_logic;
   signal s_valid : std_logic;
-  signal s_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal s_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal m_ready : std_logic;
   signal m_valid : std_logic;
-  signal m_data  : std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+  signal m_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
 begin
 
@@ -52,7 +51,7 @@ begin
     generic map (
       G_RAM_STYLE => "auto",
       G_RAM_DEPTH => G_RAM_DEPTH,
-      G_DATA_BITS => G_DATA_BYTES * 8
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i     => clk,
@@ -72,10 +71,9 @@ begin
 
   axis_sim_inst : entity work.axis_sim
     generic map (
-      G_RANDOM     => G_RANDOM,
-      G_FAST       => G_FAST,
-      G_CNT_SIZE   => G_CNT_SIZE,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_RANDOM    => G_RANDOM,
+      G_FAST      => G_FAST,
+      G_DATA_BITS => G_DATA_BITS
     )
     port map (
       clk_i     => clk,
