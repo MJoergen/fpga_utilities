@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Allows several Wushbone Masters to interact with a single Wishbone Slave.
+-- Description: Allows several Wishbone Masters to interact with a single Wishbone Slave.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -36,12 +36,12 @@ entity wbus_arbiter_general is
     m_cyc_o   : out   std_logic;
     m_stall_i : in    std_logic;
     m_stb_o   : out   std_logic;
-    m_addr_o  : out   std_logic_vector(31 downto 0);
+    m_addr_o  : out   std_logic_vector(G_ADDR_BITS - 1 downto 0);
     m_we_o    : out   std_logic;
-    m_wrdat_o : out   std_logic_vector(31 downto 0);
-    m_sel_o   : out   std_logic_vector(3 downto 0);
+    m_wrdat_o : out   std_logic_vector(G_DATA_BITS - 1 downto 0);
+    m_sel_o   : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
     m_ack_i   : in    std_logic;
-    m_rddat_i : in    std_logic_vector(31 downto 0)
+    m_rddat_i : in    std_logic_vector(G_DATA_BITS - 1 downto 0)
   );
 end entity wbus_arbiter_general;
 
@@ -57,22 +57,22 @@ architecture rtl of wbus_arbiter_general is
   signal   left_cyc   : std_logic;
   signal   left_stall : std_logic;
   signal   left_stb   : std_logic;
-  signal   left_addr  : std_logic_vector(31 downto 0);
+  signal   left_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal   left_we    : std_logic;
-  signal   left_wrdat : std_logic_vector(31 downto 0);
-  signal   left_sel   : std_logic_vector(3 downto 0);
+  signal   left_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal   left_sel   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal   left_ack   : std_logic;
-  signal   left_rddat : std_logic_vector(31 downto 0);
+  signal   left_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
   signal   right_cyc   : std_logic;
   signal   right_stall : std_logic;
   signal   right_stb   : std_logic;
-  signal   right_addr  : std_logic_vector(31 downto 0);
+  signal   right_addr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal   right_we    : std_logic;
-  signal   right_wrdat : std_logic_vector(31 downto 0);
-  signal   right_sel   : std_logic_vector(3 downto 0);
+  signal   right_wrdat : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal   right_sel   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
   signal   right_ack   : std_logic;
-  signal   right_rddat : std_logic_vector(31 downto 0);
+  signal   right_rddat : std_logic_vector(G_DATA_BITS - 1 downto 0);
 
 begin
 
@@ -92,8 +92,8 @@ begin
     -- Just two masters
     wbus_arbiter_inst : entity work.wbus_arbiter
       generic map (
-        G_ADDR_BITS => 32,
-        G_DATA_BITS => 32
+        G_ADDR_BITS => G_ADDR_BITS,
+        G_DATA_BITS => G_DATA_BITS
       )
       port map (
         clk_i      => clk_i,
@@ -129,7 +129,7 @@ begin
 
   else generate
 
-    assert G_NUM_MASTERS > 2;
+    -- G_NUM_MASTERS > 2
 
     wbus_arbiter_general_left_inst : entity work.wbus_arbiter_general
       generic map (
@@ -188,8 +188,8 @@ begin
     -- Just two masters
     wbus_arbiter_inst : entity work.wbus_arbiter
       generic map (
-        G_ADDR_BITS => 32,
-        G_DATA_BITS => 32
+        G_ADDR_BITS => G_ADDR_BITS,
+        G_DATA_BITS => G_DATA_BITS
       )
       port map (
         clk_i      => clk_i,

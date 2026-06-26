@@ -16,6 +16,7 @@ library work;
 
 entity wbus_mapper is
   generic (
+    G_ASYNC_RESET      : boolean := false;
     G_TIMEOUT          : positive := 100;
     G_NUM_SLAVES       : positive := 2;
     G_MASTER_ADDR_BITS : positive := 16;
@@ -86,7 +87,7 @@ begin
     report "wbus_mapper: G_MASTER_ADDR_BITS must be greater than G_SLAVE_ADDR_BITS"
     severity failure;
 
-  s_stall_o <= '0' when state = IDLE_ST else
+  s_stall_o <= '0' when state = IDLE_ST and (or(m_rst)) = '0' else
                '1';
 
   m_rst_o   <= m_rst;
@@ -97,8 +98,8 @@ begin
       m_rst <= (others => rst_i);
     end if;
 
-    -- Asynchronous reset
-    if rst_i = '1' then
+    -- Optional asynchronous reset
+    if G_ASYNC_RESET and rst_i = '1' then
       m_rst <= (others => '1');
     end if;
   end process rst_proc;
@@ -109,6 +110,7 @@ begin
     variable idx_v       : natural range 0 to G_NUM_SLAVES - 1;
   begin
     if rising_edge(clk_i) then
+      -- Clear stb to a slave when it has accepted the request (stall low and stb high)
       if or(m_stall_i and m_stb_o) = '0' then
         m_stb_o <= (others => '0');
       end if;
@@ -139,13 +141,12 @@ begin
           end if;
 
         when BUSY_ST =>
-          if m_ack_i(idx_v) = '1' then
-            s_rddat_o <= m_rddat_i(idx_v);
+          if m_ack_i(slave_num) = '1' then
+            s_rddat_o <= m_rddat_i(slave_num);
             s_ack_o   <= '1';
             m_cyc_o   <= '0';
             state     <= IDLE_ST;
-          end if;
-          if timeout_cnt < G_TIMEOUT then
+          elsif timeout_cnt < G_TIMEOUT then
             timeout_cnt <= timeout_cnt + 1;
           else
             s_rddat_o <= C_TIMEOUT;
@@ -156,7 +157,16 @@ begin
 
       end case;
 
-      if rst_i = '1' or s_cyc_i = '0' then
+      -- functional reset on bus idle
+      if s_cyc_i = '0' then
+        m_stb_o     <= (others => '0');
+        m_cyc_o     <= '0';
+        timeout_cnt <= 0;
+        state       <= IDLE_ST;
+      end if;
+
+      -- synchronous reset, per clause 7
+      if rst_i = '1' then
         s_ack_o     <= '0';
         m_stb_o     <= (others => '0');
         m_cyc_o     <= '0';
