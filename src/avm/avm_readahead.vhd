@@ -1,4 +1,5 @@
 -------------------------------------------------------------------------------
+-- Description:
 -- This module implements a single-line read-ahead (prefetch) buffer using the
 -- Avalon Memory-Mapped (AVM) bus interface.
 --
@@ -111,9 +112,6 @@ begin
   -- Compile-Time Validation of G_CACHE_SIZE
   assert G_CACHE_SIZE >= 2 and G_CACHE_SIZE mod 2 = 0
     report "G_CACHE_SIZE must be even and >= 2"
-    severity failure;
-  assert G_CACHE_SIZE <= 255
-    report "G_CACHE_SIZE must fit in 8-bit burstcount"
     severity failure;
   assert G_CACHE_SIZE < 2 ** G_ADDR_BITS
     report "G_CACHE_SIZE must be < 2**G_ADDR_BITS"

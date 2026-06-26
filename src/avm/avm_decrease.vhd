@@ -1,6 +1,5 @@
 --------------------------------------------------------------------------------
--- avm_decrease.vhd
---
+-- Description:
 -- Avalon Memory-Mapped (Avalon-MM) data-width down-converter.
 --
 -- The slave port (s_*) is the "wide" side and faces an upstream Avalon-MM
@@ -240,7 +239,12 @@ begin
         -- inside WRITING_ST for why that is safe.
         when IDLE_ST =>
           if (s_write_i = '1' or s_read_i = '1') and s_waitrequest_o = '0' then
-            -- Latch the new transaction.
+            -- Latch the new transaction. Note: s_writedata, s_byteenable, s_address
+            -- are still being read this same cycle to drive the FINAL beat of the
+            -- previous burst (s_write_pos = C_RATIO - 1). This works because the
+            -- write to these signals registers for the next cycle, while the read
+            -- for output gets the pre-edge value. See "back-to-back bursts" in the
+            -- header.
             s_write      <= s_write_i;
             s_read       <= s_read_i;
             s_address    <= s_address_i;

@@ -1,6 +1,5 @@
 --------------------------------------------------------------------------------
--- avm_increase
---
+-- Description:
 -- Up-sizing bridge for the Avalon Memory-Mapped (Avalon-MM) protocol.
 --
 --   * Slave  side : narrow data path (G_SLAVE_DATA_BITS bits)
@@ -243,8 +242,13 @@ begin
     ) return std_logic_vector is
       variable res_v : std_logic_vector(G_SLAVE_ADDR_BITS + 1 downto 0);
     begin
+
       res_v := (("00" & address) + burstcount - 1) / C_RATIO -
                (("00" & address) / C_RATIO) + 1;
+
+      assert res_v(res_v'high downto G_BURST_BITS) = 0
+        report "avm_increase: calc_m_burstcount overflow; G_BURST_BITS too small"
+        severity failure;
 
       return res_v(G_BURST_BITS - 1 downto 0);
     end function calc_m_burstcount;
