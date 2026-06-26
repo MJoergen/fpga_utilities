@@ -7,6 +7,10 @@
 --
 -- The implementation is split into writing and reading, each of which is handled
 -- separately and (almost) independently.
+-- 
+-- Arbitration occurs at transaction boundaries (AW/W/B or AR/R).
+-- If both masters are active, access is granted alternately, with biasing to avoid
+-- blocking ongoing transactions.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -85,6 +89,10 @@ end entity axil_arbiter;
 architecture rtl of axil_arbiter is
 
 begin
+
+  assert G_DATA_BITS mod 8 = 0
+    report "G_DATA_BITS must be a multiple of 8"
+    severity failure;
 
   axil_arbiter_write_inst : entity work.axil_arbiter_write
     generic map (

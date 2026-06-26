@@ -75,6 +75,10 @@ architecture rtl of axil_pipe is
 
 begin
 
+  assert G_DATA_BITS mod 8 = 0
+    report "G_DATA_BITS must be a multiple of 8"
+    severity failure;
+
   axis_pipe_aw_inst : entity work.axis_pipe
     generic map (
       G_DATA_BITS => G_ADDR_BITS

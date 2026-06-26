@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- internal: used by axil_arbiter
+-- Description: Internal module used by axil_arbiter (write path)
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------

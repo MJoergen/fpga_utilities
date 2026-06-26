@@ -1,8 +1,11 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This provides a Clock Domain Crossing (i.e. an asynchronous FIFO) for a
--- AXI Lite interface.  Each of the five channels (AW, W, B, AR, and R) use their own
--- separate async FIFO, so you can not make any assumptions about the relative timings
--- between these channels.
+-- AXI Lite interface.
+--
+-- Important limitation:
+-- This module does NOT preserve relative ordering between AXI-Lite channels.
+-- AW, W, AR, B, and R channels are transported independently.
+-- Downstream slaves must tolerate arbitrary inter-channel skew.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -79,6 +82,10 @@ architecture rtl of axil_pipe_async is
   signal  s_r_out : std_logic_vector(G_DATA_BITS + 1 downto 0);
 
 begin
+
+  assert G_DATA_BITS mod 8 = 0
+    report "G_DATA_BITS must be a multiple of 8"
+    severity failure;
 
   --------------------------------------------------------
   -- AW stream

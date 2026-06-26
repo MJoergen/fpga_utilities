@@ -1,5 +1,7 @@
 -- ---------------------------------------------------------------------------------------
--- internal: used by axil_arbiter
+-- Description: Internal module used by axil_arbiter (read path)
+--
+-- AXI-Lite: single-beat read, so one R handshake completes the transaction
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
