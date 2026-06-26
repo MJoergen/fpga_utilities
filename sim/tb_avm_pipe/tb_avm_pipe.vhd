@@ -17,7 +17,7 @@ entity tb_avm_pipe is
   );
 end entity tb_avm_pipe;
 
-architecture simulation of tb_avm_pipe is
+architecture tb of tb_avm_pipe is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -120,5 +120,5 @@ begin
       s_waitrequest_o   => s_waitrequest
     ); -- avm_sim_inst : entity work.avm_sim
 
-end architecture simulation;
+end architecture tb;
 

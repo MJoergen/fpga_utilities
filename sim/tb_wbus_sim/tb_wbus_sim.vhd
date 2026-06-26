@@ -17,7 +17,7 @@ entity tb_wbus_sim is
   );
 end entity tb_wbus_sim;
 
-architecture simulation of tb_wbus_sim is
+architecture tb of tb_wbus_sim is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -122,5 +122,5 @@ begin
       m_rddat_i => s_rddat
     ); -- wbus_pause_inst : entity work.wbus_pause
 
-end architecture simulation;
+end architecture tb;
 

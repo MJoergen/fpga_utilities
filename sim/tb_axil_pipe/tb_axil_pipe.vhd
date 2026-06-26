@@ -20,7 +20,7 @@ entity tb_axil_pipe is
   );
 end entity tb_axil_pipe;
 
-architecture simulation of tb_axil_pipe is
+architecture tb of tb_axil_pipe is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -176,5 +176,5 @@ begin
       m_rresp_i   => s_rresp
     ); -- axil_sim_inst : entity work.axil_sim
 
-end architecture simulation;
+end architecture tb;
 

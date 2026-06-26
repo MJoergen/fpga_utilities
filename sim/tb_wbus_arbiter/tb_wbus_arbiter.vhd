@@ -18,7 +18,7 @@ entity tb_wbus_arbiter is
   );
 end entity tb_wbus_arbiter;
 
-architecture simulation of tb_wbus_arbiter is
+architecture tb of tb_wbus_arbiter is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -222,5 +222,5 @@ begin
       s_rddat_o => map_rddat(1)
     ); -- wbus_sim_1_inst : entity work.wbus_sim
 
-end architecture simulation;
+end architecture tb;
 

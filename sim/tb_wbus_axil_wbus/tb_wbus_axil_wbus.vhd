@@ -14,7 +14,7 @@ entity tb_wbus_axil_wbus is
   );
 end entity tb_wbus_axil_wbus;
 
-architecture simulation of tb_wbus_axil_wbus is
+architecture tb of tb_wbus_axil_wbus is
 
   signal wbus_clk : std_logic := '1';
   signal wbus_rst : std_logic := '1';
@@ -190,5 +190,5 @@ begin
       s_rddat_o => mem_wbus_rddat
     ); -- wbus_slave_sim_inst : entity work.wbus_slave_sim
 
-end architecture simulation;
+end architecture tb;
 

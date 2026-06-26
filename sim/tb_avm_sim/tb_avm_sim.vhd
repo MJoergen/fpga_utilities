@@ -19,7 +19,7 @@ entity tb_avm_sim is
   );
 end entity tb_avm_sim;
 
-architecture simulation of tb_avm_sim is
+architecture tb of tb_avm_sim is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -122,5 +122,5 @@ begin
       m_waitrequest_i   => s_waitrequest
     ); -- avm_pause_inst : entity work.avm_pause
 
-end architecture simulation;
+end architecture tb;
 

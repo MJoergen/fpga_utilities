@@ -16,7 +16,7 @@ entity tb_avm_increase is
   );
 end entity tb_avm_increase;
 
-architecture simulation of tb_avm_increase is
+architecture tb of tb_avm_increase is
 
   constant C_CLK_PERIOD : time := 10 ns;
 
@@ -183,5 +183,5 @@ begin
       s_readdata_o      => m_readdata
     ); -- avm_slave_sim_inst : entity work.avm_slave_sim
 
-end architecture simulation;
+end architecture tb;
 

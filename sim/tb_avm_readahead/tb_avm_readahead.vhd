@@ -20,7 +20,7 @@ entity tb_avm_readahead is
   );
 end entity tb_avm_readahead;
 
-architecture simulation of tb_avm_readahead is
+architecture tb of tb_avm_readahead is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -122,5 +122,5 @@ begin
       m_avm_waitrequest_i   => s_waitrequest
     ); -- avm_readahead_inst : entity work.avm_readahead
 
-end architecture simulation;
+end architecture tb;
 

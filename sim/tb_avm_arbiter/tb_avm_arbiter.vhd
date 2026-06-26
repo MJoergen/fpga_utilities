@@ -12,7 +12,7 @@ entity tb_avm_arbiter is
   );
 end entity tb_avm_arbiter;
 
-architecture simulation of tb_avm_arbiter is
+architecture tb of tb_avm_arbiter is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -222,5 +222,5 @@ begin
       s_readdata_o      => pause_s_readdata
     ); -- avm_slave_sim_inst : entity work.avm_slave_sim
 
-end architecture simulation;
+end architecture tb;
 

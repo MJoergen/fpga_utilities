@@ -20,7 +20,7 @@ entity tb_axip_pipe_async is
   );
 end entity tb_axip_pipe_async;
 
-architecture simulation of tb_axip_pipe_async is
+architecture tb of tb_axip_pipe_async is
 
   signal   s_clk : std_logic := '1';
   signal   s_rst : std_logic := '1';
@@ -129,5 +129,5 @@ begin
       s_bytes_i => m_bytes
     ); -- axip_slave_sim_inst : entity work.axip_slave_sim
 
-end architecture simulation;
+end architecture tb;
 

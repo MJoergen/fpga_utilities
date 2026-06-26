@@ -20,7 +20,7 @@ entity tb_avm_decrease is
   );
 end entity tb_avm_decrease;
 
-architecture simulation of tb_avm_decrease is
+architecture tb of tb_avm_decrease is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -149,5 +149,5 @@ begin
       s_readdata_o      => m_readdata
     );
 
-end architecture simulation;
+end architecture tb;
 

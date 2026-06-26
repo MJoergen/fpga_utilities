@@ -22,7 +22,7 @@ entity tb_axip_fixed_header is
   );
 end entity tb_axip_fixed_header;
 
-architecture simulation of tb_axip_fixed_header is
+architecture tb of tb_axip_fixed_header is
 
   signal   clk : std_logic  := '1';
   signal   rst : std_logic  := '1';
@@ -197,5 +197,5 @@ begin
       s_bytes_i => tb_s_bytes
     ); -- axip_sim_inst : entity work.axip_sim
 
-end architecture simulation;
+end architecture tb;
 

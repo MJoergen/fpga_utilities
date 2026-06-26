@@ -20,7 +20,7 @@ entity tb_axil_sim is
   );
 end entity tb_axil_sim;
 
-architecture simulation of tb_axil_sim is
+architecture tb of tb_axil_sim is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -175,5 +175,5 @@ begin
       m_rresp_i   => s_rresp
     ); -- axil_pause_inst : entity work.axil_pause
 
-end architecture simulation;
+end architecture tb;
 

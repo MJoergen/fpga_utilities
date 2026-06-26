@@ -18,7 +18,7 @@ entity tb_axip_arbiter is
   );
 end entity tb_axip_arbiter;
 
-architecture simulation of tb_axip_arbiter is
+architecture tb of tb_axip_arbiter is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -271,5 +271,5 @@ begin
       m_bytes_o => sh1_bytes
     ); -- axip_insert_fixed_header_1_inst : entity work.axip_insert_fixed_header
 
-end architecture simulation;
+end architecture tb;
 

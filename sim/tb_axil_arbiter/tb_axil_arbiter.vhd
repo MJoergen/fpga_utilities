@@ -20,7 +20,7 @@ entity tb_axil_arbiter is
   );
 end entity tb_axil_arbiter;
 
-architecture simulation of tb_axil_arbiter is
+architecture tb of tb_axil_arbiter is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -496,5 +496,5 @@ begin
     end if;
   end process check_proc;
 
-end architecture simulation;
+end architecture tb;
 

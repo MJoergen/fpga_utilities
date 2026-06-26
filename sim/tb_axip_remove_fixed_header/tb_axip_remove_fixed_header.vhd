@@ -21,7 +21,7 @@ entity tb_axip_remove_fixed_header is
   );
 end entity tb_axip_remove_fixed_header;
 
-architecture simulation of tb_axip_remove_fixed_header is
+architecture tb of tb_axip_remove_fixed_header is
 
   signal   clk : std_logic                 := '1';
   signal   rst : std_logic                 := '1';
@@ -343,5 +343,5 @@ begin
     end if;
   end process verify_proc;
 
-end architecture simulation;
+end architecture tb;
 

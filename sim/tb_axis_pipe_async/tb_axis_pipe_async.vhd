@@ -17,7 +17,7 @@ entity tb_axis_pipe_async is
   );
 end entity tb_axis_pipe_async;
 
-architecture simulation of tb_axis_pipe_async is
+architecture tb of tb_axis_pipe_async is
 
   signal s_clk : std_logic := '1';
   signal s_rst : std_logic := '1';
@@ -108,5 +108,5 @@ begin
       s_data_i  => m_data
     ); -- axis_slave_sim_inst : entity work.axis_slave_sim
 
-end architecture simulation;
+end architecture tb;
 

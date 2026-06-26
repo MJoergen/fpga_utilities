@@ -20,7 +20,7 @@ entity tb_axis_sim is
   );
 end entity tb_axis_sim;
 
-architecture simulation of tb_axis_sim is
+architecture tb of tb_axis_sim is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -87,5 +87,5 @@ begin
       m_data_o  => s_data
     ); -- axis_pause_inst : entity work.axis_pause
 
-end architecture simulation;
+end architecture tb;
 
