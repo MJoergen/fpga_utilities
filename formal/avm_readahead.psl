@@ -18,7 +18,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
       if rising_edge(clk_i) then
          if s_write_i and not s_waitrequest_o then
             if f_s_wr_burstcount = 0 then
-               f_s_wr_burstcount <= to_integer(s_burstcount_i) - 1;
+               f_s_wr_burstcount <= to_integer(unsigned(s_burstcount_i)) - 1;
             else
                f_s_wr_burstcount <= f_s_wr_burstcount - 1;
             end if;
@@ -36,7 +36,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
             f_s_rd_burstcount <= f_s_rd_burstcount - 1;
          end if;
          if s_read_i and not s_waitrequest_o then
-            f_s_rd_burstcount <= to_integer(s_burstcount_i);
+            f_s_rd_burstcount <= to_integer(unsigned(s_burstcount_i));
          end if;
          if rst_i then
             f_s_rd_burstcount <= 0;
@@ -51,7 +51,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
             f_s_rd_burstcount = 0 and
             rst_i = '0' and
             (s_write_i or s_read_i) = '1' and
-            s_burstcount_i > 1 then
+            unsigned(s_burstcount_i) > 1 then
             f_s_burstcount <= s_burstcount_i;
             f_s_address    <= s_address_i;
          end if;
@@ -73,7 +73,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
       if rising_edge(clk_i) then
          if m_write_o and not m_waitrequest_i then
             if f_m_wr_burstcount = 0 then
-               f_m_wr_burstcount <= to_integer(m_burstcount_o) - 1;
+               f_m_wr_burstcount <= to_integer(unsigned(m_burstcount_o)) - 1;
             else
                f_m_wr_burstcount <= f_m_wr_burstcount - 1;
             end if;
@@ -91,7 +91,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
             f_m_rd_burstcount <= f_m_rd_burstcount - 1;
          end if;
          if m_read_o and not m_waitrequest_i then
-            f_m_rd_burstcount <= to_integer(m_burstcount_o);
+            f_m_rd_burstcount <= to_integer(unsigned(m_burstcount_o));
          end if;
          if rst_i then
             f_m_rd_burstcount <= 0;
@@ -106,7 +106,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
             f_m_rd_burstcount = 0 and
             rst_i = '0' and
             (m_write_o or m_read_o) = '1' and
-            m_burstcount_o > 1 then
+            unsigned(m_burstcount_o) > 1 then
             f_m_burstcount <= m_burstcount_o;
             f_m_address    <= m_address_o;
          end if;
@@ -129,7 +129,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
    attribute anyconst of f_addr : signal is true;
 
    f_s_wr_burstcount_s <= 0 when f_s_wr_burstcount = 0 else
-                          to_integer(s_burstcount_i);
+                          to_integer(unsigned(s_burstcount_i));
 
    -- Current address being written to
    f_s_wr_address <= std_logic_vector(unsigned(s_address_i) + f_s_wr_burstcount_s - f_s_wr_burstcount);
@@ -281,24 +281,24 @@ vunit i_avm_readahead(avm_readahead(rtl))
    signal f_mem_read_words_left    : std_logic_vector(G_BURST_BITS - 1 downto 0);
 
    -- Block requests during a read burst
-   f_mem_wait : assume always f_mem_read_words_left /= 0 |-> m_waitrequest_i = '1';
+   f_mem_wait : assume always unsigned(f_mem_read_words_left) /= 0 |-> m_waitrequest_i = '1';
 
    -- Handle read from memory
-   f_mem_read : assume always m_readdatavalid_i |-> m_readdata_i = f_mem_data(to_integer(f_mem_read_next_address));
+   f_mem_read : assume always m_readdatavalid_i |-> m_readdata_i = f_mem_data(to_integer(unsigned(f_mem_read_next_address)));
 
    -- Only respond with data to an ongoing request
-   f_mem_read_data : assume always m_readdatavalid_i |-> f_mem_read_words_left > 0;
+   f_mem_read_data : assume always m_readdatavalid_i |-> unsigned(f_mem_read_words_left) > 0;
 
    p_mem : process (clk_i)
    begin
       if rising_edge(clk_i) then
          if m_write_o = '1' and m_waitrequest_i = '0' then
-            if f_mem_write_words_left = 0 then
+            if unsigned(f_mem_write_words_left) = 0 then
                f_mem_write_next_address <= std_logic_vector(unsigned(m_address_o) + 1);
                f_mem_write_words_left   <= std_logic_vector(unsigned(m_burstcount_o) - 1);
                for i in 0 to G_DATA_BITS/8-1 loop
                   if m_byteenable_o(i) then
-                     f_mem_data(to_integer(m_address_o))(8*i+7 downto 8*i) <= m_writedata_o(8*i+7 downto 8*i);
+                     f_mem_data(to_integer(unsigned(m_address_o)))(8*i+7 downto 8*i) <= m_writedata_o(8*i+7 downto 8*i);
                   end if;
                end loop;
             else
@@ -306,7 +306,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
                f_mem_write_words_left   <= std_logic_vector(unsigned(f_mem_write_words_left) - 1);
                for i in 0 to G_DATA_BITS/8-1 loop
                   if m_byteenable_o(i) then
-                     f_mem_data(to_integer(f_mem_write_next_address))(8*i+7 downto 8*i) <= m_writedata_o(8*i+7 downto 8*i);
+                     f_mem_data(to_integer(unsigned(f_mem_write_next_address)))(8*i+7 downto 8*i) <= m_writedata_o(8*i+7 downto 8*i);
                   end if;
                end loop;
             end if;
@@ -345,7 +345,7 @@ vunit i_avm_readahead(avm_readahead(rtl))
                    -- Then read from the same cache line
                    s_read_i = '1' and
                    s_waitrequest_o = '0' and
-                   cache_offset_s < cache_count;
+                   unsigned(cache_offset_s) < cache_count;
 
                    [*];
 
