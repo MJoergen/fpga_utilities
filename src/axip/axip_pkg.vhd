@@ -16,10 +16,3 @@ package axip_pkg is
 
 end package axip_pkg;
 
-
-package body axip_pkg is
-
-  -- empty
-
-end package body axip_pkg;
-

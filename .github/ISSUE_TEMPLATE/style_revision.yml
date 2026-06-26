@@ -1,0 +1,58 @@
+name: Coding style revision
+description: Propose a change to CODING_STYLE.md itself, or resolve one of its open questions.
+title: "style(rule): <one-line summary>"
+labels: ["style", "discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Per CODING_STYLE.md, "if a rule does not match the code, that means
+        either the code is wrong (most often), or the rule is wrong
+        (occasionally)." This template is for the second case, including
+        resolving the open questions in §19.
+
+  - type: input
+    id: section
+    attributes:
+      label: Section of CODING_STYLE.md
+      placeholder: e.g. §10 (Naming for local declarations) or §19 (Open questions — arbitration policy)
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current rule
+      description: Quote the rule as it stands today.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed
+    attributes:
+      label: Proposed rule
+      description: State the rule in its new form. Be prescriptive; the reviewer should be able to mechanically check the new rule.
+    validations:
+      required: true
+
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: |
+        Why is the new rule better? Include the cost of converging existing
+        files to the new rule (how many files? how mechanical?).
+    validations:
+      required: true
+
+  - type: textarea
+    id: migration
+    attributes:
+      label: Migration plan
+      description: |
+        How will the existing codebase be brought into line? One big sweep,
+        or per-PR opportunistically? Will the migration land in the same PR
+        as this rule change, or in a follow-up?
+    validations:
+      required: false
+

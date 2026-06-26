@@ -1,5 +1,12 @@
 # fpga_utilities
 
+[![CI – sim](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml/badge.svg?branch=main&event=push&job=sim)](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml?query=branch%3Amain)
+[![CI – formal](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml/badge.svg?branch=main&event=push&job=formal)](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml?query=branch%3Amain)
+[![CI – style](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml/badge.svg?branch=main&event=push&job=style)](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml?query=branch%3Amain)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![VHDL: 2008](https://img.shields.io/badge/VHDL-2008-informational)](CODING_STYLE.md#1-language-and-tooling)
+[![Status: active](https://img.shields.io/badge/status-active%20development-orange)](#status)
+
 A collection of small, reusable VHDL-2008 building blocks for FPGA
 development. The intent is to use these modules as "LEGO" bricks — drop
 them into your design wherever needed.
@@ -9,8 +16,20 @@ Most modules are exercised by [GHDL simulation testbenches](sim/) under
 [SymbiYosys formal proofs](formal/). The per-module coverage is tracked
 in [modules.md](modules.md).
 
-**Status:** under active development. No tagged releases yet; module
-APIs may change. Pin to a commit SHA if you depend on this repo.
+## Status
+
+Under active development. No tagged releases yet; module APIs may
+change. Pin to a commit SHA if you depend on this repo.
+
+The three CI badges above show, in order:
+
+- **sim** — `make sim` (GHDL testbenches) on the latest commit to `main`.
+- **formal** — `make formal` (SymbiYosys proofs) on the latest commit to `main`.
+- **style** — SPDX-header presence and markdown link checks.
+
+A red badge on `main` is a release-blocker. For per-module verification
+status (formal proof, testbench, both, or neither), see the coverage
+matrix in [modules.md](modules.md#verification-coverage-matrix).
 
 ## Repository layout
 
@@ -20,6 +39,8 @@ APIs may change. Pin to a commit SHA if you depend on this repo.
 - `Makefile`       — top-level driver for `make sim` / `make formal`
 - `interfaces.md`  — interface specifications
 - `modules.md`     — per-module documentation
+- `CODING_STYLE.md` — VHDL coding conventions used throughout
+- `CONTRIBUTING.md` — how to add modules, testbenches, and proofs
 
 ## Tooling
 
@@ -69,6 +90,13 @@ order before any `axip_*` / `wbus_*` entity is instantiated.
 
 Details (generics, ports, reset, clocking, verification scope, limits)
 are in [modules.md](modules.md).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and
+[CODING_STYLE.md](CODING_STYLE.md) for the VHDL conventions. Bug
+reports, feature proposals, and style issues each have a dedicated
+template under `.github/ISSUE_TEMPLATE/`.
 
 ## License
 

@@ -1,0 +1,100 @@
+name: New module / feature proposal
+description: Propose a new module, a new feature on an existing module, or a new interface.
+title: "feat(<scope>): <one-line summary>"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Per `CONTRIBUTING.md` §9, please discuss new modules in an issue
+        *before* opening a PR. The point of the discussion is to answer
+        the cheap questions early.
+
+  - type: input
+    id: name
+    attributes:
+      label: Proposed module / feature name
+      placeholder: e.g. axip_dropper, axil_arbiter_general
+    validations:
+      required: true
+
+  - type: dropdown
+    id: family
+    attributes:
+      label: Interface family
+      options:
+        - axis
+        - axip
+        - axil
+        - wbus
+        - avm
+        - converters
+        - new interface
+        - other
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What problem does this solve? What is currently impossible or awkward?
+    validations:
+      required: true
+
+  - type: textarea
+    id: contract
+    attributes:
+      label: Wire-level contract
+      description: |
+        Sketch the entity declaration (generics + ports). Confirm it follows
+        the relevant section of `interfaces.md`, or explain why a new
+        interface variant is needed.
+      placeholder: |
+        entity axip_dropper is
+          generic (G_DATA_BYTES : positive);
+          port (
+            clk_i, rst_i : in std_logic;
+            ...
+          );
+        end entity;
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification_plan
+    attributes:
+      label: Verification plan
+      description: |
+        Required. A module proposal without a verification plan will not be
+        reviewed.
+
+          * Testbench: which BFMs? which stress patterns? which `*_pause` BFM
+            inserted where?
+          * Formal: which handshake properties? round-trip identities?
+            mutex / liveness invariants?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: |
+        Is there an existing module that nearly does this? Can the same effect
+        be obtained by composing existing modules?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I have read `CODING_STYLE.md` and the proposed entity follows the conventions there (or I have noted the exception).
+          required: true
+        - label: I have read `interfaces.md` and confirmed the wire-level contract.
+          required: true
+        - label: I have searched existing issues and `modules.md` for similar modules.
+          required: true
+

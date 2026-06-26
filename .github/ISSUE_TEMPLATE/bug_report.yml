@@ -1,0 +1,96 @@
+name: Bug report
+description: A module behaves differently from what interfaces.md or its own documentation specifies.
+title: "bug(<module>): <one-line summary>"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. The most useful bug reports
+        include a minimal reproduction (a testbench is best), the expected
+        vs. observed behaviour with reference to the relevant spec, and the
+        tool versions you used.
+
+        For style violations (`CODING_STYLE.md` is not followed), use the
+        *Style violation* template instead.
+
+  - type: input
+    id: module
+    attributes:
+      label: Module affected
+      description: Entity name, or "multiple" / "documentation".
+      placeholder: e.g. wbus_arbiter
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: |
+        What did you expect the module to do? Cite the relevant section of
+        `interfaces.md`, AMBA AXI4, Wishbone B4, or Avalon-MM where applicable.
+      placeholder: |
+        Per interfaces.md#wishbone rule 6, `ACK` is asserted for exactly one
+        cycle per completed request. wbus_arbiter should pulse `s0_ack_o` once
+        even when `m_ack_i` and `s0_cyc_i = '0'` arrive in the same cycle.
+    validations:
+      required: true
+
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behaviour
+      description: What does the module actually do? Include simulator output, waveform screenshots, or formal traces if useful.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction
+      description: |
+        A testbench is best. A tagged-line code snippet is acceptable.
+        If you have a SymbiYosys counterexample trace, attach or paste it.
+      placeholder: |
+        sim/tb_wbus_arbiter/ with the following BFM generics:
+          G_DO_ABORT => true, G_SEED => x"…"
+        produces the failure at cycle 327.
+    validations:
+      required: true
+
+  - type: input
+    id: ghdl_version
+    attributes:
+      label: GHDL version
+      placeholder: e.g. GHDL 4.1.0 (LLVM)
+    validations:
+      required: true
+
+  - type: input
+    id: yosys_version
+    attributes:
+      label: Yosys / SymbiYosys version
+      description: Only required for formal failures.
+      placeholder: e.g. Yosys 0.45 + SymbiYosys 1.50
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: e.g. Ubuntu 22.04.5 LTS
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I ran `make sim` and `make formal` on `main` and confirmed the failure is in my reproduction, not a pre-existing regression.
+          required: true
+        - label: I have not opened a duplicate issue.
+          required: true
+

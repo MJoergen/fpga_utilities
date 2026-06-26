@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-flight runs for the same PR if a new push arrives.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  sim:
+    name: Simulation (GHDL)
+    runs-on: ubuntu-22.04
+    container:
+      image: ghcr.io/ghdl/vunit/llvm:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Tool versions
+        run: |
+          ghdl --version
+          make --version
+
+      - name: Run simulation regression
+        run: make sim
+
+      - name: Upload waveform artefacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sim-waveforms
+          path: |
+            sim/**/*.ghw
+            sim/**/*.vcd
+          if-no-files-found: ignore
+          retention-days: 7
+
+  formal:
+    name: Formal (SymbiYosys)
+    runs-on: ubuntu-22.04
+    container:
+      image: hdlc/formal:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Tool versions
+        run: |
+          ghdl --version
+          yosys -V
+          sby --version || true
+
+      - name: Run formal regression
+        run: make formal
+
+      - name: Upload counterexample traces on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: formal-traces
+          path: |
+            formal/**/*.vcd
+            formal/**/engine_*/**/*.vcd
+            formal/**/*.smt2
+          if-no-files-found: ignore
+          retention-days: 7
+
+  style:
+    name: Style checks
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Every src/ and sim/ file has an SPDX header
+        run: |
+          missing=$(git grep -L 'SPDX-License-Identifier' -- 'src/**/*.vhd' 'sim/**/*.vhd' || true)
+          if [ -n "$missing" ]; then
+            echo "Files missing SPDX-License-Identifier header:" >&2
+            echo "$missing" >&2
+            exit 1
+          fi
+
+      - name: README and docs links resolve
+        # Pure-Node action; no toolchain needed.
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'yes'
+          config-file: '.github/mlc_config.json'
+

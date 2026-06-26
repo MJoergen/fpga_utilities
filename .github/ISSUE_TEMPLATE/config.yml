@@ -1,0 +1,9 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question about an interface contract
+    url: https://github.com/MJoergen/fpga_utilities/blob/main/interfaces.md
+    about: Most "is this signal allowed to …" questions are answered in interfaces.md.
+  - name: Question about coding conventions
+    url: https://github.com/MJoergen/fpga_utilities/blob/main/CODING_STYLE.md
+    about: All style questions are settled in CODING_STYLE.md; please cite the rule number.
+

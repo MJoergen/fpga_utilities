@@ -1,0 +1,27 @@
+# Dependabot configuration.
+#
+# This repository has no language-level dependencies (no npm, no pip,
+# no cargo). The only moving parts dependabot can usefully track are
+# the GitHub Actions versions used in .github/workflows/.
+
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "chore"
+      - "dependencies"
+    groups:
+      # Roll all GitHub Actions updates into one PR per cycle.
+      # Avoids inbox-spam when actions/checkout, actions/upload-artifact,
+      # and the link checker all bump in the same week.
+      gha:
+        patterns:
+          - "*"
+

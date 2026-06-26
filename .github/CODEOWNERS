@@ -1,0 +1,22 @@
+# Code ownership for fpga_utilities.
+#
+# Lines later in the file override earlier ones.
+# See https://docs.github.com/en/repositories/managing-your-repositories-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything in the repo.
+*                              @MJoergen
+
+# Interface contracts and coding style require explicit owner review
+# because they ripple across the whole codebase.
+/interfaces.md                 @MJoergen
+/CODING_STYLE.md               @MJoergen
+/CONTRIBUTING.md               @MJoergen
+
+# Formal properties are the executable specification — keep them
+# pinned to the maintainer until a second formal-verification reviewer
+# joins the project.
+/formal/                       @MJoergen
+
+# GitHub configuration itself.
+/.github/                      @MJoergen
+

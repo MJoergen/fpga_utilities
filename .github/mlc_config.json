@@ -1,0 +1,11 @@
+{
+  "ignorePatterns": [
+    { "pattern": "^https://github.com/MJoergen/fpga_utilities" },
+    { "pattern": "^http://localhost" }
+  ],
+  "timeout": "10s",
+  "retryOn429": true,
+  "fallbackRetryDelay": "30s",
+  "aliveStatusCodes": [200, 206, 429]
+}
+

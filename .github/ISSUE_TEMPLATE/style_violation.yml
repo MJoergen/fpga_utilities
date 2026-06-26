@@ -1,0 +1,47 @@
+name: Style violation
+description: Code in the repository does not follow CODING_STYLE.md.
+title: "style(<module>): <rule §X.Y> <one-line summary>"
+labels: ["style"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Style issues are batched. Please cite the rule number from
+        `CODING_STYLE.md`. If the rule itself is wrong, file a *Coding style
+        revision* issue instead.
+
+  - type: input
+    id: file
+    attributes:
+      label: File(s) affected
+      placeholder: e.g. src/converters/axil_to_wbus.vhd
+    validations:
+      required: true
+
+  - type: input
+    id: rule
+    attributes:
+      label: Rule violated
+      description: Section number from `CODING_STYLE.md`.
+      placeholder: e.g. §5.1 (generic naming) or §6.1 (no interface qualifier on ports)
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: What's wrong
+      description: Quote the offending lines and say what they should look like.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope
+      description: Is this a one-off slip, or does the same violation appear in multiple files?
+      options:
+        - label: One file only.
+        - label: Multiple files — list them above.
+        - label: Likely codebase-wide — sweep needed.
+
