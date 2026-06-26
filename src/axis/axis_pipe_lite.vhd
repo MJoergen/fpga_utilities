@@ -45,7 +45,7 @@ begin
   m_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      if s_ready_o then
+      if s_ready_o = '1' then
         m_data_o  <= s_data_i;
         m_valid_o <= s_valid_i;
       end if;

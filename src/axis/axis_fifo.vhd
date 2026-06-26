@@ -43,12 +43,12 @@ architecture rtl of axis_fifo is
 
   -- Newest element at head, oldest element at tail
 
-  subtype INDEX_TYPE is natural range ram_type'range;
+  subtype index_type is natural range ram_type'range;
 
-  signal  head    : INDEX_TYPE;
-  signal  tail    : INDEX_TYPE;
-  signal  count   : INDEX_TYPE;
-  signal  count_d : INDEX_TYPE;
+  signal  head    : index_type;
+  signal  tail    : index_type;
+  signal  count   : index_type;
+  signal  count_d : index_type;
 
   -- True the clock cycle after a simultaneous read and write
   signal  read_while_write_d : std_logic;
@@ -56,14 +56,14 @@ architecture rtl of axis_fifo is
   -- Increment or wrap the index if this transaction is valid
 
   pure function next_index (
-    index : INDEX_TYPE;
+    index : index_type;
     ready : std_logic;
     valid : std_logic
-  ) return INDEX_TYPE is
+  ) return index_type is
   begin
     if ready = '1' and valid = '1' then
-      if index = INDEX_TYPE'high then
-        return INDEX_TYPE'low;
+      if index = index_type'high then
+        return index_type'low;
       else
         return index + 1;
       end if;
@@ -127,7 +127,7 @@ begin
       head <= next_index(head, s_ready_o, s_valid_i);
 
       if rst_i = '1' then
-        head <= INDEX_TYPE'low;
+        head <= index_type'low;
       end if;
     end if;
   end process head_proc;
@@ -138,7 +138,7 @@ begin
       tail <= next_index(tail, m_ready_i, m_valid_o);
 
       if rst_i = '1' then
-        tail <= INDEX_TYPE'low;
+        tail <= index_type'low;
       end if;
     end if;
   end process tail_proc;

@@ -1,6 +1,9 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Distribute AXI stream to two different AXI masters
 --
+-- s_dst_i is a sideband signal. It must be stable while s_valid_i = '1'; it is sampled by
+-- the slave at the cycle of the handshake.
+--
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 

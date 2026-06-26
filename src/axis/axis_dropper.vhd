@@ -1,8 +1,13 @@
 -- ---------------------------------------------------------------------------------------
--- Description: Drops packets from an AXI Stream.  It stores input packets until the last
--- word, before deciding whether to forward the packet.  Since multiple (short) packets
--- may be received while forwarding a single (long) frame, the "end pointer" of each
--- received valid frame must be stored in a separate FIFO.
+-- Description: Conditional packet forwarder. Each incoming packet is buffered until
+-- s_last_i = 1, at which point s_drop_i selects whether to forward (s_drop_i = 0) or
+-- discard (s_drop_i = 1) the buffered packet. The buffer must be large enough to hold
+-- the longest packet. End-of-frame pointers for forwarded packets are queued in a small
+-- FIFO so multiple completed packets can be presented to downstream without forcing the
+-- upstream to wait.
+--
+-- buffer size 2^G_ADDR_BITS words must fit at least the largest possible incoming frame;
+-- smaller buffers will deadlock
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------

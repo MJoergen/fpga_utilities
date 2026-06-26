@@ -220,9 +220,9 @@ Do not add per-port trailing comments. Refer to
   don't-care while their corresponding `valid`/`stb` is low and need not
   be reset. Add a one-line comment to that effect if the omission is
   not obvious.
-- For every clocked signal, the **declared initial value must agree
-  with the reset value**. If `signal x : std_logic := '0';`, the reset
-  clause must also drive `x <= '0';`.
+- For every clocked signal, if a signal has a declared init, that init must match the
+  reset value.
+  If `signal x : std_logic := '0';`, the reset clause must also drive `x <= '0';`.
 
 ---
 

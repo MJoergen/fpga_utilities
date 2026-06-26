@@ -129,7 +129,8 @@ architecture rtl of axis_pipe_async is
 begin
 
   assert C_PIPE_SIZE = G_PIPE_SIZE
-    report "G_PIPE_SIZE must be a power of 2";
+    report "G_PIPE_SIZE must be a power of 2"
+    severity failure;
 
 
   -----------------------------------------------------------
@@ -145,7 +146,6 @@ begin
   -----------------------------------------------------------
 
   s_proc : process (s_clk_i)
-    variable index_v : natural range 0 to C_PIPE_SIZE - 1;
   begin
     if rising_edge(s_clk_i) then
       if s_valid_i = '1' and s_ready_o = '1' then
@@ -220,7 +220,6 @@ begin
   -----------------------------------------------------------
 
   m_proc : process (m_clk_i)
-    variable index_v : natural range 0 to C_PIPE_SIZE - 1;
   begin
     if rising_edge(m_clk_i) then
       if m_ready_i = '1' then

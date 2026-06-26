@@ -23,7 +23,7 @@ entity axis_pipe is
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
     s_data_i  : in    std_logic_vector(G_DATA_BITS - 1 downto 0);
-    s_fill_o  : out   std_logic_vector(1 downto 0);
+    s_fill_o  : out   natural range 0 to 2;
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
     m_data_o  : out   std_logic_vector(G_DATA_BITS - 1 downto 0)
@@ -37,9 +37,9 @@ architecture rtl of axis_pipe is
 
 begin
 
-  s_fill_o <= "00" when m_valid_o = '0' else
-              "01" when m_valid_o = '1' and s_ready_o = '1' else
-              "10"; --  when m_valid_o = '1' and s_ready_o = '0'
+  s_fill_o <= 0 when m_valid_o = '0' else
+              1 when m_valid_o = '1' and s_ready_o = '1' else
+              2; --  when m_valid_o = '1' and s_ready_o = '0'
 
   s_data_proc : process (clk_i)
   begin
