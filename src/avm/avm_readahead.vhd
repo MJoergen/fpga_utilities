@@ -41,14 +41,13 @@
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
-  use ieee.numeric_std_unsigned.all;
 
 entity avm_readahead is
   generic (
-    G_BURST_BITS : natural := 8; -- Number of bits in the *_burstcount_* ports
-    G_CACHE_SIZE : natural;      -- Number of words in the buffer (must be even for sliding window)
-    G_ADDR_BITS  : natural;      -- Address width in bits
-    G_DATA_BITS  : natural       -- Data word width in bits
+    G_BURST_BITS : natural := 8;   -- Number of bits in the *_burstcount_* ports
+    G_CACHE_SIZE : natural := 8;   -- Number of words in the buffer (must be even for sliding window)
+    G_ADDR_BITS  : natural := 16;  -- Address width in bits
+    G_DATA_BITS  : natural := 16   -- Data word width in bits
   );
   port (
     clk_i             : in    std_logic;
@@ -154,8 +153,8 @@ begin
   --           (offset = count and readdatavalid is asserted now).
   --           This is a same-cycle forwarding optimisation.
   ---------------------------------------------------------------------------
-  cache_rd_hit_s  <= '1' when s_read_i = '1' and s_burstcount_i = 1 and cache_offset_s < cache_count else
-                     '1' when s_read_i = '1' and s_burstcount_i = 1 and cache_offset_s = cache_count and
+  cache_rd_hit_s  <= '1' when s_read_i = '1' and unsigned(s_burstcount_i) = 1 and unsigned(cache_offset_s) < cache_count else
+                     '1' when s_read_i = '1' and unsigned(s_burstcount_i) = 1 and unsigned(cache_offset_s) = cache_count and
                               cache_count < G_CACHE_SIZE and m_readdatavalid_i = '1' else
                      '0';
 
@@ -164,8 +163,8 @@ begin
   --   The write address falls within the currently valid cached region.
   --   Used to perform a write-through update of the buffer contents.
   ---------------------------------------------------------------------------
-  cache_wr_hit_s  <= '1' when s_write_i = '1' and s_burstcount_i = 1 and cache_offset_s < cache_count else
-                     '1' when s_write_i = '1' and s_burstcount_i = 1 and cache_offset_s = cache_count and
+  cache_wr_hit_s  <= '1' when s_write_i = '1' and unsigned(s_burstcount_i) = 1 and unsigned(cache_offset_s) < cache_count else
+                     '1' when s_write_i = '1' and unsigned(s_burstcount_i) = 1 and unsigned(cache_offset_s) = cache_count and
                               cache_count < G_CACHE_SIZE and m_readdatavalid_i = '1' else
                      '0';
 
@@ -182,10 +181,10 @@ begin
   --   Condition 5: Cache is full (all data received) — ready.
   --   Condition 6: Otherwise — wait (fill in progress, no hit).
   ---------------------------------------------------------------------------
-  s_waitrequest_o <= '0' when cache_filled_s = '1' and rd_burstcount = 0 else
-                     '0' when cache_rd_hit_s = '1' and s_write_i = '0' and rd_burstcount = 0 and state = READING_ST else
+  s_waitrequest_o <= '0' when cache_filled_s = '1' and unsigned(rd_burstcount) = 0 else
+                     '0' when cache_rd_hit_s = '1' and s_write_i = '0' and unsigned(rd_burstcount) = 0 and state = READING_ST else
                      m_waitrequest_i and (m_write_o or m_read_o) when state = IDLE_ST else
-                     '1' when rd_burstcount /= 0 else
+                     '1' when unsigned(rd_burstcount) /= 0 else
                      '0' when cache_count = G_CACHE_SIZE else
                      '1';
 
@@ -213,7 +212,7 @@ begin
       if cache_wr_hit_s = '1' then
         for i in 0 to G_DATA_BITS / 8 - 1 loop
           if s_byteenable_i(i) = '1' then
-            cache_data(to_integer(cache_offset_s))(8 * i + 7 downto 8 * i) <= s_writedata_i(8 * i + 7 downto 8 * i);
+            cache_data(to_integer(unsigned(cache_offset_s)))(8 * i + 7 downto 8 * i) <= s_writedata_i(8 * i + 7 downto 8 * i);
           end if;
         end loop;
       end if;
@@ -280,7 +279,7 @@ begin
           if s_read_i = '1' and s_waitrequest_o = '0' then
             if cache_rd_hit_s = '1' then
               -- Cache hit: return data from the buffer immediately
-              s_readdata_o      <= cache_data(to_integer(cache_offset_s));
+              s_readdata_o      <= cache_data(to_integer(unsigned(cache_offset_s)));
               s_readdatavalid_o <= '1';
 
               --------------------------------------------------------
@@ -330,7 +329,7 @@ begin
               -- ensures the slide fires on the very next cycle
               -- instead, once the buffer is fully committed.
               --------------------------------------------------------
-              if cache_offset_s >= G_CACHE_SIZE / 2 - 1 then
+              if unsigned(cache_offset_s) >= G_CACHE_SIZE / 2 - 1 then
                 -- Slide the window: shift the upper half into the lower half
                 cache_data(0 to G_CACHE_SIZE / 2 - 1) <= cache_data(G_CACHE_SIZE / 2 to G_CACHE_SIZE - 1);
                 -- Advance the base address by half the buffer size
@@ -369,7 +368,7 @@ begin
             cache_data(cache_count) <= m_readdata_i;
 
             -- Forward to client if there are outstanding burst words
-            if rd_burstcount /= 0 then
+            if unsigned(rd_burstcount) /= 0 then
               s_readdata_o      <= m_readdata_i;
               s_readdatavalid_o <= '1';
               rd_burstcount     <= std_logic_vector(unsigned(rd_burstcount) - 1);
@@ -389,7 +388,7 @@ begin
               cache_count <= G_CACHE_SIZE;
               state       <= IDLE_ST;
 
-              if rd_burstcount > 1 then
+              if unsigned(rd_burstcount) > 1 then
                 ---------------------------------------------------------
                 -- (Highest priority) Continuation read: the client's
                 -- burst spans more than G_CACHE_SIZE words and data is
@@ -423,7 +422,7 @@ begin
                 ---------------------------------------------------------
                 if cache_rd_hit_s = '1' then
                   -- Hit: serve from buffer
-                  s_readdata_o      <= cache_data(to_integer(cache_offset_s));
+                  s_readdata_o      <= cache_data(to_integer(unsigned(cache_offset_s)));
                   s_readdatavalid_o <= '1';
                 else
                   -- Miss: initiate new full-line read
@@ -448,10 +447,10 @@ begin
           -- cache_data hasn't been updated yet in this delta cycle.
           -----------------------------------------------------------------
           if cache_rd_hit_s = '1' and s_waitrequest_o = '0' then
-            s_readdata_o      <= cache_data(to_integer(cache_offset_s));
+            s_readdata_o      <= cache_data(to_integer(unsigned(cache_offset_s)));
             s_readdatavalid_o <= '1';
 
-            if cache_offset_s = cache_count then
+            if unsigned(cache_offset_s) = cache_count then
               -- Same-cycle forwarding: data not yet in cache_data
               s_readdata_o <= m_readdata_i;
             end if;

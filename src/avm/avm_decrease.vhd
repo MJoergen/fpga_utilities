@@ -60,10 +60,10 @@ entity avm_decrease is
     --   * C_RATIO is a power of two (i.e. 2**C_ADDR_SHIFT = C_RATIO)
     --   * G_MASTER_ADDR_BITS = G_SLAVE_ADDR_BITS + log2(C_RATIO)
     -- A degenerate ratio of 1 is rejected; use a passthrough wrapper instead.
-    G_SLAVE_ADDR_BITS  : positive;
-    G_SLAVE_DATA_BITS  : positive; -- power-of-two multiple of G_MASTER_DATA_BITS
-    G_MASTER_ADDR_BITS : positive;
-    G_MASTER_DATA_BITS : positive
+    G_SLAVE_ADDR_BITS  : positive := 15;
+    G_SLAVE_DATA_BITS  : positive := 32; -- power-of-two multiple of G_MASTER_DATA_BITS
+    G_MASTER_ADDR_BITS : positive := 16;
+    G_MASTER_DATA_BITS : positive := 16
   );
   port (
     clk_i             : in    std_logic;

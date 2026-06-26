@@ -1,7 +1,10 @@
 # Run all source files through yosys to check for synthesis
 
 SRC += avm_arbiter.vhd
+SRC += avm_decrease.vhd
+SRC += avm_increase.vhd
 SRC += avm_pipe.vhd
+SRC += avm_readahead.vhd
 
 TARGETS = $(patsubst %.vhd,%.edif,$(SRC))
 
@@ -9,6 +12,7 @@ all: $(TARGETS)
 
 # Explicitly handle dependencies
 avm_pipe.edif: avm_pipe.vhd ../axis/axis_pipe.vhd
+avm_increase.edif: avm_increase.vhd ../axis/axis_fifo.vhd
 
 
 ########################################

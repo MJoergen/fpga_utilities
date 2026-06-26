@@ -46,10 +46,10 @@ library ieee;
 entity avm_increase is
   generic (
     G_BURST_BITS       : positive := 8;
-    G_SLAVE_ADDR_BITS  : positive;
-    G_SLAVE_DATA_BITS  : positive;
-    G_MASTER_ADDR_BITS : positive;
-    G_MASTER_DATA_BITS : positive -- Must be an integer multiple of G_SLAVE_DATA_BITS
+    G_SLAVE_ADDR_BITS  : positive := 16;
+    G_SLAVE_DATA_BITS  : positive := 16;
+    G_MASTER_ADDR_BITS : positive := 15;
+    G_MASTER_DATA_BITS : positive := 32 -- Must be an integer multiple of G_SLAVE_DATA_BITS
   );
   port (
     clk_i             : in    std_logic;
