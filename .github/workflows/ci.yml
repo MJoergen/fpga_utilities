@@ -22,7 +22,7 @@ jobs:
       image: ghcr.io/ghdl/vunit/llvm:latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Tool versions
         run: |
@@ -34,7 +34,7 @@ jobs:
 
       - name: Upload waveform artefacts on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: sim-waveforms
           path: |
@@ -50,7 +50,7 @@ jobs:
       image: hdlc/formal:latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Tool versions
         run: |
@@ -63,7 +63,7 @@ jobs:
 
       - name: Upload counterexample traces on failure
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: formal-traces
           path: |
@@ -78,7 +78,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Every src/ and sim/ file has an SPDX header
         run: |
