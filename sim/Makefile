@@ -30,6 +30,8 @@ DUTS += tb_wbus_arbiter
 DUTS += tb_wbus_axil_wbus
 DUTS += tb_wbus_sim
 DUTS += tb_wbus_to_axil
+DUTS += tb_wbus_to_avm
+DUTS += tb_avm_to_wbus
 
 DUT_PASS   = $(patsubst %,%/PASS,$(DUTS))
 

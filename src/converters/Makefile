@@ -4,6 +4,8 @@ SRC += axil_to_wbus.vhd
 SRC += axip_to_axis.vhd
 SRC += axis_to_axip.vhd
 SRC += wbus_to_axil.vhd
+SRC += wbus_to_avm.vhd
+SRC += avm_to_wbus.vhd
 
 TARGETS = $(patsubst %.vhd,%.edif,$(SRC))
 

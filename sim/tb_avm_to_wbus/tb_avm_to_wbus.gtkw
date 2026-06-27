@@ -1,0 +1,65 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Sat Jun 27 10:35:45 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_avm_to_wbus/tb_avm_to_wbus.ghw"
+[dumpfile_mtime] "Sat Jun 27 10:33:16 2026"
+[dumpfile_size] 365605
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_avm_to_wbus/tb_avm_to_wbus.gtkw"
+[timestart] 0
+[size] 1321 810
+[pos] -1 -1
+*-27.507786 130000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_avm_to_wbus.
+[treeopen] top.tb_avm_to_wbus.avm_to_wbus_inst.
+[sst_width] 276
+[signals_width] 364
+[sst_expanded] 1
+[sst_vpaned_height] 229
+@800200
+-avm_to_wbus
+@28
+top.tb_avm_to_wbus.avm_to_wbus_inst.clk_i
+top.tb_avm_to_wbus.avm_to_wbus_inst.rst_i
+[color] 6
+top.tb_avm_to_wbus.avm_to_wbus_inst.s_waitrequest_o
+[color] 2
+top.tb_avm_to_wbus.avm_to_wbus_inst.s_write_i
+[color] 2
+top.tb_avm_to_wbus.avm_to_wbus_inst.s_read_i
+@22
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[6:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[6] top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[5] top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[4] top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[3] top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[2] top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[1] top.tb_avm_to_wbus.avm_to_wbus_inst.s_address_i[0]
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[31:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[31] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[30] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[29] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[28] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[27] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[26] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[25] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[24] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[23] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[22] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[21] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[20] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[19] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[18] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[17] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[16] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[15] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[14] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[13] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[12] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[11] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[10] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[9] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[8] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[7] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[6] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[5] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[4] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[3] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[2] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[1] top.tb_avm_to_wbus.avm_to_wbus_inst.s_writedata_i[0]
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.s_byteenable_i[3:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.s_byteenable_i[3] top.tb_avm_to_wbus.avm_to_wbus_inst.s_byteenable_i[2] top.tb_avm_to_wbus.avm_to_wbus_inst.s_byteenable_i[1] top.tb_avm_to_wbus.avm_to_wbus_inst.s_byteenable_i[0]
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.s_burstcount_i[3:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.s_burstcount_i[3] top.tb_avm_to_wbus.avm_to_wbus_inst.s_burstcount_i[2] top.tb_avm_to_wbus.avm_to_wbus_inst.s_burstcount_i[1] top.tb_avm_to_wbus.avm_to_wbus_inst.s_burstcount_i[0]
+@28
+[color] 3
+top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdatavalid_o
+@22
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[31:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[31] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[30] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[29] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[28] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[27] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[26] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[25] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[24] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[23] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[22] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[21] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[20] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[19] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[18] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[17] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[16] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[15] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[14] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[13] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[12] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[11] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[10] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[9] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[8] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[7] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[6] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[5] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[4] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[3] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[2] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[1] top.tb_avm_to_wbus.avm_to_wbus_inst.s_readdata_o[0]
+@28
+[color] 2
+top.tb_avm_to_wbus.avm_to_wbus_inst.m_cyc_o
+[color] 6
+top.tb_avm_to_wbus.avm_to_wbus_inst.m_stall_i
+[color] 2
+top.tb_avm_to_wbus.avm_to_wbus_inst.m_stb_o
+@22
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[6:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[6] top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[5] top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[4] top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[3] top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[2] top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[1] top.tb_avm_to_wbus.avm_to_wbus_inst.m_addr_o[0]
+@28
+top.tb_avm_to_wbus.avm_to_wbus_inst.m_we_o
+@22
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[31:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[31] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[30] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[29] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[28] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[27] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[26] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[25] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[24] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[23] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[22] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[21] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[20] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[19] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[18] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[17] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[16] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[15] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[14] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[13] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[12] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[11] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[10] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[9] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[8] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[7] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[6] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[5] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[4] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[3] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[2] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[1] top.tb_avm_to_wbus.avm_to_wbus_inst.m_wrdat_o[0]
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.m_sel_o[3:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.m_sel_o[3] top.tb_avm_to_wbus.avm_to_wbus_inst.m_sel_o[2] top.tb_avm_to_wbus.avm_to_wbus_inst.m_sel_o[1] top.tb_avm_to_wbus.avm_to_wbus_inst.m_sel_o[0]
+@28
+[color] 3
+top.tb_avm_to_wbus.avm_to_wbus_inst.m_ack_i
+@22
+#{top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[31:0]} top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[31] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[30] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[29] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[28] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[27] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[26] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[25] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[24] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[23] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[22] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[21] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[20] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[19] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[18] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[17] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[16] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[15] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[14] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[13] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[12] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[11] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[10] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[9] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[8] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[7] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[6] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[5] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[4] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[3] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[2] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[1] top.tb_avm_to_wbus.avm_to_wbus_inst.m_rddat_i[0]
+@420
+top.tb_avm_to_wbus.avm_to_wbus_inst.state
+@1000200
+-avm_to_wbus
+[pattern_trace] 1
+[pattern_trace] 0

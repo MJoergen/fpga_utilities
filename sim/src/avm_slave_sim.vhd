@@ -35,10 +35,10 @@ library ieee;
 entity avm_slave_sim is
   generic (
     G_BURST_BITS : positive := 8;
-    G_NAME        : string   := "";
-    G_DEBUG       : boolean  := false;
-    G_ADDR_BITS   : positive; -- Address width in bits (memory depth = 2**G_ADDR_BITS words)
-    G_DATA_BITS   : positive  -- Data width in bits (must be multiple of 8)
+    G_NAME       : string   := "";
+    G_DEBUG      : boolean  := false;
+    G_ADDR_BITS  : positive; -- Address width in bits (memory depth = 2**G_ADDR_BITS words)
+    G_DATA_BITS  : positive  -- Data width in bits (must be multiple of 8)
   );
   port (
     clk_i             : in    std_logic;

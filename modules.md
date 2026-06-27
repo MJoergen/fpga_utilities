@@ -46,6 +46,8 @@ testbench are flagged as **unverified**.
 | `axis_pipe`                  | – | `tb_axis_pipe` |
 | `axis_pipe_async`            | – | `tb_axis_pipe_async` |
 | `axis_pipe_lite`             | – | `tb_axis_pipe_lite` |
+| `avm_to_wbus`                | – | `tb_avm_to_wbus` |
+| `wbus_to_avm`                | – | `tb_wbus_to_avm` |
 | `axil_to_wbus`               | ✓ | `tb_axil_to_wbus`, `tb_wbus_axil_wbus` |
 | `axip_to_axis`               | ✓ | `tb_axip_axis_axip` |
 | `axis_to_axip`               | ✓ | `tb_axip_axis_axip` |
@@ -207,6 +209,9 @@ the `avm` interface specified in
 Source: [`../src/converters/`](../src/converters/). These bridge between
 the interfaces specified in [interfaces.md](interfaces.md).
 
+- [`avm_to_wbus.vhd`](../src/converters/avm_to_wbus.vhd): Avalon MM
+  slave on the master side, Wishbone master on the slave side. Honours
+  `BYTEENABLE` via Wishbone `SEL`.
 - [`axil_to_wbus.vhd`](../src/converters/axil_to_wbus.vhd): AXI-Lite
   slave on the master side, Wishbone master on the slave side. Honours
   `WSTRB` via Wishbone `SEL`.
@@ -217,6 +222,8 @@ the interfaces specified in [interfaces.md](interfaces.md).
 - [`axis_to_axip.vhd`](../src/converters/axis_to_axip.vhd): Converts an
   AXIS source to an AXIP sink by inserting framing. The frame length is
   fixed by a generic.
+- [`wbus_to_avm.vhd`](../src/converters/wbus_to_avm.vhd): Wishbone
+  slave on the master side, Avalon MM master on the slave side.
 - [`wbus_to_axil.vhd`](../src/converters/wbus_to_axil.vhd): Wishbone
   slave on the master side, AXI-Lite master on the slave side.
 
