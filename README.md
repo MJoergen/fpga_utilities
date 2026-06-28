@@ -14,7 +14,7 @@ them into your design wherever needed.
 Most modules are exercised by [GHDL simulation testbenches](sim/) under
 `sim/tb_*/`, and a subset additionally has
 [SymbiYosys formal proofs](formal/). The per-module coverage is tracked
-in [modules.md](modules.md).
+in [docs/modules.md](docs/modules.md).
 
 ## Status
 
@@ -29,7 +29,7 @@ The three CI badges above show, in order:
 
 A red badge on `main` is a release-blocker. For per-module verification
 status (formal proof, testbench, both, or neither), see the coverage
-matrix in [modules.md](modules.md#verification-coverage-matrix).
+matrix in [docs/modules.md](docs/modules.md#verification-coverage-matrix).
 
 ## Repository layout
 
@@ -37,8 +37,8 @@ matrix in [modules.md](modules.md#verification-coverage-matrix).
 - `sim/`           — GHDL testbenches and bus-functional models
 - `formal/`        — SymbiYosys `.sby` configs and PSL properties
 - `Makefile`       — top-level driver for `make sim`, `make formal`, and `make src`
-- `interfaces.md`  — interface specifications
-- `modules.md`     — per-module documentation
+- `docs/interfaces.md`  — interface specifications
+- `docs/modules.md`     — per-module documentation
 - `CODING_STYLE.md` — VHDL coding conventions used throughout
 - `CONTRIBUTING.md` — how to add modules, testbenches, and proofs
 
@@ -61,7 +61,7 @@ The modules use a small, consistent set of interfaces:
 | Wishbone      | `wbus_*`  | Wishbone B4                                          |
 | Avalon-MM     | `avm_*`   | Intel Avalon Memory-Mapped                           |
 
-The full handshake contract for each interface is in [interfaces.md](interfaces.md).
+The full handshake contract for each interface is in [docs/interfaces.md](docs/interfaces.md).
 
 ## Modules
 
@@ -89,7 +89,7 @@ records used by the corresponding modules and must be in the compile
 order before any `axip_*` / `wbus_*` entity is instantiated.
 
 Details (generics, ports, reset, clocking, verification scope, limits)
-are in [modules.md](modules.md).
+are in [docs/modules.md](docs/modules.md).
 
 ## Contributing
 
