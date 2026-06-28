@@ -3,7 +3,7 @@
 SRC += axis_arbiter.vhd
 SRC += axis_demux.vhd
 SRC += axis_dropper.vhd
-#SRC += axis_fifo_async.vhd   # Uses XPM, not supported by yosys
+SRC += axis_fifo_async.vhd
 SRC += axis_fifo.vhd
 SRC += axis_pipe_async.vhd
 SRC += axis_pipe_lite.vhd

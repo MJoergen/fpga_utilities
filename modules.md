@@ -42,7 +42,7 @@ testbench are flagged as **unverified**.
 | `axis_demux`                 | – | **unverified** |
 | `axis_dropper`               | ✓ | **no testbench** |
 | `axis_fifo`                  | ✓ | `tb_axis_fifo` |
-| `axis_fifo_async`            | – | **unverified** |
+| `axis_fifo_async`            | – | `tb_axis_fifo_async` |
 | `axis_pipe`                  | – | `tb_axis_pipe` |
 | `axis_pipe_async`            | – | `tb_axis_pipe_async` |
 | `axis_pipe_lite`             | – | `tb_axis_pipe_lite` |
@@ -81,15 +81,13 @@ the `axis` interface specified in
 - [`axis_fifo.vhd`](../src/axis/axis_fifo.vhd): Synchronous AXIS FIFO
   (single clock for in and out). Depth is generic; storage uses
   inferred block RAM.
-- [`axis_fifo_async.vhd`](../src/axis/axis_fifo_async.vhd): Asynchronous
-  AXIS FIFO for clock-domain crossing. Wrapper for the Xilinx IP block `xpm_fifo_axis`.
-  Constraints are added automatically.  **Unverified.**
+- [`axis_fifo_async.vhd`](../src/axis/axis_fifo_async.vhd): Full
+  asynchronous AXIS FIFO for clock-domain crossing.
 - [`axis_pipe.vhd`](../src/axis/axis_pipe.vhd): Two-stage AXIS pipeline
   register. Breaks combinational paths through both `VALID` and `READY`
   at the cost of one cycle of latency. Useful for timing closure.
 - [`axis_pipe_async.vhd`](../src/axis/axis_pipe_async.vhd): Shallow
-  asynchronous AXIS FIFO for clock-domain crossing. Same CDC notes as
-  `axis_fifo_async`.
+  asynchronous AXIS FIFO for clock-domain crossing.
 - [`axis_pipe_lite.vhd`](../src/axis/axis_pipe_lite.vhd): Single-stage
   AXIS pipeline register. Breaks the combinational path through `VALID`
   but **not** through `READY` — choose `axis_pipe` if
