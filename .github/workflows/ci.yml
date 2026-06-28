@@ -19,7 +19,7 @@ jobs:
     name: Simulation (GHDL)
     runs-on: ubuntu-22.04
     container:
-      image: ghdl/ext:latest
+      image: ghdl/vunit:mcode
     steps:
       - name: Checkout
         uses: actions/checkout@v7
