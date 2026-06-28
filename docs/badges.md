@@ -32,7 +32,7 @@ goes red if **any** testbench fails, which means at least one of:
 A green `sim` badge does **not** mean every module is verified — only
 that every existing testbench passes. The per-module verification
 status (which modules have a testbench at all) lives in the
-[coverage matrix in `modules.md`](../modules.md#verification-coverage-matrix).
+[coverage matrix in `modules.md`](modules.md#verification-coverage-matrix).
 
 ### `formal`
 
@@ -44,7 +44,7 @@ goes red if **any** PSL property under any module fails — including
 becomes unreachable is usually a bug, not an improvement).
 
 A green `formal` badge means the documented handshake contracts in
-[`interfaces.md`](../interfaces.md) — VALID/READY stability, in-order
+[`interfaces.md`](interfaces.md) — VALID/READY stability, in-order
 responses, mutual exclusion of arbiter grants, etc. — hold for the
 subset of modules that have property files. Modules without a PSL file
 contribute nothing to this badge.
