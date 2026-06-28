@@ -95,7 +95,7 @@ modules and is a smell, not a workflow.
 - Name the entity `<family>_<purpose>`, e.g. `axip_dropper`,
   `wbus_decoder`. The file name matches the entity, lower case,
   `.vhd` extension.
-- Check the existing inventory in [modules.md](modules.md) before
+- Check the existing inventory in [docs/modules.md](docs/modules.md) before
   picking a name; reuse a pattern if one exists (`*_fifo`, `*_pipe`,
   `*_arbiter`, `*_arbiter_general`, `*_fifo_async`, `*_pipe_async`).
 
@@ -245,16 +245,16 @@ examples are `formal/axip_arbiter.psl` and `formal/axis_fifo.psl`.
 If the module is genuinely hard to formally verify in a short time
 (e.g. a deeply pipelined CDC FIFO), it is acceptable to ship without a
 formal proof — but the module must be flagged as *unverified* in
-[modules.md](modules.md), and a tracking issue opened.
+[docs/modules.md](docs/modules.md), and a tracking issue opened.
 
 ### 4.5 Update the documentation
 
 In the same PR:
 
-- Add the module to [modules.md](modules.md) under the appropriate
+- Add the module to [docs/modules.md](docs/modules.md) under the appropriate
   section. Update the verification-coverage matrix at the top.
 - If the module exposes a new interface variant or breaks a documented
-  contract, update [interfaces.md](interfaces.md) accordingly.
+  contract, update [docs/interfaces.md](docs/interfaces.md) accordingly.
 - If the module is significant enough to mention in the README's
   *Modules* bullets, add it there too.
 
@@ -265,7 +265,7 @@ A PR that adds RTL without updating `modules.md` will not be merged.
 ## 5. Adding a testbench to an existing unverified module
 
 The current verification gap is tracked in
-[modules.md](modules.md#verification-coverage-matrix). Closing a row is
+[docs/modules.md](docs/modules.md#verification-coverage-matrix). Closing a row is
 a high-value contribution.
 
 1. Pick a row marked *unverified*.
@@ -440,7 +440,7 @@ expect to see in a pull request.
 
 For *coding conventions*, see [CODING_STYLE.md](CODING_STYLE.md). For
 the *interface contracts* every module must obey, see
-[interfaces.md](interfaces.md). For the *current module inventory*, see
-[modules.md](modules.md). This document does not duplicate any of
+[docs/interfaces.md](docs/interfaces.md). For the *current module inventory*, see
+[docs/modules.md](docs/modules.md). This document does not duplicate any of
 those; it points at them.
 

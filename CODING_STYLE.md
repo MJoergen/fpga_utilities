@@ -182,7 +182,7 @@ such assertion documenting the contract.
 ### 6.2 Port comments
 
 Do not add per-port trailing comments. Refer to
-[`interfaces.md`](interfaces.md) instead. The entity declaration is for
+[`interfaces.md`](docs/interfaces.md) instead. The entity declaration is for
 *shape*; the interface contract belongs in the spec.
 
 ### 6.3 Types
