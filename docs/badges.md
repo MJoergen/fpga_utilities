@@ -144,7 +144,7 @@ Some common badges that are deliberately **not** present:
   pass/fail; a counter adds visual noise without information.
 - **`coverage %`.** Code coverage for HDL is poorly standardised and
   no two tools agree on what counts. The verification-coverage matrix
-  in [`modules.md`](../modules.md#verification-coverage-matrix) tracks
+  in [`modules.md`](modules.md#verification-coverage-matrix) tracks
   what matters at the per-module level: does this module have a
   testbench? a formal proof? both? neither?
 - **`version`.** There are no tagged releases yet. When there are, a
