@@ -20,24 +20,24 @@ end entity tb_axis_fifo_async;
 
 architecture tb of tb_axis_fifo_async is
 
-  signal s_clk : std_logic := '1';
-  signal s_rst : std_logic := '1';
+  signal   async_rst : std_logic := '1';
 
-  signal s_ready : std_logic;
-  signal s_valid : std_logic;
-  signal s_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
-  signal s_fill  : natural range 0 to 2 ** G_ADDR_BITS;
+  signal   s_clk   : std_logic   := '1';
+  signal   s_rst   : std_logic   := '1';
+  signal   s_ready : std_logic;
+  signal   s_valid : std_logic;
+  signal   s_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal   s_fill  : natural range 0 to 2 ** G_ADDR_BITS;
 
-  signal m_clk : std_logic := '1';
-  signal m_rst : std_logic := '1';
+  signal   m_clk   : std_logic   := '1';
+  signal   m_rst   : std_logic   := '1';
+  signal   m_ready : std_logic;
+  signal   m_valid : std_logic;
+  signal   m_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal   m_fill  : natural range 0 to 2 ** G_ADDR_BITS;
 
-  signal m_ready : std_logic;
-  signal m_valid : std_logic;
-  signal m_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
-  signal m_fill  : natural range 0 to 2 ** G_ADDR_BITS;
-
-  constant C_S_PERIOD : time := 5 ns;
-  constant C_M_PERIOD : time := (C_S_PERIOD * G_RATIO) / 100;
+  constant C_S_PERIOD : time     := 5 ns;
+  constant C_M_PERIOD : time     := (C_S_PERIOD * G_RATIO) / 100;
 
 begin
 
@@ -46,10 +46,12 @@ begin
   ----------------------------------------------
 
   s_clk <= not s_clk after C_S_PERIOD;
-  s_rst <= '1', '0' after 100 ns;
-
   m_clk <= not m_clk after C_M_PERIOD;
-  m_rst <= '1', '0' after 100 ns;
+
+  async_rst <= '1', '0' after 120 ns;
+
+  s_rst <= async_rst when rising_edge(s_clk);
+  m_rst <= async_rst when rising_edge(m_clk);
 
 
   ----------------------------------------------
@@ -62,18 +64,17 @@ begin
       G_DATA_BITS => G_DATA_BITS
     )
     port map (
-      s_clk_i   => s_clk,
-      s_rst_i   => s_rst,
-      s_ready_o => s_ready,
-      s_valid_i => s_valid,
-      s_data_i  => s_data,
-      s_fill_o  => s_fill,
-      m_clk_i   => m_clk,
-      m_rst_i   => m_rst,
-      m_ready_i => m_ready,
-      m_valid_o => m_valid,
-      m_data_o  => m_data,
-      m_fill_o  => m_fill
+      async_rst_i => async_rst,
+      s_clk_i     => s_clk,
+      s_ready_o   => s_ready,
+      s_valid_i   => s_valid,
+      s_data_i    => s_data,
+      s_fill_o    => s_fill,
+      m_clk_i     => m_clk,
+      m_ready_i   => m_ready,
+      m_valid_o   => m_valid,
+      m_data_o    => m_data,
+      m_fill_o    => m_fill
     ); -- axis_fifo_async_inst : entity work.axis_fifo_async
 
 
