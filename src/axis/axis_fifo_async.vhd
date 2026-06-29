@@ -77,8 +77,8 @@ library ieee;
 
 entity axis_fifo_async is
   generic (
-    G_ADDR_BITS : positive := 12;
-    G_DATA_BITS : positive := 8;
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive;
     G_RAM_STYLE : string := "auto"
   );
   port (
