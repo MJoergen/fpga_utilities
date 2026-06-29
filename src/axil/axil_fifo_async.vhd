@@ -16,10 +16,11 @@ library ieee;
 
 entity axil_fifo_async is
   generic (
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive;
     G_WR_DEPTH  : positive; -- Channels AW, W, and B
     G_RD_DEPTH  : positive; -- Channels AR and R
-    G_ADDR_BITS : positive;
-    G_DATA_BITS : positive
+    G_RAM_STYLE : string := "auto"
   );
   port (
     -- Connect to AXI Lite Master
@@ -82,6 +83,17 @@ architecture rtl of axil_fifo_async is
   signal  m_r_in  : std_logic_vector(G_DATA_BITS + 1 downto 0);
   signal  s_r_out : std_logic_vector(G_DATA_BITS + 1 downto 0);
 
+  pure function log2 (
+    arg : positive
+  ) return natural is
+    variable res_v : natural := 0;
+  begin
+    while 2 ** res_v < arg loop
+      res_v := res_v + 1;
+    end loop;
+    return res_v;
+  end function log2;
+
 begin
 
   assert G_DATA_BITS mod 8 = 0
@@ -94,22 +106,22 @@ begin
 
   axis_fifo_async_aw_inst : entity work.axis_fifo_async
     generic map (
-      G_DEPTH     => G_WR_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_BITS => G_ADDR_BITS
+      G_ADDR_BITS => log2(G_WR_DEPTH),
+      G_DATA_BITS => G_ADDR_BITS,
+      G_RAM_STYLE => G_RAM_STYLE
     )
     port map (
-      s_clk_i   => s_clk_i,
-      s_rst_i   => s_rst_i,
-      s_ready_o => s_awready_o,
-      s_valid_i => s_awvalid_i,
-      s_data_i  => s_awaddr_i,
-      s_fill_o  => open,
-      m_clk_i   => m_clk_i,
-      m_ready_i => m_awready_i,
-      m_valid_o => m_awvalid_o,
-      m_data_o  => m_awaddr_o,
-      m_fill_o  => open
+      async_rst_i => s_rst_i,
+      s_clk_i     => s_clk_i,
+      s_ready_o   => s_awready_o,
+      s_valid_i   => s_awvalid_i,
+      s_data_i    => s_awaddr_i,
+      s_fill_o    => open,
+      m_clk_i     => m_clk_i,
+      m_ready_i   => m_awready_i,
+      m_valid_o   => m_awvalid_o,
+      m_data_o    => m_awaddr_o,
+      m_fill_o    => open
     ); -- axis_fifo_async_aw_inst : entity work.axis_fifo_async
 
 
@@ -119,22 +131,22 @@ begin
 
   axis_fifo_async_w_inst : entity work.axis_fifo_async
     generic map (
-      G_DEPTH     => G_WR_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_BITS => G_DATA_BITS + G_DATA_BITS / 8
+      G_ADDR_BITS => log2(G_WR_DEPTH),
+      G_DATA_BITS => G_DATA_BITS + G_DATA_BITS / 8,
+      G_RAM_STYLE => G_RAM_STYLE
     )
     port map (
-      s_clk_i   => s_clk_i,
-      s_rst_i   => s_rst_i,
-      s_ready_o => s_wready_o,
-      s_valid_i => s_wvalid_i,
-      s_data_i  => s_w_in,
-      s_fill_o  => open,
-      m_clk_i   => m_clk_i,
-      m_ready_i => m_wready_i,
-      m_valid_o => m_wvalid_o,
-      m_data_o  => m_w_out,
-      m_fill_o  => open
+      async_rst_i => s_rst_i,
+      s_clk_i     => s_clk_i,
+      s_ready_o   => s_wready_o,
+      s_valid_i   => s_wvalid_i,
+      s_data_i    => s_w_in,
+      s_fill_o    => open,
+      m_clk_i     => m_clk_i,
+      m_ready_i   => m_wready_i,
+      m_valid_o   => m_wvalid_o,
+      m_data_o    => m_w_out,
+      m_fill_o    => open
     ); -- axis_fifo_async_w_inst : entity work.axis_fifo_async
 
   s_w_in(R_WDATA) <= s_wdata_i;
@@ -149,22 +161,22 @@ begin
 
   axis_fifo_async_b_inst : entity work.axis_fifo_async
     generic map (
-      G_DEPTH     => G_WR_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_BITS => 2
+      G_ADDR_BITS => log2(G_WR_DEPTH),
+      G_DATA_BITS => 2,
+      G_RAM_STYLE => G_RAM_STYLE
     )
     port map (
-      s_clk_i   => m_clk_i,
-      s_rst_i   => m_rst_i,
-      s_ready_o => m_bready_o,
-      s_valid_i => m_bvalid_i,
-      s_data_i  => m_bresp_i,
-      s_fill_o  => open,
-      m_clk_i   => s_clk_i,
-      m_ready_i => s_bready_i,
-      m_valid_o => s_bvalid_o,
-      m_data_o  => s_bresp_o,
-      m_fill_o  => open
+      async_rst_i => m_rst_i,
+      s_clk_i     => m_clk_i,
+      s_ready_o   => m_bready_o,
+      s_valid_i   => m_bvalid_i,
+      s_data_i    => m_bresp_i,
+      s_fill_o    => open,
+      m_clk_i     => s_clk_i,
+      m_ready_i   => s_bready_i,
+      m_valid_o   => s_bvalid_o,
+      m_data_o    => s_bresp_o,
+      m_fill_o    => open
     ); -- axis_fifo_async_b_inst : entity work.axis_fifo_async
 
 
@@ -174,22 +186,22 @@ begin
 
   axis_fifo_async_ar_inst : entity work.axis_fifo_async
     generic map (
-      G_DEPTH     => G_RD_DEPTH,
-      G_FILL_SIZE => 1,
-      G_DATA_BITS => G_ADDR_BITS
+      G_ADDR_BITS => log2(G_RD_DEPTH),
+      G_DATA_BITS => G_ADDR_BITS,
+      G_RAM_STYLE => G_RAM_STYLE
     )
     port map (
-      s_clk_i   => s_clk_i,
-      s_rst_i   => s_rst_i,
-      s_ready_o => s_arready_o,
-      s_valid_i => s_arvalid_i,
-      s_data_i  => s_araddr_i,
-      s_fill_o  => open,
-      m_clk_i   => m_clk_i,
-      m_ready_i => m_arready_i,
-      m_valid_o => m_arvalid_o,
-      m_data_o  => m_araddr_o,
-      m_fill_o  => open
+      async_rst_i => s_rst_i,
+      s_clk_i     => s_clk_i,
+      s_ready_o   => s_arready_o,
+      s_valid_i   => s_arvalid_i,
+      s_data_i    => s_araddr_i,
+      s_fill_o    => open,
+      m_clk_i     => m_clk_i,
+      m_ready_i   => m_arready_i,
+      m_valid_o   => m_arvalid_o,
+      m_data_o    => m_araddr_o,
+      m_fill_o    => open
     ); -- axis_fifo_async_ar_inst : entity work.axis_fifo_async
 
 
@@ -199,22 +211,21 @@ begin
 
   axis_fifo_async_r_inst : entity work.axis_fifo_async
     generic map (
-      G_DEPTH     => G_RD_DEPTH,
-      G_FILL_SIZE => 1,
+      G_ADDR_BITS => log2(G_RD_DEPTH),
       G_DATA_BITS => G_DATA_BITS + 2
     )
     port map (
-      s_clk_i   => m_clk_i,
-      s_rst_i   => m_rst_i,
-      s_ready_o => m_rready_o,
-      s_valid_i => m_rvalid_i,
-      s_data_i  => m_r_in,
-      s_fill_o  => open,
-      m_clk_i   => s_clk_i,
-      m_ready_i => s_rready_i,
-      m_valid_o => s_rvalid_o,
-      m_data_o  => s_r_out,
-      m_fill_o  => open
+      async_rst_i => m_rst_i,
+      s_clk_i     => m_clk_i,
+      s_ready_o   => m_rready_o,
+      s_valid_i   => m_rvalid_i,
+      s_data_i    => m_r_in,
+      s_fill_o    => open,
+      m_clk_i     => s_clk_i,
+      m_ready_i   => s_rready_i,
+      m_valid_o   => s_rvalid_o,
+      m_data_o    => s_r_out,
+      m_fill_o    => open
     ); -- axis_fifo_async_r_inst : entity work.axis_fifo_async
 
   m_r_in(R_RDATA) <= m_rdata_i;

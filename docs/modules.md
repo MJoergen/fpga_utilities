@@ -28,7 +28,6 @@ testbench are flagged as **unverified**.
 | `axil_arbiter_write`         | – | covered indirectly via `tb_axil_arbiter` |
 | `axil_fifo_async`            | – | **unverified** |
 | `axil_pipe`                  | – | `tb_axil_pipe` |
-| `axil_pipe_async`            | – | **unverified** |
 | `axip_arbiter`               | ✓ | `tb_axip_arbiter` |
 | `axip_arbiter_general`       | – | **unverified** |
 | `axip_demux`                 | – | **unverified** |
@@ -155,9 +154,6 @@ the `axil` interface specified in
   independently. **Unverified.**
 - [`axil_pipe.vhd`](../src/axil/axil_pipe.vhd): Two-stage AXI-Lite
   pipeline register on all five channels. Useful for timing closure.
-- [`axil_pipe_async.vhd`](../src/axil/axil_pipe_async.vhd): Shallow
-  asynchronous AXI-Lite pipeline register for clock-domain crossing.
-  **Unverified.**
 
 ## Wishbone
 

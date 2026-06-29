@@ -75,8 +75,7 @@ Per-interface modules currently in the repo:
   `axip_insert_fixed_header`, `axip_remove_fixed_header`,
   `axip_pipe`, `axip_pipe_async`
 - **AXI-Lite** (`src/axil/`): `axil_arbiter`, `axil_arbiter_read`,
-  `axil_arbiter_write`, `axil_fifo_async`, `axil_pipe`,
-  `axil_pipe_async`
+  `axil_arbiter_write`, `axil_fifo_async`, `axil_pipe`
 - **Wishbone** (`src/wbus/`): `wbus_arbiter`, `wbus_arbiter_general`,
   `wbus_mapper`
 - **Avalon-MM** (`src/avm/`): `avm_arbiter`, `avm_decrease`,
