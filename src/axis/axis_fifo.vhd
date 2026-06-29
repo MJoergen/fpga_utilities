@@ -10,14 +10,14 @@ library ieee;
 
 entity axis_fifo is
   generic (
-    G_RAM_STYLE : string := "auto";
-    G_RAM_DEPTH : positive;
-    G_DATA_BITS : positive
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive;
+    G_RAM_STYLE : string := "auto"
   );
   port (
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
-    fill_o    : out   natural range 0 to G_RAM_DEPTH - 1;
+    fill_o    : out   natural range 0 to 2 ** G_ADDR_BITS - 1;
 
     -- AXI stream input interface
     s_ready_o : out   std_logic;
@@ -33,8 +33,8 @@ end entity axis_fifo;
 
 architecture rtl of axis_fifo is
 
-  -- The FIFO is full when the RAM contains G_RAM_DEPTH-1 elements
-  type    ram_type is array (0 to G_RAM_DEPTH - 1) of std_logic_vector(s_data_i'range);
+  -- The FIFO is full when the RAM contains 2**G_ADDR_BITS-1 elements
+  type    ram_type is array (0 to 2 ** G_ADDR_BITS - 1) of std_logic_vector(s_data_i'range);
   signal  ram : ram_type;
 
   attribute ram_style         : string;
@@ -43,12 +43,12 @@ architecture rtl of axis_fifo is
 
   -- Newest element at head, oldest element at tail
 
-  subtype index_type is natural range ram_type'range;
+  subtype INDEX_TYPE is natural range ram_type'range;
 
-  signal  head    : index_type;
-  signal  tail    : index_type;
-  signal  count   : index_type;
-  signal  count_d : index_type;
+  signal  head    : INDEX_TYPE;
+  signal  tail    : INDEX_TYPE;
+  signal  count   : INDEX_TYPE;
+  signal  count_d : INDEX_TYPE;
 
   -- True the clock cycle after a simultaneous read and write
   signal  read_while_write_d : std_logic;
@@ -56,10 +56,10 @@ architecture rtl of axis_fifo is
   -- Increment or wrap the index if this transaction is valid
 
   pure function next_index (
-    index : index_type;
+    index : INDEX_TYPE;
     ready : std_logic;
     valid : std_logic
-  ) return index_type is
+  ) return INDEX_TYPE is
   begin
     if ready = '1' and valid = '1' then
       if index = index_type'high then
@@ -99,7 +99,7 @@ begin
   -- Set s_ready_o when the RAM isn't full
   s_ready_proc : process (all)
   begin
-    if count < G_RAM_DEPTH - 1 then
+    if count < 2 ** G_ADDR_BITS - 1 then
       s_ready_o <= '1';
     else
       s_ready_o <= '0';
@@ -110,7 +110,7 @@ begin
   count_proc : process (all)
   begin
     if head < tail then
-      count <= integer(head) - integer(tail) + G_RAM_DEPTH;
+      count <= integer(head) - integer(tail) + 2 ** G_ADDR_BITS;
     else
       count <= integer(head) - integer(tail);
     end if;
@@ -127,7 +127,7 @@ begin
       head <= next_index(head, s_ready_o, s_valid_i);
 
       if rst_i = '1' then
-        head <= index_type'low;
+        head <= INDEX_TYPE'low;
       end if;
     end if;
   end process head_proc;
@@ -138,7 +138,7 @@ begin
       tail <= next_index(tail, m_ready_i, m_valid_o);
 
       if rst_i = '1' then
-        tail <= index_type'low;
+        tail <= INDEX_TYPE'low;
       end if;
     end if;
   end process tail_proc;
@@ -150,7 +150,7 @@ begin
       if s_valid_i = '1' and s_ready_o = '1' then
         ram(head) <= s_data_i;
       end if;
-      m_data_o  <= ram(next_index(tail, m_ready_i, m_valid_o));
+      m_data_o <= ram(next_index(tail, m_ready_i, m_valid_o));
     end if;
   end process ram_proc;
 

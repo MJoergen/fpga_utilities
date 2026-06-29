@@ -25,13 +25,13 @@ DUT = axip_fifo
 STOP_TIME = 30us
 
 # Test bench configuration
-GENERIC += -gG_RAM_DEPTH=8
 GENERIC += -gG_DEBUG=false
 GENERIC += -gG_RANDOM=true
 GENERIC += -gG_FAST=true
 GENERIC += -gG_MIN_LENGTH=1
 GENERIC += -gG_MAX_LENGTH=20
 GENERIC += -gG_CNT_SIZE=12
+GENERIC += -gG_ADDR_BITS=3
 GENERIC += -gG_DATA_BYTES=3
 
 # Don't stop on errors

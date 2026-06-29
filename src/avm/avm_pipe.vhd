@@ -10,9 +10,9 @@ library ieee;
 
 entity avm_pipe is
   generic (
-    G_BURST_BITS : positive := 8; -- Number of bits
     G_ADDR_BITS  : positive; -- Number of bits
-    G_DATA_BITS  : positive  -- Number of bits
+    G_DATA_BITS  : positive; -- Number of bits
+    G_BURST_BITS : positive := 8 -- Number of bits
   );
   port (
     clk_i             : in    std_logic;

@@ -13,10 +13,10 @@ library std;
 
 entity tb_axis_fifo is
   generic (
-    G_RAM_DEPTH : natural;
+    G_ADDR_BITS : positive;
     G_RANDOM    : boolean;
     G_FAST      : boolean;
-    G_DATA_BITS : natural
+    G_DATA_BITS : positive
   );
 end entity tb_axis_fifo;
 
@@ -49,9 +49,9 @@ begin
 
   axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_RAM_STYLE => "auto",
-      G_RAM_DEPTH => G_RAM_DEPTH,
-      G_DATA_BITS => G_DATA_BITS
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BITS,
+      G_RAM_STYLE => "auto"
     )
     port map (
       clk_i     => clk,

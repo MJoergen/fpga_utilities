@@ -12,14 +12,14 @@ library ieee;
 
 entity axip_fifo is
   generic (
-    G_RAM_STYLE  : string := "auto";
-    G_RAM_DEPTH  : positive;
-    G_DATA_BYTES : positive
+    G_ADDR_BITS  : positive;
+    G_DATA_BYTES : positive;
+    G_RAM_STYLE  : string := "auto"
   );
   port (
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
-    fill_o    : out   natural range 0 to G_RAM_DEPTH - 1;
+    fill_o    : out   natural range 0 to 2**G_ADDR_BITS - 1;
 
     -- AXI packet input interface
     s_ready_o : out   std_logic;
@@ -52,9 +52,9 @@ begin
 
   axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_RAM_STYLE => G_RAM_STYLE,
-      G_RAM_DEPTH => G_RAM_DEPTH,
-      G_DATA_BITS => G_DATA_BYTES * 8 + 16
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BYTES * 8 + 16,
+      G_RAM_STYLE => G_RAM_STYLE
     )
     port map (
       clk_i     => clk_i,

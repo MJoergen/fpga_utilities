@@ -48,21 +48,22 @@ library ieee;
 
 entity avm_decrease is
   generic (
-    -- Width of both s_burstcount_i and m_burstcount_o. Must be wide enough to
-    -- hold the master-side count, i.e. (max slave burstcount) * C_RATIO without
-    -- wrapping.
-    G_BURST_BITS       : positive := 8;
-
     -- Address and data widths.
     -- Constraints (enforced by assertions in the architecture):
     --   * G_SLAVE_DATA_BITS = C_RATIO * G_MASTER_DATA_BITS
     --   * C_RATIO is a power of two (i.e. 2**C_ADDR_SHIFT = C_RATIO)
     --   * G_MASTER_ADDR_BITS = G_SLAVE_ADDR_BITS + log2(C_RATIO)
     -- A degenerate ratio of 1 is rejected; use a passthrough wrapper instead.
-    G_SLAVE_ADDR_BITS  : positive := 15;
-    G_SLAVE_DATA_BITS  : positive := 32; -- power-of-two multiple of G_MASTER_DATA_BITS
-    G_MASTER_ADDR_BITS : positive := 16;
-    G_MASTER_DATA_BITS : positive := 16
+    G_SLAVE_ADDR_BITS  : positive;
+    G_SLAVE_DATA_BITS  : positive; -- power-of-two multiple of G_MASTER_DATA_BITS
+    G_MASTER_ADDR_BITS : positive;
+    G_MASTER_DATA_BITS : positive;
+
+    -- Width of both s_burstcount_i and m_burstcount_o. Must be wide enough to
+    -- hold the master-side count, i.e. (max slave burstcount) * C_RATIO without
+    -- wrapping.
+    G_BURST_BITS       : positive := 8
+
   );
   port (
     clk_i             : in    std_logic;

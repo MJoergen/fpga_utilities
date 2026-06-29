@@ -119,8 +119,8 @@ begin
 
   axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_DATA_BITS => G_ADDR_BITS,
-      G_RAM_DEPTH => G_RAM_DEPTH
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_ADDR_BITS
     )
     port map (
       clk_i     => clk_i,

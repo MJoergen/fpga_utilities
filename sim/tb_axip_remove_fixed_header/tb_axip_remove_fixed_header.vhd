@@ -259,9 +259,9 @@ begin
 
   axis_fifo_length_inst : entity work.axis_fifo
     generic map (
-      G_RAM_STYLE => "auto",
+      G_ADDR_BITS => 2,
       G_DATA_BITS => C_LENGTH_SIZE,
-      G_RAM_DEPTH => C_RAM_DEPTH
+      G_RAM_STYLE => "auto"
     )
     port map (
       clk_i     => clk,

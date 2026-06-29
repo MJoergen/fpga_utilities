@@ -11,11 +11,11 @@ library ieee;
 entity avm_pause is
   generic (
     G_BURST_BITS : natural                       := 8;
-    G_MAX_BURST   : natural                       := 8;
-    G_SEED        : std_logic_vector(63 downto 0) := X"12345678AABBCCDD";
-    G_PAUSE_SIZE  : natural;
-    G_ADDR_BITS   : natural;
-    G_DATA_BITS   : natural
+    G_MAX_BURST  : natural                       := 8;
+    G_SEED       : std_logic_vector(63 downto 0) := X"12345678AABBCCDD";
+    G_PAUSE_SIZE : natural;
+    G_ADDR_BITS  : natural;
+    G_DATA_BITS  : natural
   );
   port (
     clk_i             : in    std_logic;
@@ -63,7 +63,7 @@ architecture rtl of avm_pause is
   signal  axis_m_ready : std_logic;
   signal  axis_m_valid : std_logic;
   signal  axis_m_data  : std_logic_vector(G_DATA_BITS - 1 downto 0);
-  signal  axis_fill    : natural range 0 to G_MAX_BURST;
+  signal  axis_fill    : natural range 0 to 2 ** G_BURST_BITS - 1;
 
 begin
 
@@ -163,7 +163,7 @@ begin
 
     axis_fifo_inst : entity work.axis_fifo
       generic map (
-        G_RAM_DEPTH => G_MAX_BURST + 1,
+        G_ADDR_BITS => G_BURST_BITS,
         G_DATA_BITS => G_DATA_BITS
       )
       port map (
@@ -190,7 +190,7 @@ begin
         if m_readdatavalid_i = '1' then
           assert axis_s_ready = '1'
             report "avm_pause: read fifo full"
-              severity failure;
+            severity failure;
         end if;
 
         s_readdatavalid_o <= '0';

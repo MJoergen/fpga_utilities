@@ -44,11 +44,11 @@ library ieee;
 
 entity avm_increase is
   generic (
-    G_BURST_BITS       : positive := 8;
-    G_SLAVE_ADDR_BITS  : positive := 16;
-    G_SLAVE_DATA_BITS  : positive := 16;
-    G_MASTER_ADDR_BITS : positive := 15;
-    G_MASTER_DATA_BITS : positive := 32 -- Must be an integer multiple of G_SLAVE_DATA_BITS
+    G_SLAVE_ADDR_BITS  : positive;
+    G_SLAVE_DATA_BITS  : positive;
+    G_MASTER_ADDR_BITS : positive;
+    G_MASTER_DATA_BITS : positive; -- Must be an integer multiple of G_SLAVE_DATA_BITS
+    G_BURST_BITS       : positive := 8
   );
   port (
     clk_i             : in    std_logic;
@@ -596,8 +596,8 @@ begin
 
   read_axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_DATA_BITS => G_MASTER_DATA_BITS,
-      G_RAM_DEPTH => C_BURST_LIMIT
+      G_ADDR_BITS => G_BURST_BITS,
+      G_DATA_BITS => G_MASTER_DATA_BITS
     )
     port map (
       clk_i     => clk_i,
@@ -616,8 +616,8 @@ begin
 
   write_axis_fifo_inst : entity work.axis_fifo
     generic map (
-      G_DATA_BITS => C_WRITE_FIFO_DATA_BITS,
-      G_RAM_DEPTH => C_BURST_LIMIT
+      G_ADDR_BITS => G_BURST_BITS,
+      G_DATA_BITS => C_WRITE_FIFO_DATA_BITS
     )
     port map (
       clk_i     => clk_i,

@@ -45,10 +45,10 @@ library ieee;
 
 entity avm_readahead is
   generic (
-    G_BURST_BITS : natural := 8;   -- Number of bits in the *_burstcount_* ports
+    G_ADDR_BITS  : natural;  -- Address width in bits
+    G_DATA_BITS  : natural;  -- Data word width in bits
     G_CACHE_SIZE : natural := 8;   -- Number of words in the buffer (must be even for sliding window)
-    G_ADDR_BITS  : natural := 16;  -- Address width in bits
-    G_DATA_BITS  : natural := 16   -- Data word width in bits
+    G_BURST_BITS : natural := 8    -- Number of bits in the *_burstcount_* ports
   );
   port (
     clk_i             : in    std_logic;

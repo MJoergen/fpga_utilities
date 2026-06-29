@@ -32,7 +32,7 @@ axis_dropper.edif:         axis_fifo.vhd axis_dropper.vhd
 #
 # Add a line per file that needs overrides:
 
-GENERICS_axis_fifo       = -gG_RAM_DEPTH=64 -gG_DATA_BITS=8 -gG_RAM_STYLE=distributed
+GENERICS_axis_fifo       = -gG_ADDR_BITS=6  -gG_DATA_BITS=8 -gG_RAM_STYLE=distributed
 GENERICS_axis_fifo_async = -gG_ADDR_BITS=12 -gG_DATA_BITS=8 -gG_RAM_STYLE=block
 GENERICS_axis_pipe_async = -gG_DATA_BITS=8
 GENERICS_axis_arbiter    = -gG_DATA_BITS=8

@@ -13,13 +13,13 @@ library std;
 
 entity tb_axip_fifo is
   generic (
-    G_RAM_DEPTH  : natural;
     G_DEBUG      : boolean;
     G_RANDOM     : boolean;
     G_FAST       : boolean;
     G_MIN_LENGTH : natural;
     G_MAX_LENGTH : natural;
     G_CNT_SIZE   : natural;
+    G_ADDR_BITS  : natural;
     G_DATA_BYTES : natural
   );
 end entity tb_axip_fifo;
@@ -57,9 +57,9 @@ begin
 
   axip_fifo_inst : entity work.axip_fifo
     generic map (
-      G_RAM_STYLE => "auto",
-      G_RAM_DEPTH => G_RAM_DEPTH,
-      G_DATA_BYTES => G_DATA_BYTES
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BYTES => G_DATA_BYTES,
+      G_RAM_STYLE  => "auto"
     )
     port map (
       clk_i     => clk,

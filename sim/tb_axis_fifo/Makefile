@@ -22,9 +22,9 @@ DUT = axis_fifo
 STOP_TIME = 60us
 
 # Test bench configuration
-GENERIC += -gG_RAM_DEPTH=8
 GENERIC += -gG_RANDOM=true
 GENERIC += -gG_FAST=true
+GENERIC += -gG_ADDR_BITS=4
 GENERIC += -gG_DATA_BITS=12
 
 # Don't stop on errors

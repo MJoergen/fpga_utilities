@@ -13,7 +13,7 @@ bmc: depth 12
 smtbmc
 
 [script]
-ghdl --std=08 -gG_RAM_DEPTH=4 -gG_DATA_BITS=4 axis_fifo.vhd axis_fifo.psl -e axis_fifo
+ghdl --std=08 -gG_ADDR_BITS=3 -gG_DATA_BITS=4 axis_fifo.vhd axis_fifo.psl -e axis_fifo
 prep -top axis_fifo
 
 [files]
