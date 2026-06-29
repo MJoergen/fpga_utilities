@@ -35,7 +35,6 @@ testbench are flagged as **unverified**.
 | `axip_fifo_async`            | – | **unverified** |
 | `axip_insert_fixed_header`   | ✓ | `tb_axip_insert_fixed_header`, `tb_axip_fixed_header` |
 | `axip_pipe`                  | – | `tb_axip_pipe` |
-| `axip_pipe_async`            | – | `tb_axip_pipe_async` |
 | `axip_remove_fixed_header`   | ✓ | `tb_axip_remove_fixed_header`, `tb_axip_fixed_header` |
 | `axis_arbiter`               | ✓ | `tb_axis_arbiter` |
 | `axis_demux`                 | – | **unverified** |
@@ -123,9 +122,6 @@ compile order before any `axip_*` instance.
   is a generic; the source packet's framing is preserved on the output.
 - [`axip_pipe.vhd`](../src/axip/axip_pipe.vhd): Two-stage AXIP pipeline
   register. Same timing-closure use case as `axis_pipe`.
-- [`axip_pipe_async.vhd`](../src/axip/axip_pipe_async.vhd): Shallow
-  asynchronous AXIP FIFO for clock-domain crossing. Same CDC notes as
-  `axis_pipe_async`.
 - [`axip_pkg.vhd`](../src/axip/axip_pkg.vhd): Package defining the
   records, types, and helper functions used by every `axip_*` entity.
   Not an entity; required in the compile order.

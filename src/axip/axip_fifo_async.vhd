@@ -1,122 +1,80 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: An AXI packet stream asynchronous FIFO. Wrapper for the Xilinx
+-- xpm_fifo_axis primitive; not portable to non-Xilinx targets.
+-- s_bytes_i is only valid when s_last_i is 1.
+-- m_bytes_o is only valid when m_last_o is 1.
 --
 -- SPDX-License-Identifier: MIT
+-- ---------------------------------------------------------------------------------------
+
 
 library ieee;
   use ieee.std_logic_1164.all;
-  use ieee.numeric_std_unsigned.all;
-
-library xpm;
-  use xpm.vcomponents.all;
+  use ieee.numeric_std.all;
 
 entity axip_fifo_async is
   generic (
-    G_DEPTH      : positive;
-    G_FILL_SIZE  : positive;
-    G_DATA_BYTES : positive
+    G_ADDR_BITS  : positive;
+    G_DATA_BYTES : positive;
+    G_RAM_STYLE  : string
   );
   port (
-    s_clk_i   : in    std_logic;
-    s_rst_i   : in    std_logic;
-    s_ready_o : out   std_logic;
-    s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    s_last_i  : in    std_logic;
-    s_bytes_i : in    natural range 0 to G_DATA_BYTES;
-    s_fill_o  : out   std_logic_vector(G_FILL_SIZE - 1 downto 0);
-    m_clk_i   : in    std_logic;
-    m_ready_i : in    std_logic;
-    m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
-    m_last_o  : out   std_logic;
-    m_bytes_o : out   natural range 0 to G_DATA_BYTES;
-    m_fill_o  : out   std_logic_vector(G_FILL_SIZE - 1 downto 0)
+    async_rst_i : in    std_logic;
+    -- AXI packet input interface
+    s_clk_i     : in    std_logic;
+    s_ready_o   : out   std_logic;
+    s_valid_i   : in    std_logic;
+    s_data_i    : in    std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+    s_last_i    : in    std_logic;
+    s_bytes_i   : in    natural range 0 to G_DATA_BYTES;
+
+    -- AXI packet output interface
+    m_clk_i     : in    std_logic;
+    m_ready_i   : in    std_logic;
+    m_valid_o   : out   std_logic;
+    m_data_o    : out   std_logic_vector(G_DATA_BYTES * 8 - 1 downto 0);
+    m_last_o    : out   std_logic;
+    m_bytes_o   : out   natural range 0 to G_DATA_BYTES
   );
 end entity axip_fifo_async;
 
 architecture rtl of axip_fifo_async is
 
-  pure function keep2bytes (
-    keep : std_logic_vector
-  ) return natural is
-  begin
-    for i in 0 to G_DATA_BYTES - 1 loop
-      if keep(i) = '0' then
-        return i;
-      end if;
-    end loop;
-    return G_DATA_BYTES;
-  end function keep2bytes;
+  subtype  R_DATA is natural range G_DATA_BYTES * 8 - 1 downto 0;
 
-  pure function bytes2keep (
-    bytes : natural range 0 to G_DATA_BYTES
-  ) return std_logic_vector is
-    variable ret_v : std_logic_vector(G_DATA_BYTES - 1 downto 0);
-  begin
-    for i in 0 to G_DATA_BYTES - 1 loop
-      if i < bytes then
-        ret_v(i) := '1';
-      else
-        ret_v(i) := '0';
-      end if;
-    end loop;
-    return ret_v;
-  end function bytes2keep;
+  subtype  R_BYTES is natural range G_DATA_BYTES * 8 + 14 downto G_DATA_BYTES * 8;
+
+  constant C_LAST : natural := G_DATA_BYTES * 8 + 15;
+
+  signal   s_in  : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
+  signal   m_out : std_logic_vector(G_DATA_BYTES * 8 + 15 downto 0);
 
 begin
 
-  xpm_fifo_axis_inst : component xpm_fifo_axis
+  axis_fifo_async_inst : entity work.axis_fifo_async
     generic map (
-      CDC_SYNC_STAGES     => 2,
-      CLOCKING_MODE       => "independent_clock",
-      ECC_MODE            => "no_ecc",
-      FIFO_DEPTH          => G_DEPTH,
-      FIFO_MEMORY_TYPE    => "auto",
-      PACKET_FIFO         => "false",
-      PROG_EMPTY_THRESH   => 10,
-      PROG_FULL_THRESH    => 10,
-      RD_DATA_COUNT_WIDTH => G_FILL_SIZE,
-      RELATED_CLOCKS      => 0,
-      SIM_ASSERT_CHK      => 0,
-      TDATA_WIDTH         => G_DATA_BYTES * 8,
-      TDEST_WIDTH         => 1,
-      TID_WIDTH           => 1,
-      TUSER_WIDTH         => 1,
-      USE_ADV_FEATURES    => "1404",
-      WR_DATA_COUNT_WIDTH => G_FILL_SIZE
+      G_ADDR_BITS => G_ADDR_BITS,
+      G_DATA_BITS => G_DATA_BYTES * 8 + 16,
+      G_RAM_STYLE => G_RAM_STYLE
     )
     port map (
-      almost_empty_axis        => open,
-      almost_full_axis         => open,
-      dbiterr_axis             => open,
-      injectdbiterr_axis       => '0',
-      injectsbiterr_axis       => '0',
-      m_aclk                   => m_clk_i,
-      m_axis_tdata             => m_data_o,
-      m_axis_tdest             => open,
-      m_axis_tid               => open,
-      keep2bytes(m_axis_tkeep) => m_bytes_o,
-      m_axis_tlast             => m_last_o,
-      m_axis_tready            => m_ready_i,
-      m_axis_tstrb             => open,
-      m_axis_tuser             => open,
-      m_axis_tvalid            => m_valid_o,
-      prog_empty_axis          => open,
-      prog_full_axis           => open,
-      rd_data_count_axis       => m_fill_o,
-      s_aclk                   => s_clk_i,
-      s_aresetn                => not s_rst_i,
-      s_axis_tdata             => s_data_i,
-      s_axis_tdest             => (others => '0'),
-      s_axis_tid               => (others => '0'),
-      s_axis_tkeep             => bytes2keep(s_bytes_i),
-      s_axis_tlast             => s_last_i,
-      s_axis_tready            => s_ready_o,
-      s_axis_tstrb             => (others => '0'),
-      s_axis_tuser             => (others => '0'),
-      s_axis_tvalid            => s_valid_i,
-      sbiterr_axis             => open,
-      wr_data_count_axis       => s_fill_o
-    ); -- xpm_fifo_axis_inst
+      async_rst_i => async_rst_i,
+      s_clk_i     => s_clk_i,
+      s_ready_o   => s_ready_o,
+      s_valid_i   => s_valid_i,
+      s_data_i    => s_in,
+      m_clk_i     => m_clk_i,
+      m_ready_i   => m_ready_i,
+      m_valid_o   => m_valid_o,
+      m_data_o    => m_out
+    ); -- axis_fifo_async_inst : entity work.axis_fifo_async
+
+  s_in(R_DATA)  <= s_data_i;
+  s_in(R_BYTES) <= std_logic_vector(to_unsigned(s_bytes_i, 15));
+  s_in(C_LAST)  <= s_last_i;
+  m_data_o      <= m_out(R_DATA);
+  m_bytes_o     <= to_integer(unsigned(m_out(R_BYTES)));
+  m_last_o      <= m_out(C_LAST);
 
 end architecture rtl;
 
