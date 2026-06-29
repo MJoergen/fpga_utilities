@@ -2,7 +2,6 @@
 
 SRC += axis_arbiter.vhd
 SRC += axis_demux.vhd
-SRC += axis_dropper.vhd
 SRC += axis_fifo_async.vhd
 SRC += axis_fifo.vhd
 SRC += axis_pipe_async.vhd
@@ -14,9 +13,6 @@ SRC += axis_pipe.vhd
 TARGETS = $(patsubst %.vhd,%.edif,$(SRC))
 
 all: $(TARGETS)
-
-# Explicitly handle dependencies
-axis_dropper.edif:         axis_fifo.vhd axis_dropper.vhd
 
 ########################################
 # Per-file generic overrides.
@@ -37,7 +33,6 @@ GENERICS_axis_fifo_async = -gG_ADDR_BITS=12 -gG_DATA_BITS=8 -gG_RAM_STYLE=block
 GENERICS_axis_pipe_async = -gG_DATA_BITS=8
 GENERICS_axis_arbiter    = -gG_DATA_BITS=8
 GENERICS_axis_demux      = -gG_DATA_BITS=8
-GENERICS_axis_dropper    = -gG_ADDR_BITS=4 -gG_DATA_BITS=8 -gG_RAM_DEPTH=32
 GENERICS_axis_pipe_lite  = -gG_DATA_BITS=8
 GENERICS_axis_pipe       = -gG_DATA_BITS=8
 

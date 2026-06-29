@@ -16,5 +16,24 @@ package axip_pkg is
 
   type bytes_array_type is array (natural range <>) of bytes_type;
 
+  pure function bytes_to_slv(bytes : bytes_type) return std_logic_vector;
+  pure function slv_to_bytes(slv : std_logic_vector) return bytes_type;
+
 end package axip_pkg;
+
+package body axip_pkg is
+
+  pure function bytes_to_slv(bytes : bytes_type) return std_logic_vector is
+  begin
+    assert bytes /= 0;
+    return std_logic_vector(to_unsigned(bytes, 16));
+  end function bytes_to_slv;
+
+  pure function slv_to_bytes(slv : std_logic_vector) return bytes_type is
+  begin
+    assert or(slv) /= '0';
+    return to_integer(unsigned(slv));
+  end function slv_to_bytes;
+
+end package body axip_pkg;
 

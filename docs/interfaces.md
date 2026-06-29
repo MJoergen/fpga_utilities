@@ -75,7 +75,6 @@ These rules are enforced by the formal properties under `../formal/`:
 ### Verification
 
 - **Formal properties:** `../formal/axis_arbiter.psl`,
-  `../formal/axis_dropper.psl`,
   `../formal/axis_fifo.psl`.
 - **Bus-functional models:** `../sim/src/axis_master_sim.vhd`,
   `../sim/src/axis_slave_sim.vhd`, `../sim/src/axis_sim.vhd`
@@ -188,6 +187,7 @@ bit: 63        56 55        48 47        40 ... 7         0
 ### Verification
 
 - **Formal properties:** `../formal/axip_arbiter.psl`,
+  `../formal/axip_dropper.psl`,
   `../formal/axip_insert_fixed_header.psl`,
   `../formal/axip_remove_fixed_header.psl`,
   `../formal/axip_to_axis.psl`, `../formal/axis_to_axip.psl`.

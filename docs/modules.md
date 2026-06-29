@@ -31,6 +31,7 @@ testbench are flagged as **unverified**.
 | `axip_arbiter`               | ✓ | `tb_axip_arbiter` |
 | `axip_arbiter_general`       | – | **unverified** |
 | `axip_demux`                 | – | **unverified** |
+| `axip_dropper`               | ✓ | **no testbench** |
 | `axip_fifo`                  | – | `tb_axip_fifo` |
 | `axip_fifo_async`            | – | **unverified** |
 | `axip_insert_fixed_header`   | ✓ | `tb_axip_insert_fixed_header`, `tb_axip_fixed_header` |
@@ -38,7 +39,6 @@ testbench are flagged as **unverified**.
 | `axip_remove_fixed_header`   | ✓ | `tb_axip_remove_fixed_header`, `tb_axip_fixed_header` |
 | `axis_arbiter`               | ✓ | `tb_axis_arbiter` |
 | `axis_demux`                 | – | **unverified** |
-| `axis_dropper`               | ✓ | **no testbench** |
 | `axis_fifo`                  | ✓ | `tb_axis_fifo` |
 | `axis_fifo_async`            | – | `tb_axis_fifo_async` |
 | `axis_pipe`                  | – | `tb_axis_pipe` |
@@ -72,10 +72,6 @@ the `axis` interface specified in
 - [`axis_demux.vhd`](../src/axis/axis_demux.vhd): Demultiplexes a
   single AXIS source onto two AXIS sinks, selected by an external
   control input. **Unverified — no testbench or formal proof.**
-- [`axis_dropper.vhd`](../src/axis/axis_dropper.vhd): Drops selected
-  beats from an AXIS stream under control of an external `drop` input.
-  Pass-through latency is one cycle when not dropping.
-  Formally proved; no dedicated testbench yet.
 - [`axis_fifo.vhd`](../src/axis/axis_fifo.vhd): Synchronous AXIS FIFO
   (single clock for in and out). Depth is generic; storage uses
   inferred block RAM.
@@ -110,6 +106,10 @@ compile order before any `axip_*` instance.
   a single AXIP source onto two AXIP sinks, selected at packet
   granularity by an external control input.
   **Unverified.**
+- [`axip_dropper.vhd`](../src/axip/axip_dropper.vhd): Drops selected
+  packets from an AXIP stream under control of an external `drop` input.
+  Pass-through latency is one cycle when not dropping.
+  Formally proved; no dedicated testbench yet.
 - [`axip_fifo.vhd`](../src/axip/axip_fifo.vhd): Synchronous AXIP FIFO
   (single clock for in and out). Stores `DATA`, `LAST`, and `BYTES`.
   Depth is generic.
