@@ -81,7 +81,10 @@ vunit axip_dropper_inst(axip_dropper(rtl))
    f_reset : assume {rst_i};
 
 -- The expected frame length must be positive.
-   f_value_frame_len_positive : assume f_value_frame_len > 0;
+   f_value_frame_len_positive : assume always f_value_frame_len > 0;
+
+-- BYTES must be non-zero
+   f_bytes_positive : assume always s_bytes_i /= 0;
 
 
 --------------------------------------------

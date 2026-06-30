@@ -227,7 +227,7 @@ begin
       case fsm_state is
 
         when IDLE_ST =>
-          if fifo_rd_valid = '1' and fifo_rd_ready = '1' then
+          if fifo_rd_valid = '1' and fifo_rd_ready = '1' and rst_i = '0' then
             -- Latch end-of-frame index and emit the first beat of the new frame.
             last_ptr  <= unsigned(fifo_rd_data);
             m_valid_o <= '1';
