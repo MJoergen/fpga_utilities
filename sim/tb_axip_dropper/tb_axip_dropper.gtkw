@@ -1,23 +1,24 @@
 [*]
 [*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Mon Jun 29 10:06:52 2026
+[*] Tue Jun 30 10:43:35 2026
 [*]
 [dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_axip_dropper/tb_axip_dropper.ghw"
-[dumpfile_mtime] "Mon Jun 29 10:06:40 2026"
+[dumpfile_mtime] "Tue Jun 30 10:41:21 2026"
 [dumpfile_size] 36252
 [savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/sim/tb_axip_dropper/tb_axip_dropper.gtkw"
-[timestart] 0
+[timestart] 241200000
 [size] 1280 862
 [pos] -1 -1
-*-26.866089 2 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-25.866089 355200000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.tb_axip_dropper.
-[treeopen] top.tb_axip_dropper.axip_dropper_inst.
+[treeopen] top.tb_axip_dropper.axip_sim_inst.
+[treeopen] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.
 [sst_width] 210
-[signals_width] 223
+[signals_width] 332
 [sst_expanded] 1
 [sst_vpaned_height] 234
-@800200
+@c00200
 -axip_dropper
 @28
 top.tb_axip_dropper.axip_dropper_inst.clk_i
@@ -66,6 +67,54 @@ top.tb_axip_dropper.axip_dropper_inst.fifo_rd_valid
 top.tb_axip_dropper.axip_dropper_inst.fsm_state
 @1000200
 -Internal
+@1401200
 -axip_dropper
+@800200
+-axip_slave_sim
+@28
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.clk_i
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rst_i
+[color] 6
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_ready_o
+[color] 2
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_valid_i
+@22
+#{top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[23:0]} top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[23] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[22] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[21] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[20] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[19] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[18] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[17] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[16] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[15] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[14] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[13] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[12] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[11] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[10] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[9] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[8] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[7] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[6] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[5] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[4] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[3] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[2] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[1] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_data_i[0]
+@28
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_last_i
+@420
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.s_bytes_i
+@800200
+-Internal
+@420
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_state
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_length
+@22
+#{top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[13:0]} top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[13] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[12] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[11] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[10] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[9] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[8] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[7] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[6] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[5] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[4] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[3] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[2] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[1] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_cnt[0]
+@28
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.verf_do_ready
+@22
+#{top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[63:0]} top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[63] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[62] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[61] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[60] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[59] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[58] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[57] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[56] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[55] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[54] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[53] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[52] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[51] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[50] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[49] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[48] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[47] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[46] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[45] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[44] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[43] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[42] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[41] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[40] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[39] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[38] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[37] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[36] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[35] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[34] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[33] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[32] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[31] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[30] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[29] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[28] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[27] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[26] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[25] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[24] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[23] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[22] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[21] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[20] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[19] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[18] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[17] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[16] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[15] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[14] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[13] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[12] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[11] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[10] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[9] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[8] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[7] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[6] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[5] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[4] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[3] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[2] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[1] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.rand[0]
+@28
+[color] 6
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_ready
+[color] 2
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_valid
+@22
+#{top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[7:0]} top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[7] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[6] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[5] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[4] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[3] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[2] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[1] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.header_data[0]
+@28
+[color] 6
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_ready
+[color] 2
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_valid
+@22
+#{top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[23:0]} top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[23] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[22] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[21] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[20] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[19] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[18] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[17] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[16] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[15] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[14] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[13] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[12] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[11] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[10] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[9] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[8] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[7] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[6] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[5] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[4] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[3] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[2] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[1] top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_data[0]
+@28
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_last
+@420
+top.tb_axip_dropper.axip_sim_inst.axip_slave_sim_inst.payload_bytes
+@1000200
+-Internal
+-axip_slave_sim
 [pattern_trace] 1
 [pattern_trace] 0

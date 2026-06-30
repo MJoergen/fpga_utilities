@@ -128,6 +128,7 @@ begin
 
   verify_proc : process (clk_i)
     variable length_v : natural range G_MIN_LENGTH to G_MAX_LENGTH;
+    variable data_v : std_logic_vector(7 downto 0);
   begin
     if rising_edge(clk_i) then
 
@@ -138,7 +139,8 @@ begin
             length_v := to_integer(header_data);
             if G_DEBUG then
               report "axip_sim " & G_NAME &
-                     ": VERF length " & to_string(length_v);
+                     ": VERF length " & to_string(length_v) &
+                     ", first byte " & to_hstring(verf_cnt(7 downto 0));
             end if;
             verf_length <= length_v;
             verf_state  <= VERF_DATA_ST;
@@ -148,10 +150,11 @@ begin
           if payload_valid = '1' and payload_ready = '1' then
 
             for i in 0 to payload_bytes - 1 loop
-              assert payload_data((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8) = verf_cnt(7 downto 0) + i
+              data_v := payload_data((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8);
+              assert data_v = verf_cnt(7 downto 0) + i
                 report "axip_sim " & G_NAME &
                        ": Verify byte " & to_string(i) &
-                       ". Received " & to_hstring(payload_data(i * 8 + 7 downto i * 8)) &
+                       ". Received " & to_hstring(data_v) &
                        ", expected " & to_hstring(verf_cnt(7 downto 0) + i);
             end loop;
 

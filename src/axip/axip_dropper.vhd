@@ -56,6 +56,7 @@ architecture rtl of axip_dropper is
 
   -- Current write pointer.
   signal   wrptr : natural range 0 to 2 ** G_ADDR_BITS - 1     := 0;
+  signal   wrptr_next : natural range 0 to 2 ** G_ADDR_BITS - 1;
 
   -- Current read pointer.
   signal   rdptr : natural range 0 to 2 ** G_ADDR_BITS - 1     := 0;
@@ -79,7 +80,9 @@ architecture rtl of axip_dropper is
 
 begin
 
-  s_ready_o <= '1' when wrptr + 1 /= rdptr and fifo_wr_ready = '1' else
+  wrptr_next <= (wrptr + 1) mod (2**G_ADDR_BITS);
+
+  s_ready_o <= '1' when wrptr_next /= rdptr and fifo_wr_ready = '1' else
                '0';
 
   ----------------------------------------------------

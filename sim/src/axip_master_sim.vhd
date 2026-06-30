@@ -126,7 +126,8 @@ begin
 
             if rst_i = '0' and G_DEBUG then
               report "axip_sim " & G_NAME &
-                     ": STIM length " & to_string(length_v);
+                     ": STIM length " & to_string(length_v) &
+                     ", first byte " & to_hstring(stim_cnt(7 downto 0));
             end if;
 
             -- Store length in FIFO
@@ -164,7 +165,8 @@ begin
 
                     if rst_i = '0' and G_DEBUG then
                       report "axip_sim " & G_NAME &
-                             ": STIM length " & to_string(length_v);
+                             ": STIM length " & to_string(length_v) &
+                             ", first byte " & to_hstring(stim_cnt(7 downto 0));
                     end if;
 
                     -- Store length in FIFO
