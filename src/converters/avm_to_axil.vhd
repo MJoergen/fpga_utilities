@@ -1,8 +1,12 @@
+-- ---------------------------------------------------------------------------------------
+-- Description: This allows a Avalon Master to be connected to an AXI Slave
+--
+-- SPDX-License-Identifier: MIT
+-- ---------------------------------------------------------------------------------------
+
 library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
-
--- This allows a Avalon Master to be connected to an AXI Slave
 
 entity avm_to_axil is
   generic (
