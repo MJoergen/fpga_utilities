@@ -4,6 +4,7 @@
 DUTS += avm_arbiter
 DUTS += avm_readahead
 DUTS += avm_increase
+DUTS += avm_to_axil
 DUTS += axil_to_avm
 DUTS += axil_to_wbus
 DUTS += axip_arbiter

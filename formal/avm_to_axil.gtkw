@@ -1,0 +1,79 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Wed Jul  1 20:13:02 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/formal/avm_to_axil_bmc/engine_0/trace.vcd"
+[dumpfile_mtime] "Wed Jul  1 20:10:15 2026"
+[dumpfile_size] 2699
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/formal/avm_to_axil.gtkw"
+[timestart] 0
+[size] 1285 897
+[pos] -1769 -56
+*-2.676424 7 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 239
+[signals_width] 280
+[sst_expanded] 1
+[sst_vpaned_height] 262
+@800200
+-avm_to_axil
+@28
+avm_to_axil.clk_i
+avm_to_axil.rst_i
+[color] 6
+avm_to_axil.s_waitrequest_o
+[color] 2
+avm_to_axil.s_write_i
+[color] 2
+avm_to_axil.s_read_i
+@22
+avm_to_axil.s_address_i[3:0]
+avm_to_axil.s_writedata_i[15:0]
+@28
+avm_to_axil.s_byteenable_i[1:0]
+@22
+avm_to_axil.s_burstcount_i[7:0]
+@28
+[color] 3
+avm_to_axil.s_readdatavalid_o
+@22
+avm_to_axil.s_readdata_o[15:0]
+@28
+[color] 6
+avm_to_axil.m_awready_i
+[color] 2
+avm_to_axil.m_awvalid_o
+@22
+avm_to_axil.m_awaddr_o[3:0]
+@28
+[color] 6
+avm_to_axil.m_wready_i
+[color] 2
+avm_to_axil.m_wvalid_o
+@22
+avm_to_axil.m_wdata_o[15:0]
+@28
+avm_to_axil.m_wstrb_o[1:0]
+[color] 6
+avm_to_axil.m_bready_o
+[color] 2
+avm_to_axil.m_bvalid_i
+avm_to_axil.m_bresp_i[1:0]
+[color] 6
+avm_to_axil.m_arready_i
+[color] 2
+avm_to_axil.m_arvalid_o
+@22
+avm_to_axil.m_araddr_o[3:0]
+@28
+[color] 6
+avm_to_axil.m_rready_o
+[color] 2
+avm_to_axil.m_rvalid_i
+@22
+avm_to_axil.m_rdata_i[15:0]
+@28
+avm_to_axil.m_rresp_i[1:0]
+@1000200
+-avm_to_axil
+[pattern_trace] 1
+[pattern_trace] 0

@@ -1,0 +1,35 @@
+vunit avm_to_axil_inst(avm_to_axil(rtl))
+{
+-- set all declarations to run on clk
+   default clock is rising_edge(clk_i);
+
+------------------------------------------------
+-- PROPERTIES OF THE MASTER INTERFACE
+------------------------------------------------
+
+   f_master_aw_reset : assert always {rst_i} |=> {not m_awvalid_o};
+
+   f_master_aw_stable : assert always {m_awvalid_o and not m_awready_i and not rst_i} |=> {stable(m_awvalid_o) and stable(m_awaddr_o)};
+
+   f_master_w_reset : assert always {rst_i} |=> {not m_wvalid_o};
+
+   f_master_w_stable : assert always {m_wvalid_o and not m_wready_i and not rst_i} |=> {stable(m_wvalid_o) and stable(m_wdata_o) and stable(m_wstrb_o)};
+
+   f_master_ar_reset : assert always {rst_i} |=> {not m_arvalid_o};
+
+   f_master_ar_stable : assert always {m_arvalid_o and not m_arready_i and not rst_i} |=> {stable(m_arvalid_o) and stable(m_araddr_o)};
+
+
+-----------------------------
+-- ASSUMPTIONS ABOUT INPUTS
+-----------------------------
+
+-- Require reset at startup.
+   f_reset : assume {rst_i};
+
+--------------------------------------------
+-- COVER STATEMENTS TO VERIFY REACHABILITY
+--------------------------------------------
+
+} -- vunit avm_to_axil_inst(avm_to_axil(rtl))
+

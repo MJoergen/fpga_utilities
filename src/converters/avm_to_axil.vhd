@@ -52,11 +52,11 @@ end entity avm_to_axil;
 
 architecture rtl of avm_to_axil is
 
-  signal alm_awvalid  : std_logic;
-  signal alm_awaddr   : std_logic_vector(G_ADDR_BITS - 1 downto 0);
-  signal alm_wvalid   : std_logic;
-  signal alm_wdata    : std_logic_vector(G_DATA_BITS - 1 downto 0);
-  signal alm_wstrb    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal alm_awvalid : std_logic;
+  signal alm_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal alm_wvalid  : std_logic;
+  signal alm_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal alm_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
 
   signal avs_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal avs_readdatavalid : std_logic;
@@ -67,6 +67,7 @@ begin
 
   s_waitrequest_o   <= '1' when m_awvalid_o = '1' and m_awready_i = '0' else
                        '1' when m_wvalid_o = '1' and m_wready_i = '0' else
+                       '1' when m_arvalid_o = '1' and m_arready_i = '0' else
                        '0';
 
   -- Handle write
@@ -89,16 +90,17 @@ begin
         alm_wvalid <= '0';
       end if;
 
-      if m_wready_i = '1' then
-        alm_wvalid <= '0';
-      end if;
-
       if s_write_i = '1' and s_waitrequest_o = '0' then
         alm_awaddr  <= s_address_i;
         alm_awvalid <= '1';
         alm_wdata   <= s_writedata_i;
         alm_wvalid  <= '1';
         alm_wstrb   <= s_byteenable_i;
+      end if;
+
+      if rst_i = '1' then
+        alm_awvalid <= '0';
+        alm_wvalid  <= '0';
       end if;
     end if;
   end process write_proc;
@@ -122,6 +124,10 @@ begin
       if s_read_i = '1' and s_waitrequest_o = '0' then
         alm_araddr  <= s_address_i;
         alm_arvalid <= '1';
+      end if;
+
+      if rst_i = '1' then
+        alm_arvalid <= '0';
       end if;
     end if;
   end process r_proc;
