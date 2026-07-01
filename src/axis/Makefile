@@ -1,9 +1,11 @@
 # Run all source files through yosys to check for synthesis
 
 SRC += axis_arbiter.vhd
+SRC += axis_decrease.vhd
 SRC += axis_demux.vhd
 SRC += axis_fifo_async.vhd
 SRC += axis_fifo.vhd
+SRC += axis_increase.vhd
 SRC += axis_pipe_async.vhd
 SRC += axis_pipe_lite.vhd
 SRC += axis_pipe.vhd
@@ -28,11 +30,13 @@ all: $(TARGETS)
 #
 # Add a line per file that needs overrides:
 
-GENERICS_axis_fifo       = -gG_ADDR_BITS=6  -gG_DATA_BITS=8 -gG_RAM_STYLE=distributed
-GENERICS_axis_fifo_async = -gG_ADDR_BITS=12 -gG_DATA_BITS=8 -gG_RAM_STYLE=block
-GENERICS_axis_pipe_async = -gG_DATA_BITS=8
 GENERICS_axis_arbiter    = -gG_DATA_BITS=8
+GENERICS_axis_decrease   = -gG_INPUT_BITS=10 -gG_OUTPUT_BITS=8
 GENERICS_axis_demux      = -gG_DATA_BITS=8
+GENERICS_axis_fifo_async = -gG_ADDR_BITS=12 -gG_DATA_BITS=8 -gG_RAM_STYLE=block
+GENERICS_axis_fifo       = -gG_ADDR_BITS=6  -gG_DATA_BITS=8 -gG_RAM_STYLE=distributed
+GENERICS_axis_increase   = -gG_INPUT_BITS=8 -gG_OUTPUT_BITS=10
+GENERICS_axis_pipe_async = -gG_DATA_BITS=8
 GENERICS_axis_pipe_lite  = -gG_DATA_BITS=8
 GENERICS_axis_pipe       = -gG_DATA_BITS=8
 

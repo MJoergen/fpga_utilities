@@ -1,6 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description: An AXI packet stream asynchronous FIFO. Wrapper for the Xilinx
--- xpm_fifo_axis primitive; not portable to non-Xilinx targets.
+-- Description: An AXI packet stream asynchronous FIFO.
 -- s_bytes_i is only valid when s_last_i is 1.
 -- m_bytes_o is only valid when m_last_o is 1.
 --

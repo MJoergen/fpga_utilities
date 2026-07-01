@@ -10,9 +10,9 @@ library ieee;
 
 entity wbus_to_avm is
   generic (
-    G_BURST_BITS : positive := 8;
-    G_ADDR_BITS  : positive := 16;
-    G_DATA_BITS  : positive := 16
+    G_ADDR_BITS  : positive;
+    G_DATA_BITS  : positive;
+    G_BURST_BITS : positive := 8
   );
   port (
     clk_i             : in    std_logic;

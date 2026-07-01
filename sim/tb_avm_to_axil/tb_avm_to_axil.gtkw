@@ -1,0 +1,163 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Wed Jul  1 09:56:20 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_avm_to_axil/tb_avm_to_axil.ghw"
+[dumpfile_mtime] "Wed Jul  1 09:54:08 2026"
+[dumpfile_size] 25854589
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_avm_to_axil/tb_avm_to_axil.gtkw"
+[timestart] 0
+[size] 1379 896
+[pos] -1 -1
+*-26.122458 156700000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_avm_to_axil.
+[treeopen] top.tb_avm_to_axil.axil_slave_sim_inst.
+[sst_width] 239
+[signals_width] 279
+[sst_expanded] 1
+[sst_vpaned_height] 262
+@c00200
+-avm_to_axil
+@28
+top.tb_avm_to_axil.avm_to_axil_inst.clk_i
+top.tb_avm_to_axil.avm_to_axil_inst.rst_i
+[color] 6
+top.tb_avm_to_axil.avm_to_axil_inst.s_waitrequest_o
+[color] 2
+top.tb_avm_to_axil.avm_to_axil_inst.s_write_i
+[color] 2
+top.tb_avm_to_axil.avm_to_axil_inst.s_read_i
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[11:0]} top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[11] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[10] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[9] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[8] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[7] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[6] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[5] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[4] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[3] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[2] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[1] top.tb_avm_to_axil.avm_to_axil_inst.s_address_i[0]
+#{top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[15:0]} top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[15] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[14] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[13] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[12] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[11] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[10] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[9] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[8] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[7] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[6] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[5] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[4] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[3] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[2] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[1] top.tb_avm_to_axil.avm_to_axil_inst.s_writedata_i[0]
+@28
+#{top.tb_avm_to_axil.avm_to_axil_inst.s_byteenable_i[1:0]} top.tb_avm_to_axil.avm_to_axil_inst.s_byteenable_i[1] top.tb_avm_to_axil.avm_to_axil_inst.s_byteenable_i[0]
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[7:0]} top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[7] top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[6] top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[5] top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[4] top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[3] top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[2] top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[1] top.tb_avm_to_axil.avm_to_axil_inst.s_burstcount_i[0]
+@28
+[color] 3
+top.tb_avm_to_axil.avm_to_axil_inst.s_readdatavalid_o
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[15:0]} top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[15] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[14] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[13] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[12] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[11] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[10] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[9] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[8] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[7] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[6] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[5] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[4] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[3] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[2] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[1] top.tb_avm_to_axil.avm_to_axil_inst.s_readdata_o[0]
+@28
+[color] 6
+top.tb_avm_to_axil.avm_to_axil_inst.m_awready_i
+[color] 2
+top.tb_avm_to_axil.avm_to_axil_inst.m_awvalid_o
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[11:0]} top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[11] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[10] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[9] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[8] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[7] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[6] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[5] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[4] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[3] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[2] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[1] top.tb_avm_to_axil.avm_to_axil_inst.m_awaddr_o[0]
+@28
+[color] 6
+top.tb_avm_to_axil.avm_to_axil_inst.m_wready_i
+[color] 2
+top.tb_avm_to_axil.avm_to_axil_inst.m_wvalid_o
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[15:0]} top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[15] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[14] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[13] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[12] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[11] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[10] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[9] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[8] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[7] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[6] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[5] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[4] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[3] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[2] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[1] top.tb_avm_to_axil.avm_to_axil_inst.m_wdata_o[0]
+@28
+#{top.tb_avm_to_axil.avm_to_axil_inst.m_wstrb_o[1:0]} top.tb_avm_to_axil.avm_to_axil_inst.m_wstrb_o[1] top.tb_avm_to_axil.avm_to_axil_inst.m_wstrb_o[0]
+[color] 6
+top.tb_avm_to_axil.avm_to_axil_inst.m_bready_o
+[color] 2
+top.tb_avm_to_axil.avm_to_axil_inst.m_bvalid_i
+#{top.tb_avm_to_axil.avm_to_axil_inst.m_bresp_i[1:0]} top.tb_avm_to_axil.avm_to_axil_inst.m_bresp_i[1] top.tb_avm_to_axil.avm_to_axil_inst.m_bresp_i[0]
+[color] 6
+top.tb_avm_to_axil.avm_to_axil_inst.m_arready_i
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[11:0]} top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[11] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[10] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[9] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[8] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[7] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[6] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[5] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[4] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[3] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[2] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[1] top.tb_avm_to_axil.avm_to_axil_inst.m_araddr_o[0]
+@28
+[color] 2
+top.tb_avm_to_axil.avm_to_axil_inst.m_arvalid_o
+[color] 6
+top.tb_avm_to_axil.avm_to_axil_inst.m_rready_o
+[color] 2
+top.tb_avm_to_axil.avm_to_axil_inst.m_rvalid_i
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[15:0]} top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[15] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[14] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[13] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[12] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[11] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[10] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[9] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[8] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[7] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[6] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[5] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[4] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[3] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[2] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[1] top.tb_avm_to_axil.avm_to_axil_inst.m_rdata_i[0]
+@28
+#{top.tb_avm_to_axil.avm_to_axil_inst.m_rresp_i[1:0]} top.tb_avm_to_axil.avm_to_axil_inst.m_rresp_i[1] top.tb_avm_to_axil.avm_to_axil_inst.m_rresp_i[0]
+@c00200
+-Internal
+@28
+top.tb_avm_to_axil.avm_to_axil_inst.alm_awvalid
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[15:0]} top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[15] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[14] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[13] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[12] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[11] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[10] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[9] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[8] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[7] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[6] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[5] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[4] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[3] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[2] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[1] top.tb_avm_to_axil.avm_to_axil_inst.avs_readdata[0]
+@28
+top.tb_avm_to_axil.avm_to_axil_inst.alm_wvalid
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[11:0]} top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[11] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[10] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[9] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[8] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[7] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[6] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[5] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[4] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[3] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[2] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[1] top.tb_avm_to_axil.avm_to_axil_inst.alm_awaddr[0]
+@28
+top.tb_avm_to_axil.avm_to_axil_inst.alm_wvalid_d
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[15:0]} top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[15] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[14] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[13] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[12] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[11] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[10] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[9] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[8] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[7] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[6] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[5] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[4] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[3] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[2] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[1] top.tb_avm_to_axil.avm_to_axil_inst.alm_wdata[0]
+@28
+#{top.tb_avm_to_axil.avm_to_axil_inst.alm_wstrb[1:0]} top.tb_avm_to_axil.avm_to_axil_inst.alm_wstrb[1] top.tb_avm_to_axil.avm_to_axil_inst.alm_wstrb[0]
+top.tb_avm_to_axil.avm_to_axil_inst.avs_writeresponsevalid
+top.tb_avm_to_axil.avm_to_axil_inst.avs_readdatavalid
+#{top.tb_avm_to_axil.avm_to_axil_inst.avs_response[1:0]} top.tb_avm_to_axil.avm_to_axil_inst.avs_response[1] top.tb_avm_to_axil.avm_to_axil_inst.avs_response[0]
+top.tb_avm_to_axil.avm_to_axil_inst.alm_arvalid
+@22
+#{top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[11:0]} top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[11] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[10] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[9] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[8] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[7] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[6] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[5] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[4] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[3] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[2] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[1] top.tb_avm_to_axil.avm_to_axil_inst.alm_araddr[0]
+@1401200
+-Internal
+-avm_to_axil
+@800200
+-axil_slave_sim
+@28
+top.tb_avm_to_axil.axil_slave_sim_inst.clk_i
+top.tb_avm_to_axil.axil_slave_sim_inst.rst_i
+[color] 6
+top.tb_avm_to_axil.axil_slave_sim_inst.s_awready_o
+[color] 2
+top.tb_avm_to_axil.axil_slave_sim_inst.s_awvalid_i
+@22
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[11:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[11] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[10] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[9] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[8] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[7] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[6] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[5] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[4] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[3] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[2] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr_i[0]
+@28
+[color] 6
+top.tb_avm_to_axil.axil_slave_sim_inst.s_wready_o
+[color] 2
+top.tb_avm_to_axil.axil_slave_sim_inst.s_wvalid_i
+@22
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[15:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[15] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[14] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[13] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[12] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[11] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[10] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[9] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[8] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[7] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[6] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[5] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[4] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[3] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[2] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata_i[0]
+@28
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_wstrb_i[1:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_wstrb_i[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_wstrb_i[0]
+[color] 6
+top.tb_avm_to_axil.axil_slave_sim_inst.s_bready_i
+[color] 2
+top.tb_avm_to_axil.axil_slave_sim_inst.s_bvalid_o
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_bresp_o[1:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_bresp_o[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_bresp_o[0]
+[color] 6
+top.tb_avm_to_axil.axil_slave_sim_inst.s_arready_o
+[color] 2
+top.tb_avm_to_axil.axil_slave_sim_inst.s_arvalid_i
+@22
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[11:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[11] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[10] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[9] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[8] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[7] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[6] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[5] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[4] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[3] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[2] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_araddr_i[0]
+@28
+[color] 6
+top.tb_avm_to_axil.axil_slave_sim_inst.s_rready_i
+[color] 2
+top.tb_avm_to_axil.axil_slave_sim_inst.s_rvalid_o
+@22
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[15:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[15] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[14] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[13] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[12] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[11] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[10] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[9] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[8] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[7] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[6] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[5] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[4] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[3] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[2] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_rdata_o[0]
+@28
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_rresp_o[1:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_rresp_o[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_rresp_o[0]
+@c00200
+-Internal
+@420
+top.tb_avm_to_axil.axil_slave_sim_inst.state
+@28
+top.tb_avm_to_axil.axil_slave_sim_inst.s_awvalid
+@22
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[11:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[11] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[10] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[9] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[8] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[7] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[6] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[5] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[4] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[3] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[2] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_awaddr[0]
+@28
+top.tb_avm_to_axil.axil_slave_sim_inst.s_wvalid
+@22
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[15:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[15] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[14] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[13] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[12] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[11] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[10] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[9] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[8] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[7] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[6] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[5] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[4] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[3] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[2] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_wdata[0]
+@28
+#{top.tb_avm_to_axil.axil_slave_sim_inst.s_wstrb[1:0]} top.tb_avm_to_axil.axil_slave_sim_inst.s_wstrb[1] top.tb_avm_to_axil.axil_slave_sim_inst.s_wstrb[0]
+@1401200
+-Internal
+@1000200
+-axil_slave_sim
+[pattern_trace] 1
+[pattern_trace] 0

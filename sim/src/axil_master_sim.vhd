@@ -128,11 +128,11 @@ begin
       new_read_req_cnt_v  := read_req_cnt;
 
       -- Issue write request
-      if do_write = '1'
+      if do_write = '1' and rst_i = '0'
          and ((G_FAST and m_awready_i = '1') or m_awvalid_o = '0')
          and ((G_FAST and m_wready_i = '1') or m_wvalid_o = '0') then
         if wr_ptr_stim + 1 = 0 then
-          report "axil_master_sim: " & G_NAME & " Test finished";
+          report "AxiLite MASTER: " & G_NAME & " Test finished";
           stop;
         else
           new_write_req_cnt_v := new_write_req_cnt_v + 1;
@@ -143,7 +143,7 @@ begin
           m_wstrb_o           <= (others => '1');
           wr_ptr_stim         <= wr_ptr_stim + 1;
           if G_DEBUG then
-            report "axil_master_sim: " & G_NAME & " STIMULI: Write: " & to_hstring(wr_ptr_stim) &
+            report "AxiLite MASTER: " & G_NAME & " Write: " & to_hstring(wr_ptr_stim) &
                    " <- " & to_hstring(addr_to_data(wr_ptr_stim));
           end if;
         end if;
@@ -152,10 +152,10 @@ begin
       -- Receive write response
       if m_bvalid_i = '1' and m_bready_o = '1' then
         assert write_req_cnt > 0
-          report "axil_master_sim: " & G_NAME & " Write not active";
+          report "AxiLite MASTER: " & G_NAME & " Write not active";
         new_write_req_cnt_v := new_write_req_cnt_v - 1;
         assert m_bresp_i = "00"
-          report "axil_master_sim: " & G_NAME & " Incorrect m_bresp_i";
+          report "AxiLite MASTER: " & G_NAME & " Incorrect m_bresp_i";
         wr_ptr_resp         <= wr_ptr_resp + 1;
       end if;
 
@@ -164,7 +164,7 @@ begin
          and rd_ptr_stim < wr_ptr_resp
          and ((G_FAST and m_arready_i = '1') or m_arvalid_o = '0') then
         if G_DEBUG then
-          report "axil_master_sim: " & G_NAME & " STIMULI: Read: " & to_hstring(rd_ptr_stim);
+          report "AxiLite MASTER: " & G_NAME & " Read: " & to_hstring(rd_ptr_stim);
         end if;
         new_read_req_cnt_v := new_read_req_cnt_v + 1;
         m_arvalid_o        <= '1';
@@ -175,12 +175,12 @@ begin
       -- Receive read response
       if m_rvalid_i = '1' and m_rready_o = '1' then
         assert read_req_cnt > 0
-          report "axil_master_sim: " & G_NAME & " Read not active";
+          report "AxiLite MASTER: " & G_NAME & " Read not active";
         new_read_req_cnt_v := new_read_req_cnt_v - 1;
         assert m_rresp_i = "00"
-          report "axil_master_sim: " & G_NAME & " Incorrect m_rresp_i";
+          report "AxiLite MASTER: " & G_NAME & " Incorrect m_rresp_i";
         assert m_rdata_i = addr_to_data(rd_ptr_resp)
-          report "axil_master_sim: " & G_NAME & " Read failure from address " & to_hstring(rd_ptr_resp) &
+          report "AxiLite MASTER: " & G_NAME & " Read failure from address " & to_hstring(rd_ptr_resp) &
                  ". Got " & to_hstring(m_rdata_i) &
                  ", expected " & to_hstring(addr_to_data(rd_ptr_resp));
         rd_ptr_resp        <= rd_ptr_resp + 1;

@@ -1,0 +1,71 @@
+[*]
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Wed Jul  1 10:21:51 2026
+[*]
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axis_decrease_increase/tb_axis_decrease_increase.ghw"
+[dumpfile_mtime] "Wed Jul  1 10:19:57 2026"
+[dumpfile_size] 1314399
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axis_decrease_increase/tb_axis_decrease_increase.gtkw"
+[timestart] 0
+[size] 1132 782
+[pos] -1372 28
+*-34.158081 1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.tb_axis_decrease_increase.
+[treeopen] top.tb_axis_decrease_increase.axis_increase_inst.
+[sst_width] 239
+[signals_width] 241
+[sst_expanded] 1
+[sst_vpaned_height] 222
+@800200
+-axis_decrease
+@28
+top.tb_axis_decrease_increase.axis_decrease_inst.clk_i
+top.tb_axis_decrease_increase.axis_decrease_inst.rst_i
+[color] 6
+top.tb_axis_decrease_increase.axis_decrease_inst.s_ready_o
+[color] 2
+top.tb_axis_decrease_increase.axis_decrease_inst.s_valid_i
+@22
+#{top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[11:0]} top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[11] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[10] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[9] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[8] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[7] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[6] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[5] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[4] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[3] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[2] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[1] top.tb_axis_decrease_increase.axis_decrease_inst.s_data_i[0]
+@28
+[color] 6
+top.tb_axis_decrease_increase.axis_decrease_inst.m_ready_i
+[color] 2
+top.tb_axis_decrease_increase.axis_decrease_inst.m_valid_o
+@22
+#{top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[7:0]} top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[7] top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[6] top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[5] top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[4] top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[3] top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[2] top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[1] top.tb_axis_decrease_increase.axis_decrease_inst.m_data_o[0]
+@420
+top.tb_axis_decrease_increase.axis_decrease_inst.size_r
+@22
+#{top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[23:0]} top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[23] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[22] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[21] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[20] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[19] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[18] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[17] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[16] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[15] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[14] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[13] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[12] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[11] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[10] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[9] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[8] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[7] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[6] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[5] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[4] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[3] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[2] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[1] top.tb_axis_decrease_increase.axis_decrease_inst.concat_s[0]
+#{top.tb_axis_decrease_increase.axis_decrease_inst.data_r[11:0]} top.tb_axis_decrease_increase.axis_decrease_inst.data_r[11] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[10] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[9] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[8] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[7] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[6] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[5] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[4] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[3] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[2] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[1] top.tb_axis_decrease_increase.axis_decrease_inst.data_r[0]
+@1000200
+-axis_decrease
+@800200
+-axis_increase
+@28
+top.tb_axis_decrease_increase.axis_increase_inst.clk_i
+top.tb_axis_decrease_increase.axis_increase_inst.rst_i
+[color] 6
+top.tb_axis_decrease_increase.axis_increase_inst.s_ready_o
+[color] 2
+top.tb_axis_decrease_increase.axis_increase_inst.s_valid_i
+@22
+#{top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[7:0]} top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[7] top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[6] top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[5] top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[4] top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[3] top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[2] top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[1] top.tb_axis_decrease_increase.axis_increase_inst.s_data_i[0]
+@28
+[color] 6
+top.tb_axis_decrease_increase.axis_increase_inst.m_ready_i
+[color] 2
+top.tb_axis_decrease_increase.axis_increase_inst.m_valid_o
+@22
+#{top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[11:0]} top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[11] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[10] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[9] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[8] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[7] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[6] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[5] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[4] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[3] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[2] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[1] top.tb_axis_decrease_increase.axis_increase_inst.m_data_o[0]
+@420
+top.tb_axis_decrease_increase.axis_increase_inst.size_r
+@22
+#{top.tb_axis_decrease_increase.axis_increase_inst.concat_s[19:0]} top.tb_axis_decrease_increase.axis_increase_inst.concat_s[19] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[18] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[17] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[16] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[15] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[14] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[13] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[12] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[11] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[10] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[9] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[8] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[7] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[6] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[5] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[4] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[3] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[2] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[1] top.tb_axis_decrease_increase.axis_increase_inst.concat_s[0]
+#{top.tb_axis_decrease_increase.axis_increase_inst.data_r[11:0]} top.tb_axis_decrease_increase.axis_increase_inst.data_r[11] top.tb_axis_decrease_increase.axis_increase_inst.data_r[10] top.tb_axis_decrease_increase.axis_increase_inst.data_r[9] top.tb_axis_decrease_increase.axis_increase_inst.data_r[8] top.tb_axis_decrease_increase.axis_increase_inst.data_r[7] top.tb_axis_decrease_increase.axis_increase_inst.data_r[6] top.tb_axis_decrease_increase.axis_increase_inst.data_r[5] top.tb_axis_decrease_increase.axis_increase_inst.data_r[4] top.tb_axis_decrease_increase.axis_increase_inst.data_r[3] top.tb_axis_decrease_increase.axis_increase_inst.data_r[2] top.tb_axis_decrease_increase.axis_increase_inst.data_r[1] top.tb_axis_decrease_increase.axis_increase_inst.data_r[0]
+@1000200
+-axis_increase
+[pattern_trace] 1
+[pattern_trace] 0

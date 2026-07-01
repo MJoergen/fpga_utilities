@@ -42,6 +42,13 @@ end entity axil_slave_sim;
 
 architecture simulation of axil_slave_sim is
 
+  -- The purpose of the WRITING_ST is to block incoming read requests until the ongoing write request is completed.
+  type   state_type is (
+    IDLE_ST,
+    WRITING_ST
+  );
+  signal state : state_type := IDLE_ST;
+
   signal s_awvalid : std_logic;
   signal s_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_wvalid  : std_logic;
@@ -52,15 +59,16 @@ architecture simulation of axil_slave_sim is
 
 begin
 
-  s_bresp_o <= "00";
-  s_rresp_o <= "00";
+  s_bresp_o   <= "00";
+  s_rresp_o   <= "00";
 
   -- Only receive one write address and/or write data at a time
   s_awready_o <= not s_awvalid;
   s_wready_o  <= not s_wvalid;
 
   -- Only accept one read request at a time
-  s_arready_o <= (not s_rvalid_o) or s_rready_i when G_FAST else
+  s_arready_o <= '0' when state = WRITING_ST else
+                 (not s_rvalid_o) or s_rready_i when G_FAST else
                  (not s_rvalid_o);
 
   verify_proc : process (clk_i)
@@ -73,6 +81,38 @@ begin
       if s_rready_i = '1' then
         s_rvalid_o <= '0';
       end if;
+
+      case state is
+
+        when IDLE_ST =>
+          if s_awvalid_i = '1' or s_wvalid_i = '1' then
+            state <= WRITING_ST;
+          end if;
+
+          -- Handle read
+          if s_arready_o = '1' and s_arvalid_i = '1' then
+            state <= IDLE_ST;
+            if G_DEBUG then
+              report "AxiLite SLAVE: Reading " & to_hstring(ram_v(to_integer(s_araddr_i))) & " from " & to_hstring(s_araddr_i);
+            end if;
+            s_rdata_o  <= ram_v(to_integer(s_araddr_i));
+            s_rvalid_o <= '1';
+          end if;
+
+        when WRITING_ST =>
+          -- Handle write
+          if s_awvalid = '1' and s_wvalid = '1' and ((s_bready_i = '1' and G_FAST) or s_bvalid_o = '0') then
+            state <= IDLE_ST;
+            if G_DEBUG then
+              report "AxiLite SLAVE: Write " & to_hstring(s_wdata) & " to " & to_hstring(s_awaddr);
+            end if;
+            ram_v(to_integer(s_awaddr)) := s_wdata;
+            s_awvalid                   <= '0';
+            s_wvalid                    <= '0';
+            s_bvalid_o                  <= '1';
+          end if;
+
+      end case;
 
       -- Wait for write address
       if s_awready_o = '1' and s_awvalid_i = '1' then
@@ -87,27 +127,8 @@ begin
         s_wstrb  <= s_wstrb_i;
       end if;
 
-      -- Handle write
-      if s_awvalid = '1' and s_wvalid = '1' and ((s_bready_i = '1' and G_FAST) or s_bvalid_o = '0') then
-        if G_DEBUG then
-          report "axil_sim: VERIFY: Write " & to_hstring(s_wdata) & " to " & to_hstring(s_awaddr);
-        end if;
-        ram_v(to_integer(s_awaddr)) := s_wdata;
-        s_awvalid                   <= '0';
-        s_wvalid                    <= '0';
-        s_bvalid_o                  <= '1';
-      end if;
-
-      -- Handle read
-      if s_arready_o = '1' and s_arvalid_i = '1' then
-        if G_DEBUG then
-          report "axil_sim: VERIFY: Reading " & to_hstring(ram_v(to_integer(s_araddr_i))) & " from " & to_hstring(s_araddr_i);
-        end if;
-        s_rdata_o  <= ram_v(to_integer(s_araddr_i));
-        s_rvalid_o <= '1';
-      end if;
-
       if rst_i = '1' then
+        state      <= IDLE_ST;
         ram_v      := (others => (others => 'U'));
         s_awvalid  <= '0';
         s_wvalid   <= '0';
