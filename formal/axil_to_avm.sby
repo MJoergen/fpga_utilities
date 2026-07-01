@@ -1,0 +1,22 @@
+[tasks]
+cover
+bmc
+
+[options]
+cover: mode cover
+cover: depth 10
+cover: append 3
+bmc: mode bmc
+bmc: depth 10
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_ADDR_BITS=4 -gG_DATA_BITS=16 axil_to_avm.vhd axil_to_avm.psl -e axil_to_avm
+prep -top axil_to_avm
+
+[files]
+axil_to_avm.psl
+../src/converters/axil_to_avm.vhd
+

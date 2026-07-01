@@ -22,12 +22,14 @@ testbench are flagged as **unverified**.
 | `avm_decrease`               | – | `tb_avm_decrease` |
 | `avm_increase`               | ✓ | `tb_avm_increase` |
 | `avm_pipe`                   | – | `tb_avm_pipe` |
+| `avm_to_axil`                | – | `tb_avm_to_axil` |
 | `avm_readahead`              | ✓ | `tb_avm_readahead` |
 | `axil_arbiter`               | – | `tb_axil_arbiter` |
 | `axil_arbiter_read`          | – | covered indirectly via `tb_axil_arbiter` |
 | `axil_arbiter_write`         | – | covered indirectly via `tb_axil_arbiter` |
 | `axil_fifo_async`            | – | **unverified** |
 | `axil_pipe`                  | – | `tb_axil_pipe` |
+| `axil_to_avm`                | ✓ | `tb_axil_to_avm` |
 | `axip_arbiter`               | ✓ | `tb_axip_arbiter` |
 | `axip_arbiter_general`       | – | **unverified** |
 | `axip_demux`                 | – | **unverified** |
@@ -41,6 +43,8 @@ testbench are flagged as **unverified**.
 | `axis_demux`                 | – | **unverified** |
 | `axis_fifo`                  | ✓ | `tb_axis_fifo` |
 | `axis_fifo_async`            | – | `tb_axis_fifo_async` |
+| `axis_decrease`              | – | `tb_axis_decrease_increase` |
+| `axis_increase`              | – | `tb_axis_decrease_increase` |
 | `axis_pipe`                  | – | `tb_axis_pipe` |
 | `axis_pipe_async`            | – | `tb_axis_pipe_async` |
 | `axis_pipe_lite`             | – | `tb_axis_pipe_lite` |

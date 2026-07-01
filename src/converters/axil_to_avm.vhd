@@ -52,103 +52,97 @@ end entity axil_to_avm;
 
 architecture rtl of axil_to_avm is
 
-  signal avm_read_address  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
-  signal avm_write_address : std_logic_vector(G_ADDR_BITS - 1 downto 0);
-  signal avm_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
-  signal avm_read          : std_logic;
-  signal avm_write         : std_logic;
-  signal avm_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  type   state_type is (IDLE_ST, READING_ST);
+  signal state : state_type := IDLE_ST;
 
-  signal aw_stored : std_logic;
-  signal w_stored  : std_logic;
+  signal aw_active : std_logic;
+  signal w_active  : std_logic;
+  signal ar_active : std_logic;
 
-  signal s_rvalid : std_logic;
-  signal s_rdata  : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal s_araddr : std_logic_vector(G_ADDR_BITS - 1 downto 0);
 
 begin
 
-  -- Handle write
+  aw_active   <= s_awvalid_i and s_awready_o;
+  w_active    <= s_wvalid_i  and s_wready_o;
+  ar_active   <= s_arvalid_i and s_arready_o;
 
-  m_address_o    <= avm_write_address when avm_write = '1' else
-                    avm_read_address;
-  m_byteenable_o <= avm_byteenable;
-  m_read_o       <= avm_read;
-  m_write_o      <= avm_write;
-  m_writedata_o  <= avm_writedata;
-  m_burstcount_o <= (0 => '1', others => '0');
+  -- Main state machine
 
-  read_proc : process (clk_i)
-  begin
-    if rising_edge(clk_i) then
-      avm_read <= '0';
+  s_awready_o <= not m_waitrequest_i when state = IDLE_ST else
+                 '0';
+  s_wready_o  <= not m_waitrequest_i when state = IDLE_ST else
+                 '0';
+  s_arready_o <= not m_waitrequest_i when state = IDLE_ST else
+                 '0';
 
-      if s_arvalid_i = '1' and s_arready_o = '1' then
-        avm_read_address <= s_araddr_i;
-        avm_read         <= '1';
-      end if;
-    end if;
-  end process read_proc;
-
-  s_awready_o    <= not aw_stored;
-  s_wready_o     <= not w_stored;
-  avm_write      <= aw_stored and w_stored and not avm_read;
-
-  stored_proc : process (clk_i)
-  begin
-    if rising_edge(clk_i) then
-      if s_awvalid_i = '1' and s_awready_o = '1' then
-        avm_write_address <= s_awaddr_i;
-        aw_stored         <= '1';
-      end if;
-
-      if s_wvalid_i = '1' and s_wready_o = '1' then
-        avm_writedata  <= s_wdata_i;
-        avm_byteenable <= s_wstrb_i;
-        w_stored       <= '1';
-      end if;
-
-      if avm_write = '1' or rst_i = '1' then
-        aw_stored <= '0';
-        w_stored  <= '0';
-      end if;
-    end if;
-  end process stored_proc;
-
-  b_proc : process (clk_i)
+  fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
       if s_bready_i = '1' then
         s_bvalid_o <= '0';
       end if;
-
-      if avm_write = '1' then
-        s_bresp_o  <= (others => '0');
-        s_bvalid_o <= '1';
-      end if;
-    end if;
-  end process b_proc;
-
-
-  -- Handle read response
-
-  s_rvalid_o     <= s_rvalid;
-  s_rdata_o      <= s_rdata;
-  s_rresp_o      <= (others => '0');
-  s_arready_o    <= '1';
-
-  r_proc : process (clk_i)
-  begin
-    if rising_edge(clk_i) then
       if s_rready_i = '1' then
-        s_rvalid <= '0';
+        s_rvalid_o <= '0';
+      end if;
+      if m_waitrequest_i = '0' then
+        m_write_o <= '0';
+        m_read_o  <= '0';
+        if m_write_o = '1' then
+          s_bvalid_o <= '1';
+          s_bresp_o  <= (others => '0');
+        end if;
+      end if;
+      if m_readdatavalid_i = '1' then
+        s_rvalid_o <= '1';
+        s_rdata_o  <= m_readdata_i;
+        s_rresp_o  <= (others => '0');
       end if;
 
-      if m_readdatavalid_i = '1' then
-        s_rdata  <= m_readdata_i;
-        s_rvalid <= '1';
+      case state is
+
+        when IDLE_ST =>
+          if aw_active = '1' and w_active = '1' then
+            m_write_o      <= '1';
+            m_read_o       <= '0';
+            m_address_o    <= s_awaddr_i;
+            m_writedata_o  <= s_wdata_i;
+            m_byteenable_o <= s_wstrb_i;
+            m_burstcount_o <= (0 => '1', others => '0');
+            -- Stay in IDLE_ST, unless a read is simultaneous
+            if ar_active = '1' then
+              s_araddr <= s_araddr_i;
+              state    <= READING_ST;
+            end if;
+          elsif ar_active = '1' then
+            m_write_o      <= '0';
+            m_read_o       <= '1';
+            m_address_o    <= s_araddr_i;
+            m_byteenable_o <= (others => '1');
+            m_burstcount_o <= (0 => '1', others => '0');
+          end if;
+
+        when READING_ST =>
+          if m_waitrequest_i = '0' then
+            m_write_o      <= '0';
+            m_read_o       <= '1';
+            m_address_o    <= s_araddr;
+            m_byteenable_o <= (others => '1');
+            m_burstcount_o <= (0 => '1', others => '0');
+            state          <= IDLE_ST;
+          end if;
+
+      end case;
+
+      if rst_i = '1' then
+        s_bvalid_o <= '0';
+        s_rvalid_o <= '0';
+        m_write_o  <= '0';
+        m_read_o   <= '0';
+        state      <= IDLE_ST;
       end if;
     end if;
-  end process r_proc;
+  end process fsm_proc;
 
 end architecture rtl;
 

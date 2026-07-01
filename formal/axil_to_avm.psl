@@ -1,0 +1,80 @@
+vunit axil_to_avm_inst(axil_to_avm(rtl))
+{
+-- set all declarations to run on clk
+   default clock is rising_edge(clk_i);
+
+   signal f_wr_burstcount : unsigned(G_BURST_BITS - 1 downto 0);
+   f_wr_burstcount_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if m_write_o and not m_waitrequest_i and not rst_i then
+         if f_wr_burstcount = 0 then
+           f_avm_wr_burstcount : assert unsigned(m_burstcount_o) > 0;
+           f_wr_burstcount <= unsigned(m_burstcount_o) - 1;
+         else
+           f_wr_burstcount <= f_wr_burstcount - 1;
+         end if;
+       end if;
+       if rst_i = '1' then
+         f_wr_burstcount <= (others => '0');
+       end if;
+     end if;
+   end process f_wr_burstcount_proc;
+
+   signal f_rd_burstcount : unsigned(G_BURST_BITS - 1 downto 0);
+   f_rd_burstcount_proc : process (clk_i)
+   begin
+     if rising_edge(clk_i) then
+       if m_read_o and not m_waitrequest_i and not rst_i then
+         f_avm_rd_burstcount1 : assert unsigned(m_burstcount_o) > 0;
+         f_rd_burstcount <= unsigned(m_burstcount_o);
+       end if;
+       if m_readdatavalid_i and not rst_i then
+         f_rd_burstcount <= f_rd_burstcount - 1;
+       end if;
+       if rst_i = '1' then
+         f_rd_burstcount <= (others => '0');
+       end if;
+     end if;
+   end process f_rd_burstcount_proc;
+
+
+------------------------------------------------
+-- PROPERTIES OF THE MASTER INTERFACE
+------------------------------------------------
+
+-- AVALON MASTER: Clear all requests after a reset
+   f_avm_master_reset : assert always {rst_i} |=> {not m_write_o and not m_read_o};
+
+-- AVALON MASTER: Outputs must be stable during stall
+   f_avm_master_stall : assert always {(m_write_o or m_read_o) and m_waitrequest_i and not rst_i} |=>
+      {stable(m_address_o) and stable(m_writedata_o) and stable(m_byteenable_o) and stable(m_burstcount_o)};
+
+
+-----------------------------
+-- ASSUMPTIONS ABOUT INPUTS
+-----------------------------
+
+-- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   f_avm_rd_burstcount : assume always {m_readdatavalid_i} |-> f_rd_burstcount > 0;
+
+
+--------------------------------------------
+-- COVER STATEMENTS TO VERIFY REACHABILITY
+--------------------------------------------
+
+-- A request is generated and accepted
+   f_avm_request : cover {m_write_o and not rst_i; not m_write_o};
+
+ -- A request is generated and a response is received
+   f_avm_rd_transaction : cover {f_rd_burstcount > 0 and rst_i = '0'; f_rd_burstcount = 0};
+
+
+----------------------------------------------
+-- ADDITIONAL ASSUMES HELPFUL WHEN DEBUGGING
+----------------------------------------------
+
+} -- vunit vunit axil_to_avm_inst(axil_to_avm(rtl))
+
