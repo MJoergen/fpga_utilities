@@ -22,7 +22,7 @@ testbench are flagged as **unverified**.
 | `avm_decrease`               | – | `tb_avm_decrease` |
 | `avm_increase`               | ✓ | `tb_avm_increase` |
 | `avm_pipe`                   | – | `tb_avm_pipe` |
-| `avm_to_axil`                | – | `tb_avm_to_axil` |
+| `avm_to_axil`                | ✓ | `tb_avm_to_axil` |
 | `avm_readahead`              | ✓ | `tb_avm_readahead` |
 | `axil_arbiter`               | – | `tb_axil_arbiter` |
 | `axil_arbiter_read`          | – | covered indirectly via `tb_axil_arbiter` |
