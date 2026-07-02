@@ -1,6 +1,10 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: Verify axip_dropper
 --
+-- Uses a generic AXIP MASTER and SLAVE module to interact with the DUT.
+--
+-- TODO: Set the DROP input to something other than constant '0'.
+--
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 

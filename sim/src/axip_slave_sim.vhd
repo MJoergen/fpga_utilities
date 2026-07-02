@@ -1,5 +1,8 @@
 -- ---------------------------------------------------------------------------------------
--- Description: Generates a stream of random packets and verifies the response.
+-- Description: Verifies the contents of a stream of packets
+--
+-- Each packet is expected to begin with a one-byte length field, followed
+-- by an increasing sequence of byte-values.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
