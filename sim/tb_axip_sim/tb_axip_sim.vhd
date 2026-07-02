@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description: Verify axip_fifo
+-- Description: Verify axip_sim
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -8,23 +8,18 @@ library ieee;
   use ieee.std_logic_1164.all;
   use ieee.numeric_std.all;
 
-library std;
-  use std.env.stop;
-
-entity tb_axip_fifo is
+entity tb_axip_sim is
   generic (
     G_DEBUG      : boolean;
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
+    G_PAUSE_SIZE : integer;
     G_MIN_LENGTH : natural;
     G_MAX_LENGTH : natural;
     G_CNT_SIZE   : natural;
-    G_ADDR_BITS  : natural;
     G_DATA_BYTES : natural
   );
-end entity tb_axip_fifo;
+end entity tb_axip_sim;
 
-architecture tb of tb_axip_fifo is
+architecture tb of tb_axip_sim is
 
   signal clk : std_logic := '1';
   signal rst : std_logic := '1';
@@ -52,14 +47,13 @@ begin
 
 
   ----------------------------------------------
-  -- Instantiate DUT
+  -- Instantiate PAUSE
   ----------------------------------------------
 
-  axip_fifo_inst : entity work.axip_fifo
+  axip_pause_inst : entity work.axip_pause
     generic map (
-      G_ADDR_BITS  => G_ADDR_BITS,
       G_DATA_BYTES => G_DATA_BYTES,
-      G_RAM_STYLE  => "auto"
+      G_PAUSE_SIZE => G_PAUSE_SIZE
     )
     port map (
       clk_i     => clk,
@@ -74,7 +68,7 @@ begin
       m_data_o  => m_data,
       m_last_o  => m_last,
       m_bytes_o => m_bytes
-    ); -- axip_fifo_inst : entity work.axip_fifo
+    ); -- axip_pause_inst
 
 
   ----------------------------------------------

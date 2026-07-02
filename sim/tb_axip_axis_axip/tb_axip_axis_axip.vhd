@@ -147,8 +147,6 @@ begin
   axip_sim_inst : entity work.axip_sim
     generic map (
       G_DEBUG      => G_DEBUG,
-      G_RANDOM     => G_RANDOM,
-      G_FAST       => G_FAST,
       G_MIN_LENGTH => G_MIN_LENGTH,
       G_MAX_LENGTH => G_MAX_LENGTH,
       G_CNT_SIZE   => G_CNT_SIZE,

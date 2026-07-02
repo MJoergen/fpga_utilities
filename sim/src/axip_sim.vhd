@@ -13,8 +13,6 @@ entity axip_sim is
     G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
     G_NAME       : string                        := "";
     G_DEBUG      : boolean;
-    G_RANDOM     : boolean;
-    G_FAST       : boolean;
     G_MIN_LENGTH : natural;
     G_MAX_LENGTH : natural;
     G_CNT_SIZE   : natural;

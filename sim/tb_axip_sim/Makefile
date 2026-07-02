@@ -1,39 +1,33 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the axip_to_axis.vhd and axis_to_axip.vhd files.
+# Description: Makefile for simulating the axi_wbus.vhd file.
 
 # List of source files
-SRC += $(SRC_DIR)/axip/axip_insert_fixed_header.vhd
-SRC += $(SRC_DIR)/axip/axip_remove_fixed_header.vhd
-SRC += $(SRC_DIR)/converters/axis_to_axip.vhd
-SRC += $(SRC_DIR)/converters/axip_to_axis.vhd
 
 # List of test specific simulation files
-SRC += tb_axip_axis_axip.vhd
+SRC += tb_axip_sim.vhd
 
 # List of generic simulation files
 SRC += $(SIM_SRC_DIR)/axip_sim.vhd
 SRC += $(SIM_SRC_DIR)/axip_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/axip_slave_sim.vhd
-SRC += $(SIM_SRC_DIR)/axis_sim.vhd
-SRC += $(SIM_SRC_DIR)/axis_pause.vhd
 SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
+SRC += $(SIM_SRC_DIR)/axis_pause.vhd
+SRC += $(SIM_SRC_DIR)/axip_pause.vhd
 
 # Top level entity
-DUT = axip_axis_axip
+DUT = axip_sim
 
 # Test duration
-STOP_TIME = 200us
+STOP_TIME = 300us
 
 # Test bench configuration
-GENERIC += -gG_PAUSE_SIZE=3
 GENERIC += -gG_DEBUG=false
-GENERIC += -gG_RANDOM=true
-GENERIC += -gG_FAST=true
+GENERIC += -gG_PAUSE_SIZE=2
 GENERIC += -gG_MIN_LENGTH=1
 GENERIC += -gG_MAX_LENGTH=20
-GENERIC += -gG_CNT_SIZE=12
+GENERIC += -gG_CNT_SIZE=14
 GENERIC += -gG_DATA_BYTES=3
 
 # Don't stop on errors

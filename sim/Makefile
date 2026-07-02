@@ -22,6 +22,7 @@ DUTS += tb_axip_fixed_header
 DUTS += tb_axip_insert_fixed_header
 DUTS += tb_axip_pipe
 DUTS += tb_axip_remove_fixed_header
+DUTS += tb_axip_sim
 DUTS += tb_axis_arbiter
 DUTS += tb_axis_decrease_increase
 DUTS += tb_axis_fifo
