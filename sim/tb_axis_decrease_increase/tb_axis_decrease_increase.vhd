@@ -54,8 +54,8 @@ begin
 
   axis_decrease_inst : entity work.axis_decrease
     generic map (
-      G_INPUT_BITS  => G_DATA_BITS_LARGE,
-      G_OUTPUT_BITS => G_DATA_BITS_SMALL
+      G_SLAVE_DATA_BITS  => G_DATA_BITS_LARGE,
+      G_MASTER_DATA_BITS => G_DATA_BITS_SMALL
     )
     port map (
       clk_i     => clk,
@@ -75,8 +75,8 @@ begin
 
   axis_increase_inst : entity work.axis_increase
     generic map (
-      G_INPUT_BITS  => G_DATA_BITS_SMALL,
-      G_OUTPUT_BITS => G_DATA_BITS_LARGE
+      G_SLAVE_DATA_BITS  => G_DATA_BITS_SMALL,
+      G_MASTER_DATA_BITS => G_DATA_BITS_LARGE
     )
     port map (
       clk_i     => clk,

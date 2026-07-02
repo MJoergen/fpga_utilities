@@ -13,8 +13,8 @@ library ieee;
 
 entity axip_insert_fixed_header is
   generic (
-    G_DATA_BYTES   : positive := 8;
-    G_HEADER_BYTES : positive := 2
+    G_DATA_BYTES   : positive;
+    G_HEADER_BYTES : positive
   );
   port (
     clk_i     : in    std_logic;

@@ -15,7 +15,7 @@ entity axip_fifo_async is
   generic (
     G_ADDR_BITS  : positive;
     G_DATA_BYTES : positive;
-    G_RAM_STYLE  : string
+    G_RAM_STYLE  : string := "auto"
   );
   port (
     async_rst_i : in    std_logic;

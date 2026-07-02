@@ -10,38 +10,38 @@ library ieee;
 
 entity axis_decrease is
   generic (
-    G_INPUT_BITS  : natural;
-    G_OUTPUT_BITS : natural
+    G_SLAVE_DATA_BITS  : natural;
+    G_MASTER_DATA_BITS : natural
   );
   port (
     clk_i     : in    std_logic;
     rst_i     : in    std_logic;
     s_ready_o : out   std_logic;
     s_valid_i : in    std_logic;
-    s_data_i  : in    std_logic_vector(G_INPUT_BITS - 1 downto 0);
+    s_data_i  : in    std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
     m_ready_i : in    std_logic;
     m_valid_o : out   std_logic;
-    m_data_o  : out   std_logic_vector(G_OUTPUT_BITS - 1 downto 0)
+    m_data_o  : out   std_logic_vector(G_MASTER_DATA_BITS - 1 downto 0)
   );
 end entity axis_decrease;
 
 architecture rtl of axis_decrease is
 
-  constant C_CONCAT_BITS : natural := 2 * G_INPUT_BITS;
+  constant C_CONCAT_BITS : natural := 2 * G_SLAVE_DATA_BITS;
 
   signal   concat_s : std_logic_vector(C_CONCAT_BITS - 1 downto 0);
 
-  signal   data_r : std_logic_vector(G_INPUT_BITS - 1 downto 0);
+  signal   data_r : std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
   signal   size_r : natural range 0 to C_CONCAT_BITS;
 
 begin
 
   concat_s  <= data_r & s_data_i;
 
-  assert G_OUTPUT_BITS < G_INPUT_BITS;
+  assert G_MASTER_DATA_BITS < G_SLAVE_DATA_BITS;
 
   s_ready_o <= '0' when rst_i = '1' else
-               m_ready_i or not m_valid_o when size_r < G_OUTPUT_BITS else
+               m_ready_i or not m_valid_o when size_r < G_MASTER_DATA_BITS else
                '0';
 
   decrease_proc : process (clk_i)
@@ -52,16 +52,16 @@ begin
       end if;
 
       if s_valid_i = '1' and s_ready_o = '1' then
-        m_data_o  <= concat_s(size_r + G_INPUT_BITS - 1 downto size_r + G_INPUT_BITS - G_OUTPUT_BITS);
+        m_data_o  <= concat_s(size_r + G_SLAVE_DATA_BITS - 1 downto size_r + G_SLAVE_DATA_BITS - G_MASTER_DATA_BITS);
         m_valid_o <= '1';
 
         data_r    <= s_data_i;
-        size_r    <= size_r + G_INPUT_BITS - G_OUTPUT_BITS;
+        size_r    <= size_r + G_SLAVE_DATA_BITS - G_MASTER_DATA_BITS;
       else
-        if size_r >= G_OUTPUT_BITS and (m_ready_i = '1' or m_valid_o = '0') then
-          m_data_o  <= concat_s(size_r + G_INPUT_BITS - 1 downto size_r + G_INPUT_BITS - G_OUTPUT_BITS);
+        if size_r >= G_MASTER_DATA_BITS and (m_ready_i = '1' or m_valid_o = '0') then
+          m_data_o  <= concat_s(size_r + G_SLAVE_DATA_BITS - 1 downto size_r + G_SLAVE_DATA_BITS - G_MASTER_DATA_BITS);
           m_valid_o <= '1';
-          size_r    <= size_r - G_OUTPUT_BITS;
+          size_r    <= size_r - G_MASTER_DATA_BITS;
         end if;
       end if;
 

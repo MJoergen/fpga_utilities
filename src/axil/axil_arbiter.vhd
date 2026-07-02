@@ -21,8 +21,8 @@ library ieee;
 
 entity axil_arbiter is
   generic (
-    G_ADDR_BITS : positive := 16;
-    G_DATA_BITS : positive := 32
+    G_ADDR_BITS : positive;
+    G_DATA_BITS : positive
   );
   port (
     clk_i        : in    std_logic;
