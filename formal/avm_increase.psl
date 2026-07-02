@@ -13,7 +13,7 @@ vunit i_avm_increase(avm_increase(rtl))
       if rising_edge(clk_i) then
          if s_write_i and not s_waitrequest_o then
             if f_s_wr_burstcount = 0 then
-               f_s_wr_burstcount <= to_integer(s_burstcount_i) - 1;
+               f_s_wr_burstcount <= to_integer(unsigned(s_burstcount_i)) - 1;
             else
                f_s_wr_burstcount <= f_s_wr_burstcount - 1;
             end if;
@@ -31,7 +31,7 @@ vunit i_avm_increase(avm_increase(rtl))
             f_s_rd_burstcount <= f_s_rd_burstcount - 1;
          end if;
          if s_read_i and not s_waitrequest_o then
-            f_s_rd_burstcount <= to_integer(s_burstcount_i);
+            f_s_rd_burstcount <= to_integer(unsigned(s_burstcount_i));
          end if;
          if rst_i then
             f_s_rd_burstcount <= 0;
@@ -46,7 +46,7 @@ vunit i_avm_increase(avm_increase(rtl))
             f_m_rd_burstcount <= f_m_rd_burstcount - 1;
          end if;
          if m_read_o and not m_waitrequest_i then
-            f_m_rd_burstcount <= to_integer(m_burstcount_o);
+            f_m_rd_burstcount <= to_integer(unsigned(m_burstcount_o));
          end if;
          if rst_i then
             f_m_rd_burstcount <= 0;
@@ -94,7 +94,7 @@ vunit i_avm_increase(avm_increase(rtl))
    f_slave_not_double: assume always not (s_write_i and s_read_i);
 
    -- Non-zero burstcount
-   f_nonzero_burstcount: assume always (s_write_i or s_read_i) |-> s_burstcount_i /= 0;
+   f_nonzero_burstcount: assume always (s_write_i or s_read_i) |-> unsigned(s_burstcount_i) /= 0;
 
    -- Slaves must be stable until accepted
    f_slave_input_stable : assume always {(s_write_i or s_read_i) and s_waitrequest_o and not rst_i} |=>

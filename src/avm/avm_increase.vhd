@@ -40,7 +40,7 @@
 
 library ieee;
   use ieee.std_logic_1164.all;
-  use ieee.numeric_std_unsigned.all;
+  use ieee.numeric_std.all;
 
 entity avm_increase is
   generic (
@@ -240,17 +240,17 @@ begin
       address    : std_logic_vector;
       burstcount : std_logic_vector
     ) return std_logic_vector is
-      variable res_v : std_logic_vector(G_SLAVE_ADDR_BITS + 1 downto 0);
+      variable res_v : unsigned(G_SLAVE_ADDR_BITS + 1 downto 0);
     begin
 
-      res_v := (("00" & address) + burstcount - 1) / C_RATIO -
-               (("00" & address) / C_RATIO) + 1;
+      res_v := (("00" & unsigned(address)) + unsigned(burstcount) - 1) / C_RATIO -
+               (("00" & unsigned(address)) / C_RATIO) + 1;
 
       assert res_v(res_v'high downto G_BURST_BITS) = 0
         report "avm_increase: calc_m_burstcount overflow; G_BURST_BITS too small"
         severity failure;
 
-      return res_v(G_BURST_BITS - 1 downto 0);
+      return std_logic_vector(res_v(G_BURST_BITS - 1 downto 0));
     end function calc_m_burstcount;
 
     ----------------------------------------------------------------------
@@ -326,7 +326,7 @@ begin
 
         when IDLE_ST =>
           if s_write_i = '1' and s_waitrequest_o = '0' then
-            assert s_burstcount_i /= 0
+            assert unsigned(s_burstcount_i) /= 0
               report "Avalon-MM: write burstcount must be >= 1"
               severity failure;
 
@@ -348,14 +348,14 @@ begin
             pack_byteenable_v := (others => '0');
 
             pack_write_slot(
-                            to_integer(s_address_i(C_ADDR_SHIFT - 1 downto 0)),
+                            to_integer(unsigned(s_address_i(C_ADDR_SHIFT - 1 downto 0))),
                             pack_data_v,
                             pack_byteenable_v
                           );
 
             -- Push immediately if the first slave beat completes a master word
             -- or if the slave burst contains only this single beat.
-            if s_burstcount_i = 1 or s_last_subslot = '1' then
+            if unsigned(s_burstcount_i) = 1 or s_last_subslot = '1' then
               push_write_word(pack_data_v, pack_byteenable_v);
 
               write_pack_data       <= (others => '0');
@@ -365,18 +365,18 @@ begin
               write_pack_byteenable <= pack_byteenable_v;
             end if;
 
-            if s_burstcount_i = 1 then
+            if unsigned(s_burstcount_i) = 1 then
               -- The complete write burst has been packed, but the write FIFO
               -- has one clock of output latency. Wait until wr_fifo_m_valid is
               -- asserted before starting the Avalon-MM master write burst.
               state <= WAIT_WRITE_FIFO_ST;
             else
-              s_burstcount <= s_burstcount_i - 1;
-              offset       <= s_address_i(C_ADDR_SHIFT - 1 downto 0) + 1;
+              s_burstcount <= std_logic_vector(unsigned(s_burstcount_i) - 1);
+              offset       <= std_logic_vector(unsigned(s_address_i(C_ADDR_SHIFT - 1 downto 0)) + 1);
               state        <= WRITING_ST;
             end if;
           elsif s_read_i = '1' and s_waitrequest_o = '0' then
-            assert s_burstcount_i /= 0
+            assert unsigned(s_burstcount_i) /= 0
               report "Avalon-MM: read burstcount must be >= 1"
               severity failure;
 
@@ -407,7 +407,7 @@ begin
             report "Read not allowed during burst write"
             severity failure;
 
-          assert rst_i = '1' or s_burstcount > 0
+          assert rst_i = '1' or unsigned(s_burstcount) > 0
             report "Internal error: WRITING_ST: s_burstcount must be greater than zero"
             severity failure;
 
@@ -416,14 +416,14 @@ begin
             pack_byteenable_v := write_pack_byteenable;
 
             pack_write_slot(
-                            to_integer(offset),
+                            to_integer(unsigned(offset)),
                             pack_data_v,
                             pack_byteenable_v
                           );
 
             -- A master word is complete either when the last sub-slot has just
             -- been filled or when the slave burst ends mid-master-word.
-            if offset = C_RATIO - 1 or s_burstcount = 1 then
+            if unsigned(offset) = C_RATIO - 1 or unsigned(s_burstcount) = 1 then
               push_write_word(pack_data_v, pack_byteenable_v);
 
               write_pack_data       <= (others => '0');
@@ -433,10 +433,10 @@ begin
               write_pack_byteenable <= pack_byteenable_v;
             end if;
 
-            s_burstcount <= s_burstcount - 1;
-            offset       <= offset + 1;
+            s_burstcount <= std_logic_vector(unsigned(s_burstcount) - 1);
+            offset       <= std_logic_vector(unsigned(offset) + 1);
 
-            if s_burstcount = 1 then
+            if unsigned(s_burstcount) = 1 then
               -- The complete slave write burst is now packed into the write
               -- FIFO. Do not enter EMIT_WRITE_ST immediately, because axis_fifo
               -- has one clock of latency from s_valid_i to m_valid_o.
@@ -462,7 +462,7 @@ begin
         --------------------------------------------------------------------
 
         when WAIT_WRITE_FIFO_ST =>
-          assert m_write_remaining /= 0
+          assert unsigned(m_write_remaining) /= 0
             report "Internal error: WAIT_WRITE_FIFO_ST entered with no master write beats remaining"
             severity failure;
 
@@ -481,16 +481,16 @@ begin
         --------------------------------------------------------------------
 
         when EMIT_WRITE_ST =>
-          assert wr_fifo_m_valid = '1' or m_write_remaining = 0
+          assert wr_fifo_m_valid = '1' or unsigned(m_write_remaining) = 0
             report "Write FIFO underflow: master write burst would contain a bubble"
             severity failure;
 
           if wr_fifo_m_valid = '1' and m_waitrequest_i = '0' then
-            if m_write_remaining = 1 then
+            if unsigned(m_write_remaining) = 1 then
               m_write_remaining <= (others => '0');
               state             <= IDLE_ST;
             else
-              m_write_remaining <= m_write_remaining - 1;
+              m_write_remaining <= std_logic_vector(unsigned(m_write_remaining) - 1);
             end if;
           end if;
 
@@ -500,12 +500,12 @@ begin
 
         when READING_ST =>
           if rd_fifo_m_valid = '1' then
-            s_burstcount <= s_burstcount - 1;
-            offset       <= offset + 1;
+            s_burstcount <= std_logic_vector(unsigned(s_burstcount) - 1);
+            offset       <= std_logic_vector(unsigned(offset) + 1);
 
             -- On the last slave read beat, return to IDLE_ST in the same cycle
             -- that s_readdatavalid_o is asserted.
-            if s_burstcount = 1 then
+            if unsigned(s_burstcount) = 1 then
               state <= IDLE_ST;
             end if;
           end if;
@@ -539,8 +539,8 @@ begin
   -- it may present a slice of stale FIFO data, which is harmless because the
   -- upstream slave-side master is not allowed to sample it without valid.
   s_readdata_o      <= rd_fifo_m_data(
-                                      G_SLAVE_DATA_BITS * (to_integer(offset) + 1) - 1 downto
-                                      G_SLAVE_DATA_BITS * to_integer(offset)
+                                      G_SLAVE_DATA_BITS * (to_integer(unsigned(offset)) + 1) - 1 downto
+                                      G_SLAVE_DATA_BITS * to_integer(unsigned(offset))
                                     );
 
   s_readdatavalid_o <= rd_fifo_m_valid when state = READING_ST else
@@ -553,7 +553,7 @@ begin
   --   * IDLE_ST    : drain any residual partial master read word left by the
   --                  previous misaligned read burst before a new transaction.
   --   * write states: not applicable.
-  rd_fifo_m_ready   <= '1' when offset = C_RATIO - 1 or state = IDLE_ST else
+  rd_fifo_m_ready   <= '1' when unsigned(offset) = C_RATIO - 1 or state = IDLE_ST else
                        '0';
 
   -- Write FIFO pop strategy:
@@ -582,7 +582,7 @@ begin
   write_fifo_bubble_check_proc : process (clk_i)
   begin
     if rising_edge(clk_i) and rst_i = '0' then
-      if state = EMIT_WRITE_ST and m_write_remaining /= 0 then
+      if state = EMIT_WRITE_ST and unsigned(m_write_remaining) /= 0 then
         assert wr_fifo_m_valid = '1'
           report "Write FIFO underflow: Avalon-MM write burst would not be consecutive"
           severity failure;
