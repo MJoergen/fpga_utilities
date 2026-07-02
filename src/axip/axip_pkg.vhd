@@ -27,13 +27,11 @@ package body axip_pkg is
 
   pure function bytes_to_slv(bytes : bytes_type) return std_logic_vector is
   begin
-    assert bytes /= 0;
     return std_logic_vector(to_unsigned(bytes, C_BYTES_FIELD_BITS));
   end function bytes_to_slv;
 
   pure function slv_to_bytes(slv : std_logic_vector) return bytes_type is
   begin
-    assert or(slv) /= '0';
     return to_integer(unsigned(slv));
   end function slv_to_bytes;
 

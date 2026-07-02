@@ -1,15 +1,15 @@
 [*]
-[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Thu Jan 22 15:42:30 2026
+[*] GTKWave Analyzer v3.3.116 (w)1999-2023 BSI
+[*] Thu Jul  2 17:07:25 2026
 [*]
-[dumpfile] "/home/mfj/git/Weibel/pcb1036/fpga_utilities/sim/tb_axip_pipe/tb_axip_pipe.ghw"
-[dumpfile_mtime] "Thu Jan 22 15:42:25 2026"
-[dumpfile_size] 12563
-[savefile] "/home/mfj/git/Weibel/pcb1036/fpga_utilities/sim/tb_axip_pipe/tb_axip_pipe.gtkw"
+[dumpfile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axip_pipe/tb_axip_pipe.ghw"
+[dumpfile_mtime] "Thu Jul  2 17:06:55 2026"
+[dumpfile_size] 5823
+[savefile] "/home/mike/git/MJoergen/fpga_utilities/sim/tb_axip_pipe/tb_axip_pipe.gtkw"
 [timestart] 0
 [size] 1376 925
-[pos] -1 -1
-*-32.226959 2990000000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[pos] -1675 -11
+*-25.013866 104800000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.tb_axip_pipe.
 [treeopen] top.tb_axip_pipe.axip_sim_inst.
@@ -46,7 +46,7 @@ top.tb_axip_pipe.axip_pipe_inst.m_last_o
 top.tb_axip_pipe.axip_pipe_inst.m_bytes_o
 @1401200
 -axip_pipe
-@c00200
+@800200
 -axip_master_sim
 @28
 top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.clk_i
@@ -61,32 +61,14 @@ top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.m_valid_o
 top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.m_last_o
 @420
 top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.m_bytes_o
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_state
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_length
+top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.state
 @22
 #{top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[13:0]} top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[13] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[12] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[11] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[10] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[9] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[8] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[7] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[6] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[5] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[4] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[3] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[2] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[1] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_cnt[0]
-@28
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.stim_do_valid
-[color] 6
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_ready
-[color] 2
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_valid
-@22
-#{top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[7:0]} top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[7] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[6] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[5] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[4] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[3] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[2] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[1] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.header_data[0]
-@28
-[color] 6
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_ready
-[color] 2
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_valid
-@22
-#{top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[23:0]} top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[23] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[22] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[21] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[20] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[19] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[18] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[17] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[16] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[15] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[14] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[13] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[12] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[11] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[10] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[9] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[8] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[7] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[6] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[5] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[4] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[3] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[2] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[1] top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_data[0]
-@28
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_last
 @420
-top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.payload_bytes
-@1401200
+top.tb_axip_pipe.axip_sim_inst.axip_master_sim_inst.bytes_left
+@1000200
 -axip_master_sim
-@800200
+@c00200
 -axip_slave_sim
 @28
 top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.clk_i
@@ -101,30 +83,12 @@ top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.s_valid_i
 top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.s_last_i
 @420
 top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.s_bytes_i
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_state
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_length
 @22
 #{top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[13:0]} top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[13] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[12] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[11] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[10] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[9] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[8] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[7] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[6] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[5] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[4] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[3] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[2] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[1] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_cnt[0]
-@28
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.verf_do_ready
-[color] 6
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_ready
-[color] 2
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_valid
-@22
-#{top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[7:0]} top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[7] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[6] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[5] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[4] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[3] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[2] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[1] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.header_data[0]
-@28
-[color] 6
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_ready
-[color] 2
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_valid
-@22
-#{top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[23:0]} top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[23] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[22] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[21] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[20] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[19] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[18] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[17] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[16] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[15] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[14] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[13] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[12] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[11] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[10] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[9] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[8] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[7] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[6] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[5] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[4] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[3] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[2] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[1] top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_data[0]
-@28
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_last
 @420
-top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.payload_bytes
-@1000200
+top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.state
+top.tb_axip_pipe.axip_sim_inst.axip_slave_sim_inst.bytes_left
+@1401200
 -axip_slave_sim
 [pattern_trace] 1
 [pattern_trace] 0

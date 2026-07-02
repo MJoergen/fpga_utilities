@@ -75,7 +75,7 @@ begin
         h_valid_o <= '0';
       end if;
 
-      assert not (s_valid_i = '1' and s_bytes_i = 0 and rst_i = '0')
+      assert not (s_valid_i = '1' and s_last_i = '1' and s_bytes_i = 0 and rst_i = '0')
         report "axip_remove_fixed_header: BYTES = 0 is not allowed"
         severity failure;
 

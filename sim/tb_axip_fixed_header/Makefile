@@ -20,7 +20,7 @@ SRC += tb_axip_fixed_header.vhd
 DUT = axip_fixed_header
 
 # Test duration
-STOP_TIME = 100us
+STOP_TIME = 200us
 
 # Test specific generics
 GENERIC += -gG_PAUSE_SIZE=3

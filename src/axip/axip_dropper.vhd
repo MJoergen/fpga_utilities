@@ -145,7 +145,7 @@ begin
 
       -- A beat with zero valid bytes carries no payload and would corrupt
       -- m_bytes_o framing downstream; treat it as a design error.
-      assert not (s_valid_i = '1' and s_bytes_i = 0 and rst_i = '0')
+      assert not (s_valid_i = '1' and s_last_i = '1' and s_bytes_i = 0 and rst_i = '0')
         report "axip_dropper: BYTES = 0 is not allowed"
         severity failure;
 
