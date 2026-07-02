@@ -6,7 +6,6 @@ SRC += axis_demux.vhd
 SRC += axis_fifo_async.vhd
 SRC += axis_fifo.vhd
 SRC += axis_increase.vhd
-SRC += axis_pipe_async.vhd
 SRC += axis_pipe_lite.vhd
 SRC += axis_pipe.vhd
 
@@ -36,7 +35,6 @@ GENERICS_axis_demux      = -gG_DATA_BITS=8
 GENERICS_axis_fifo_async = -gG_ADDR_BITS=12 -gG_DATA_BITS=8 -gG_RAM_STYLE=block
 GENERICS_axis_fifo       = -gG_ADDR_BITS=6  -gG_DATA_BITS=8 -gG_RAM_STYLE=distributed
 GENERICS_axis_increase   = -gG_SLAVE_DATA_BITS=8 -gG_MASTER_DATA_BITS=10
-GENERICS_axis_pipe_async = -gG_DATA_BITS=8
 GENERICS_axis_pipe_lite  = -gG_DATA_BITS=8
 GENERICS_axis_pipe       = -gG_DATA_BITS=8
 

@@ -73,7 +73,7 @@ Per-interface modules currently in the repo:
 - **AXIS** (`src/axis/`): `axis_arbiter`,
   `axis_demux`, `axis_decrease`,
   `axis_fifo`, `axis_fifo_async`, `axis_increase`,
-  `axis_pipe`, `axis_pipe_async`, `axis_pipe_lite`
+  `axis_pipe`, `axis_pipe_lite`
 - **AXIP** (`src/axip/`): `axip_arbiter`, `axip_arbiter_general`,
   `axip_demux`, `axip_dropper`, `axip_fifo`, `axip_fifo_async`,
   `axip_insert_fixed_header`, `axip_remove_fixed_header`,

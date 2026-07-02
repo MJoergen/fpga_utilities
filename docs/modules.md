@@ -46,7 +46,6 @@ testbench are flagged as **unverified**.
 | `axis_decrease`              | – | `tb_axis_decrease_increase` |
 | `axis_increase`              | – | `tb_axis_decrease_increase` |
 | `axis_pipe`                  | – | `tb_axis_pipe` |
-| `axis_pipe_async`            | – | `tb_axis_pipe_async` |
 | `axis_pipe_lite`             | – | `tb_axis_pipe_lite` |
 | `avm_to_wbus`                | – | `tb_avm_to_wbus` |
 | `wbus_to_avm`                | – | `tb_wbus_to_avm` |
@@ -84,8 +83,6 @@ the `axis` interface specified in
 - [`axis_pipe.vhd`](../src/axis/axis_pipe.vhd): Two-stage AXIS pipeline
   register. Breaks combinational paths through both `VALID` and `READY`
   at the cost of one cycle of latency. Useful for timing closure.
-- [`axis_pipe_async.vhd`](../src/axis/axis_pipe_async.vhd): Shallow
-  asynchronous AXIS FIFO for clock-domain crossing.
 - [`axis_pipe_lite.vhd`](../src/axis/axis_pipe_lite.vhd): Single-stage
   AXIS pipeline register. Breaks the combinational path through `VALID`
   but **not** through `READY` — choose `axis_pipe` if
