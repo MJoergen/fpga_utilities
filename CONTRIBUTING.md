@@ -327,6 +327,7 @@ rename.
 Before opening a PR, run locally:
 
 ```sh
+make src
 make sim
 make formal
 
@@ -334,7 +335,7 @@ make formal
 git grep -L 'SPDX-License-Identifier' -- 'src/**/*.vhd' 'sim/**/*.vhd'
 ```
 
-If `make sim` or `make formal` fails on `main` before your change, open
+If `make src`, `make sim`, or `make formal` fails on `main` before your change, open
 an issue rather than working around it.
 
 ### 7.2 Commit messages
@@ -361,7 +362,7 @@ Include:
 
 - A short description of the change.
 - Which rule in `CODING_STYLE.md` (if any) this PR closes or follows.
-- A statement that `make sim` and `make formal` pass locally on your
+- A statement that `make src`, `make sim`, and `make formal` pass locally on your
   branch.
 - Any new `[CONFIRM]` markers introduced (please don't — but if
   unavoidable, list them and link to a tracking issue).
