@@ -14,8 +14,9 @@ entity tb_avm_pipe is
     G_TIMEOUT_MAX : natural;
     G_DO_ABORT    : boolean;
     G_PAUSE_SIZE  : integer;
-    G_ADDR_BITS   : natural;
-    G_DATA_BITS   : natural
+    G_BURST_BITS  : positive;
+    G_ADDR_BITS   : positive;
+    G_DATA_BITS   : positive
   );
 end entity tb_avm_pipe;
 
@@ -29,7 +30,7 @@ architecture tb of tb_avm_pipe is
   signal m_address       : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal m_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal m_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
-  signal m_burstcount    : std_logic_vector(7 downto 0);
+  signal m_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal m_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal m_readdatavalid : std_logic;
   signal m_waitrequest   : std_logic;
@@ -39,7 +40,7 @@ architecture tb of tb_avm_pipe is
   signal s_address       : std_logic_vector(G_ADDR_BITS - 1 downto 0);
   signal s_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal s_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
-  signal s_burstcount    : std_logic_vector(7 downto 0);
+  signal s_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
   signal s_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal s_readdatavalid : std_logic;
   signal s_waitrequest   : std_logic;
@@ -61,8 +62,9 @@ begin
 
   avm_pipe_inst : entity work.avm_pipe
     generic map (
-      G_ADDR_BITS => G_ADDR_BITS,
-      G_DATA_BITS => G_DATA_BITS
+      G_BURST_BITS => G_BURST_BITS,
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i             => clk,
@@ -95,7 +97,8 @@ begin
   avm_sim_inst : entity work.avm_sim
     generic map (
       G_DEBUG      => G_DEBUG,
-      G_PAUSE_SIZE => 0,
+      G_PAUSE_SIZE => G_PAUSE_SIZE,
+      G_BURST_BITS => G_BURST_BITS,
       G_ADDR_BITS  => G_ADDR_BITS,
       G_DATA_BITS  => G_DATA_BITS
     )

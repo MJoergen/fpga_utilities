@@ -15,6 +15,24 @@ permissions:
   contents: read
 
 jobs:
+  src:
+    name: Synthesis (GHDL)
+    runs-on: ubuntu-22.04
+    container:
+      image: ghdl/vunit:mcode
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Tool versions
+        run: |
+          ghdl --version
+          make --version
+          yosys --version
+
+      - name: Run source file synthesis
+        run: make src
+
   sim:
     name: Simulation (GHDL)
     runs-on: ubuntu-22.04
