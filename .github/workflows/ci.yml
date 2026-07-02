@@ -107,6 +107,15 @@ jobs:
             exit 1
           fi
 
+      - name: Every src/ and sim/ file has a non-empty Description header
+        run: |
+          missing=$(git grep -L 'Description *: ' -- 'src/**/*.vhd' 'sim/**/*.vhd' || true)
+          if [ -n "$missing" ]; then
+            echo "Files missing Description header:" >&2
+            echo "$missing" >&2
+            exit 1
+          fi
+
       - name: README and docs links resolve
         # Pure-Node action; no toolchain needed.
         uses: gaurav-nelson/github-action-markdown-link-check@v1

@@ -1,5 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- This module implements a pipe consisting of only a single register layer.  It has its
+-- Description: This module implements a pipe consisting of only a single register layer.  It has its
 -- use in elastic pipelines, where the data flow has back-pressure.  It places registers
 -- on the valid and data signals in the downstream direction, but the ready signal in the
 -- upstream direction is still combinatorial.  The pipe supports simultaneous read and
