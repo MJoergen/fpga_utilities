@@ -10,9 +10,9 @@ library ieee;
 
 entity axil_to_wbus is
   generic (
-    G_ADDR_BITS : positive;
-    G_DATA_BITS : positive;
-    G_TIMEOUT   : positive := 100
+    G_ADDR_BITS   : positive;
+    G_DATA_BITS   : positive;
+    G_TIMEOUT_MAX : positive := 100
   );
   port (
     clk_i       : in    std_logic;
@@ -55,7 +55,7 @@ architecture rtl of axil_to_wbus is
   type     state_type is (IDLE_ST, WRITING_ST, READING_ST);
   signal   state : state_type                           := IDLE_ST;
 
-  signal   time_cnt : natural range 0 to G_TIMEOUT;
+  signal   time_cnt : natural range 0 to G_TIMEOUT_MAX;
 
   constant C_RESP_OKAY   : std_logic_vector(1 downto 0) := "00";
   constant C_RESP_SLVERR : std_logic_vector(1 downto 0) := "10";
@@ -129,7 +129,7 @@ begin
 
         when WRITING_ST =>
           time_cnt <= time_cnt + 1;
-          if time_cnt = G_TIMEOUT - 1 then
+          if time_cnt = G_TIMEOUT_MAX - 1 then
             -- Send back B response
             s_bresp_o  <= C_RESP_SLVERR;
             m_cyc_o    <= '0';
@@ -147,7 +147,7 @@ begin
 
         when READING_ST =>
           time_cnt <= time_cnt + 1;
-          if time_cnt = G_TIMEOUT - 1 then
+          if time_cnt = G_TIMEOUT_MAX - 1 then
             -- Send back R response
             s_rresp_o  <= C_RESP_SLVERR;
             m_cyc_o    <= '0';

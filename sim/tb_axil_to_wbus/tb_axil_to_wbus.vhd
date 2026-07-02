@@ -105,9 +105,9 @@ begin
 
   axil_to_wbus_inst : entity work.axil_to_wbus
     generic map (
-      G_TIMEOUT   => 100,
-      G_ADDR_BITS => G_ADDR_BITS,
-      G_DATA_BITS => G_DATA_BITS
+      G_TIMEOUT_MAX => 100,
+      G_ADDR_BITS   => G_ADDR_BITS,
+      G_DATA_BITS   => G_DATA_BITS
     )
     port map (
       clk_i       => clk,

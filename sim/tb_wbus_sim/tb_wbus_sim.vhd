@@ -66,7 +66,6 @@ begin
       G_NAME        => "",
       G_SEED        => X"1234567887654321",
       G_LATENCY     => 3,
-      G_TIMEOUT     => false,
       G_OFFSET      => 1234,
       G_ADDR_BITS   => G_ADDR_BITS,
       G_DATA_BITS   => G_DATA_BITS

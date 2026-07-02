@@ -16,7 +16,6 @@ entity wbus_sim is
     G_DEBUG       : boolean;
     G_DO_ABORT    : boolean;
     G_OFFSET      : natural;
-    G_TIMEOUT     : boolean;
     G_LATENCY     : natural;
     G_ADDR_BITS   : natural;
     G_DATA_BITS   : natural

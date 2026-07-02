@@ -17,7 +17,7 @@ library work;
 entity wbus_mapper is
   generic (
     G_ASYNC_RESET      : boolean := false;
-    G_TIMEOUT          : positive := 100;
+    G_TIMEOUT_MAX      : positive := 100;
     G_NUM_SLAVES       : positive := 2;
     G_MASTER_ADDR_BITS : positive := 16;
     G_SLAVE_ADDR_BITS  : positive := 12;
@@ -67,7 +67,7 @@ architecture rtl of wbus_mapper is
   type   state_type is (IDLE_ST, BUSY_ST);
   signal state : state_type                                  := IDLE_ST;
 
-  signal timeout_cnt : natural range 0 to G_TIMEOUT          := 0;
+  signal timeout_cnt : natural range 0 to G_TIMEOUT_MAX      := 0;
   signal slave_num   : natural range 0 to G_NUM_SLAVES - 1;
 
   signal m_rst : std_logic_vector(G_NUM_SLAVES - 1 downto 0) := (others => '1');  -- Synchronous reset
@@ -146,7 +146,7 @@ begin
             s_ack_o   <= '1';
             m_cyc_o   <= '0';
             state     <= IDLE_ST;
-          elsif timeout_cnt < G_TIMEOUT then
+          elsif timeout_cnt < G_TIMEOUT_MAX then
             timeout_cnt <= timeout_cnt + 1;
           else
             s_rddat_o <= C_TIMEOUT;

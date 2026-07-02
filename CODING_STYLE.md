@@ -115,7 +115,6 @@ Use the `G_` prefix and SCREAMING_SNAKE_CASE.
 | Data width (bits)                | `G_DATA_BITS`     |
 | Data width (bytes, AXIP only)    | `G_DATA_BYTES`    |
 | Burst-count field width (bits)   | `G_BURST_BITS`    |
-| FIFO/RAM depth (entries)         | `G_RAM_DEPTH`     |
 | RAM-style attribute              | `G_RAM_STYLE`     |
 | Timeout (cycles)                 | `G_TIMEOUT_MAX`   |
 | Random seed                      | `G_SEED`          |
