@@ -1,6 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
---   Simulation-only Avalon-MM slave memory model.
+-- Description: Simulation-only Avalon-MM slave memory model.
 --
 --   The model implements a simple word-addressed memory with byte-enable support.
 --   Each address corresponds to one G_DATA_BITS-bit word. Burst transactions are

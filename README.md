@@ -22,8 +22,9 @@ in [docs/modules.md](docs/modules.md).
 Under active development. No tagged releases yet; module APIs may
 change. Pin to a commit SHA if you depend on this repo.
 
-The three CI badges above show, in order:
+The four CI badges above show, in order:
 
+- **src** — `make src` (GHDL synthesis) on the latest commit to `main`.
 - **sim** — `make sim` (GHDL testbenches) on the latest commit to `main`.
 - **formal** — `make formal` (SymbiYosys proofs) on the latest commit to `main`.
 - **style** — SPDX-header presence and markdown link checks.
@@ -47,8 +48,9 @@ matrix in [docs/modules.md](docs/modules.md#verification-coverage-matrix).
 
 - Simulation: **GHDL** (VHDL-2008).
 - Formal: **SymbiYosys** with PSL properties via the yosys GHDL frontend.
-- Top-level `Makefile` plus `sim/Makefile` and `formal/Makefile` drive both
-  flows. From the repo root: `make sim`, `make formal`, `make src`.
+- Top-level `Makefile` plus `src/Makefile`, `sim/Makefile`,
+  and `formal/Makefile` drive the three
+  flows. From the repo root: `make src`, `make sim`, `make formal`.
 
 ## Interfaces
 
@@ -69,7 +71,8 @@ The full handshake contract for each interface is in [docs/interfaces.md](docs/i
 Per-interface modules currently in the repo:
 
 - **AXIS** (`src/axis/`): `axis_arbiter`,
-  `axis_demux`, `axis_fifo`, `axis_fifo_async`,
+  `axis_demux`, `axis_decrease`,
+  `axis_fifo`, `axis_fifo_async`, `axis_increase`,
   `axis_pipe`, `axis_pipe_async`, `axis_pipe_lite`
 - **AXIP** (`src/axip/`): `axip_arbiter`, `axip_arbiter_general`,
   `axip_demux`, `axip_dropper`, `axip_fifo`, `axip_fifo_async`,
@@ -82,7 +85,7 @@ Per-interface modules currently in the repo:
 - **Avalon-MM** (`src/avm/`): `avm_arbiter`, `avm_decrease`,
   `avm_increase`, `avm_pipe`, `avm_readahead`
 - **Converters** (`src/converters/`): `axil_to_wbus`, `wbus_to_axil`,
-  `axis_to_axip`, `axip_to_axis`
+  `axis_to_axip`, `axip_to_axis`, `avm_to_axil`, `axil_to_avm`
 
 Packages `src/axip/axip_pkg.vhd` and `src/wbus/wbus_pkg.vhd` declare the
 records used by the corresponding modules and must be in the compile

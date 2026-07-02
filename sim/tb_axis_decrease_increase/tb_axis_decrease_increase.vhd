@@ -1,5 +1,11 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
+-- Description: Simple testbench to verify the combined functionality of the
+-- axis_decrease and axis_increase modules. In combination, they act as a shallow FIFO.
+--
+-- Uses a generic AXI Streaming MASTER and SLAVE module to connect to the two DUTs.
+--
+-- TODO: Add PAUSEs before and after the two modules, as well as in between (in total three places),
+-- for improved test coverage.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------

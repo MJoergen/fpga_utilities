@@ -1,5 +1,12 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
+-- Description: Testbench for the avm_arbiter module.
+--
+-- Uses two generic Avalon MM MASTERs and a single Avalon MM SLAVE memory.
+-- Adds a PAUSE before the SLAVE module.
+-- Addresses a prepended with a "0" or "1" depending on the MASTER.
+-- This allows both MASTERs to access their own half of the SLAVE memory.
+--
+-- TODO: Add PAUSEs to the two MASTERs for improved test coverage.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -79,10 +86,10 @@ begin
 
   avm_master_sim_0_inst : entity work.avm_master_sim
     generic map (
-      G_NAME        => "0",
+      G_NAME       => "0",
       G_BURST_BITS => G_BURST_BITS,
-      G_ADDR_BITS   => G_ADDR_BITS,
-      G_DATA_BITS   => G_DATA_BITS
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i             => clk,
@@ -105,10 +112,10 @@ begin
 
   avm_master_sim_1_inst : entity work.avm_master_sim
     generic map (
-      G_NAME        => "1",
+      G_NAME       => "1",
       G_BURST_BITS => G_BURST_BITS,
-      G_ADDR_BITS   => G_ADDR_BITS,
-      G_DATA_BITS   => G_DATA_BITS
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS
     )
     port map (
       clk_i             => clk,

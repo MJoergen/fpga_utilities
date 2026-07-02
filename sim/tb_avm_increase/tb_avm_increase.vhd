@@ -1,5 +1,10 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
+-- Description: A simple testbench for the avm_increase module.
+--
+-- Uses separate Avalon MM MASTER and SLAVE modules (due to the different word widths).
+-- PAUSEs are added ot the MASTER side of the DUT.
+--
+-- TODO: Add PAUSEs to the SLAVE side of the DUT for improved coverage.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -10,7 +15,7 @@ library ieee;
 
 entity tb_avm_increase is
   generic (
-    G_BURST_BITS      : positive := 8;
+    G_BURST_BITS       : positive := 8;
     G_MAX_BURST        : positive := 8;
     G_DEBUG            : boolean;
     G_PAUSE_SIZE       : natural;

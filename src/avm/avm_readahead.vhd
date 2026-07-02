@@ -1,6 +1,5 @@
 -------------------------------------------------------------------------------
--- Description:
--- This module implements a single-line read-ahead (prefetch) buffer using the
+-- Description: This module implements a single-line read-ahead (prefetch) buffer using the
 -- Avalon Memory-Mapped (AVM) bus interface.
 --
 -- Behaviour:

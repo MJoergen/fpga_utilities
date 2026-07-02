@@ -1,5 +1,8 @@
 -------------------------------------------------------------------------------
--- Description:
+-- Description: A shallow (register only) FIFO for an Avalon MM bus
+--
+-- This is useful for breaking long combinatorial paths, especially on the
+-- WAITREQUEST signal.
 --
 -- SPDX-License-Identifier: MIT
 -------------------------------------------------------------------------------
@@ -70,6 +73,7 @@ begin
   s_wr_valid              <= s_write_i or s_read_i;
 
 
+  -- Instantiate AXI streaming PIPE for the downstream request (write and read).
   axis_pipe_wr_inst : entity work.axis_pipe
     generic map (
       G_DATA_BITS => C_WR_BITS

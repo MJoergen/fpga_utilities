@@ -1,6 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
--- Single-outstanding-request Wishbone slave with a memory backing store. Accepts a
+-- Description: Single-outstanding-request Wishbone slave with a memory backing store. Accepts a
 -- request on the cycle it asserts stall=0 and stb=1, returns ack on the next cycle. Stall
 -- is asserted while the previous transaction is in flight.
 --

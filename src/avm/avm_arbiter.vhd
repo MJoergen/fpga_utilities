@@ -1,6 +1,5 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
---   Round-robin arbiter between two Avalon-MM slave-side interfaces (s0, s1) and a single
+-- Description: Round-robin arbiter between two Avalon-MM slave-side interfaces (s0, s1) and a single
 --   downstream Avalon-MM master-side interface (m). Supports pipelined reads, multi-beat
 --   bursts, and an optional "prefer swap" fairness mode (G_PREFER_SWAP).
 --

@@ -1,5 +1,9 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
+-- Description: Testbench for the axil_to_avm module.
+--
+-- Uses a generic AXI Lite MASTER and a generic Avalon MM SLAVE to exercise the DUT.
+--
+-- TODO: Add PAUSEs in both thw MASTER and SLAVE interfaces.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------

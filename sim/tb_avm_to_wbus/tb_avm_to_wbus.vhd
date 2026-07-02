@@ -1,5 +1,9 @@
 -- ---------------------------------------------------------------------------------------
--- Description:
+-- Description: Simple testbench for the avm_to_wbus module.
+--
+-- Connects a generic Avalon MM MASTER and a generic Wishbone SLAVE to the DUT.
+--
+-- TODO: Add PAUSEs to both the MASTER and SLAVE side of the DUT for improved test coverage.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 --------------------------------------------------------------------------------
--- Description:
--- Up-sizing bridge for the Avalon Memory-Mapped (Avalon-MM) protocol.
+-- Description: Up-sizing bridge for the Avalon Memory-Mapped (Avalon-MM) protocol.
 --
 --   * Slave  side : narrow data path (G_SLAVE_DATA_BITS bits)
 --   * Master side : wide   data path (G_MASTER_DATA_BITS bits)

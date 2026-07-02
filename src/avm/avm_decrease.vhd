@@ -1,6 +1,5 @@
 --------------------------------------------------------------------------------
--- Description:
--- Avalon Memory-Mapped (Avalon-MM) data-width down-converter.
+-- Description: Avalon Memory-Mapped (Avalon-MM) data-width down-converter.
 --
 -- The slave port (s_*) is the "wide" side and faces an upstream Avalon-MM
 -- master. The master port (m_*) is the "narrow" side and faces a downstream
