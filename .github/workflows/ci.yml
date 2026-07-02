@@ -19,7 +19,7 @@ jobs:
     name: Synthesis (GHDL)
     runs-on: ubuntu-22.04
     container:
-      image: ghdl/vunit:mcode
+      image: hdlc/formal:latest
     steps:
       - name: Checkout
         uses: actions/checkout@v7
