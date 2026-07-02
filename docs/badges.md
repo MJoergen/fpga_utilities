@@ -12,10 +12,24 @@ the *how* (the workflow itself), see
 
 ## CI badges
 
-The three CI badges report the result of the workflow defined in
+The four CI badges report the result of the workflow defined in
 `ci.yml`, run on every push to `main` and every pull request targeting
 `main`. Each badge corresponds to one of the three jobs in that
 workflow.
+
+### `src`
+
+> Status of `make src` on the latest commit to `main`.
+
+The `src` job runs GHDL synthesis on every source file under `src/`. The badge
+goes red if **any** synthesis fails, which means at least one of:
+
+- GHDL refused to synthesize a file.
+
+A green `src` badge does **not** mean every module is verified — only
+that every source file is synthesizable. The per-module verification
+status (which modules have a testbench at all) lives in the
+[coverage matrix in `modules.md`](modules.md#verification-coverage-matrix).
 
 ### `sim`
 
