@@ -1,5 +1,6 @@
 # fpga_utilities
 
+[![CI – src](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml/badge.svg?branch=main&event=push&job=src)](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml?query=branch%3Amain)
 [![CI – sim](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml/badge.svg?branch=main&event=push&job=sim)](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml?query=branch%3Amain)
 [![CI – formal](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml/badge.svg?branch=main&event=push&job=formal)](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml?query=branch%3Amain)
 [![CI – style](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml/badge.svg?branch=main&event=push&job=style)](https://github.com/MJoergen/fpga_utilities/actions/workflows/ci.yml?query=branch%3Amain)
