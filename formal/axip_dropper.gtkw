@@ -1,0 +1,61 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Fri Jul  3 09:20:09 2026
+[*]
+[dumpfile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/formal/axip_dropper_bmc/engine_0/trace.vcd"
+[dumpfile_mtime] "Fri Jul  3 09:17:18 2026"
+[dumpfile_size] 3073
+[savefile] "/home/mfj/git/PRIVATE/MJoergen/fpga_utilities/formal/axip_dropper.gtkw"
+[timestart] 0
+[size] 1478 999
+[pos] -204 -250
+*-1.741344 3 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 210
+[signals_width] 294
+[sst_expanded] 1
+[sst_vpaned_height] 282
+@800200
+-axip_dropper
+@28
+axip_dropper.clk_i
+axip_dropper.rst_i
+[color] 6
+axip_dropper.s_ready_o
+[color] 2
+axip_dropper.s_valid_i
+@22
+axip_dropper.s_data_i[31:0]
+@28
+axip_dropper.s_last_i
+axip_dropper.s_bytes_i[2:0]
+axip_dropper.s_drop_i
+[color] 6
+axip_dropper.m_ready_i
+[color] 2
+axip_dropper.m_valid_o
+@22
+axip_dropper.m_data_o[31:0]
+@28
+axip_dropper.m_last_o
+axip_dropper.m_bytes_o[2:0]
+axip_dropper.wrptr[1:0]
+axip_dropper.wrptr_next[1:0]
+axip_dropper.rdptr[1:0]
+axip_dropper.rdptr_next[1:0]
+axip_dropper.first_ptr[1:0]
+axip_dropper.last_ptr[1:0]
+[color] 6
+axip_dropper.fifo_wr_ready
+[color] 2
+axip_dropper.fifo_wr_valid
+axip_dropper.fifo_wr_data[1:0]
+[color] 6
+axip_dropper.fifo_rd_ready
+[color] 2
+axip_dropper.fifo_rd_valid
+axip_dropper.fifo_rd_data[1:0]
+axip_dropper.fsm_state
+@1000200
+-axip_dropper
+[pattern_trace] 1
+[pattern_trace] 0

@@ -221,6 +221,7 @@ begin
   begin
     if rising_edge(clk_i) then
       if m_ready_i = '1' then
+        m_last_o  <= '0';
         m_valid_o <= '0';
       end if;
 
@@ -267,6 +268,7 @@ begin
 
       -- Synchronous reset overrides above logic.
       if rst_i = '1' then
+        m_last_o  <= '0';
         m_valid_o <= '0';
         rdptr     <= (others => '0');
         fsm_state <= IDLE_ST;

@@ -4,16 +4,16 @@ bmc
 
 [options]
 cover: mode cover
-cover: depth 10
+cover: depth 13
 cover: append 3
 bmc: mode bmc
-bmc: depth 10
+bmc: depth 13
 
 [engines]
 smtbmc
 
 [script]
-ghdl --std=08 -gG_ADDR_BITS=2 -gG_DATA_BYTES=4 axip_dropper.vhd axip_pkg.vhd axis_fifo.vhd axip_dropper.psl -e axip_dropper
+ghdl --std=08 -gG_ADDR_BITS=3 -gG_DATA_BYTES=2 axip_dropper.vhd axip_pkg.vhd axis_fifo.vhd axip_dropper.psl -e axip_dropper
 prep -top axip_dropper
 
 [files]
