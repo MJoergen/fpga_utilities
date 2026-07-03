@@ -4,10 +4,10 @@ bmc
 
 [options]
 cover: mode cover
-cover: depth 10
+cover: depth 12
 cover: append 3
 bmc: mode bmc
-bmc: depth 10
+bmc: depth 12
 
 [engines]
 smtbmc

@@ -1,80 +1,219 @@
 vunit axil_to_avm_inst(axil_to_avm(rtl))
 {
--- set all declarations to run on clk
-   default clock is rising_edge(clk_i);
 
-   signal f_wr_burstcount : unsigned(G_BURST_BITS - 1 downto 0);
-   f_wr_burstcount_proc : process (clk_i)
-   begin
-     if rising_edge(clk_i) then
-       if m_write_o and not m_waitrequest_i and not rst_i then
-         if f_wr_burstcount = 0 then
-           f_avm_wr_burstcount : assert unsigned(m_burstcount_o) > 0;
-           f_wr_burstcount <= unsigned(m_burstcount_o) - 1;
-         else
-           f_wr_burstcount <= f_wr_burstcount - 1;
-         end if;
-       end if;
-       if rst_i = '1' then
-         f_wr_burstcount <= (others => '0');
-       end if;
-     end if;
-   end process f_wr_burstcount_proc;
+  -- Handshake strobes for readability in properties.
+  signal aw_xfer : std_logic;
+  signal w_xfer  : std_logic;
+  signal b_xfer  : std_logic;
+  signal ar_xfer : std_logic;
+  signal r_xfer  : std_logic;
+  signal mw_xfer : std_logic;    -- Avalon write accepted (write_o & !waitrequest)
+  signal mr_xfer : std_logic;    -- Avalon read  accepted (read_o  & !waitrequest)
 
-   signal f_rd_burstcount : unsigned(G_BURST_BITS - 1 downto 0);
-   f_rd_burstcount_proc : process (clk_i)
-   begin
-     if rising_edge(clk_i) then
-       if m_read_o and not m_waitrequest_i and not rst_i then
-         f_avm_rd_burstcount1 : assert unsigned(m_burstcount_o) > 0;
-         f_rd_burstcount <= unsigned(m_burstcount_o);
-       end if;
-       if m_readdatavalid_i and not rst_i then
-         f_rd_burstcount <= f_rd_burstcount - 1;
-       end if;
-       if rst_i = '1' then
-         f_rd_burstcount <= (others => '0');
-       end if;
-     end if;
-   end process f_rd_burstcount_proc;
+  -- 2-bit saturating shadow counters. Wide enough because the design
+  -- guarantees at most one outstanding of each kind.
+  signal n_aw_minus_b : unsigned(1 downto 0) := (others => '0');   -- writes accepted at AW but not yet B-consumed
+  signal n_ar_minus_r : unsigned(1 downto 0) := (others => '0');   -- reads  accepted at AR but not yet R-consumed
+  signal n_mr_minus_rdv : unsigned(1 downto 0) := (others => '0'); -- Avalon reads issued but not yet returned
 
+  ----------------------------------------------------------------------
+  -- Handshake strobes
+  ----------------------------------------------------------------------
+  aw_xfer <= s_awvalid_i and s_awready_o;
+  w_xfer  <= s_wvalid_i  and s_wready_o;
+  b_xfer  <= s_bvalid_o  and s_bready_i;
+  ar_xfer <= s_arvalid_i and s_arready_o;
+  r_xfer  <= s_rvalid_o  and s_rready_i;
+  mw_xfer <= m_write_o   and not m_waitrequest_i;
+  mr_xfer <= m_read_o    and not m_waitrequest_i;
 
-------------------------------------------------
--- PROPERTIES OF THE MASTER INTERFACE
-------------------------------------------------
+  ----------------------------------------------------------------------
+  -- Shadow counters
+  ----------------------------------------------------------------------
+  counters_proc : process (clk_i)
+  begin
+    if rising_edge(clk_i) then
 
--- AVALON MASTER: Clear all requests after a reset
-   f_avm_master_reset : assert always {rst_i} |=> {not m_write_o and not m_read_o};
+      -- AW-vs-B outstanding count. Because the bridge always accepts AW
+      -- and W together, tracking AW alone is sufficient.
+      if aw_xfer = '1' and b_xfer = '0' then
+        n_aw_minus_b <= n_aw_minus_b + 1;
+      elsif aw_xfer = '0' and b_xfer = '1' then
+        n_aw_minus_b <= n_aw_minus_b - 1;
+      end if;
 
--- AVALON MASTER: Outputs must be stable during stall
-   f_avm_master_stall : assert always {(m_write_o or m_read_o) and m_waitrequest_i and not rst_i} |=>
-      {stable(m_address_o) and stable(m_writedata_o) and stable(m_byteenable_o) and stable(m_burstcount_o)};
+      -- AR-vs-R outstanding count.
+      if ar_xfer = '1' and r_xfer = '0' then
+        n_ar_minus_r <= n_ar_minus_r + 1;
+      elsif ar_xfer = '0' and r_xfer = '1' then
+        n_ar_minus_r <= n_ar_minus_r - 1;
+      end if;
 
+      -- Avalon reads-outstanding count (for RDV_ONLY_AFTER_READ).
+      if mr_xfer = '1' and m_readdatavalid_i = '0' then
+        n_mr_minus_rdv <= n_mr_minus_rdv + 1;
+      elsif mr_xfer = '0' and m_readdatavalid_i = '1' then
+        n_mr_minus_rdv <= n_mr_minus_rdv - 1;
+      end if;
 
------------------------------
--- ASSUMPTIONS ABOUT INPUTS
------------------------------
+      if rst_i = '1' then
+        n_aw_minus_b   <= (others => '0');
+        n_ar_minus_r   <= (others => '0');
+        n_mr_minus_rdv <= (others => '0');
+      end if;
+    end if;
+  end process counters_proc;
 
--- Require reset at startup.
-   f_reset : assume {rst_i};
+  ----------------------------------------------------------------------
+  -- PSL properties
+  ----------------------------------------------------------------------
+  default clock is rising_edge(clk_i);
 
-   f_avm_rd_burstcount : assume always {m_readdatavalid_i} |-> f_rd_burstcount > 0;
+  --------------------------------------------------------------------
+  -- 0. Reset
+  --------------------------------------------------------------------
+  RESET : assume rst_i = '1';
 
+  --------------------------------------------------------------------
+  -- 1. AXI-Lite master-side ASSUMPTIONS (well-behaved upstream)
+  --------------------------------------------------------------------
 
---------------------------------------------
--- COVER STATEMENTS TO VERIFY REACHABILITY
---------------------------------------------
+  AW_VALID_STABLE : assume always
+  ({s_awvalid_i = '1' and s_awready_o = '0' and rst_i = '0'} |=>
+   {s_awvalid_i = '1' and stable(s_awaddr_i)});
 
--- A request is generated and accepted
-   f_avm_request : cover {m_write_o and not rst_i; not m_write_o};
+  W_VALID_STABLE : assume always
+  ({s_wvalid_i = '1' and s_wready_o = '0' and rst_i = '0'} |=>
+   {s_wvalid_i = '1' and stable(s_wdata_i) and stable(s_wstrb_i)});
 
- -- A request is generated and a response is received
-   f_avm_rd_transaction : cover {f_rd_burstcount > 0 and rst_i = '0'; f_rd_burstcount = 0};
+  AR_VALID_STABLE : assume always
+  ({s_arvalid_i = '1' and s_arready_o = '0' and rst_i = '0'} |=>
+   {s_arvalid_i = '1' and stable(s_araddr_i)});
 
+  -- Master eventually accepts each response (bounded liveness for BMC).
+  B_READY_BOUNDED : assume always
+  (s_bvalid_o = '1' -> next_e[1 to 8] (s_bready_i = '1'));
 
-----------------------------------------------
--- ADDITIONAL ASSUMES HELPFUL WHEN DEBUGGING
-----------------------------------------------
+  R_READY_BOUNDED : assume always
+  (s_rvalid_o = '1' -> next_e[1 to 8] (s_rready_i = '1'));
+
+  --------------------------------------------------------------------
+  -- 2. Avalon slave-side ASSUMPTIONS (well-behaved downstream)
+  --------------------------------------------------------------------
+
+  -- Slave eventually accepts each Avalon transfer.
+  WAITREQ_BOUNDED_WR : assume always
+  (m_write_o = '1' -> next_e[1 to 8] (m_waitrequest_i = '0'));
+
+  WAITREQ_BOUNDED_RD : assume always
+  (m_read_o  = '1' -> next_e[1 to 8] (m_waitrequest_i = '0'));
+
+  -- readdatavalid must correspond to an accepted read that hasn't yet
+  -- returned. Expressed via the shadow counter.
+  RDV_ONLY_AFTER_READ : assume always
+  (m_readdatavalid_i = '1' -> n_mr_minus_rdv > 0);
+
+  -- Bounded read latency: for BMC, response arrives within a few cycles.
+  RDV_BOUNDED : assume always
+  (mr_xfer = '1' -> next_e[1 to 8] (m_readdatavalid_i = '1'));
+
+  --------------------------------------------------------------------
+  -- 3. AXI-Lite master-side ASSERTIONS (bridge respects the protocol)
+  --------------------------------------------------------------------
+
+  BVALID_STABLE : assert always
+  ({s_bvalid_o = '1' and s_bready_i = '0' and rst_i = '0'} |=>
+   {s_bvalid_o = '1' and stable(s_bresp_o)});
+
+  RVALID_STABLE : assert always
+  ({s_rvalid_o = '1' and s_rready_i = '0' and rst_i = '0'} |=>
+   {s_rvalid_o = '1' and stable(s_rdata_o) and stable(s_rresp_o)});
+
+  -- Every B response corresponds to a completed AW+W. Because AW and W
+  -- are always paired by this bridge, this reduces to: no B without a
+  -- pending AW.
+  B_AFTER_WRITE : assert always
+  (s_bvalid_o = '1' and rst_i = '0' -> n_aw_minus_b > 0);
+
+  -- Symmetric property for reads.
+  R_AFTER_READ : assert always
+  (s_rvalid_o = '1' and rst_i = '0' -> n_ar_minus_r > 0);
+
+  --------------------------------------------------------------------
+  -- 4. Avalon slave-side ASSERTIONS (bridge respects Avalon-MM)
+  --------------------------------------------------------------------
+
+  -- Write and read strobes are mutually exclusive.
+  MWRITE_MREAD_EXCLUSIVE : assert always
+  (rst_i = '1' or not (m_write_o = '1' and m_read_o = '1'));
+
+  -- Burstcount is always 1 whenever a transfer is offered.
+  BURSTCOUNT_ONE : assert always
+  ((m_write_o = '1' or m_read_o = '1') and rst_i = '0' -> m_burstcount_o = C_BURST_ONE);
+
+  -- Avalon rule: request strobe held stable while waitrequest is high.
+  MWRITE_HELD : assert always
+  ({m_write_o = '1' and m_waitrequest_i = '1' and rst_i = '0'} |=>
+   {m_write_o = '1' and stable(m_address_o) and stable(m_writedata_o) and
+    stable(m_byteenable_o) and stable(m_burstcount_o)});
+
+  MREAD_HELD : assert always
+  ({m_read_o = '1' and m_waitrequest_i = '1' and rst_i = '0'} |=>
+   {m_read_o = '1' and stable(m_address_o) and
+    stable(m_byteenable_o) and stable(m_burstcount_o)});
+
+  --------------------------------------------------------------------
+  -- 5. Bookkeeping invariants (single-outstanding contract)
+  --------------------------------------------------------------------
+
+  INV_SINGLE_WRITE : assert always (n_aw_minus_b <= 1);
+  INV_SINGLE_READ  : assert always (n_ar_minus_r <= 1);
+  INV_SINGLE_MREAD : assert always (n_mr_minus_rdv <= 1);
+
+  --------------------------------------------------------------------
+  -- 6. COVER points
+  --------------------------------------------------------------------
+
+  COVER_WRITE_ONLY : cover {
+         aw_xfer = '1' and w_xfer = '1';
+         true;
+         b_xfer = '1'};
+  COVER_READ_ONLY  : cover {
+         ar_xfer = '1';
+         true;
+         true;
+         r_xfer = '1'};
+  COVER_SIMULTANEOUS_AWWAR : cover {
+         aw_xfer = '1' and w_xfer = '1' and ar_xfer = '1';
+         true;
+         b_xfer = '1';
+         true;
+         r_xfer = '1'};
+  COVER_BACK_TO_BACK_WR : cover {
+         aw_xfer = '1' and w_xfer = '1';
+         true;
+         b_xfer = '1';
+         aw_xfer = '1' and w_xfer = '1';
+         true;
+         b_xfer = '1'};
+  COVER_BACK_TO_BACK_RD : cover {
+         ar_xfer = '1';
+         true;
+         true;
+         r_xfer = '1';
+         ar_xfer = '1';
+         true;
+         true;
+         r_xfer = '1'};
+  COVER_MASTER_BP_B : cover {
+         s_bvalid_o = '1' and s_bready_i = '0';
+         s_bvalid_o = '1' and s_bready_i = '0'};
+  COVER_MASTER_BP_R : cover {
+         s_rvalid_o = '1' and s_rready_i = '0';
+         s_rvalid_o = '1' and s_rready_i = '0'};
+  COVER_WAITREQUEST : cover {
+         m_write_o = '1' and m_waitrequest_i = '1';
+         m_write_o = '1' and m_waitrequest_i = '1'};
 
 } -- vunit vunit axil_to_avm_inst(axil_to_avm(rtl))
 
