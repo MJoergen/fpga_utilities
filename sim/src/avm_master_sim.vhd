@@ -101,7 +101,7 @@ entity avm_master_sim is
     m_writedata_o     : out   std_logic_vector(G_DATA_BITS - 1 downto 0);     -- Write data (per beat).
     m_byteenable_o    : out   std_logic_vector(G_DATA_BITS / 8 - 1 downto 0); -- Byte-lane enables (all-ones for reads;
     --   per-beat randomised for writes if G_RANDOM_BYTEENABLE = true).
-    m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);   -- Burst length in beats.
+    m_burstcount_o    : out   std_logic_vector(G_BURST_BITS - 1 downto 0);    -- Burst length in beats.
     m_readdatavalid_i : in    std_logic;                                      -- Read-data valid strobe (per beat).
     m_readdata_i      : in    std_logic_vector(G_DATA_BITS - 1 downto 0)      -- Read-data return (per beat).
   );

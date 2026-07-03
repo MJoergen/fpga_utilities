@@ -16,6 +16,7 @@ entity tb_axil_to_avm is
   generic (
     G_BURST_BITS : positive := 8;
     G_MAX_BURST  : positive := 8;
+    G_PAUSE_SIZE : natural;
     G_OFFSET     : natural;
     G_DEBUG      : boolean;
     G_RANDOM     : boolean;
@@ -50,6 +51,25 @@ architecture tb of tb_axil_to_avm is
   signal axil_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal axil_rresp   : std_logic_vector(1 downto 0);
 
+  -- AXI-Lite
+  signal pause_awready : std_logic;
+  signal pause_awvalid : std_logic;
+  signal pause_awaddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal pause_wready  : std_logic;
+  signal pause_wvalid  : std_logic;
+  signal pause_wdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal pause_wstrb   : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal pause_bready  : std_logic;
+  signal pause_bvalid  : std_logic;
+  signal pause_bresp   : std_logic_vector(1 downto 0);
+  signal pause_arready : std_logic;
+  signal pause_arvalid : std_logic;
+  signal pause_araddr  : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal pause_rready  : std_logic;
+  signal pause_rvalid  : std_logic;
+  signal pause_rdata   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal pause_rresp   : std_logic_vector(1 downto 0);
+
   -- Avalon Memory Map
   signal avm_waitrequest   : std_logic;
   signal avm_write         : std_logic;
@@ -76,23 +96,23 @@ begin
     port map (
       clk_i             => clk,
       rst_i             => rst,
-      s_awready_o       => axil_awready,
-      s_awvalid_i       => axil_awvalid,
-      s_awaddr_i        => axil_awaddr,
-      s_wready_o        => axil_wready,
-      s_wvalid_i        => axil_wvalid,
-      s_wdata_i         => axil_wdata,
-      s_wstrb_i         => axil_wstrb,
-      s_bready_i        => axil_bready,
-      s_bvalid_o        => axil_bvalid,
-      s_bresp_o         => axil_bresp,
-      s_arready_o       => axil_arready,
-      s_arvalid_i       => axil_arvalid,
-      s_araddr_i        => axil_araddr,
-      s_rready_i        => axil_rready,
-      s_rvalid_o        => axil_rvalid,
-      s_rdata_o         => axil_rdata,
-      s_rresp_o         => axil_rresp,
+      s_awready_o       => pause_awready,
+      s_awvalid_i       => pause_awvalid,
+      s_awaddr_i        => pause_awaddr,
+      s_wready_o        => pause_wready,
+      s_wvalid_i        => pause_wvalid,
+      s_wdata_i         => pause_wdata,
+      s_wstrb_i         => pause_wstrb,
+      s_bready_i        => pause_bready,
+      s_bvalid_o        => pause_bvalid,
+      s_bresp_o         => pause_bresp,
+      s_arready_o       => pause_arready,
+      s_arvalid_i       => pause_arvalid,
+      s_araddr_i        => pause_araddr,
+      s_rready_i        => pause_rready,
+      s_rvalid_o        => pause_rvalid,
+      s_rdata_o         => pause_rdata,
+      s_rresp_o         => pause_rresp,
       m_waitrequest_i   => avm_waitrequest,
       m_write_o         => avm_write,
       m_read_o          => avm_read,
@@ -135,6 +155,51 @@ begin
       m_rdata_i   => axil_rdata,
       m_rresp_i   => axil_rresp
     ); -- axil_master_sim_inst
+
+  axil_pause_inst : entity work.axil_pause
+    generic map (
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS,
+      G_PAUSE_SIZE => G_PAUSE_SIZE
+    )
+    port map (
+      clk_i       => clk,
+      rst_i       => rst,
+      s_awready_o => axil_awready,
+      s_awvalid_i => axil_awvalid,
+      s_awaddr_i  => axil_awaddr,
+      s_wready_o  => axil_wready,
+      s_wvalid_i  => axil_wvalid,
+      s_wdata_i   => axil_wdata,
+      s_wstrb_i   => axil_wstrb,
+      s_bready_i  => axil_bready,
+      s_bvalid_o  => axil_bvalid,
+      s_bresp_o   => axil_bresp,
+      s_arready_o => axil_arready,
+      s_arvalid_i => axil_arvalid,
+      s_araddr_i  => axil_araddr,
+      s_rready_i  => axil_rready,
+      s_rvalid_o  => axil_rvalid,
+      s_rdata_o   => axil_rdata,
+      s_rresp_o   => axil_rresp,
+      m_awready_i => pause_awready,
+      m_awvalid_o => pause_awvalid,
+      m_awaddr_o  => pause_awaddr,
+      m_wready_i  => pause_wready,
+      m_wvalid_o  => pause_wvalid,
+      m_wdata_o   => pause_wdata,
+      m_wstrb_o   => pause_wstrb,
+      m_bready_o  => pause_bready,
+      m_bvalid_i  => pause_bvalid,
+      m_bresp_i   => pause_bresp,
+      m_arready_i => pause_arready,
+      m_arvalid_o => pause_arvalid,
+      m_araddr_o  => pause_araddr,
+      m_rready_o  => pause_rready,
+      m_rvalid_i  => pause_rvalid,
+      m_rdata_i   => pause_rdata,
+      m_rresp_i   => pause_rresp
+    ); -- axil_pause_inst
 
   avm_slave_sim_inst : entity work.avm_slave_sim
     generic map (
