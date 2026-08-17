@@ -1,0 +1,119 @@
+-------------------------------------------------------------------------------
+-- Description: Formal property set for axis_dropper (AXI-Stream handshake).
+--
+-- Scope: AMBA AXI-Stream (ARM IHI 0051) handshake compliance on the MASTER
+-- (output) interface, plus environment assumptions modelling a well-behaved
+-- upstream master on the SLAVE (input) interface.
+--
+-- Key requirement being formalised:
+--   * VALID stability : once m_valid_o is asserted it must stay asserted,
+--     with m_data_o / m_last_o held stable, until m_ready_i completes the
+--     handshake.
+--   * VALID must NOT wait for READY : the source must be able to raise
+--     m_valid_o while m_ready_i is low. Expressed as a reachability COVER.
+--       -> On the CURRENT (unfixed) rd_proc this cover is UNREACHABLE,
+--          which flags the bug precisely.
+--       -> On the FIXED rd_proc (valid decoupled from ready) it is reachable.
+--
+-- Note: s_drop_i is intentionally left UNCONSTRAINED. Per the RTL header it
+-- is an out-of-band control that may assert at any beat, even while
+-- s_ready_o = '0', so it is NOT treated as a stability-bound AXI sideband.
+--
+-- Reset gating: rst_i is synchronous and overrides every register. Hold-type
+-- assertions therefore carry 'rst_i = '0'' in the antecedent, otherwise a
+-- reset in the same cycle would (correctly) drive the outputs low and produce
+-- a spurious counter-example under k-induction.
+--
+-- SPDX-License-Identifier: GPL-3.0-or-later
+-------------------------------------------------------------------------------
+
+vunit axis_dropper_formal (axis_dropper(rtl))
+{
+
+  default clock is rising_edge(clk_i);
+
+  -----------------------------------------------------------------------------
+  -- 0. Known start state
+  -- Force a reset on cycle 0 only; rst_i is free on every later cycle so the
+  -- reset-behaviour assertions below can still be exercised mid-stream.
+  -----------------------------------------------------------------------------
+  f_initial_reset : assume {rst_i = '1'};
+
+  -----------------------------------------------------------------------------
+  -- A. Environment assumptions: upstream master obeys AXI-Stream on the
+  --    slave (input) interface. These only shape the input stimulus; the
+  --    master-side assertions in section B hold regardless of them.
+  -----------------------------------------------------------------------------
+
+  -- s_valid_i must remain asserted until the beat is accepted (s_ready_o).
+  f_s_valid_stable : assume always
+    (s_valid_i = '1' and s_ready_o = '0' and rst_i = '0')
+      -> next (s_valid_i = '1');
+
+  -- Payload (s_data_i, s_last_i) must be stable while a beat is stalled.
+  -- s_drop_i is deliberately excluded (out-of-band control, see header).
+  f_s_payload_stable : assume always
+    (s_valid_i = '1' and s_ready_o = '0' and rst_i = '0')
+      -> next (stable(s_data_i) and stable(s_last_i));
+
+  -----------------------------------------------------------------------------
+  -- B. Master (output) handshake assertions  -- the compliance contract
+  -----------------------------------------------------------------------------
+
+  -- B1. VALID hold: m_valid_o stays high until m_ready_i completes handshake.
+  f_m_valid_stable : assert always
+    (m_valid_o = '1' and m_ready_i = '0' and rst_i = '0')
+      -> next (m_valid_o = '1');
+
+  -- B2. DATA hold: m_data_o is stable while the beat is stalled.
+  f_m_data_stable : assert always
+    (m_valid_o = '1' and m_ready_i = '0' and rst_i = '0')
+      -> next (stable(m_data_o));
+
+  -- B3. LAST hold: m_last_o is stable while the beat is stalled.
+  f_m_last_stable : assert always
+    (m_valid_o = '1' and m_ready_i = '0' and rst_i = '0')
+      -> next (stable(m_last_o));
+
+  -- B4. Framing sanity: m_last_o is only ever asserted together with a valid
+  --     beat (no dangling end-of-frame marker without data).
+  f_m_last_implies_valid : assert always
+    (m_last_o = '1') -> (m_valid_o = '1');
+
+  -- B5. Reset clears the output beat on the next cycle.
+  f_m_reset_clears_valid : assert always
+    (rst_i = '1') -> next (m_valid_o = '0' and m_last_o = '0');
+
+  -----------------------------------------------------------------------------
+  -- C. "VALID must not wait for READY"  -- the core anti-deadlock property
+  --
+  -- Demonstrate that m_valid_o can RISE while m_ready_i is held low.
+  --   * Unfixed rd_proc  : UNREACHABLE  -> engine reports the cover as failed,
+  --                        which is the signature of the handshake bug.
+  --   * Fixed   rd_proc  : REACHABLE    -> compliant.
+  -----------------------------------------------------------------------------
+  f_valid_without_ready : cover {rose(m_valid_o) and m_ready_i = '0'};
+
+  -----------------------------------------------------------------------------
+  -- D. Liveness / progress covers (sanity that traffic actually flows)
+  -----------------------------------------------------------------------------
+
+  -- D1. A committed frame is delivered (an accepted end-of-frame beat).
+  f_cover_frame_out : cover {m_valid_o = '1' and m_last_o = '1' and m_ready_i = '1'};
+
+  -- D2. A frame is dropped mid-flight (requires G_CNT_BITS > 0 to observe the
+  --     counter; the drop mechanism itself works regardless of width).
+  f_cover_frame_dropped : cover {
+    (rx_state = ACCEPT_ST and s_valid_i = '1' and s_drop_i = '1' and s_last_i = '0');
+    rx_state = DROP_ST[*];
+    (s_valid_i = '1' and s_last_i = '1')
+  };
+
+  -- D3. Back-to-back delivery: two accepted beats in consecutive cycles,
+  --     proving the fixed read side keeps full throughput.
+  f_cover_back_to_back : cover {
+    (m_valid_o = '1' and m_ready_i = '1');
+    (m_valid_o = '1' and m_ready_i = '1')
+  };
+
+}

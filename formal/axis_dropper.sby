@@ -1,0 +1,27 @@
+[tasks]
+prove
+cover
+
+[options]
+# Prove the safety assertions by k-induction, and separately reach the covers.
+multiclock off
+
+prove: mode prove
+prove: depth 20
+
+cover: mode cover
+cover: depth 30
+
+[engines]
+smtbmc yices
+
+[script]
+# G_CNT_BITS = 4 so the drop counter is a real (non-null) vector and the
+# drop-related cover is observable. Keep G_ADDR_BITS small for fast proofs.
+ghdl --std=08 -gG_ADDR_BITS=4 -gG_DATA_BITS=8 -gG_CNT_BITS=4 -gG_RAM_STYLE=auto \
+     axis_dropper.vhd axis_dropper.psl -e axis_dropper
+prep -top axis_dropper
+
+[files]
+../src/axis/axis_dropper.vhd
+axis_dropper.psl
