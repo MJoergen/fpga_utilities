@@ -21,9 +21,10 @@
 --   speculative read of G_CACHE_SIZE/2 new words is issued to fill the upper
 --   half. This provides seamless sequential read-ahead.
 --
---   Writes are passed through to the master bus. If the write address falls
+--   Writes are passed through to the master bus. If a single-word write falls
 --   within the currently cached region, the buffer is updated (write-through)
---   with byte-enable granularity.
+--   with byte-enable granularity. If a write burst overlaps the currently cached
+--   region, the buffer is invalidated instead.
 --
 --   There is no external mechanism to invalidate the cache on request. In other
 --   words, it is assumed that there is no other master writing to the client
@@ -104,6 +105,8 @@ architecture rtl of avm_readahead is
   signal cache_offset_s : std_logic_vector(G_ADDR_BITS - 1 downto 0); -- Offset of the requested address relative to cache_addr
   signal cache_rd_hit_s : std_logic;                                  -- Read hit indicator
   signal cache_wr_hit_s : std_logic;                                  -- Write hit indicator (for write-through update)
+  signal cache_wr_inv_s : std_logic;                                  -- Write burst overlaps the cache (invalidate)
+  signal cache_valid_s  : natural range 0 to G_CACHE_SIZE;             -- Number of valid words, including any word arriving this cycle
   signal cache_filled_s : std_logic;                                  -- Pulses high for one cycle when the last fill word arrives
 
 begin
@@ -166,6 +169,23 @@ begin
                      '0';
 
   ---------------------------------------------------------------------------
+  -- Write burst invalidation:
+  --   Write bursts do not update the buffer. Instead, if the burst
+  --   [s_address_i, s_address_i + s_burstcount_i) overlaps the valid part of
+  --   the buffer [cache_addr, cache_addr + cache_valid_s), the buffer is
+  --   invalidated. cache_valid_s includes a fill word arriving in this very
+  --   cycle, because a write can be accepted in the cycle the fill completes.
+  --   Both comparisons use modular arithmetic on G_ADDR_BITS bits.
+  ---------------------------------------------------------------------------
+  cache_valid_s   <= cache_count + 1 when state = READING_ST and m_readdatavalid_i = '1' and cache_count < G_CACHE_SIZE else
+                     cache_count;
+
+  cache_wr_inv_s  <= '1' when s_write_i = '1' and unsigned(s_burstcount_i) /= 1 and
+                              (unsigned(cache_offset_s) < cache_valid_s or
+                               unsigned(cache_addr) - unsigned(s_address_i) < unsigned(s_burstcount_i)) else
+                     '0';
+
+  ---------------------------------------------------------------------------
   -- Slave waitrequest logic (active-high; deasserted = slave is ready):
   --   Condition 1: Cache fill just completed, no pending write, and no
   --                outstanding client burst words — ready to accept.
@@ -192,7 +212,8 @@ begin
     -----------------------------------------------------------------
     -- Procedure: Pass a write through to the master bus and perform
     -- an optional write-through update of cached data using
-    -- byte-enables.  Sets state <= IDLE_ST.
+    -- byte-enables, or invalidate the cache if a write burst overlaps
+    -- it.  Sets state <= IDLE_ST.
     --
     -- Called from both IDLE_ST and the READING_ST fill-completion
     -- overlap section.
@@ -212,6 +233,10 @@ begin
             cache_data(to_integer(unsigned(cache_offset_s)))(8 * i + 7 downto 8 * i) <= s_writedata_i(8 * i + 7 downto 8 * i);
           end if;
         end loop;
+      elsif cache_wr_inv_s = '1' then
+        -- The buffer is not updated by write bursts, so it must be discarded
+        -- to avoid serving stale data on later read hits.
+        cache_count <= 0;
       end if;
       state <= IDLE_ST;
     end procedure proc_write_passthrough;
