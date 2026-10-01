@@ -90,8 +90,12 @@ vunit axip_remove_fixed_header_inst(axip_remove_fixed_header(rtl))
      if rising_edge(clk_i) then
        if s_valid_i = '1' and s_ready_o = '1' then
          if s_last_i = '1' then
-           f_s_length <= f_s_bytes + s_bytes_i;
-           f_s_cnt <= f_s_cnt + 1;
+           -- Packets no longer than the header carry no payload and are
+           -- dropped by the DUT, so they are not counted.
+           if f_s_bytes + s_bytes_i > G_HEADER_BYTES then
+             f_s_length <= f_s_bytes + s_bytes_i;
+             f_s_cnt <= f_s_cnt + 1;
+           end if;
            f_s_bytes <= 0;
          else
            f_s_bytes <= f_s_bytes + s_bytes_i;
@@ -152,6 +156,10 @@ vunit axip_remove_fixed_header_inst(axip_remove_fixed_header(rtl))
    f_master_length : assert always {f_s_cnt = f_m_cnt and f_s_cnt > 0 and rst_i = '0'} |->
      {f_s_length = f_m_length + G_HEADER_BYTES};
 
+-- Output packets must not be empty (LAST with BYTES = 0 is illegal)
+   f_master_bytes_nonzero : assert always {m_valid_o = '1' and m_last_o = '1' and rst_i = '0'} |->
+     {m_bytes_o > 0};
+
 
 -----------------------------
 -- ASSUMPTIONS ABOUT INPUTS
@@ -166,15 +174,19 @@ vunit axip_remove_fixed_header_inst(axip_remove_fixed_header(rtl))
 -- Input bytes must be a valid number.
    f_slave_bytes_valid : assume always {s_last_i = '0'} |-> {s_bytes_i = G_DATA_BYTES};
 
--- Input bytes must be a valid number.
-   f_slave_bytes_header : assume always {f_s_first = '1'} |-> {s_bytes_i >= G_HEADER_BYTES};
-
 
 --------------------------------------------
 -- COVER STATEMENTS TO VERIFY REACHABILITY
 --------------------------------------------
 
    f_slave_full : cover {m_ready_i and not s_ready_o and not rst_i};
+
+-- A packet no longer than the header is received (and dropped), followed by an
+-- output packet.
+   f_short_packet : cover {s_valid_i = '1' and s_ready_o = '1' and s_last_i = '1' and f_s_first = '1' and
+                           s_bytes_i <= G_HEADER_BYTES and rst_i = '0';
+                           [*];
+                           m_valid_o = '1' and m_ready_i = '1' and m_last_o = '1'};
 
 } -- vunit axip_remove_fixed_header_inst(axip_remove_fixed_header(rtl))
 

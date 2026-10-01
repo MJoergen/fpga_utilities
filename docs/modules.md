@@ -128,8 +128,9 @@ compile order before any `axip_*` instance.
   Not an entity; required in the compile order.
 - [`axip_remove_fixed_header.vhd`](../src/axip/axip_remove_fixed_header.vhd):
   Inverse of `axip_insert_fixed_header`: strips a fixed-size prefix
-  from each packet. Round-trip with `axip_insert_fixed_header` is the
-  identity for any packet at least as long as the header.
+  from each packet. A packet no longer than the header has no payload
+  and is dropped (no header and no output packet is produced). Inserting
+  a header and then removing it is the identity for any packet.
 
 ## AXI Lite
 

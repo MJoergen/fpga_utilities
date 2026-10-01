@@ -301,9 +301,14 @@ begin
             if G_DEBUG then
               report "VERF length " & to_string(length_v);
             end if;
-            verf_length <= length_v - G_HEADER_BYTES;
-            verf_cnt    <= verf_cnt + G_HEADER_BYTES;
-            verf_state  <= VERF_DATA_ST;
+            if length_v <= G_HEADER_BYTES then
+              -- The packet has no payload, and is dropped by the DUT.
+              verf_cnt <= verf_cnt + length_v;
+            else
+              verf_length <= length_v - G_HEADER_BYTES;
+              verf_cnt    <= verf_cnt + G_HEADER_BYTES;
+              verf_state  <= VERF_DATA_ST;
+            end if;
           end if;
 
         when VERF_DATA_ST =>

@@ -3,7 +3,9 @@
 -- from the start of the packet.  First byte is in the left-most (MSB) position.
 -- s_bytes_i is only valid when s_last_i is 1.
 -- m_bytes_o is only valid when m_last_o is 1.
--- If the input packet is less than the header size, then m_bytes_o is set to 0.
+-- An input packet that is no longer than the header carries no payload. Such a
+-- packet is dropped entirely: neither a header nor an output packet is produced,
+-- so the header and packet outputs stay paired one-to-one.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -87,23 +89,24 @@ begin
             s_data    <= s_data_i;
             s_bytes   <= s_bytes_i;
 
-            -- Prepare Header output
-            h_valid_o <= '1';
-            h_data_o  <= s_data_i(R_HEADER);
-            m_last_o  <= '0';
-            if s_last_i = '1' then
-              -- Prepare AXI Packet output
-              m_valid_o <= '1';
-              m_data_o  <= s_data_i(R_DATA) & C_PADDING;
-              m_last_o  <= '1';
-              m_bytes_o <= s_bytes_i - G_HEADER_BYTES;
-
-              -- Special case: If packet input is less than the header size.
-              if s_bytes_i < G_HEADER_BYTES then
-                m_bytes_o <= 0;
-              end if;
+            if s_last_i = '1' and s_bytes_i <= G_HEADER_BYTES then
+              -- Special case: The packet is no longer than the header, i.e. it
+              -- has no payload. Drop it, including the (possibly partial) header.
+              null;
             else
-              state <= BUSY_ST;
+              -- Prepare Header output
+              h_valid_o <= '1';
+              h_data_o  <= s_data_i(R_HEADER);
+              m_last_o  <= '0';
+              if s_last_i = '1' then
+                -- Prepare AXI Packet output
+                m_valid_o <= '1';
+                m_data_o  <= s_data_i(R_DATA) & C_PADDING;
+                m_last_o  <= '1';
+                m_bytes_o <= s_bytes_i - G_HEADER_BYTES;
+              else
+                state <= BUSY_ST;
+              end if;
             end if;
           end if;
 
