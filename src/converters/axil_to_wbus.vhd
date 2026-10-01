@@ -85,9 +85,6 @@ begin
   fsm_proc : process (clk_i)
   begin
     if rising_edge(clk_i) then
-      s_bresp_o <= C_RESP_OKAY;
-      s_rresp_o <= C_RESP_OKAY;
-
       if m_stall_i = '0' then
         m_stb_o <= '0';
       end if;
@@ -129,16 +126,17 @@ begin
 
         when WRITING_ST =>
           time_cnt <= time_cnt + 1;
-          if time_cnt = G_TIMEOUT_MAX - 1 then
+          -- An ACK takes priority over a simultaneous timeout.
+          if m_ack_i = '1' then
             -- Send back B response
-            s_bresp_o  <= C_RESP_SLVERR;
+            s_bresp_o  <= C_RESP_OKAY;
             m_cyc_o    <= '0';
             m_stb_o    <= '0';
             s_bvalid_o <= '1';
             state      <= IDLE_ST;
-          end if;
-          if m_ack_i = '1' then
+          elsif time_cnt = G_TIMEOUT_MAX - 1 then
             -- Send back B response
+            s_bresp_o  <= C_RESP_SLVERR;
             m_cyc_o    <= '0';
             m_stb_o    <= '0';
             s_bvalid_o <= '1';
@@ -147,21 +145,22 @@ begin
 
         when READING_ST =>
           time_cnt <= time_cnt + 1;
-          if time_cnt = G_TIMEOUT_MAX - 1 then
+          -- An ACK takes priority over a simultaneous timeout.
+          if m_ack_i = '1' then
+            -- Send back R response
+            s_rresp_o  <= C_RESP_OKAY;
+            m_cyc_o    <= '0';
+            m_stb_o    <= '0';
+            s_rdata_o  <= m_rddat_i;
+            s_rvalid_o <= '1';
+            state      <= IDLE_ST;
+          elsif time_cnt = G_TIMEOUT_MAX - 1 then
             -- Send back R response
             s_rresp_o  <= C_RESP_SLVERR;
             m_cyc_o    <= '0';
             m_stb_o    <= '0';
             s_rvalid_o <= '1';
             -- s_rdata_o is don't-care when s_rresp_o /= OKAY
-            state      <= IDLE_ST;
-          end if;
-          if m_ack_i = '1' then
-            -- Send back R response
-            m_cyc_o    <= '0';
-            m_stb_o    <= '0';
-            s_rdata_o  <= m_rddat_i;
-            s_rvalid_o <= '1';
             state      <= IDLE_ST;
           end if;
 

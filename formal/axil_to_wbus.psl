@@ -34,9 +34,31 @@ vunit axil_to_wbus_inst(axil_to_wbus(rtl))
    f_wbus_master_stable : assert always {m_stb_o and not rst_i} |=>
      {stable(m_addr_o) and stable(m_wrdat_o) and stable(m_we_o)};
 
--- WISHBONE MASTER: Outputs must be stable during stall
+-- WISHBONE MASTER: Outputs must be stable during stall, unless the cycle is aborted
+-- (CYC deasserted), e.g. on timeout.
   f_wbus_master_stall : assert always {m_cyc_o and m_stb_o and m_stall_i and not rst_i} |=>
-    {stable(m_stb_o) and stable(m_addr_o) and stable(m_wrdat_o) and stable(m_we_o)};
+    {m_cyc_o = '0' or (stable(m_stb_o) and stable(m_addr_o) and stable(m_wrdat_o) and stable(m_we_o))};
+
+
+------------------------------------------------
+-- PROPERTIES OF THE AXI LITE SLAVE INTERFACE
+------------------------------------------------
+
+-- AXI LITE SLAVE: Write response must be stable until accepted
+   f_axil_slave_b_stable : assert always {s_bvalid_o and not s_bready_i and not rst_i} |=>
+     {stable(s_bvalid_o) and stable(s_bresp_o)};
+
+-- AXI LITE SLAVE: Read response must be stable until accepted
+   f_axil_slave_r_stable : assert always {s_rvalid_o and not s_rready_i and not rst_i} |=>
+     {stable(s_rvalid_o) and stable(s_rdata_o) and stable(s_rresp_o)};
+
+-- AXI LITE SLAVE: A write acknowledged by the Wishbone slave returns OKAY
+   f_axil_slave_b_okay : assert always {state = WRITING_ST and m_ack_i = '1' and rst_i = '0'} |=>
+     {s_bvalid_o = '1' and s_bresp_o = "00"};
+
+-- AXI LITE SLAVE: A read acknowledged by the Wishbone slave returns OKAY
+   f_axil_slave_r_okay : assert always {state = READING_ST and m_ack_i = '1' and rst_i = '0'} |=>
+     {s_rvalid_o = '1' and s_rresp_o = "00"};
 
 
 -----------------------------
@@ -59,6 +81,10 @@ vunit axil_to_wbus_inst(axil_to_wbus(rtl))
 
  -- A request is generated and a response is received
    f_wbus_transaction : cover {f_request_active and rst_i = '0'; not f_request_active};
+
+-- A request times out, and the error response is held while back-pressured
+   f_axil_timeout : cover {s_bvalid_o = '1' and s_bresp_o = "10" and s_bready_i = '0' and rst_i = '0';
+                           s_bvalid_o = '1' and s_bresp_o = "10"};
 
 
 ----------------------------------------------
