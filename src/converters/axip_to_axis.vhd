@@ -1,6 +1,6 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This module generates a stream of bytes from a wider bus interface.  The
--- first byte sent is read from MSB, i.e. s_data_o(G_DATA_BYTES*8-1 downto
+-- first byte sent is read from MSB, i.e. s_data_i(G_DATA_BYTES*8-1 downto
 -- G_DATA_BYTES*8-8);
 --
 -- SPDX-License-Identifier: MIT
@@ -68,7 +68,9 @@ begin
           end if;
 
         when FWD_ST =>
-          if m_ready_i = '1' then
+          -- Present the next byte whenever the output register is empty or is being
+          -- consumed. m_valid_o must not wait for m_ready_i.
+          if m_ready_i = '1' or m_valid_o = '0' then
             m_valid_o <= '1';
             m_data_o  <= s_data(G_DATA_BYTES * 8 - 1 downto G_DATA_BYTES * 8 - 8);
             m_last_o  <= '0';

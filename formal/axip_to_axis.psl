@@ -96,5 +96,9 @@ vunit axip_to_axis_inst(axip_to_axis(rtl))
 -- Back pressure asserted and released
    f_backpressure : cover {not s_ready_o and not rst_i; s_ready_o};
 
+-- VALID must not wait for READY: the output must be able to present a new beat while
+-- m_ready_i is low. This cover is unreachable if m_valid_o is gated by m_ready_i.
+   f_valid_without_ready : cover {not rst_i and not m_valid_o and not m_ready_i; m_valid_o};
+
 } -- vunit axip_to_axis_inst(axip_to_axis(rtl))
 
