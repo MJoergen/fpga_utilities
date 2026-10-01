@@ -13,6 +13,8 @@ entity axip_sim is
     G_SEED       : std_logic_vector(63 downto 0) := X"DEADBEAFC007BABE";
     G_NAME       : string                        := "";
     G_DEBUG      : boolean;
+    G_RANDOM     : boolean                       := false;
+    G_FAST       : boolean                       := true;
     G_MIN_LENGTH : natural;
     G_MAX_LENGTH : natural;
     G_CNT_SIZE   : natural;
@@ -47,6 +49,8 @@ begin
       G_SEED       => G_SEED,
       G_NAME       => G_NAME,
       G_DEBUG      => G_DEBUG,
+      G_RANDOM     => G_RANDOM,
+      G_FAST       => G_FAST,
       G_CNT_SIZE   => G_CNT_SIZE,
       G_DATA_BYTES => G_DATA_BYTES,
       G_MIN_LENGTH => G_MIN_LENGTH,
@@ -66,6 +70,8 @@ begin
     generic map (
       G_NAME       => G_NAME,
       G_DEBUG      => G_DEBUG,
+      G_SEED       => not G_SEED,
+      G_RANDOM     => G_RANDOM,
       G_CNT_SIZE   => G_CNT_SIZE,
       G_DATA_BYTES => G_DATA_BYTES
     )

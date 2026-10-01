@@ -20,11 +20,12 @@
 --               checker seeded identically can therefore reproduce the expected
 --               byte sequence deterministically for end-to-end integrity checks.
 --
---               There are no idle gaps in the output stream: a new packet is
---               launched on the same cycle the previous packet's last beat is
---               accepted. This is achieved by the guard
---                   (m_ready_i = '1' or m_valid_o = '0')
---               on both FSM states.
+--               By default there are no idle gaps in the output stream: a new
+--               beat (or packet) is launched on the same cycle the previous beat
+--               is accepted. Two generics modify this:
+--                 * G_RANDOM : insert random idle cycles between beats.
+--                 * G_FAST   : when false, wait one idle cycle after each
+--                              accepted beat before presenting the next one.
 --
 -- Requires    : VHDL-2008 (to_string, to_hstring, numeric_std_unsigned)
 --
@@ -40,6 +41,8 @@ entity axip_master_sim is
     G_SEED       : std_logic_vector(63 downto 0) := x"DEADBEEFC007BABE"; -- RNG seed
     G_NAME       : string                        := "";                  -- Instance tag for report messages
     G_DEBUG      : boolean                       := false;               -- If true, per-packet length is logged
+    G_RANDOM     : boolean                       := false;               -- If true, insert random idle cycles
+    G_FAST       : boolean                       := true;                -- If false, idle cycle after each beat
     G_CNT_SIZE   : natural                       := 8;                   -- Width of stim_cnt (must be >= 8)
     G_DATA_BYTES : natural;                                              -- Bus width in bytes (must be >= 2)
     G_MIN_LENGTH : natural                       := 1;                   -- Min payload bytes per packet (>= 1)
@@ -91,6 +94,13 @@ architecture simulation of axip_master_sim is
   -- [G_MIN_LENGTH, G_MAX_LENGTH].
   subtype R_RAND_LENGTH is natural range 15 downto 0;
 
+  -- Slice of rand used to decide whether to present a beat in this cycle
+  -- when G_RANDOM is true. A beat is presented with probability 7/8.
+  subtype R_RAND_DO_VALID is natural range 42 downto 40;
+
+  -- '1' when a new beat may be presented in this cycle.
+  signal  do_valid : std_logic;
+
 begin
 
   ----------------------------------------------------------
@@ -141,6 +151,12 @@ begin
     ); -- random_inst
 
 
+  do_valid <= '0' when G_RANDOM and nor(rand(R_RAND_DO_VALID)) = '1' else
+              '1' when m_valid_o = '0' else
+              '1' when G_FAST and m_ready_i = '1' else
+              '0';
+
+
   ----------------------------------------------------------
   -- Generate AXI packet output
   ----------------------------------------------------------
@@ -154,8 +170,9 @@ begin
   --   DATA_ST : emits payload beats until bytes_left <= G_DATA_BYTES, then
   --             asserts m_last_o and returns to IDLE_ST on the same cycle.
   --
-  -- The guard "(m_ready_i = '1' or m_valid_o = '0')" ensures back-to-back
-  -- packets are emitted without any idle gap between them.
+  -- The guard do_valid = '1' decides whether a new beat may be presented in
+  -- this cycle, i.e. whether the output register is free (see G_RANDOM and
+  -- G_FAST).
   ----------------------------------------------------------
 
   fsm_proc : process (clk_i)
@@ -182,7 +199,7 @@ begin
 
         when IDLE_ST =>
           -- We may drive a new beat this cycle.
-          if (m_ready_i = '1' or m_valid_o = '0') and rst_i = '0' then
+          if do_valid = '1' and rst_i = '0' then
 
             -- First-beat layout, MSB byte lane first:
             --
@@ -241,7 +258,7 @@ begin
 
         when DATA_ST =>
           -- We may drive a new beat this cycle.
-          if m_ready_i = '1' or m_valid_o = '0' then
+          if do_valid = '1' then
 
             -- Fill lanes with payload bytes, MSB lane first.
             -- At most min(G_DATA_BYTES, bytes_left) lanes are written.

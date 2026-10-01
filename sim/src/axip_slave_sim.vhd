@@ -20,9 +20,9 @@
 --               verf_cnt wraps around its full range (2**G_CNT_SIZE bytes). Size
 --               G_CNT_SIZE to control test duration.
 --
--- Backpressure: none. s_ready_o is tied high, so the checker never stalls the
---               upstream master. Randomised backpressure could be added later
---               without changing the checker logic.
+-- Backpressure: none by default (s_ready_o tied high). With G_RANDOM = true,
+--               s_ready_o is deasserted at random (approximately 1 cycle in 8),
+--               to stress back-pressure handling in the upstream design.
 --
 -- Requires    : VHDL-2008 (to_string, to_hstring, numeric_std_unsigned)
 --
@@ -40,6 +40,8 @@ entity axip_slave_sim is
   generic (
     G_NAME       : string   := "";     -- Instance tag for report messages
     G_DEBUG      : boolean  := false;  -- If true, per-packet length is logged
+    G_SEED       : std_logic_vector(63 downto 0) := x"0123456789ABCDEF"; -- RNG seed
+    G_RANDOM     : boolean  := false;  -- If true, deassert s_ready_o at random
     G_CNT_SIZE   : positive := 8;      -- Width of verf_cnt; also sets test duration
     G_DATA_BYTES : positive            -- Bus width in bytes (must be >= 2)
   );
@@ -83,6 +85,13 @@ architecture simulation of axip_slave_sim is
   -- (not counting the length byte, and not counting bytes already checked).
   signal bytes_left : natural range 0 to C_MAX_PACKET_LEN;
 
+  -- 64-bit uniform-random word regenerated every clock by the RNG below.
+  signal rand : std_logic_vector(63 downto 0);
+
+  -- Slice of rand used to decide whether to accept a beat in this cycle
+  -- when G_RANDOM is true. s_ready_o is asserted with probability 7/8.
+  subtype R_RAND_DO_READY is natural range 32 downto 30;
+
 begin
 
   ----------------------------------------------------------
@@ -105,10 +114,27 @@ begin
     severity failure;
 
   ----------------------------------------------------------
-  -- AXI-stream slave: unconditionally ready
+  -- Generate randomness
   ----------------------------------------------------------
 
-  s_ready_o <= '1';
+  random_inst : entity work.random
+    generic map (
+      G_SEED => G_SEED
+    )
+    port map (
+      clk_i    => clk_i,
+      rst_i    => rst_i,
+      update_i => '1',
+      output_o => rand
+    ); -- random_inst
+
+
+  ----------------------------------------------------------
+  -- AXI-stream slave: ready, except for random pauses when G_RANDOM
+  ----------------------------------------------------------
+
+  s_ready_o <= or(rand(R_RAND_DO_READY)) when G_RANDOM else
+               '1';
 
   ----------------------------------------------------------
   -- Verify AXI packet input
@@ -129,7 +155,7 @@ begin
       case state is
 
         when IDLE_ST =>
-          if s_valid_i = '1' then
+          if s_valid_i = '1' and s_ready_o = '1' then
             -- First beat of the packet. Extract the length byte from the
             -- top (MSB) byte lane; it is NOT itself a byte to be checked.
             length_v := to_integer(s_data_i(G_DATA_BYTES * 8 - 1 downto G_DATA_BYTES * 8 - 8));
@@ -177,7 +203,7 @@ begin
           end if;
 
         when DATA_ST =>
-          if s_valid_i = '1' then
+          if s_valid_i = '1' and s_ready_o = '1' then
 
             -- Verify payload bytes on this continuation beat, MSB lane
             -- first. At most min(G_DATA_BYTES, bytes_left) bytes are

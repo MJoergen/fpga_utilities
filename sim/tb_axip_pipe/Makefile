@@ -22,7 +22,7 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 DUT = axip_pipe
 
 # Test duration
-STOP_TIME = 100us
+STOP_TIME = 200us
 
 # Test bench configuration
 GENERIC += -gG_DEBUG=false

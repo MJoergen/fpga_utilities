@@ -22,7 +22,7 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 DUT = axip_fifo
 
 # Test duration
-STOP_TIME = 30us
+STOP_TIME = 60us
 
 # Test bench configuration
 GENERIC += -gG_DEBUG=false
