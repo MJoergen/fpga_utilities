@@ -83,6 +83,7 @@ begin
     m_addr_o     <= s_addr_i(0);
     m_we_o       <= s_we_i(0);
     m_wrdat_o    <= s_wrdat_i(0);
+    m_sel_o      <= s_sel_i(0);
     s_stall_o(0) <= m_stall_i;
     s_ack_o(0)   <= m_ack_i;
     s_rddat_o(0) <= m_rddat_i;
@@ -133,6 +134,8 @@ begin
 
     wbus_arbiter_general_left_inst : entity work.wbus_arbiter_general
       generic map (
+        G_ADDR_BITS   => G_ADDR_BITS,
+        G_DATA_BITS   => G_DATA_BITS,
         G_NUM_MASTERS => C_NUM_LEFT
       )
       port map (
@@ -160,6 +163,8 @@ begin
 
     wbus_arbiter_general_right_inst : entity work.wbus_arbiter_general
       generic map (
+        G_ADDR_BITS   => G_ADDR_BITS,
+        G_DATA_BITS   => G_DATA_BITS,
         G_NUM_MASTERS => C_NUM_RIGHT
       )
       port map (

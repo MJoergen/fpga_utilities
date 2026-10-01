@@ -54,7 +54,7 @@ testbench are flagged as **unverified**.
 | `axis_to_axip`               | ✓ | `tb_axip_axis_axip` |
 | `wbus_to_axil`               | – | `tb_wbus_to_axil`, `tb_wbus_axil_wbus` |
 | `wbus_arbiter`               | ✓ | `tb_wbus_arbiter` |
-| `wbus_arbiter_general`       | – | **unverified** |
+| `wbus_arbiter_general`       | – | `tb_wbus_arbiter_general` |
 | `wbus_mapper`                | – | **unverified** |
 
 Modules currently marked **unverified** should be considered
@@ -164,7 +164,7 @@ compile order before any `wbus_*` instance.
   Wishbone masters onto a single Wishbone slave port. Selection
   policy: round-robin.
 - [`wbus_arbiter_general.vhd`](../src/wbus/wbus_arbiter_general.vhd):
-  N-input variant of `wbus_arbiter`. **Unverified.**
+  N-input variant of `wbus_arbiter`.
 - [`wbus_mapper.vhd`](../src/wbus/wbus_mapper.vhd): Address decoder
   distributing one Wishbone master onto several Wishbone slaves. The
   base/mask table is supplied via a generic.
