@@ -25,7 +25,7 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 DUT = axil_arbiter
 
 # Test duration
-STOP_TIME = 200us
+STOP_TIME = 400us
 
 # Test bench configuration
 GENERIC += -gG_DEBUG=false

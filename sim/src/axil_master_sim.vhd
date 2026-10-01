@@ -55,7 +55,7 @@ architecture simulation of axil_master_sim is
 
   subtype R_DO_READ is natural range 6 downto 5;
 
-  subtype R_BREADY is natural range 26 downto 35;
+  subtype R_BREADY is natural range 26 downto 25;
 
   subtype R_RREADY is natural range 36 downto 35;
 
