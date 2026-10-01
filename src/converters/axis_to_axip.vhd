@@ -63,6 +63,11 @@ begin
             m_bytes_o <= 1;
             state     <= FWD_ST;
 
+            -- If G_DATA_BYTES received, forward them.
+            if G_DATA_BYTES = 1 then
+              m_valid_o <= '1';
+            end if;
+
             -- Forward last chunk.
             if s_last_i = '1' then
               m_valid_o <= '1';
@@ -73,18 +78,19 @@ begin
 
         when FWD_ST =>
           if s_valid_i = '1' and s_ready_o = '1' then
-            -- Write next byte
+            -- Write next byte. If G_DATA_BYTES have been received, forward them.
             if m_bytes_o = G_DATA_BYTES then
               m_data_o  <= s_data_i & C_PADDING;
               m_bytes_o <= 1;
+              if G_DATA_BYTES = 1 then
+                m_valid_o <= '1';
+              end if;
             else
               m_data_o(G_DATA_BYTES * 8 - 1 - m_bytes_o * 8 downto G_DATA_BYTES * 8 - 8 - m_bytes_o * 8) <= s_data_i;
               m_bytes_o                                                                                  <= m_bytes_o + 1;
-            end if;
-
-            -- If G_DATA_BYTES received, forward them.
-            if m_bytes_o = G_DATA_BYTES - 1 then
-              m_valid_o <= '1';
+              if m_bytes_o = G_DATA_BYTES - 1 then
+                m_valid_o <= '1';
+              end if;
             end if;
 
             -- Forward last chunk.

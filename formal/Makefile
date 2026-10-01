@@ -34,5 +34,7 @@ clean:
 	rm -rf $(BMC)
 	rm -rf $(COVER)
 	rm -rf $(PROVE)
+	rm -rf $(addsuffix _bmc_*,$(DUTS))
+	rm -rf $(addsuffix _cover_*,$(DUTS))
 	rm -rf $(DUTS)
 

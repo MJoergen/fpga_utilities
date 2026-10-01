@@ -1,6 +1,8 @@
 [tasks]
 cover
 bmc
+cover_1byte cover one_byte
+bmc_1byte bmc one_byte
 
 [options]
 cover: mode cover
@@ -13,7 +15,8 @@ bmc: depth 10
 smtbmc
 
 [script]
-ghdl --std=08 -gG_DATA_BYTES=4 axis_to_axip.vhd axis_to_axip.psl -e axis_to_axip
+~one_byte: ghdl --std=08 -gG_DATA_BYTES=4 axis_to_axip.vhd axis_to_axip.psl -e axis_to_axip
+one_byte: ghdl --std=08 -gG_DATA_BYTES=1 axis_to_axip.vhd axis_to_axip.psl -e axis_to_axip
 prep -top axis_to_axip
 
 [files]
