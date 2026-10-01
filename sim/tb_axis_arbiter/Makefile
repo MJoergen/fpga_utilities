@@ -28,7 +28,7 @@ GENERIC += -gG_FAST=true
 GENERIC += -gG_DATA_BITS=12
 
 # Don't stop on errors
-ASSERT_LEVEL = none
+#ASSERT_LEVEL = none
 
 include ../Makefile.inc
 

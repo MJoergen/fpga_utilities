@@ -34,7 +34,7 @@ GENERIC += -gG_CNT_SIZE=13
 GENERIC += -gG_DATA_BYTES=4
 
 # Don't stop on errors
-ASSERT_LEVEL = none
+#ASSERT_LEVEL = none
 
 include ../Makefile.inc
 
