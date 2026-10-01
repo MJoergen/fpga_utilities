@@ -1,6 +1,6 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the wbus_to_axil.vhd file.
+# Description: Makefile for simulating the wbus_to_avm.vhd file.
 
 # List of source files
 SRC += $(SRC_DIR)/converters/wbus_to_avm.vhd
@@ -13,6 +13,8 @@ SRC += $(SIM_SRC_DIR)/lfsr.vhd
 SRC += $(SIM_SRC_DIR)/random.vhd
 SRC += $(SIM_SRC_DIR)/wbus_master_sim.vhd
 SRC += $(SIM_SRC_DIR)/avm_slave_sim.vhd
+SRC += $(SIM_SRC_DIR)/avm_pause.vhd
+SRC += $(SRC_DIR)/axis/axis_fifo.vhd
 
 # Top level entity
 DUT = wbus_to_avm
@@ -27,7 +29,7 @@ GENERIC += -gG_ADDR_BITS=12
 GENERIC += -gG_DATA_BITS=16
 
 # Test duration
-STOP_TIME = 400us
+STOP_TIME = 1500us
 
 include ../Makefile.inc
 

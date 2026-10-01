@@ -45,6 +45,16 @@ architecture tb of tb_wbus_to_avm is
   signal avm_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
   signal avm_readdatavalid : std_logic;
 
+  signal pause_waitrequest   : std_logic;
+  signal pause_write         : std_logic;
+  signal pause_read          : std_logic;
+  signal pause_address       : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+  signal pause_writedata     : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal pause_byteenable    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+  signal pause_burstcount    : std_logic_vector(G_BURST_BITS - 1 downto 0);
+  signal pause_readdata      : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  signal pause_readdatavalid : std_logic;
+
 begin
 
   --------------------------------
@@ -86,7 +96,7 @@ begin
       m_burstcount_o    => avm_burstcount,
       m_readdata_i      => avm_readdata,
       m_readdatavalid_i => avm_readdatavalid
-    ); -- wbus_to_axil_inst : entity work.wbus_to_axil
+    ); -- wbus_to_avm_inst : entity work.wbus_to_avm
 
   --------------------------------
   -- Instantiate Wishbone master
@@ -116,14 +126,14 @@ begin
 
 
   --------------------------------
-  -- Instantiate Avalon MM Slave
+  -- Insert random wait states on the Avalon MM bus
   --------------------------------
 
-  avm_slave_sim_inst : entity work.avm_slave_sim
+  avm_pause_inst : entity work.avm_pause
     generic map (
       G_BURST_BITS => G_BURST_BITS,
-      G_NAME       => "",
-      G_DEBUG      => G_DEBUG,
+      G_SEED       => X"1234567888776655",
+      G_PAUSE_SIZE => G_PAUSE_SIZE,
       G_ADDR_BITS  => G_ADDR_BITS,
       G_DATA_BITS  => G_DATA_BITS
     )
@@ -138,7 +148,43 @@ begin
       s_byteenable_i    => avm_byteenable,
       s_burstcount_i    => avm_burstcount,
       s_readdatavalid_o => avm_readdatavalid,
-      s_readdata_o      => avm_readdata
+      s_readdata_o      => avm_readdata,
+      m_waitrequest_i   => pause_waitrequest,
+      m_write_o         => pause_write,
+      m_read_o          => pause_read,
+      m_address_o       => pause_address,
+      m_writedata_o     => pause_writedata,
+      m_byteenable_o    => pause_byteenable,
+      m_burstcount_o    => pause_burstcount,
+      m_readdatavalid_i => pause_readdatavalid,
+      m_readdata_i      => pause_readdata
+    ); -- avm_pause_inst : entity work.avm_pause
+
+
+  --------------------------------
+  -- Instantiate Avalon MM Slave
+  --------------------------------
+
+  avm_slave_sim_inst : entity work.avm_slave_sim
+    generic map (
+      G_BURST_BITS => G_BURST_BITS,
+      G_NAME       => "",
+      G_DEBUG      => G_DEBUG,
+      G_ADDR_BITS  => G_ADDR_BITS,
+      G_DATA_BITS  => G_DATA_BITS
+    )
+    port map (
+      clk_i             => clk,
+      rst_i             => rst,
+      s_waitrequest_o   => pause_waitrequest,
+      s_write_i         => pause_write,
+      s_read_i          => pause_read,
+      s_address_i       => pause_address,
+      s_writedata_i     => pause_writedata,
+      s_byteenable_i    => pause_byteenable,
+      s_burstcount_i    => pause_burstcount,
+      s_readdatavalid_o => pause_readdatavalid,
+      s_readdata_o      => pause_readdata
     ); -- avm_slave_sim_inst : entity work.avm_slave_sim
 
 end architecture tb;

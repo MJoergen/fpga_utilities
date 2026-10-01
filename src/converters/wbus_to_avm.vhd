@@ -92,8 +92,12 @@ begin
           end if;
 
         when WRITING_ST =>
-          s_ack_o   <= '1';
-          state     <= IDLE_ST;
+          -- Only acknowledge the write once the Avalon slave has accepted it.
+          -- Until then, m_write_o and the request payload must be held stable.
+          if m_waitrequest_i = '0' then
+            s_ack_o <= '1';
+            state   <= IDLE_ST;
+          end if;
 
         when READING_ST =>
           if m_readdatavalid_i = '1' then
