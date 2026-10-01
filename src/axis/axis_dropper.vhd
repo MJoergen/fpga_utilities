@@ -40,7 +40,7 @@
 -- "refactor" these into 'buffer' ports or you will break the VHDL-2008 contract
 -- expected by the rest of the codebase.
 --
--- SPDX-License-Identifier: GPL-3.0-or-later
+-- SPDX-License-Identifier: MIT
 ---------------------------------------------------------------------------------
 
 library ieee;

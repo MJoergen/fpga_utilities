@@ -24,7 +24,7 @@
 -- reset in the same cycle would (correctly) drive the outputs low and produce
 -- a spurious counter-example under k-induction.
 --
--- SPDX-License-Identifier: GPL-3.0-or-later
+-- SPDX-License-Identifier: MIT
 -------------------------------------------------------------------------------
 
 vunit axis_dropper_formal (axis_dropper(rtl))
