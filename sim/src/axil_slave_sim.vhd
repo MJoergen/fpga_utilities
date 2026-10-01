@@ -90,8 +90,9 @@ begin
           end if;
 
           -- Handle read
+          -- Note: Do not assign state here. A write (AW and/or W) may be accepted in
+          -- this same cycle, and the transition to WRITING_ST above must not be lost.
           if s_arready_o = '1' and s_arvalid_i = '1' then
-            state <= IDLE_ST;
             if G_DEBUG then
               report "AxiLite SLAVE: Reading " & to_hstring(ram_v(to_integer(s_araddr_i))) & " from " & to_hstring(s_araddr_i);
             end if;
