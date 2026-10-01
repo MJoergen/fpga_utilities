@@ -15,6 +15,7 @@ ASSERT_LEVEL ?= error
 TB = tb_$(DUT)
 WAVE = $(TB).ghw
 SAVE = $(TB).gtkw
+LOG = $(TB).log
 WORK = work-obj08.cf
 
 # Code coverage
@@ -36,11 +37,18 @@ RUN_OPTIONS += --assert-level=$(ASSERT_LEVEL)
 SRC_DIR = ../../src
 SIM_SRC_DIR = ../src
 
-# Default target: Run the test
+# Default target: Run the test.
+# The testbench must end by calling std.env.stop. Reaching STOP_TIME means the
+# testbench did not complete (e.g. a deadlock), and is treated as a failure.
 PASS: $(WORK) Makefile
 	rm -f PASS
 	rm -f *.gcda
-	ghdl -r --std=08 $(COV) $(ELAB) $(TB) $(GENERIC) $(RUN_OPTIONS) --wave=$(WAVE) --stop-time=$(STOP_TIME)
+	ghdl -r --std=08 $(COV) $(ELAB) $(TB) $(GENERIC) $(RUN_OPTIONS) --wave=$(WAVE) --stop-time=$(STOP_TIME) > $(LOG) 2>&1 || (cat $(LOG); exit 1)
+	cat $(LOG)
+	@if grep -q "stopped by --stop-time" $(LOG); then \
+		echo "ERROR: $(TB) did not finish within STOP_TIME = $(STOP_TIME)" >&2; \
+		exit 1; \
+	fi
 	echo > PASS
 
 # Show the waveform of the last simulation
@@ -75,6 +83,7 @@ clean:
 	rm -rf *.cf
 	rm -rf $(TB)
 	rm -rf $(WAVE)
+	rm -rf $(LOG)
 	rm -rf $(DUT)_bmc
 	rm -rf $(DUT)_cover
 	rm -rf work

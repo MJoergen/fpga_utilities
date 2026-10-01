@@ -41,6 +41,8 @@ goes red if **any** testbench fails, which means at least one of:
 - A `report ... severity failure` fired, e.g. a protocol violation
   detected by one of the BFM `assert_proc` blocks.
 - A testbench exceeded `G_TIMEOUT_MAX` waiting for a response.
+- A testbench reached its `STOP_TIME` without calling `std.env.stop`
+  (e.g. a deadlock).
 - GHDL refused to compile a file (rare, but possible after a refactor).
 
 A green `sim` badge does **not** mean every module is verified — only

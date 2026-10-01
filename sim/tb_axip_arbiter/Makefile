@@ -22,7 +22,7 @@ SRC += $(SIM_SRC_DIR)/axip_slave_sim.vhd
 DUT = axip_arbiter
 
 # Test duration
-STOP_TIME = 100us
+STOP_TIME = 500us
 
 # Test bench configuration
 GENERIC += -gG_RANDOM=true

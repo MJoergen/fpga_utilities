@@ -58,7 +58,9 @@ make           # all three
 
 A regression run produces no output other than per-testbench progress;
 any failure prints a `report ... severity failure;` line and a non-zero
-exit. **All of `make sim`, `make formal`, and `make src` must pass on `main`.**
+exit. A testbench must end by calling `std.env.stop`; one that instead
+reaches its `STOP_TIME` (e.g. because of a deadlock) is reported as a
+failure. **All of `make sim`, `make formal`, and `make src` must pass on `main`.**
 
 To run a single testbench:
 
