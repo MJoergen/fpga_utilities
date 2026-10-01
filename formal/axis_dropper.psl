@@ -85,6 +85,29 @@ vunit axis_dropper_formal (axis_dropper(rtl))
     (rst_i = '1') -> next (m_valid_o = '0' and m_last_o = '0');
 
   -----------------------------------------------------------------------------
+  -- B6. Frame tracking on the slave (input) interface. A beat is only consumed
+  --     on a handshake (s_valid_i and s_ready_o), so the end of a dropped frame
+  --     is the handshake of its LAST beat; a stalled LAST beat has not ended it.
+  -----------------------------------------------------------------------------
+
+  -- B6a. A drop request on a beat that does not complete the frame (i.e. any
+  --      beat other than a LAST beat accepted in this cycle) enters DROP_ST.
+  f_drop_enter : assert always
+    (rx_state = ACCEPT_ST and s_valid_i = '1' and s_drop_i = '1' and
+     not (s_ready_o = '1' and s_last_i = '1') and rst_i = '0')
+      -> next (rx_state = DROP_ST);
+
+  -- B6b. DROP_ST is only left when the LAST beat of the frame is accepted.
+  f_drop_exit : assert always
+    (rx_state = DROP_ST and
+     not (s_valid_i = '1' and s_ready_o = '1' and s_last_i = '1') and rst_i = '0')
+      -> next (rx_state = DROP_ST);
+
+  -- B6c. The drop counter only increments once per frame, i.e. never in DROP_ST.
+  f_drop_count_once : assert always
+    (rx_state = DROP_ST and rst_i = '0') -> next (stable(cnt_drop_o));
+
+  -----------------------------------------------------------------------------
   -- C. "VALID must not wait for READY"  -- the core anti-deadlock property
   --
   -- Demonstrate that m_valid_o can RISE while m_ready_i is held low.

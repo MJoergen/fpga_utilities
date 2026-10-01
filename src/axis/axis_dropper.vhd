@@ -10,6 +10,12 @@
 -- out-of-band control and is NOT an AXI-Stream payload sideband, so it is not
 -- required to remain stable across a stalled beat.
 --
+-- Frame boundaries are determined by accepted beats only (s_valid_i and
+-- s_ready_o). Once a frame is being dropped, s_ready_o is held high and the
+-- remaining beats of the frame are discarded until its end-of-frame beat has
+-- been accepted. A drop on a stalled end-of-frame beat therefore still counts
+-- once, and the stalled beat is consumed as part of the dropped frame.
+--
 -- Frame commit model: only complete frames are made visible to the reader.
 -- The write pointer advances speculatively while a frame is being received, but
 -- start_ptr (the reader's upper bound) advances only when an end-of-frame beat
@@ -99,10 +105,13 @@ begin
     severity failure;
 
 
-  -- Back-pressure when FIFO is full. Also de-assert during reset so an
-  -- upstream master that is not held in the same reset domain never sees
+  -- Back-pressure when FIFO is full. While dropping a frame, the remaining
+  -- beats are discarded, so no FIFO space is needed. Also de-assert during reset
+  -- so an upstream master that is not held in the same reset domain never sees
   -- ready asserted mid-reset.
-  s_ready_o <= '1' when wr_ptr + 1 /= rd_ptr and rst_i = '0' else
+  s_ready_o <= '0' when rst_i = '1' else
+               '1' when rx_state = DROP_ST else
+               '1' when wr_ptr + 1 /= rd_ptr else
                '0';
 
   wr_proc : process (clk_i)
@@ -119,8 +128,9 @@ begin
               -- Re-wind pointer to start of this frame
               wr_ptr     <= start_ptr;
 
-              if s_last_i = '0' then
-                -- Wait for end-of-frame
+              if s_ready_o = '0' or s_last_i = '0' then
+                -- The end-of-frame beat has not been accepted yet: discard the
+                -- remaining beats of the frame, including this one if stalled.
                 rx_state <= DROP_ST;
               end if;
             elsif s_ready_o = '1' then
@@ -136,8 +146,9 @@ begin
           end if;
 
         when DROP_ST =>
-          -- Skip words until end-of-frame
-          if s_valid_i = '1' and s_last_i = '1' then
+          -- Skip words until end-of-frame has been accepted (s_ready_o is
+          -- always '1' in this state, except during reset).
+          if s_valid_i = '1' and s_ready_o = '1' and s_last_i = '1' then
             rx_state <= ACCEPT_ST;
           end if;
 
