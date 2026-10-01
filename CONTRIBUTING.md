@@ -2,11 +2,18 @@
 
 Thanks for taking the time to contribute. This document covers the
 workflow side of the repository: how to add modules, testbenches, and
-outside WSL.
+formal proofs; how to run the full regression locally; and what we
+expect to see in a pull request.
+
+For *coding conventions*, see [CODING_STYLE.md](CODING_STYLE.md). For
+the *interface contracts* every module must obey, see
+[docs/interfaces.md](docs/interfaces.md). For the *current module inventory*, see
+[docs/modules.md](docs/modules.md). This document does not duplicate any of
+those; it points at them.
 
 Tested on Ubuntu 22.04 LTS. Other Linux distributions and macOS
 should work; please open an issue if they don't.
-The build system has not been tested on Windows.
+The build system has not been tested on Windows outside WSL.
 
 ---
 
@@ -438,12 +445,4 @@ Architectural items still under discussion live in
 [`CODING_STYLE.md` §19](CODING_STYLE.md#19-open-questions). Don't
 introduce a third interpretation in a PR; resolve the question in an
 issue first, update `CODING_STYLE.md`, then open the PR.
-formal proofs; how to run the full regression locally; and what we
-expect to see in a pull request.
-
-For *coding conventions*, see [CODING_STYLE.md](CODING_STYLE.md). For
-the *interface contracts* every module must obey, see
-[docs/interfaces.md](docs/interfaces.md). For the *current module inventory*, see
-[docs/modules.md](docs/modules.md). This document does not duplicate any of
-those; it points at them.
 

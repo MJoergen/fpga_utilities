@@ -8,7 +8,7 @@
 
 # Interface contracts and coding style require explicit owner review
 # because they ripple across the whole codebase.
-/interfaces.md                 @MJoergen
+/docs/interfaces.md            @MJoergen
 /CODING_STYLE.md               @MJoergen
 /CONTRIBUTING.md               @MJoergen
 
