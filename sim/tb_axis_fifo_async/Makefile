@@ -1,6 +1,6 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the axi_wbus.vhd file.
+# Description: Makefile for simulating the axis_fifo_async.vhd file.
 
 # List of source files
 SRC += $(SRC_DIR)/axis/axis_fifo_async.vhd
@@ -18,7 +18,7 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 DUT = axis_fifo_async
 
 # Test duration
-STOP_TIME = 60us
+STOP_TIME = 100us
 
 # Test bench configuration
 GENERIC += -gG_RANDOM=true

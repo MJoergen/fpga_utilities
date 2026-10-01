@@ -26,6 +26,7 @@ DUTS += tb_axip_sim
 DUTS += tb_axis_arbiter
 DUTS += tb_axis_decrease_increase
 DUTS += tb_axis_fifo
+DUTS += tb_axis_fifo_async
 DUTS += tb_axis_pipe
 DUTS += tb_axis_pipe_lite
 DUTS += tb_axis_sim
