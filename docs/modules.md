@@ -27,21 +27,21 @@ testbench are flagged as **unverified**.
 | `axil_arbiter`               | – | `tb_axil_arbiter` |
 | `axil_arbiter_read`          | – | covered indirectly via `tb_axil_arbiter` |
 | `axil_arbiter_write`         | – | covered indirectly via `tb_axil_arbiter` |
-| `axil_fifo_async`            | – | **unverified** |
+| `axil_fifo_async`            | – | `tb_axil_fifo_async` |
 | `axil_pipe`                  | – | `tb_axil_pipe` |
 | `axil_to_avm`                | ✓ | `tb_axil_to_avm` |
 | `axip_arbiter`               | ✓ | `tb_axip_arbiter` |
-| `axip_arbiter_general`       | – | **unverified** |
+| `axip_arbiter_general`       | – | `tb_axip_arbiter_general` |
 | `axip_demux`                 | – | covered indirectly via `tb_axip_arbiter` |
 | `axip_dropper`               | ✓ | `tb_axip_dropper` |
 | `axip_fifo`                  | – | `tb_axip_fifo` |
-| `axip_fifo_async`            | – | **unverified** |
+| `axip_fifo_async`            | – | `tb_axip_fifo_async` |
 | `axip_insert_fixed_header`   | ✓ | `tb_axip_insert_fixed_header`, `tb_axip_fixed_header` |
 | `axip_pipe`                  | – | `tb_axip_pipe` |
 | `axip_remove_fixed_header`   | ✓ | `tb_axip_remove_fixed_header`, `tb_axip_fixed_header` |
 | `axis_arbiter`               | ✓ | `tb_axis_arbiter` |
 | `axis_demux`                 | – | covered indirectly via `tb_axis_arbiter` |
-| `axis_dropper`               | ✓ | – |
+| `axis_dropper`               | ✓ | `tb_axis_dropper` |
 | `axis_fifo`                  | ✓ | `tb_axis_fifo` |
 | `axis_fifo_async`            | – | `tb_axis_fifo_async` |
 | `axis_decrease`              | – | `tb_axis_decrease_increase` |
@@ -58,10 +58,9 @@ testbench are flagged as **unverified**.
 | `wbus_arbiter_general`       | – | `tb_wbus_arbiter_general` |
 | `wbus_mapper`                | – | covered indirectly via `tb_wbus_arbiter` |
 
-Modules currently marked **unverified** should be considered
-experimental; they may be removed or refactored without notice. Adding
-testbenches and/or formal properties for these is tracked as an open
-TODO.
+Every module currently has a formal proof or a testbench. Modules that
+are only covered indirectly, or have no formal proof, are candidates for
+further verification.
 
 ## AXI streaming
 
@@ -83,7 +82,7 @@ the `axis` interface specified in
   for frames, with optional frame drop. In addition to the `axis`
   signals it carries a `LAST` end-of-frame marker (but no `BYTES`).
   Asserting `s_drop_i` during a frame discards the whole frame; only
-  complete frames are forwarded. Formally proved; no testbench yet.
+  complete frames are forwarded.
 - [`axis_fifo.vhd`](../src/axis/axis_fifo.vhd): Synchronous AXIS FIFO
   (single clock for in and out). Depth is generic; the RAM style is
   selected with `G_RAM_STYLE`.
@@ -114,7 +113,6 @@ add it to the compile order before them.
   avoid interleaving beats from different packets.
 - [`axip_arbiter_general.vhd`](../src/axip/axip_arbiter_general.vhd):
   N-input variant of `axip_arbiter`. The number of inputs is a generic.
-  **Unverified — no testbench or formal proof.**
 - [`axip_demux.vhd`](../src/axip/axip_demux.vhd): Demultiplexes
   a single AXIP source onto two AXIP sinks, selected at packet
   granularity by the `s_dst_i` sideband input (sampled on the first
@@ -130,7 +128,7 @@ add it to the compile order before them.
   Depth is generic.
 - [`axip_fifo_async.vhd`](../src/axip/axip_fifo_async.vhd): Asynchronous
   AXIP FIFO for clock-domain crossing. CDC notes as for
-  `axis_fifo_async`. **Unverified.**
+  `axis_fifo_async`.
 - [`axip_insert_fixed_header.vhd`](../src/axip/axip_insert_fixed_header.vhd):
   Prepends a fixed-size header (supplied on the `h_*` input, one per
   packet) to each packet on an AXIP stream. Header width
@@ -163,7 +161,8 @@ the `axil` interface specified in
   Typically instantiated via `axil_arbiter`.
 - [`axil_fifo_async.vhd`](../src/axil/axil_fifo_async.vhd): Asynchronous
   AXI-Lite FIFO for clock-domain crossing. Buffers all five channels
-  independently. **Unverified.**
+  independently. The FIFO depths are rounded up to a power of two (at
+  least 2).
 - [`axil_pipe.vhd`](../src/axil/axil_pipe.vhd): Two-stage AXI-Lite
   pipeline register on all five channels. Useful for timing closure.
 

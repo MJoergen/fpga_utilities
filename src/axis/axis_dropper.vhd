@@ -6,6 +6,7 @@
 --
 -- The input s_drop_i may be asserted anytime during a frame, in which case the
 -- entire frame is discarded, and the cnt_drop_o counter is incremented once.
+-- s_drop_i only has an effect in a clock cycle where s_valid_i is asserted.
 -- Note: s_drop_i is sampled even when s_ready_o is not asserted. It is an
 -- out-of-band control and is NOT an AXI-Stream payload sideband, so it is not
 -- required to remain stable across a stalled beat.

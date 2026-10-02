@@ -271,13 +271,14 @@ A PR that adds RTL without updating `modules.md` will not be merged.
 
 ---
 
-## 5. Adding a testbench to an existing unverified module
+## 5. Adding verification to an existing module
 
 The current verification gap is tracked in
 [docs/modules.md](docs/modules.md#verification-coverage-matrix). Closing a row is
 a high-value contribution.
 
-1. Pick a row marked *unverified*.
+1. Pick a row with no formal proof, or one that is only covered
+   indirectly by another module's testbench.
 2. Open an issue saying you're working on it, to avoid duplicate work.
 3. Follow §4.3 above.
 4. Update the coverage matrix in `modules.md` in the same PR.
