@@ -1,0 +1,21 @@
+[tasks]
+bmc
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 16
+cover: mode cover
+cover: depth 8
+
+[engines]
+smtbmc
+
+[script]
+ghdl --std=08 -gG_ADDR_BITS=4 -gG_DATA_BITS=16 -gG_BURST_BITS=3 axis_pipe.vhd avm_pipe.vhd avm_pipe.psl -e avm_pipe
+prep -top avm_pipe
+
+[files]
+avm_pipe.psl
+../src/avm/avm_pipe.vhd
+../src/axis/axis_pipe.vhd

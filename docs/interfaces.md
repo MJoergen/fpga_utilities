@@ -586,7 +586,8 @@ are not signalled.
 ### Verification
 
 - **Formal properties:** `../formal/avm_arbiter.psl`,
-  `../formal/avm_increase.psl`, `../formal/avm_readahead.psl`,
+  `../formal/avm_decrease.psl`, `../formal/avm_increase.psl`,
+  `../formal/avm_pipe.psl`, `../formal/avm_readahead.psl`,
   `../formal/avm_to_axil.psl`, `../formal/axil_to_avm.psl`.
 - **Bus-functional models:** `../sim/src/avm_master_sim.vhd`,
   `../sim/src/avm_slave_sim.vhd`, `../sim/src/avm_sim.vhd`

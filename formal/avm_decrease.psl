@@ -1,0 +1,324 @@
+-------------------------------------------------------------------------------
+-- Description: Formal property set for avm_decrease.
+--
+-- The slave side (s_*) is F_RATIO times wider than the master side (m_*).
+--
+-- * The master side obeys the Avalon-MM request rules: read and write are not
+--   asserted together, the request is held stable while waitrequest is
+--   asserted, and a read is not issued in the middle of a write burst.
+-- * Writes: every wide write is issued as F_RATIO narrow writes, in order.
+--   Narrow write k of a wide write carries slice k of its writedata and
+--   byteenable, and the address and burstcount are scaled by F_RATIO. This
+--   is checked against a reference model built from the ports.
+-- * Reads: every wide read is issued as one narrow read, with the address
+--   and burstcount scaled by F_RATIO.
+-- * Read responses: every F_RATIO narrow responses are returned as one wide
+--   response, one clock cycle after the last of them, with narrow response k
+--   in slice k (checked for an arbitrary slice). No response is returned
+--   that was not requested.
+--
+-- SPDX-License-Identifier: MIT
+-------------------------------------------------------------------------------
+
+vunit i_avm_decrease(avm_decrease(rtl))
+{
+   -- set all declarations to run on clk_i
+   default clock is rising_edge(clk_i);
+
+   constant F_RATIO : positive := G_SLAVE_DATA_BITS / G_MASTER_DATA_BITS;
+   constant F_SHIFT : natural  := G_MASTER_ADDR_BITS - G_SLAVE_ADDR_BITS;
+   constant F_MD    : positive := G_MASTER_DATA_BITS;
+   constant F_MB    : positive := G_MASTER_DATA_BITS / 8;
+
+   constant F_ZERO  : std_logic_vector(F_SHIFT - 1 downto 0) := (others => '0');
+
+   -- Handshakes
+   signal f_s_wr_acc : std_logic;
+   signal f_s_rd_acc : std_logic;
+   signal f_m_wr_acc : std_logic;
+   signal f_m_rd_acc : std_logic;
+
+   f_s_wr_acc <= s_write_i and not s_waitrequest_o;
+   f_s_rd_acc <= s_read_i and not s_waitrequest_o;
+   f_m_wr_acc <= m_write_o and not m_waitrequest_i;
+   f_m_rd_acc <= m_read_o and not m_waitrequest_i;
+
+
+   -----------------------------
+   -- Reference model of writes: the (at most two) wide writes not yet fully
+   -- issued on the master side.
+   -----------------------------
+
+   type f_wdata_type is array (0 to 1) of std_logic_vector(G_SLAVE_DATA_BITS - 1 downto 0);
+   type f_wbe_type   is array (0 to 1) of std_logic_vector(G_SLAVE_DATA_BITS / 8 - 1 downto 0);
+   type f_waddr_type is array (0 to 1) of std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);
+   type f_wburst_type is array (0 to 1) of std_logic_vector(G_BURST_BITS - 1 downto 0);
+
+   signal f_wdata    : f_wdata_type;
+   signal f_wbe      : f_wbe_type;
+   signal f_waddr    : f_waddr_type;
+   signal f_wburst   : f_wburst_type;
+   signal f_w_in     : natural range 0 to 1              := 0; -- Next entry to fill
+   signal f_w_beat   : natural range 0 to 2 * F_RATIO - 1 := 0; -- Next narrow beat to issue
+   signal f_w_pend   : natural range 0 to 3 * F_RATIO     := 0; -- Narrow beats not yet issued
+   signal f_w_entry  : natural range 0 to 1;
+   signal f_w_slice  : natural range 0 to F_RATIO - 1;
+
+   f_w_entry <= f_w_beat / F_RATIO;
+   f_w_slice <= f_w_beat mod F_RATIO;
+
+   p_write_model : process (clk_i)
+      variable pend_v : natural range 0 to 3 * F_RATIO;
+   begin
+      if rising_edge(clk_i) then
+         pend_v := f_w_pend;
+         if f_s_wr_acc = '1' then
+            f_wdata(f_w_in)  <= s_writedata_i;
+            f_wbe(f_w_in)    <= s_byteenable_i;
+            f_waddr(f_w_in)  <= s_address_i;
+            f_wburst(f_w_in) <= s_burstcount_i;
+            f_w_in           <= 1 - f_w_in;
+            pend_v           := pend_v + F_RATIO;
+         end if;
+         if f_m_wr_acc = '1' then
+            f_w_beat <= (f_w_beat + 1) mod (2 * F_RATIO);
+            pend_v   := pend_v - 1;
+         end if;
+         f_w_pend <= pend_v;
+         if rst_i = '1' then
+            f_w_in   <= 0;
+            f_w_beat <= 0;
+            f_w_pend <= 0;
+         end if;
+      end if;
+   end process p_write_model;
+
+
+   -----------------------------
+   -- Reference model of reads: the wide read not yet issued on the master side
+   -----------------------------
+
+   signal f_raddr  : std_logic_vector(G_SLAVE_ADDR_BITS - 1 downto 0);
+   signal f_rburst : std_logic_vector(G_BURST_BITS - 1 downto 0);
+   signal f_r_pend : std_logic := '0';
+
+   p_read_model : process (clk_i)
+   begin
+      if rising_edge(clk_i) then
+         if f_m_rd_acc = '1' then
+            f_r_pend <= '0';
+         end if;
+         if f_s_rd_acc = '1' then
+            f_raddr  <= s_address_i;
+            f_rburst <= s_burstcount_i;
+            f_r_pend <= '1';
+         end if;
+         if rst_i = '1' then
+            f_r_pend <= '0';
+         end if;
+      end if;
+   end process p_read_model;
+
+
+   -----------------------------
+   -- Remaining beats of the current write burst on each side, and the number
+   -- of outstanding read responses on each side.
+   -----------------------------
+
+   signal f_s_wr_left : natural range 0 to 2 ** G_BURST_BITS - 1 := 0;
+   signal f_m_wr_left : natural range 0 to 2 ** G_BURST_BITS - 1 := 0;
+   -- The upstream master has at most F_MAX_PENDING outstanding wide read
+   -- responses when it issues a read (see f_slave_max_pending). This bounds
+   -- the counters below.
+   constant F_MAX_PENDING : natural := 8;
+   constant F_MAX_OUT     : natural := 4 * (F_MAX_PENDING + 2 ** G_BURST_BITS) * F_RATIO;
+
+   signal f_s_rd_out  : natural range 0 to F_MAX_OUT := 0;
+   signal f_m_rd_out  : natural range 0 to F_MAX_OUT := 0;
+
+   p_bursts : process (clk_i)
+      variable s_rd_v : natural range 0 to F_MAX_OUT;
+      variable m_rd_v : natural range 0 to F_MAX_OUT;
+   begin
+      if rising_edge(clk_i) then
+         if f_s_wr_acc = '1' then
+            if f_s_wr_left = 0 then
+               f_s_wr_left <= to_integer(unsigned(s_burstcount_i)) - 1;
+            else
+               f_s_wr_left <= f_s_wr_left - 1;
+            end if;
+         end if;
+         if f_m_wr_acc = '1' then
+            if f_m_wr_left = 0 then
+               f_m_wr_left <= to_integer(unsigned(m_burstcount_o)) - 1;
+            else
+               f_m_wr_left <= f_m_wr_left - 1;
+            end if;
+         end if;
+
+         s_rd_v := f_s_rd_out;
+         if f_s_rd_acc = '1' then
+            s_rd_v := s_rd_v + to_integer(unsigned(s_burstcount_i));
+         end if;
+         if s_readdatavalid_o = '1' and s_rd_v > 0 then
+            s_rd_v := s_rd_v - 1;
+         end if;
+         f_s_rd_out <= s_rd_v;
+
+         m_rd_v := f_m_rd_out;
+         if f_m_rd_acc = '1' then
+            m_rd_v := m_rd_v + to_integer(unsigned(m_burstcount_o));
+         end if;
+         if m_readdatavalid_i = '1' and m_rd_v > 0 then
+            m_rd_v := m_rd_v - 1;
+         end if;
+         f_m_rd_out <= m_rd_v;
+
+         if rst_i = '1' then
+            f_s_wr_left <= 0;
+            f_m_wr_left <= 0;
+            f_s_rd_out  <= 0;
+            f_m_rd_out  <= 0;
+         end if;
+      end if;
+   end process p_bursts;
+
+
+   -----------------------------
+   -- Read response reassembly, checked for an arbitrary slice f_slot
+   -----------------------------
+
+   signal f_slot_v : std_logic_vector(F_SHIFT - 1 downto 0);
+   attribute anyconst : boolean;
+   attribute anyconst of f_slot_v : signal is true;
+
+   signal f_slot      : natural range 0 to F_RATIO - 1;
+   signal f_r_pos     : natural range 0 to F_RATIO - 1 := 0; -- Slice of the next narrow response
+   signal f_r_exp     : std_logic_vector(F_MD - 1 downto 0);
+   signal f_word_done : std_logic;
+
+   f_slot      <= to_integer(unsigned(f_slot_v));
+   f_word_done <= '1' when m_readdatavalid_i = '1' and f_r_pos = F_RATIO - 1 else '0';
+
+   p_response : process (clk_i)
+   begin
+      if rising_edge(clk_i) then
+         if m_readdatavalid_i = '1' then
+            if f_r_pos = f_slot then
+               f_r_exp <= m_readdata_i;
+            end if;
+            f_r_pos <= (f_r_pos + 1) mod F_RATIO;
+         end if;
+         if rst_i = '1' then
+            f_r_pos <= 0;
+         end if;
+      end if;
+   end process p_response;
+
+
+   -----------------------------
+   -- ASSERTIONS ABOUT OUTPUTS
+   -----------------------------
+
+   -- Master must be empty after reset
+   f_master_after_reset_empty : assert always {rst_i} |=> not (m_write_o or m_read_o);
+
+   -- Master may not assert both write and read.
+   f_master_not_double : assert always rst_i or not (m_write_o and m_read_o);
+
+   -- Master must be stable until accepted
+   f_master_stable : assert always {(m_write_o or m_read_o) and m_waitrequest_i and not rst_i} |=>
+      {stable(m_write_o) and stable(m_read_o) and stable(m_address_o) and stable(m_writedata_o) and
+       stable(m_byteenable_o) and stable(m_burstcount_o)};
+
+   -- Master must not issue a read in the middle of a write burst
+   f_master_no_read_in_write_burst : assert always rst_i or not m_read_o or f_m_wr_left = 0;
+
+   -- Writes: at most one wide write is buffered while another is being issued
+   f_write_pending_max : assert always rst_i or f_w_pend <= F_RATIO;
+
+   -- Writes: a narrow write is issued only for an accepted wide write
+   f_write_no_spurious : assert always rst_i or not m_write_o or f_w_pend > 0;
+
+   -- Writes: each narrow write carries the right slice of the right wide write
+   f_write_data : assert always rst_i or not m_write_o or
+      m_writedata_o = f_wdata(f_w_entry)(F_MD * f_w_slice + F_MD - 1 downto F_MD * f_w_slice);
+   f_write_byteenable : assert always rst_i or not m_write_o or
+      m_byteenable_o = f_wbe(f_w_entry)(F_MB * f_w_slice + F_MB - 1 downto F_MB * f_w_slice);
+   f_write_address : assert always rst_i or not m_write_o or
+      m_address_o = f_waddr(f_w_entry) & F_ZERO;
+   f_write_burstcount : assert always rst_i or not m_write_o or
+      m_burstcount_o = std_logic_vector(shift_left(unsigned(f_wburst(f_w_entry)), F_SHIFT));
+
+   -- Reads: a wide read is not accepted before the previous one has been issued
+   f_read_one_pending : assert always rst_i or not (f_s_rd_acc and f_r_pend and not f_m_rd_acc);
+
+   -- Reads: a narrow read is issued only for an accepted wide read, with the
+   -- address and burstcount scaled by F_RATIO
+   f_read_no_spurious : assert always rst_i or not m_read_o or f_r_pend;
+   f_read_address : assert always rst_i or not m_read_o or m_address_o = f_raddr & F_ZERO;
+   f_read_burstcount : assert always rst_i or not m_read_o or
+      m_burstcount_o = std_logic_vector(shift_left(unsigned(f_rburst), F_SHIFT));
+
+   -- Read responses: one wide response for every F_RATIO narrow responses,
+   -- one clock cycle after the last of them
+   f_response_valid : assert always {rst_i = '0'} |=> {s_readdatavalid_o = prev(f_word_done)};
+
+   -- Read responses: narrow response k is returned in slice k
+   f_response_data : assert always rst_i or not s_readdatavalid_o or
+      s_readdata_o(F_MD * f_slot + F_MD - 1 downto F_MD * f_slot) = f_r_exp;
+
+   -- Read responses: no response is returned that was not requested
+   f_response_requested : assert always rst_i or not s_readdatavalid_o or f_s_rd_out > 0;
+
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   -- Slave may not assert both write and read.
+   f_slave_not_double : assume always not (s_write_i and s_read_i);
+
+   -- Non-zero burstcount, and the scaled burstcount fits in G_BURST_BITS bits
+   f_slave_burstcount : assume always (s_write_i or s_read_i) ->
+      (unsigned(s_burstcount_i) /= 0 and
+       to_integer(unsigned(s_burstcount_i)) * F_RATIO < 2 ** G_BURST_BITS);
+
+   -- Slave request must be stable until accepted
+   f_slave_input_stable : assume always {(s_write_i or s_read_i) and s_waitrequest_o and not rst_i} |=>
+      {stable(s_write_i) and stable(s_read_i) and stable(s_address_i) and stable(s_writedata_i) and
+       stable(s_byteenable_i) and stable(s_burstcount_i)};
+
+   -- Slave must not issue a read in the middle of a write burst
+   f_slave_no_read_in_write_burst : assume always not s_read_i or f_s_wr_left = 0;
+
+   -- The upstream master has a bounded number of outstanding read responses
+   f_slave_max_pending : assume always not s_read_i or f_s_rd_out < F_MAX_PENDING;
+
+   -- The downstream slave only returns data that was requested
+   f_master_response_requested : assume always not m_readdatavalid_i or f_m_rd_out > 0;
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   -- A wide write burst of two words is fully issued
+   f_cover_write_burst : cover {rst_i = '0' and f_s_wr_acc = '1' and unsigned(s_burstcount_i) = 2;
+                                [*];
+                                rst_i = '0' and f_m_wr_acc = '1' and f_m_wr_left = 1};
+
+   -- A new wide write is accepted in the same cycle as the last narrow write
+   -- of the previous one
+   f_cover_write_back_to_back : cover {rst_i = '0' and f_s_wr_acc = '1' and f_m_wr_acc = '1'};
+
+   -- A wide read response is returned
+   f_cover_read_response : cover {rst_i = '0' and s_readdatavalid_o = '1'};
+
+   -- A new read is issued while the previous read burst is still returning data
+   f_cover_read_overlap : cover {rst_i = '0' and f_m_rd_acc = '1' and f_m_rd_out > 0};
+
+} -- vunit i_avm_decrease(avm_decrease(rtl))

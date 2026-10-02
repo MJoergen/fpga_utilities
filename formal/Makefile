@@ -2,8 +2,10 @@
 # and does Bounded Model Check on each of them.
 
 DUTS += avm_arbiter
+DUTS += avm_decrease
 DUTS += avm_readahead
 DUTS += avm_increase
+DUTS += avm_pipe
 DUTS += avm_to_axil
 DUTS += axil_to_avm
 DUTS += axil_to_wbus

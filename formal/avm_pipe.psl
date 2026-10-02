@@ -1,0 +1,123 @@
+-------------------------------------------------------------------------------
+-- Description: Formal property set for avm_pipe.
+--
+-- * The master side obeys the Avalon-MM request rules: read and write are not
+--   asserted together, and the request is held stable while waitrequest is
+--   asserted.
+-- * Every request accepted on the slave side is issued unmodified on the
+--   master side, in order, and no other requests are issued. This is checked
+--   with a reference queue built from the ports.
+-- * Read responses are forwarded unmodified with a latency of one clock cycle
+--   (they cannot be back-pressured, so none may be lost).
+--
+-- SPDX-License-Identifier: MIT
+-------------------------------------------------------------------------------
+
+vunit i_avm_pipe(avm_pipe(rtl))
+{
+   -- set all declarations to run on clk_i
+   default clock is rising_edge(clk_i);
+
+   -- A request, as seen on the ports: write, read, address, writedata,
+   -- byteenable, and burstcount.
+   constant C_REQ_BITS : natural := 2 + G_ADDR_BITS + G_DATA_BITS + G_DATA_BITS / 8 + G_BURST_BITS;
+
+   type f_queue_type is array (0 to 3) of std_logic_vector(C_REQ_BITS - 1 downto 0);
+
+   signal f_queue : f_queue_type;
+   signal f_wr    : natural range 0 to 3 := 0;
+   signal f_rd    : natural range 0 to 3 := 0;
+   signal f_count : natural range 0 to 4 := 0;
+   signal f_s_req : std_logic_vector(C_REQ_BITS - 1 downto 0);
+   signal f_m_req : std_logic_vector(C_REQ_BITS - 1 downto 0);
+   signal f_s_acc : std_logic;
+   signal f_m_acc : std_logic;
+
+   f_s_req <= s_write_i & s_read_i & s_address_i & s_writedata_i & s_byteenable_i & s_burstcount_i;
+   f_m_req <= m_write_o & m_read_o & m_address_o & m_writedata_o & m_byteenable_o & m_burstcount_o;
+   f_s_acc <= (s_write_i or s_read_i) and not s_waitrequest_o;
+   f_m_acc <= (m_write_o or m_read_o) and not m_waitrequest_i;
+
+   p_queue : process (clk_i)
+      variable count_v : natural range 0 to 4;
+   begin
+      if rising_edge(clk_i) then
+         count_v := f_count;
+         if f_s_acc = '1' then
+            f_queue(f_wr) <= f_s_req;
+            f_wr          <= (f_wr + 1) mod 4;
+            count_v       := count_v + 1;
+         end if;
+         if f_m_acc = '1' then
+            f_rd    <= (f_rd + 1) mod 4;
+            count_v := count_v - 1;
+         end if;
+         f_count <= count_v;
+         if rst_i = '1' then
+            f_wr    <= 0;
+            f_rd    <= 0;
+            f_count <= 0;
+         end if;
+      end if;
+   end process p_queue;
+
+
+   -----------------------------
+   -- ASSERTIONS ABOUT OUTPUTS
+   -----------------------------
+
+   -- Master must be empty after reset
+   f_master_after_reset_empty : assert always {rst_i} |=> not (m_write_o or m_read_o);
+
+   -- Master may not assert both write and read.
+   f_master_not_double : assert always rst_i or not (m_write_o and m_read_o);
+
+   -- Master must be stable until accepted
+   f_master_stable : assert always {(m_write_o or m_read_o) and m_waitrequest_i and not rst_i} |=>
+      {stable(m_write_o) and stable(m_read_o) and stable(m_address_o) and stable(m_writedata_o) and
+       stable(m_byteenable_o) and stable(m_burstcount_o)};
+
+   -- The pipe holds at most two requests
+   f_count_max : assert always rst_i or f_count <= 2;
+
+   -- A request is issued on the master side only if one has been accepted
+   f_master_no_spurious : assert always rst_i or not (m_write_o or m_read_o) or f_count > 0;
+
+   -- The request issued on the master side is the oldest accepted request
+   f_master_in_order : assert always rst_i or not (m_write_o or m_read_o) or f_m_req = f_queue(f_rd);
+
+   -- Read responses are forwarded after exactly one clock cycle
+   f_response_valid : assert always {rst_i = '0'} |=> {s_readdatavalid_o = prev(m_readdatavalid_i)};
+   f_response_data  : assert always {m_readdatavalid_i = '1' and rst_i = '0'} |=> {s_readdata_o = prev(m_readdata_i)};
+
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   -- Slave may not assert both write and read.
+   f_slave_not_double : assume always not (s_write_i and s_read_i);
+
+   -- Slave request must be stable until accepted
+   f_slave_input_stable : assume always {(s_write_i or s_read_i) and s_waitrequest_o and not rst_i} |=>
+      {stable(s_write_i) and stable(s_read_i) and stable(s_address_i) and stable(s_writedata_i) and
+       stable(s_byteenable_i) and stable(s_burstcount_i)};
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   -- The pipe is full
+   f_cover_full : cover {rst_i = '0' and f_count = 2};
+
+   -- Requests flow through without stalls in consecutive cycles
+   f_cover_back_to_back : cover {f_m_acc = '1' and f_s_acc = '1'; f_m_acc = '1' and f_s_acc = '1'};
+
+   -- A read response is forwarded while a request is stalled
+   f_cover_response_stalled : cover {rst_i = '0' and s_readdatavalid_o = '1' and m_waitrequest_i = '1' and (m_write_o = '1' or m_read_o = '1')};
+
+} -- vunit i_avm_pipe(avm_pipe(rtl))

@@ -1,0 +1,23 @@
+[tasks]
+bmc
+cover
+bmc_ratio4 bmc ratio4
+cover_ratio4 cover ratio4
+
+[options]
+bmc: mode bmc
+cover: mode cover
+~ratio4: depth 20
+ratio4: depth 14
+
+[engines]
+smtbmc
+
+[script]
+~ratio4: ghdl --std=08 -gG_SLAVE_ADDR_BITS=3 -gG_SLAVE_DATA_BITS=16 -gG_MASTER_ADDR_BITS=4 -gG_MASTER_DATA_BITS=8 -gG_BURST_BITS=3 avm_decrease.vhd avm_decrease.psl -e avm_decrease
+ratio4: ghdl --std=08 -gG_SLAVE_ADDR_BITS=2 -gG_SLAVE_DATA_BITS=32 -gG_MASTER_ADDR_BITS=4 -gG_MASTER_DATA_BITS=8 -gG_BURST_BITS=4 avm_decrease.vhd avm_decrease.psl -e avm_decrease
+prep -top avm_decrease
+
+[files]
+avm_decrease.psl
+../src/avm/avm_decrease.vhd

@@ -19,9 +19,9 @@ testbench are flagged as **unverified**.
 | Module                       | Formal proof | Testbench |
 | ---------------------------- | :----------: | :-------: |
 | `avm_arbiter`                | ✓ | `tb_avm_arbiter` |
-| `avm_decrease`               | – | `tb_avm_decrease` |
+| `avm_decrease`               | ✓ | `tb_avm_decrease` |
 | `avm_increase`               | ✓ | `tb_avm_increase` |
-| `avm_pipe`                   | – | `tb_avm_pipe` |
+| `avm_pipe`                   | ✓ | `tb_avm_pipe` |
 | `avm_to_axil`                | ✓ | `tb_avm_to_axil` |
 | `avm_readahead`              | ✓ | `tb_avm_readahead` |
 | `axil_arbiter`               | – | `tb_axil_arbiter` |
@@ -201,12 +201,12 @@ the `avm` interface specified in
 - [`avm_decrease.vhd`](../src/avm/avm_decrease.vhd): Data-width adapter
   that narrows an Avalon-MM bus: the `s_*` port (facing the upstream
   master) is wider than the `m_*` port. The width ratio must be a power
-  of two. **No formal proof.**
+  of two.
 - [`avm_increase.vhd`](../src/avm/avm_increase.vhd): Data-width adapter
   that widens an Avalon-MM bus: the `s_*` port (facing the upstream
   master) is narrower than the `m_*` port. Counterpart to `avm_decrease`.
 - [`avm_pipe.vhd`](../src/avm/avm_pipe.vhd): Two-stage Avalon-MM
-  pipeline register. Useful for timing closure. **No formal proof.**
+  pipeline register. Useful for timing closure.
 - [`avm_readahead.vhd`](../src/avm/avm_readahead.vhd): Read-ahead buffer
   / small cache that speculatively issues read bursts to reduce
   round-trip latency on sequential read traffic. See the entity header
