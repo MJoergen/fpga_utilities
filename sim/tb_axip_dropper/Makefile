@@ -1,6 +1,6 @@
 # Author:  Michael Jørgensen
 #
-# Description: Makefile for simulating the axi_wbus.vhd file.
+# Description: Makefile for simulating the axip_dropper.vhd file.
 
 # List of source files
 SRC += $(SRC_DIR)/axis/axis_fifo.vhd
@@ -23,7 +23,7 @@ SRC += $(SIM_SRC_DIR)/random.vhd
 DUT = axip_dropper
 
 # Test duration
-STOP_TIME = 200us
+STOP_TIME = 400us
 
 # Test bench configuration
 GENERIC += -gG_DEBUG=false

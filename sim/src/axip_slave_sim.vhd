@@ -16,6 +16,12 @@
 --               required to match any particular value; only the payload bytes
 --               are checked.
 --
+--               With G_RESYNC = true, packets may be missing from the stream
+--               (e.g. downstream of a packet dropper): at the start of each
+--               packet the checker re-synchronises verf_cnt to the packet's
+--               first payload byte, and then verifies the rest of the packet.
+--               Which packets are present must then be checked separately.
+--
 --               Test termination: the process stops the simulation the first time
 --               verf_cnt wraps around its full range (2**G_CNT_SIZE bytes). Size
 --               G_CNT_SIZE to control test duration.
@@ -42,6 +48,7 @@ entity axip_slave_sim is
     G_DEBUG      : boolean  := false;  -- If true, per-packet length is logged
     G_SEED       : std_logic_vector(63 downto 0) := x"0123456789ABCDEF"; -- RNG seed
     G_RANDOM     : boolean  := false;  -- If true, deassert s_ready_o at random
+    G_RESYNC     : boolean  := false;  -- If true, packets may be missing (see header)
     G_CNT_SIZE   : positive := 8;      -- Width of verf_cnt; also sets test duration
     G_DATA_BYTES : positive            -- Bus width in bytes (must be >= 2)
   );
@@ -149,6 +156,7 @@ begin
   fsm_proc : process (clk_i)
     variable length_v : natural range 0 to C_MAX_PACKET_LEN;
     variable data_v   : std_logic_vector(7 downto 0);
+    variable cnt_v    : std_logic_vector(G_CNT_SIZE - 1 downto 0);
   begin
     if rising_edge(clk_i) then
 
@@ -160,11 +168,20 @@ begin
             -- top (MSB) byte lane; it is NOT itself a byte to be checked.
             length_v := to_integer(s_data_i(G_DATA_BYTES * 8 - 1 downto G_DATA_BYTES * 8 - 8));
 
+            -- Expected value of the first payload byte. With G_RESYNC, skip
+            -- ahead to the first payload byte actually received (any packets
+            -- in between are assumed to have been dropped).
+            cnt_v := verf_cnt;
+            if G_RESYNC and length_v >= 1 then
+              data_v := s_data_i((G_DATA_BYTES - 2) * 8 + 7 downto (G_DATA_BYTES - 2) * 8);
+              cnt_v  := cnt_v + (data_v - cnt_v(7 downto 0));
+            end if;
+
             -- Per-packet debug trace: length and starting byte value.
             if G_DEBUG then
               report "axip_slave_sim " & G_NAME &
                      ": VERF length " & to_string(length_v) &
-                     ", first byte " & to_hstring(verf_cnt(7 downto 0));
+                     ", first byte " & to_hstring(cnt_v(7 downto 0));
             end if;
 
             -- Verify the payload bytes that ride along in the lower lanes
@@ -178,11 +195,11 @@ begin
             for i in 1 to G_DATA_BYTES - 1 loop
               if i <= length_v then
                 data_v := s_data_i((G_DATA_BYTES - 1 - i) * 8 + 7 downto (G_DATA_BYTES - 1 - i) * 8);
-                assert data_v = verf_cnt(7 downto 0) + (i - 1)
+                assert data_v = cnt_v(7 downto 0) + (i - 1)
                   report "axip_slave_sim " & G_NAME &
                          ": Verify byte " & to_string(i) &
                          ". Received " & to_hstring(data_v) &
-                         ", expected " & to_hstring(verf_cnt(7 downto 0) + (i - 1))
+                         ", expected " & to_hstring(cnt_v(7 downto 0) + (i - 1))
                   severity failure;
               end if;
             end loop;
@@ -191,12 +208,12 @@ begin
               -- Single-beat packet: advance verf_cnt by the number of
               -- payload bytes actually present (s_bytes_i - 1 excludes
               -- the length byte, which is not part of the checked stream).
-              verf_cnt <= verf_cnt + s_bytes_i - 1;
+              verf_cnt <= cnt_v + s_bytes_i - 1;
             else
               -- Multi-beat packet: this first beat carried
               -- (G_DATA_BYTES - 1) payload bytes; the remainder will
               -- arrive in DATA_ST.
-              verf_cnt   <= verf_cnt + G_DATA_BYTES - 1;
+              verf_cnt   <= cnt_v + G_DATA_BYTES - 1;
               bytes_left <= length_v - (G_DATA_BYTES - 1);
               state      <= DATA_ST;
             end if;

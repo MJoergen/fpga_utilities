@@ -15,6 +15,7 @@ entity axip_sim is
     G_DEBUG      : boolean;
     G_RANDOM     : boolean                       := false;
     G_FAST       : boolean                       := true;
+    G_RESYNC     : boolean                       := false;
     G_MIN_LENGTH : natural;
     G_MAX_LENGTH : natural;
     G_CNT_SIZE   : natural;
@@ -72,6 +73,7 @@ begin
       G_DEBUG      => G_DEBUG,
       G_SEED       => not G_SEED,
       G_RANDOM     => G_RANDOM,
+      G_RESYNC     => G_RESYNC,
       G_CNT_SIZE   => G_CNT_SIZE,
       G_DATA_BYTES => G_DATA_BYTES
     )
