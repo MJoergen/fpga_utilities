@@ -3,6 +3,7 @@
 SRC += axis_arbiter.vhd
 SRC += axis_decrease.vhd
 SRC += axis_demux.vhd
+SRC += axis_dropper.vhd
 SRC += axis_fifo_async.vhd
 SRC += axis_fifo.vhd
 SRC += axis_increase.vhd
@@ -32,6 +33,7 @@ all: $(TARGETS)
 GENERICS_axis_arbiter    = -gG_DATA_BITS=8
 GENERICS_axis_decrease   = -gG_SLAVE_DATA_BITS=10 -gG_MASTER_DATA_BITS=8
 GENERICS_axis_demux      = -gG_DATA_BITS=8
+GENERICS_axis_dropper    = -gG_ADDR_BITS=4  -gG_DATA_BITS=8 -gG_CNT_BITS=4
 GENERICS_axis_fifo_async = -gG_ADDR_BITS=12 -gG_DATA_BITS=8 -gG_RAM_STYLE=block
 GENERICS_axis_fifo       = -gG_ADDR_BITS=6  -gG_DATA_BITS=8 -gG_RAM_STYLE=distributed
 GENERICS_axis_increase   = -gG_SLAVE_DATA_BITS=8 -gG_MASTER_DATA_BITS=10
