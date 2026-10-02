@@ -18,6 +18,8 @@ entity axil_fifo_async is
   generic (
     G_ADDR_BITS : positive;
     G_DATA_BITS : positive;
+    -- Minimum number of words in each FIFO. The depth is rounded up to a power of two,
+    -- and is at least 2.
     G_WR_DEPTH  : positive; -- Channels AW, W, and B
     G_RD_DEPTH  : positive; -- Channels AR and R
     G_RAM_STYLE : string := "auto"
@@ -83,10 +85,12 @@ architecture rtl of axil_fifo_async is
   signal  m_r_in  : std_logic_vector(G_DATA_BITS + 1 downto 0);
   signal  s_r_out : std_logic_vector(G_DATA_BITS + 1 downto 0);
 
+  -- Number of address bits for a FIFO of at least arg words (at least 1, because
+  -- axis_fifo_async requires G_ADDR_BITS >= 1)
   pure function log2 (
     arg : positive
-  ) return natural is
-    variable res_v : natural := 0;
+  ) return positive is
+    variable res_v : positive := 1;
   begin
     while 2 ** res_v < arg loop
       res_v := res_v + 1;
@@ -212,7 +216,8 @@ begin
   axis_fifo_async_r_inst : entity work.axis_fifo_async
     generic map (
       G_ADDR_BITS => log2(G_RD_DEPTH),
-      G_DATA_BITS => G_DATA_BITS + 2
+      G_DATA_BITS => G_DATA_BITS + 2,
+      G_RAM_STYLE => G_RAM_STYLE
     )
     port map (
       async_rst_i => m_rst_i,
