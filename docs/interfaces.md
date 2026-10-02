@@ -279,11 +279,20 @@ as AXI streaming.
    returned in the same order as the corresponding requests were
    accepted on `AW` and `AR` respectively. (AXI Lite has no
    transaction IDs, so out-of-order completion would be ambiguous.)
-5. **Read / write independence.** Read and write channels are otherwise
-   fully independent and may progress concurrently.
-6. **No combinational paths between channels.** Compliant slaves must
-   not gate one channel's `xREADY` combinationally on another
-   channel's `xVALID`, beyond what rule 1 implies.
+5. **Read / write independence.** Apart from rules 1 to 4 there is no
+   ordering between the read and write channels. A slave may process
+   reads and writes concurrently, or serialise them (for example,
+   `axil_to_wbus` gives a pending read priority over a pending write).
+6. **Handshake dependencies** (as in AMBA AXI, ARM IHI 0022, section
+   A3.3.1). The only forbidden dependency is a `xVALID` waiting for a
+   `xREADY`: a master must never wait for `AWREADY`, `WREADY` or
+   `ARREADY` before asserting `AWVALID`, `WVALID` or `ARVALID`, and a
+   slave must never wait for `BREADY` or `RREADY` before asserting
+   `BVALID` or `RVALID`. A `xREADY` may wait for `xVALID`, and may
+   depend combinationally on `xVALID` signals of other channels. In
+   particular, a slave may wait for both `AWVALID` and `WVALID` before
+   asserting `AWREADY` and `WREADY`; `axil_to_wbus` and `axil_to_avm`
+   do this, and accept `AW` and `W` in the same cycle.
 
 ### Response encoding
 
