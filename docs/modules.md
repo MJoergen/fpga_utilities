@@ -56,7 +56,7 @@ testbench are flagged as **unverified**.
 | `wbus_to_axil`               | – | `tb_wbus_to_axil`, `tb_wbus_axil_wbus` |
 | `wbus_arbiter`               | ✓ | `tb_wbus_arbiter` |
 | `wbus_arbiter_general`       | – | `tb_wbus_arbiter_general` |
-| `wbus_mapper`                | – | covered indirectly via `tb_wbus_arbiter` |
+| `wbus_mapper`                | – | `tb_wbus_mapper`, `tb_wbus_arbiter` |
 
 Every module currently has a formal proof or a testbench. Modules that
 are only covered indirectly, or have no formal proof, are candidates for

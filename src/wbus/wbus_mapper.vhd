@@ -149,8 +149,11 @@ begin
           elsif timeout_cnt < G_TIMEOUT_MAX then
             timeout_cnt <= timeout_cnt + 1;
           else
+            -- The slave may still be stalling the request, so STB must be cleared
+            -- together with CYC.
             s_rddat_o <= C_TIMEOUT;
             s_ack_o   <= '1';
+            m_stb_o   <= (others => '0');
             m_cyc_o   <= '0';
             state     <= IDLE_ST;
           end if;
