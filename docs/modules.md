@@ -32,15 +32,16 @@ testbench are flagged as **unverified**.
 | `axil_to_avm`                | ✓ | `tb_axil_to_avm` |
 | `axip_arbiter`               | ✓ | `tb_axip_arbiter` |
 | `axip_arbiter_general`       | – | **unverified** |
-| `axip_demux`                 | – | **unverified** |
-| `axip_dropper`               | ✓ | **no testbench** |
+| `axip_demux`                 | – | covered indirectly via `tb_axip_arbiter` |
+| `axip_dropper`               | ✓ | `tb_axip_dropper` |
 | `axip_fifo`                  | – | `tb_axip_fifo` |
 | `axip_fifo_async`            | – | **unverified** |
 | `axip_insert_fixed_header`   | ✓ | `tb_axip_insert_fixed_header`, `tb_axip_fixed_header` |
 | `axip_pipe`                  | – | `tb_axip_pipe` |
 | `axip_remove_fixed_header`   | ✓ | `tb_axip_remove_fixed_header`, `tb_axip_fixed_header` |
 | `axis_arbiter`               | ✓ | `tb_axis_arbiter` |
-| `axis_demux`                 | – | **unverified** |
+| `axis_demux`                 | – | covered indirectly via `tb_axis_arbiter` |
+| `axis_dropper`               | ✓ | – |
 | `axis_fifo`                  | ✓ | `tb_axis_fifo` |
 | `axis_fifo_async`            | – | `tb_axis_fifo_async` |
 | `axis_decrease`              | – | `tb_axis_decrease_increase` |
@@ -55,7 +56,7 @@ testbench are flagged as **unverified**.
 | `wbus_to_axil`               | – | `tb_wbus_to_axil`, `tb_wbus_axil_wbus` |
 | `wbus_arbiter`               | ✓ | `tb_wbus_arbiter` |
 | `wbus_arbiter_general`       | – | `tb_wbus_arbiter_general` |
-| `wbus_mapper`                | – | **unverified** |
+| `wbus_mapper`                | – | covered indirectly via `tb_wbus_arbiter` |
 
 Modules currently marked **unverified** should be considered
 experimental; they may be removed or refactored without notice. Adding
@@ -72,14 +73,25 @@ the `axis` interface specified in
   arbiter that merges two AXIS sources onto a single
   downstream AXIS sink. Generic-parameterised data width; selection is
   packet-unaware (single-beat granularity).
+- [`axis_decrease.vhd`](../src/axis/axis_decrease.vhd): Data-width
+  converter that repacks an AXIS stream into narrower words
+  (`G_MASTER_DATA_BITS < G_SLAVE_DATA_BITS`).
 - [`axis_demux.vhd`](../src/axis/axis_demux.vhd): Demultiplexes a
-  single AXIS source onto two AXIS sinks, selected by an external
-  control input. **Unverified — no testbench or formal proof.**
+  single AXIS source onto two AXIS sinks, selected per beat by the
+  `s_dst_i` sideband input.
+- [`axis_dropper.vhd`](../src/axis/axis_dropper.vhd): Synchronous FIFO
+  for frames, with optional frame drop. In addition to the `axis`
+  signals it carries a `LAST` end-of-frame marker (but no `BYTES`).
+  Asserting `s_drop_i` during a frame discards the whole frame; only
+  complete frames are forwarded. Formally proved; no testbench yet.
 - [`axis_fifo.vhd`](../src/axis/axis_fifo.vhd): Synchronous AXIS FIFO
-  (single clock for in and out). Depth is generic; storage uses
-  inferred block RAM.
+  (single clock for in and out). Depth is generic; the RAM style is
+  selected with `G_RAM_STYLE`.
 - [`axis_fifo_async.vhd`](../src/axis/axis_fifo_async.vhd): Full
   asynchronous AXIS FIFO for clock-domain crossing.
+- [`axis_increase.vhd`](../src/axis/axis_increase.vhd): Data-width
+  converter that packs an AXIS stream into wider words
+  (`G_MASTER_DATA_BITS > G_SLAVE_DATA_BITS`).
 - [`axis_pipe.vhd`](../src/axis/axis_pipe.vhd): Two-stage AXIS pipeline
   register. Breaks combinational paths through both `VALID` and `READY`
   at the cost of one cycle of latency. Useful for timing closure.
@@ -92,9 +104,9 @@ the `axis` interface specified in
 
 Source: [`../src/axip/`](../src/axip/). All modules consume and produce
 the `axip` interface specified in
-[interfaces.md](interfaces.md#axi-packet). Every entity uses
-[`../src/axip/axip_pkg.vhd`](../src/axip/axip_pkg.vhd); add it to the
-compile order before any `axip_*` instance.
+[interfaces.md](interfaces.md#axi-packet). `axip_arbiter_general` and
+`axip_dropper` use [`../src/axip/axip_pkg.vhd`](../src/axip/axip_pkg.vhd);
+add it to the compile order before them.
 
 - [`axip_arbiter.vhd`](../src/axip/axip_arbiter.vhd): Arbiter merging two
   AXIP sources onto a single AXIP sink. Packet-aware: once a packet
@@ -105,12 +117,14 @@ compile order before any `axip_*` instance.
   **Unverified — no testbench or formal proof.**
 - [`axip_demux.vhd`](../src/axip/axip_demux.vhd): Demultiplexes
   a single AXIP source onto two AXIP sinks, selected at packet
-  granularity by an external control input.
-  **Unverified.**
+  granularity by the `s_dst_i` sideband input (sampled on the first
+  beat of each packet).
 - [`axip_dropper.vhd`](../src/axip/axip_dropper.vhd): Drops selected
-  packets from an AXIP stream under control of an external `drop` input.
-  Pass-through latency is one cycle when not dropping.
-  Formally proved; no dedicated testbench yet.
+  packets from an AXIP stream. Each packet is buffered in full, and
+  `s_drop_i` is sampled with the last beat to decide whether it is
+  forwarded or discarded (store-and-forward: a packet is forwarded no
+  earlier than two cycles after its last beat is accepted). The buffer
+  must hold the largest packet.
 - [`axip_fifo.vhd`](../src/axip/axip_fifo.vhd): Synchronous AXIP FIFO
   (single clock for in and out). Stores `DATA`, `LAST`, and `BYTES`.
   Depth is generic.
@@ -118,14 +132,14 @@ compile order before any `axip_*` instance.
   AXIP FIFO for clock-domain crossing. CDC notes as for
   `axis_fifo_async`. **Unverified.**
 - [`axip_insert_fixed_header.vhd`](../src/axip/axip_insert_fixed_header.vhd):
-  Prepends a fixed-size header (supplied via a per-packet
-  input) to each packet on an AXIP stream. Header width
+  Prepends a fixed-size header (supplied on the `h_*` input, one per
+  packet) to each packet on an AXIP stream. Header width
   is a generic; the source packet's framing is preserved on the output.
 - [`axip_pipe.vhd`](../src/axip/axip_pipe.vhd): Two-stage AXIP pipeline
   register. Same timing-closure use case as `axis_pipe`.
-- [`axip_pkg.vhd`](../src/axip/axip_pkg.vhd): Package defining the
-  records, types, and helper functions used by every `axip_*` entity.
-  Not an entity; required in the compile order.
+- [`axip_pkg.vhd`](../src/axip/axip_pkg.vhd): Package defining shared
+  types (`bytes_type`, `bytes_array_type`) and conversion helpers, used
+  by `axip_arbiter_general` and `axip_dropper`. Not an entity.
 - [`axip_remove_fixed_header.vhd`](../src/axip/axip_remove_fixed_header.vhd):
   Inverse of `axip_insert_fixed_header`: strips a fixed-size prefix
   from each packet. A packet no longer than the header has no payload
@@ -157,9 +171,9 @@ the `axil` interface specified in
 
 Source: [`../src/wbus/`](../src/wbus/). All modules consume and produce
 the `wbus` interface specified in
-[interfaces.md](interfaces.md#wishbone). Every entity uses
-[`../src/wbus/wbus_pkg.vhd`](../src/wbus/wbus_pkg.vhd); add it to the
-compile order before any `wbus_*` instance.
+[interfaces.md](interfaces.md#wishbone). `wbus_arbiter_general` and
+`wbus_mapper` use [`../src/wbus/wbus_pkg.vhd`](../src/wbus/wbus_pkg.vhd);
+add it to the compile order before them.
 
 - [`wbus_arbiter.vhd`](../src/wbus/wbus_arbiter.vhd): Arbiter merging two
   Wishbone masters onto a single Wishbone slave port. Selection
@@ -167,12 +181,14 @@ compile order before any `wbus_*` instance.
 - [`wbus_arbiter_general.vhd`](../src/wbus/wbus_arbiter_general.vhd):
   N-input variant of `wbus_arbiter`.
 - [`wbus_mapper.vhd`](../src/wbus/wbus_mapper.vhd): Address decoder
-  distributing one Wishbone master onto several Wishbone slaves. The
-  base/mask table is supplied via a generic.
-  **Unverified.**
+  distributing one Wishbone master onto `G_NUM_SLAVES` Wishbone slaves.
+  The slave is selected by the address bits above `G_SLAVE_ADDR_BITS`.
+  An address with no slave, or a slave that does not respond within
+  `G_TIMEOUT_MAX` cycles, is acknowledged with a fixed diagnostic data
+  word.
 - [`wbus_pkg.vhd`](../src/wbus/wbus_pkg.vhd): Package defining the
-  records, types, and helper functions used by every `wbus_*` entity.
-  Not an entity; required in the compile order.
+  shared type `slv_array_type`, used by `wbus_arbiter_general` and
+  `wbus_mapper`. Not an entity.
 
 ## Avalon-MM
 
@@ -184,11 +200,12 @@ the `avm` interface specified in
   Avalon-MM masters onto a single Avalon-MM slave port. Burst-aware:
   once a burst starts, the grant is held until the burst completes.
 - [`avm_decrease.vhd`](../src/avm/avm_decrease.vhd): Data-width adapter
-  that narrows an Avalon-MM bus (master side wider than slave side).
-  Generic width ratio. **No formal proof.**
+  that narrows an Avalon-MM bus: the `s_*` port (facing the upstream
+  master) is wider than the `m_*` port. The width ratio must be a power
+  of two. **No formal proof.**
 - [`avm_increase.vhd`](../src/avm/avm_increase.vhd): Data-width adapter
-  that widens an Avalon-MM bus (master side narrower than slave side).
-  Counterpart to `avm_decrease`.
+  that widens an Avalon-MM bus: the `s_*` port (facing the upstream
+  master) is narrower than the `m_*` port. Counterpart to `avm_decrease`.
 - [`avm_pipe.vhd`](../src/avm/avm_pipe.vhd): Two-stage Avalon-MM
   pipeline register. Useful for timing closure. **No formal proof.**
 - [`avm_readahead.vhd`](../src/avm/avm_readahead.vhd): Read-ahead buffer
@@ -201,21 +218,30 @@ the `avm` interface specified in
 Source: [`../src/converters/`](../src/converters/). These bridge between
 the interfaces specified in [interfaces.md](interfaces.md).
 
+- [`avm_to_axil.vhd`](../src/converters/avm_to_axil.vhd): Avalon MM
+  slave on the master side, AXI-Lite master on the slave side.
+  Single-beat transfers only: `BURSTCOUNT` is ignored.
 - [`avm_to_wbus.vhd`](../src/converters/avm_to_wbus.vhd): Avalon MM
   slave on the master side, Wishbone master on the slave side. Honours
-  `BYTEENABLE` via Wishbone `SEL`.
+  `BYTEENABLE` via Wishbone `SEL`. Single-beat transfers only.
+- [`axil_to_avm.vhd`](../src/converters/axil_to_avm.vhd): AXI-Lite
+  slave on the master side, Avalon MM master on the slave side. Honours
+  `WSTRB` via `BYTEENABLE`; every Avalon transfer has `BURSTCOUNT = 1`.
 - [`axil_to_wbus.vhd`](../src/converters/axil_to_wbus.vhd): AXI-Lite
   slave on the master side, Wishbone master on the slave side. Honours
-  `WSTRB` via Wishbone `SEL`.
-- [`axip_to_axis.vhd`](../src/converters/axip_to_axis.vhd): Converts an
-  AXIP source to an AXIS sink by dropping the framing signals (`LAST`,
-  `BYTES`). The output is the concatenated byte stream of all valid
-  bytes; downstream loses packet boundaries.
-- [`axis_to_axip.vhd`](../src/converters/axis_to_axip.vhd): Converts an
-  AXIS source to an AXIP sink by inserting framing. The frame length is
-  fixed by a generic.
+  `WSTRB` via Wishbone `SEL`. A request that the Wishbone slave does not
+  acknowledge within `G_TIMEOUT_MAX` cycles is answered with `SLVERR`.
+- [`axip_to_axis.vhd`](../src/converters/axip_to_axis.vhd): Serialises
+  an AXIP stream into a stream of bytes (8-bit `DATA`), most significant
+  byte first. Packet boundaries are kept: the output has a `LAST` signal
+  marking the last byte of each packet.
+- [`axis_to_axip.vhd`](../src/converters/axis_to_axip.vhd): The reverse
+  of `axip_to_axis`: packs a stream of bytes (8-bit `DATA` with `LAST`)
+  into an AXIP stream of `G_DATA_BYTES`-byte words. Packet boundaries are
+  taken from the input `LAST`.
 - [`wbus_to_avm.vhd`](../src/converters/wbus_to_avm.vhd): Wishbone
   slave on the master side, Avalon MM master on the slave side.
+  Honours `SEL` via `BYTEENABLE`.
 - [`wbus_to_axil.vhd`](../src/converters/wbus_to_axil.vhd): Wishbone
   slave on the master side, AXI-Lite master on the slave side.
 
@@ -266,7 +292,7 @@ same four-piece BFM family:
 - [`axil_master_sim.vhd`](../sim/src/axil_master_sim.vhd): Simulates an
   AXI-Lite master issuing configurable read/write transactions.
 - [`axil_slave_sim.vhd`](../sim/src/axil_slave_sim.vhd): Simulates an
-  AXI-Lite slave with a memory backing store.
+  AXI-Lite slave with a memory backing store. Honours `WSTRB`.
 - [`axil_sim.vhd`](../sim/src/axil_sim.vhd): Combined master + slave
   wrapper.
 - [`axil_pause.vhd`](../sim/src/axil_pause.vhd): Inserts pseudo-random
@@ -279,8 +305,8 @@ same four-piece BFM family:
 - [`wbus_master_sim.vhd`](../sim/src/wbus_master_sim.vhd): Simulates a
   Wishbone master.
 - [`wbus_slave_sim.vhd`](../sim/src/wbus_slave_sim.vhd): Simulates a
-  Wishbone slave with a memory backing store and configurable response
-  latency.
+  Wishbone slave with a memory backing store. Honours `SEL`, and always
+  responds after one cycle; use `wbus_pause` for random latency.
 - [`wbus_sim.vhd`](../sim/src/wbus_sim.vhd): Combined master + slave
   wrapper.
 - [`wbus_pause.vhd`](../sim/src/wbus_pause.vhd): Inserts pseudo-random
@@ -291,8 +317,9 @@ same four-piece BFM family:
 - [`avm_master_sim.vhd`](../sim/src/avm_master_sim.vhd): Simulates an
   Avalon-MM master, including burst transactions.
 - [`avm_slave_sim.vhd`](../sim/src/avm_slave_sim.vhd): Simulates an
-  Avalon-MM slave with a memory backing store and configurable read
-  latency.
+  Avalon-MM slave with a memory backing store. Honours `BYTEENABLE`, and
+  returns read data after one cycle; use `avm_pause` for random wait
+  states and latency.
 - [`avm_sim.vhd`](../sim/src/avm_sim.vhd): Combined master + slave
   wrapper.
 - [`avm_pause.vhd`](../sim/src/avm_pause.vhd): Inserts pseudo-random

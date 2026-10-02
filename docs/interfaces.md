@@ -18,6 +18,21 @@ The PSL property files under `../formal/` are the executable
 specification of the handshake rules below; they should be treated as
 authoritative if this prose ever drifts from the code.
 
+### Addressing
+
+On the memory-mapped interfaces (`axil`, `wbus`, `avm`), an address
+counts **words** of `G_DATA_BITS` bits, not bytes: consecutive addresses
+refer to consecutive data words, and a burst advances the address by one
+per beat. Byte lanes within a word are selected with `WSTRB`, `SEL`, or
+`BYTEENABLE`.
+
+The modules that interpret addresses (`avm_decrease`, `avm_increase`,
+`avm_readahead`) rely on this, as do all the simulation models under
+`../sim/src/`. The converters pass addresses through unchanged; none of
+them translates between byte and word addresses. To connect to IP that
+uses byte addresses (e.g. AMBA AXI4-Lite), shift the address by
+`log2(G_DATA_BITS/8)` bits at the boundary.
+
 ---
 
 ## AXI streaming
@@ -75,7 +90,7 @@ These rules are enforced by the formal properties under `../formal/`:
 ### Verification
 
 - **Formal properties:** `../formal/axis_arbiter.psl`,
-  `../formal/axis_fifo.psl`.
+  `../formal/axis_dropper.psl`, `../formal/axis_fifo.psl`.
 - **Bus-functional models:** `../sim/src/axis_master_sim.vhd`,
   `../sim/src/axis_slave_sim.vhd`, `../sim/src/axis_sim.vhd`
   (combined wrapper).
@@ -295,11 +310,13 @@ tolerant of any 2-bit value.
 - No `AWPROT`, `ARPROT` (protection attributes).
 - No `AWCACHE`, `ARCACHE`.
 - No exclusive access (`EXOKAY` never asserted).
-- Full AMBA AXI4-Lite address alignment rules apply unchanged.
+- Addresses are word addresses, not byte addresses (see
+  [Addressing](#addressing)).
 
 ### Verification
 
-- **Formal properties:** `../formal/axil_to_wbus.psl`.
+- **Formal properties:** `../formal/axil_to_wbus.psl`,
+  `../formal/axil_to_avm.psl`, `../formal/avm_to_axil.psl`.
 - **Bus-functional models:** `../sim/src/axil_master_sim.vhd`,
   `../sim/src/axil_slave_sim.vhd`, `../sim/src/axil_sim.vhd`
   (combined wrapper).
@@ -328,7 +345,7 @@ composing `../src/wbus/wbus_arbiter.vhd`,
 | `CYC`   | Master → Slave | Cycle in progress. Held asserted from the first request beat until the last response.    |
 | `STB`   | Master → Slave | Request strobe. One handshake per cycle in which `STB & ~STALL` is observed.             |
 | `STALL` | Slave  → Master| Back-pressure on the request channel. Meaningful only while `STB` is asserted.           |
-| `ADDR`  | Master → Slave | Request address, `G_ADDR_BITS` bits wide. Addressing is per byte.                        |
+| `ADDR`  | Master → Slave | Request address, `G_ADDR_BITS` bits wide. Word address (see [Addressing](#addressing)).   |
 | `WE`    | Master → Slave | `1` = write request, `0` = read request.                                                 |
 | `WRDAT` | Master → Slave | Write data, `G_DATA_BITS` bits wide.                                                     |
 | `SEL`   | Master → Slave | Byte-enable, `G_DATA_BITS/8` bits wide. Bit *k* selects byte *k* of `WRDAT` (writes) or of the returned `RDDAT` (reads). Non-selected byte lanes are don't-care on the wire and must be ignored by the receiver. |
@@ -394,16 +411,16 @@ Only a single outstanding request is required to be supported.
 Read latency is variable and not fixed by the protocol. Because only a
 single outstanding request is supported (rule 8), the master simply
 waits for `ACK` before issuing the next request; back-to-back
-throughput is therefore bounded by the slave's response latency. The
-`../sim/src/wbus_master_sim.vhd` and `../sim/src/wbus_slave_sim.vhd`
-BFMs accept generics controlling minimum/maximum random latency for
-stress testing.
+throughput is therefore bounded by the slave's response latency.
+`../sim/src/wbus_slave_sim.vhd` always responds after one cycle; insert
+`../sim/src/wbus_pause.vhd` to add random request and response delays
+for stress testing.
 
 ### Parameterisation
 
 | Generic          | Meaning                                | Typical value |
 | ---------------- | -------------------------------------- | ------------- |
-| `G_ADDR_BITS`    | Address width in bits, byte-addressed. | 16–32         |
+| `G_ADDR_BITS`    | Address width in bits, word-addressed. | 16–32         |
 | `G_DATA_BITS`    | Data width in bits.                    | 32            |
 
 `SEL` width is derived: `G_DATA_BITS / 8`.
@@ -466,7 +483,7 @@ streaming use `axis` (see [#axi-streaming](#axi-streaming)).
 | ---------------- | -------------- | -------------------------------------------------------------------------------------------------- |
 | `WRITE`          | Master → Slave | Write request.                                                                                     |
 | `READ`           | Master → Slave | Read request. `WRITE` and `READ` must never be asserted in the same cycle.                         |
-| `ADDRESS`        | Master → Slave | Byte address, `G_ADDR_BITS` bits wide. The low `log2(G_DATA_BITS/8)` bits must be zero (naturally aligned). |
+| `ADDRESS`        | Master → Slave | Word address, `G_ADDR_BITS` bits wide (see [Addressing](#addressing)).                             |
 | `WRITEDATA`      | Master → Slave | Write data, `G_DATA_BITS` bits wide.                                                               |
 | `BYTEENABLE`     | Master → Slave | Per-byte enables for `WRITEDATA`, `G_DATA_BITS/8` bits wide.                                       |
 | `BURSTCOUNT`     | Master → Slave | Length of the burst in beats, `G_BURST_BITS` bits wide. Value `1` denotes a single-beat transfer.  |
@@ -512,7 +529,7 @@ streaming use `axis` (see [#axi-streaming](#axi-streaming)).
    `ADDRESS`, and `BURSTCOUNT` need not be held after the request is
    accepted.
 4. **Address increment.** Burst beats access consecutive addresses,
-   incrementing by `G_DATA_BITS/8` bytes per beat starting at
+   incrementing by one (one word) per beat starting at
    `ADDRESS`. Address wrapping is not supported.
 5. **In-order responses.** Read responses are returned in the order
    the requests were accepted.
@@ -527,9 +544,9 @@ The slave's read latency is **variable**: an arbitrary number of cycles
 may elapse between the acceptance of a read request and the first
 `READDATAVALID`. Masters must therefore tag or count outstanding
 requests if they need to associate read data with a particular request.
-The `../sim/src/avm_master_sim.vhd` and `../sim/src/avm_slave_sim.vhd`
-BFMs accept generics controlling minimum/maximum random latency for
-stress testing.
+`../sim/src/avm_slave_sim.vhd` always returns read data after one cycle;
+insert `../sim/src/avm_pause.vhd` to add random wait states and response
+delays for stress testing.
 
 ### Write responses
 
@@ -554,13 +571,14 @@ are not signalled.
 - No `DEBUGACCESS`.
 - No `LOCK` / `BEGINBURSTTRANSFER` (the simpler `WAITREQUEST`-gated
   per-beat handshake is used uniformly).
-- Address is byte-addressed (the standard permits either; we pin byte
-  addressing for consistency with the Wishbone profile).
+- Address is word-addressed (the standard permits either; see
+  [Addressing](#addressing)).
 
 ### Verification
 
 - **Formal properties:** `../formal/avm_arbiter.psl`,
-  `../formal/avm_increase.psl`, `../formal/avm_readahead.psl`.
+  `../formal/avm_increase.psl`, `../formal/avm_readahead.psl`,
+  `../formal/avm_to_axil.psl`, `../formal/axil_to_avm.psl`.
 - **Bus-functional models:** `../sim/src/avm_master_sim.vhd`,
   `../sim/src/avm_slave_sim.vhd`, `../sim/src/avm_sim.vhd`
   (combined wrapper).
