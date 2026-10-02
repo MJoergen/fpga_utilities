@@ -325,7 +325,8 @@ tolerant of any 2-bit value.
 ### Verification
 
 - **Formal properties:** `../formal/axil_to_wbus.psl`,
-  `../formal/axil_to_avm.psl`, `../formal/avm_to_axil.psl`.
+  `../formal/axil_to_avm.psl`, `../formal/avm_to_axil.psl`,
+  `../formal/wbus_to_axil.psl`.
 - **Bus-functional models:** `../sim/src/axil_master_sim.vhd`,
   `../sim/src/axil_slave_sim.vhd`, `../sim/src/axil_sim.vhd`
   (combined wrapper).
@@ -464,7 +465,8 @@ by `../sim/tb_wbus_axil_wbus/`.
 ### Verification
 
 - **Formal properties:** `../formal/wbus_arbiter.psl`,
-  `../formal/axil_to_wbus.psl`.
+  `../formal/axil_to_wbus.psl`, `../formal/wbus_to_axil.psl`,
+  `../formal/wbus_to_avm.psl`, `../formal/avm_to_wbus.psl`.
 - **Bus-functional models:** `../sim/src/wbus_master_sim.vhd`,
   `../sim/src/wbus_slave_sim.vhd`, `../sim/src/wbus_sim.vhd`
   (combined wrapper).
@@ -588,7 +590,8 @@ are not signalled.
 - **Formal properties:** `../formal/avm_arbiter.psl`,
   `../formal/avm_decrease.psl`, `../formal/avm_increase.psl`,
   `../formal/avm_pipe.psl`, `../formal/avm_readahead.psl`,
-  `../formal/avm_to_axil.psl`, `../formal/axil_to_avm.psl`.
+  `../formal/avm_to_axil.psl`, `../formal/avm_to_wbus.psl`,
+  `../formal/axil_to_avm.psl`, `../formal/wbus_to_avm.psl`.
 - **Bus-functional models:** `../sim/src/avm_master_sim.vhd`,
   `../sim/src/avm_slave_sim.vhd`, `../sim/src/avm_sim.vhd`
   (combined wrapper).

@@ -7,6 +7,7 @@ DUTS += avm_readahead
 DUTS += avm_increase
 DUTS += avm_pipe
 DUTS += avm_to_axil
+DUTS += avm_to_wbus
 DUTS += axil_to_avm
 DUTS += axil_to_wbus
 DUTS += axip_arbiter
@@ -19,6 +20,8 @@ DUTS += axis_dropper
 DUTS += axis_fifo
 DUTS += axis_to_axip
 DUTS += wbus_arbiter
+DUTS += wbus_to_avm
+DUTS += wbus_to_axil
 
 BMC        = $(patsubst %,%_bmc,$(DUTS))
 COVER      = $(patsubst %,%_cover,$(DUTS))

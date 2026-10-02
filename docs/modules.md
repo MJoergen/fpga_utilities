@@ -48,12 +48,12 @@ testbench are flagged as **unverified**.
 | `axis_increase`              | – | `tb_axis_decrease_increase` |
 | `axis_pipe`                  | – | `tb_axis_pipe` |
 | `axis_pipe_lite`             | – | `tb_axis_pipe_lite` |
-| `avm_to_wbus`                | – | `tb_avm_to_wbus` |
-| `wbus_to_avm`                | – | `tb_wbus_to_avm` |
+| `avm_to_wbus`                | ✓ | `tb_avm_to_wbus` |
+| `wbus_to_avm`                | ✓ | `tb_wbus_to_avm` |
 | `axil_to_wbus`               | ✓ | `tb_axil_to_wbus`, `tb_wbus_axil_wbus` |
 | `axip_to_axis`               | ✓ | `tb_axip_axis_axip` |
 | `axis_to_axip`               | ✓ | `tb_axip_axis_axip` |
-| `wbus_to_axil`               | – | `tb_wbus_to_axil`, `tb_wbus_axil_wbus` |
+| `wbus_to_axil`               | ✓ | `tb_wbus_to_axil`, `tb_wbus_axil_wbus` |
 | `wbus_arbiter`               | ✓ | `tb_wbus_arbiter` |
 | `wbus_arbiter_general`       | – | `tb_wbus_arbiter_general` |
 | `wbus_mapper`                | – | `tb_wbus_mapper`, `tb_wbus_arbiter` |

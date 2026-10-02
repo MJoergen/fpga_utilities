@@ -1,0 +1,147 @@
+-------------------------------------------------------------------------------
+-- Description: Formal property set for avm_to_wbus.
+--
+-- * Avalon side: read data is only returned for an outstanding read, and at
+--   most one request is outstanding.
+-- * Wishbone side: STB is only asserted together with CYC, CYC is held until
+--   the ACK, at most one request is outstanding, and the request is held
+--   stable while STALL is asserted.
+-- * Every Avalon request is issued as exactly one Wishbone request with the
+--   same address and direction; a write carries the same data and byte
+--   enables, and a read selects all byte lanes.
+-- * A read response carries the data of the Wishbone ACK.
+--
+-- Only single-word transfers are supported, so BURSTCOUNT is assumed to be 1.
+--
+-- SPDX-License-Identifier: MIT
+-------------------------------------------------------------------------------
+
+vunit i_avm_to_wbus(avm_to_wbus(rtl))
+{
+   -- set all declarations to run on clk_i
+   default clock is rising_edge(clk_i);
+
+   -- Handshakes
+   signal f_s_acc : std_logic;
+   signal f_m_acc : std_logic;
+
+   f_s_acc <= (s_write_i or s_read_i) and not s_waitrequest_o;
+   f_m_acc <= m_cyc_o and m_stb_o and not m_stall_i;
+
+   -- The outstanding Avalon request
+   signal f_s_out  : std_logic := '0';
+   signal f_we     : std_logic;
+   signal f_addr   : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+   signal f_wrdat  : std_logic_vector(G_DATA_BITS - 1 downto 0);
+   signal f_sel    : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+
+   -- The Wishbone request for it has been issued (accepted), is outstanding
+   -- (accepted and not yet acknowledged), and has been acknowledged
+   signal f_m_issued   : std_logic := '0';
+   signal f_m_pend     : std_logic := '0';
+   signal f_m_ack_done : std_logic := '0';
+   signal f_rddat      : std_logic_vector(G_DATA_BITS - 1 downto 0);
+
+   p_model : process (clk_i)
+   begin
+      if rising_edge(clk_i) then
+         -- A write is complete when the Wishbone ACK arrives, a read when the
+         -- read response is returned
+         if (f_we = '1' and m_ack_i = '1') or s_readdatavalid_o = '1' then
+            f_s_out      <= '0';
+            f_m_issued   <= '0';
+            f_m_ack_done <= '0';
+         end if;
+         if m_ack_i = '1' then
+            f_m_pend <= '0';
+         end if;
+         if f_s_acc = '1' then
+            f_s_out <= '1';
+            f_we    <= s_write_i;
+            f_addr  <= s_address_i;
+            f_wrdat <= s_writedata_i;
+            f_sel   <= s_byteenable_i;
+         end if;
+         if f_m_acc = '1' then
+            f_m_issued <= '1';
+            f_m_pend   <= '1';
+         end if;
+         if m_ack_i = '1' and f_we = '0' then
+            f_m_ack_done <= '1';
+            f_rddat      <= m_rddat_i;
+         end if;
+         if rst_i = '1' then
+            f_s_out      <= '0';
+            f_m_issued   <= '0';
+            f_m_pend     <= '0';
+            f_m_ack_done <= '0';
+         end if;
+      end if;
+   end process p_model;
+
+
+   -----------------------------
+   -- ASSERTIONS ABOUT OUTPUTS
+   -----------------------------
+
+   -- Avalon: a single outstanding request (a new request may be accepted in the
+   -- cycle of the read response)
+   f_slave_single : assert always rst_i or not f_s_acc or not f_s_out or s_readdatavalid_o;
+
+   -- Avalon: read data only for an outstanding read, with the data of the
+   -- Wishbone ACK
+   f_slave_response : assert always rst_i or not s_readdatavalid_o or
+      (f_s_out = '1' and f_we = '0' and f_m_ack_done = '1' and s_readdata_o = f_rddat);
+
+   -- Wishbone: empty after reset
+   f_master_after_reset_empty : assert always {rst_i} |=> not (m_cyc_o or m_stb_o);
+
+   -- Wishbone: STB only together with CYC
+   f_master_stb_cyc : assert always rst_i or not m_stb_o or m_cyc_o;
+
+   -- Wishbone: CYC is held until the ACK
+   f_master_cyc_held : assert always rst_i or not f_m_pend or m_cyc_o;
+
+   -- Wishbone: request stable while stalled
+   f_master_stable : assert always {m_cyc_o and m_stb_o and m_stall_i and not rst_i} |=>
+      {stable(m_stb_o) and stable(m_addr_o) and stable(m_we_o) and stable(m_wrdat_o) and stable(m_sel_o)};
+
+   -- Wishbone: exactly one request per Avalon request
+   f_master_no_spurious : assert always rst_i or not m_stb_o or (f_s_out and not f_m_issued);
+
+   -- Wishbone: the request matches the Avalon request
+   f_master_request : assert always rst_i or not m_stb_o or (m_we_o = f_we and m_addr_o = f_addr);
+   f_master_write   : assert always rst_i or not (m_stb_o and m_we_o) or
+      (m_wrdat_o = f_wrdat and m_sel_o = f_sel);
+   f_master_read    : assert always rst_i or not (m_stb_o and not m_we_o) or and(m_sel_o);
+
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   -- Avalon: not both read and write, and only single-word transfers
+   f_slave_not_double : assume always not (s_write_i and s_read_i);
+   f_slave_burst      : assume always not (s_write_i or s_read_i) or unsigned(s_burstcount_i) = 1;
+
+   -- Avalon: request stable while waitrequest is asserted
+   f_slave_input_stable : assume always {(s_write_i or s_read_i) and s_waitrequest_o and not rst_i} |=>
+      {stable(s_write_i) and stable(s_read_i) and stable(s_address_i) and stable(s_writedata_i) and
+       stable(s_byteenable_i) and stable(s_burstcount_i)};
+
+   -- Wishbone: ACK only for an accepted request that has not been acknowledged
+   f_master_ack : assume always not m_ack_i or (f_m_pend and m_cyc_o);
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   f_cover_write    : cover {rst_i = '0' and m_ack_i = '1' and f_we = '1'};
+   f_cover_read     : cover {rst_i = '0' and s_readdatavalid_o = '1'};
+   f_cover_stalled  : cover {rst_i = '0' and m_stb_o = '1' and m_stall_i = '1'; rst_i = '0' and f_m_acc = '1'};
+
+} -- vunit i_avm_to_wbus(avm_to_wbus(rtl))

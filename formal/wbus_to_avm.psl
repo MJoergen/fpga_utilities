@@ -1,0 +1,151 @@
+-------------------------------------------------------------------------------
+-- Description: Formal property set for wbus_to_avm.
+--
+-- * Wishbone side: at most one outstanding request, and ACK is only given for
+--   an accepted request.
+-- * Avalon side: read and write are not asserted together, the request is
+--   held stable while waitrequest is asserted, and BURSTCOUNT is 1.
+-- * Every Wishbone request is issued as exactly one Avalon request with the
+--   same address and direction; a write carries the same data and byte
+--   enables, and a read enables all byte lanes.
+-- * A write is only acknowledged after the Avalon slave has accepted it, and
+--   a read is acknowledged with the data of the Avalon read response.
+--
+-- The Wishbone master is assumed to follow docs/interfaces.md, i.e. it does
+-- not deassert CYC while a request is outstanding.
+--
+-- SPDX-License-Identifier: MIT
+-------------------------------------------------------------------------------
+
+vunit i_wbus_to_avm(wbus_to_avm(rtl))
+{
+   -- set all declarations to run on clk_i
+   default clock is rising_edge(clk_i);
+
+   -- Handshakes
+   signal f_s_acc : std_logic;
+   signal f_m_acc : std_logic;
+
+   f_s_acc <= s_cyc_i and s_stb_i and not s_stall_o;
+   f_m_acc <= (m_write_o or m_read_o) and not m_waitrequest_i;
+
+   -- The outstanding Wishbone request
+   signal f_s_out   : std_logic := '0';
+   signal f_we      : std_logic;
+   signal f_addr    : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+   signal f_wrdat   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+   signal f_sel     : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+
+   -- The Avalon request for it has been issued, and (for a read) its response
+   -- has been received
+   signal f_m_done  : std_logic := '0';
+   signal f_m_rd    : std_logic := '0'; -- Avalon read response outstanding
+   signal f_rd_done : std_logic := '0';
+   signal f_rddat   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+
+   p_model : process (clk_i)
+   begin
+      if rising_edge(clk_i) then
+         if s_ack_o = '1' then
+            f_s_out   <= '0';
+            f_m_done  <= '0';
+            f_rd_done <= '0';
+         end if;
+         if f_s_acc = '1' then
+            f_s_out <= '1';
+            f_we    <= s_we_i;
+            f_addr  <= s_addr_i;
+            f_wrdat <= s_wrdat_i;
+            f_sel   <= s_sel_i;
+         end if;
+         if f_m_acc = '1' then
+            f_m_done <= '1';
+            if m_read_o = '1' then
+               f_m_rd <= '1';
+            end if;
+         end if;
+         if m_readdatavalid_i = '1' then
+            f_m_rd    <= '0';
+            f_rd_done <= '1';
+            f_rddat   <= m_readdata_i;
+         end if;
+         if rst_i = '1' then
+            f_s_out   <= '0';
+            f_m_done  <= '0';
+            f_m_rd    <= '0';
+            f_rd_done <= '0';
+         end if;
+      end if;
+   end process p_model;
+
+
+   -----------------------------
+   -- ASSERTIONS ABOUT OUTPUTS
+   -----------------------------
+
+   -- Wishbone: a single outstanding request (a new request may be accepted in the
+   -- cycle of the ACK)
+   f_slave_single : assert always rst_i or not f_s_acc or not f_s_out or s_ack_o;
+
+   -- Wishbone: ACK only for an outstanding request
+   f_slave_ack : assert always rst_i or not s_ack_o or f_s_out;
+
+   -- Avalon: empty after reset
+   f_master_after_reset_empty : assert always {rst_i} |=> not (m_write_o or m_read_o);
+
+   -- Avalon: not both read and write
+   f_master_not_double : assert always rst_i or not (m_write_o and m_read_o);
+
+   -- Avalon: request stable until accepted
+   f_master_stable : assert always {(m_write_o or m_read_o) and m_waitrequest_i and not rst_i} |=>
+      {stable(m_write_o) and stable(m_read_o) and stable(m_address_o) and stable(m_writedata_o) and
+       stable(m_byteenable_o) and stable(m_burstcount_o)};
+
+   -- Avalon: exactly one request per Wishbone request
+   f_master_no_spurious : assert always rst_i or not (m_write_o or m_read_o) or (f_s_out and not f_m_done);
+
+   -- Avalon: the request matches the Wishbone request
+   f_master_request : assert always rst_i or not (m_write_o or m_read_o) or
+      (m_write_o = f_we and m_address_o = f_addr and unsigned(m_burstcount_o) = 1);
+   f_master_write   : assert always rst_i or not m_write_o or
+      (m_writedata_o = f_wrdat and m_byteenable_o = f_sel);
+   f_master_read    : assert always rst_i or not m_read_o or and(m_byteenable_o);
+
+   -- A write is acknowledged only after the Avalon slave has accepted it
+   f_write_ack : assert always rst_i or not (s_ack_o and f_we) or f_m_done;
+
+   -- A read is acknowledged with the data of the Avalon read response
+   f_read_ack  : assert always rst_i or not (s_ack_o and not f_we) or
+      (f_rd_done = '1' and s_rddat_o = f_rddat);
+
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   -- Wishbone: request stable while stalled
+   f_slave_input_stable : assume always {s_cyc_i and s_stb_i and s_stall_o and not rst_i} |=>
+      {stable(s_cyc_i) and stable(s_stb_i) and stable(s_addr_i) and stable(s_we_i) and
+       stable(s_wrdat_i) and stable(s_sel_i)};
+
+   -- Wishbone: CYC is not deasserted while a request is outstanding
+   f_slave_no_abort : assume always not f_s_out or s_cyc_i;
+
+   -- Avalon: read data only for an outstanding read
+   f_master_response : assume always not m_readdatavalid_i or f_m_rd;
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   f_cover_write : cover {rst_i = '0' and s_ack_o = '1' and f_we = '1'};
+   f_cover_read  : cover {rst_i = '0' and s_ack_o = '1' and f_we = '0'};
+
+   -- Back-to-back: a new request is accepted in the cycle of an ACK
+   f_cover_back_to_back : cover {rst_i = '0' and s_ack_o = '1' and f_s_acc = '1'};
+
+} -- vunit i_wbus_to_avm(wbus_to_avm(rtl))

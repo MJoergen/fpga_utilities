@@ -1,0 +1,172 @@
+-------------------------------------------------------------------------------
+-- Description: Formal property set for wbus_to_axil.
+--
+-- * Wishbone side: at most one outstanding request, and ACK is only given for
+--   an outstanding request. The master may abort a request by deasserting
+--   CYC; an aborted request is never acknowledged.
+-- * AXI-Lite side: AWVALID, WVALID, and ARVALID are held, with stable payload,
+--   until accepted.
+-- * Every Wishbone write is issued as exactly one AW and one W transfer, and
+--   every read as exactly one AR transfer, with the same address, data, and
+--   byte enables (WSTRB = SEL). This also holds for aborted requests, which
+--   are completed on the AXI-Lite side.
+-- * No new request is accepted until the AXI-Lite transaction of the previous
+--   one (also an aborted one) has completed.
+-- * A write is only acknowledged after the write response, and a read is
+--   acknowledged with the data of the read response.
+--
+-- SPDX-License-Identifier: MIT
+-------------------------------------------------------------------------------
+
+vunit i_wbus_to_axil(wbus_to_axil(rtl))
+{
+   -- set all declarations to run on clk_i
+   default clock is rising_edge(clk_i);
+
+   -- Handshakes
+   signal f_s_acc  : std_logic;
+   signal f_aw_acc : std_logic;
+   signal f_w_acc  : std_logic;
+   signal f_ar_acc : std_logic;
+   signal f_b_acc  : std_logic;
+   signal f_r_acc  : std_logic;
+
+   f_s_acc  <= s_cyc_i and s_stb_i and not s_stall_o;
+   f_aw_acc <= m_awvalid_o and m_awready_i;
+   f_w_acc  <= m_wvalid_o and m_wready_i;
+   f_ar_acc <= m_arvalid_o and m_arready_i;
+   f_b_acc  <= m_bvalid_i and m_bready_o;
+   f_r_acc  <= m_rvalid_i and m_rready_o;
+
+   -- The outstanding Wishbone request (cleared on ACK or abort)
+   signal f_s_out : std_logic := '0';
+
+   -- The AXI-Lite transaction in progress (cleared on the B or R handshake)
+   signal f_busy    : std_logic := '0';
+   signal f_we      : std_logic;
+   signal f_addr    : std_logic_vector(G_ADDR_BITS - 1 downto 0);
+   signal f_wrdat   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+   signal f_sel     : std_logic_vector(G_DATA_BITS / 8 - 1 downto 0);
+   signal f_aw_done : std_logic := '0';
+   signal f_w_done  : std_logic := '0';
+   signal f_ar_done : std_logic := '0';
+
+   -- The last AXI-Lite transaction has completed, and its read data
+   signal f_done    : std_logic := '0';
+   signal f_rddat   : std_logic_vector(G_DATA_BITS - 1 downto 0);
+
+   p_model : process (clk_i)
+   begin
+      if rising_edge(clk_i) then
+         if s_ack_o = '1' or s_cyc_i = '0' then
+            f_s_out <= '0';
+         end if;
+         if f_aw_acc = '1' then
+            f_aw_done <= '1';
+         end if;
+         if f_w_acc = '1' then
+            f_w_done <= '1';
+         end if;
+         if f_ar_acc = '1' then
+            f_ar_done <= '1';
+         end if;
+         if f_b_acc = '1' or f_r_acc = '1' then
+            f_busy    <= '0';
+            f_aw_done <= '0';
+            f_w_done  <= '0';
+            f_ar_done <= '0';
+            f_done    <= '1';
+            f_rddat   <= m_rdata_i;
+         end if;
+         if f_s_acc = '1' then
+            f_s_out <= '1';
+            f_busy  <= '1';
+            f_done  <= '0';
+            f_we    <= s_we_i;
+            f_addr  <= s_addr_i;
+            f_wrdat <= s_wrdat_i;
+            f_sel   <= s_sel_i;
+         end if;
+         if rst_i = '1' then
+            f_s_out   <= '0';
+            f_busy    <= '0';
+            f_aw_done <= '0';
+            f_w_done  <= '0';
+            f_ar_done <= '0';
+            f_done    <= '0';
+         end if;
+      end if;
+   end process p_model;
+
+
+   -----------------------------
+   -- ASSERTIONS ABOUT OUTPUTS
+   -----------------------------
+
+   -- Wishbone: no new request until the previous AXI-Lite transaction (also an
+   -- aborted one) has completed
+   f_slave_single : assert always rst_i or not f_s_acc or not f_busy;
+
+   -- Wishbone: ACK only for an outstanding (not aborted) request, after the
+   -- AXI-Lite transaction has completed, and with the read data
+   f_slave_ack      : assert always rst_i or not s_ack_o or (f_s_out and f_done);
+   f_slave_ack_data : assert always rst_i or not s_ack_o or f_we or s_rddat_o = f_rddat;
+
+   -- AXI-Lite: empty after reset
+   f_master_after_reset_empty : assert always {rst_i} |=> not (m_awvalid_o or m_wvalid_o or m_arvalid_o);
+
+   -- AXI-Lite: VALID held with stable payload until accepted
+   f_master_aw_stable : assert always {m_awvalid_o and not m_awready_i and not rst_i} |=>
+      {m_awvalid_o = '1' and stable(m_awaddr_o)};
+   f_master_w_stable  : assert always {m_wvalid_o and not m_wready_i and not rst_i} |=>
+      {m_wvalid_o = '1' and stable(m_wdata_o) and stable(m_wstrb_o)};
+   f_master_ar_stable : assert always {m_arvalid_o and not m_arready_i and not rst_i} |=>
+      {m_arvalid_o = '1' and stable(m_araddr_o)};
+
+   -- AXI-Lite: exactly one AW and one W per write, one AR per read, matching
+   -- the Wishbone request
+   f_master_aw : assert always rst_i or not m_awvalid_o or
+      (f_busy = '1' and f_we = '1' and f_aw_done = '0' and m_awaddr_o = f_addr);
+   f_master_w  : assert always rst_i or not m_wvalid_o or
+      (f_busy = '1' and f_we = '1' and f_w_done = '0' and m_wdata_o = f_wrdat and m_wstrb_o = f_sel);
+   f_master_ar : assert always rst_i or not m_arvalid_o or
+      (f_busy = '1' and f_we = '0' and f_ar_done = '0' and m_araddr_o = f_addr);
+
+
+   -----------------------------
+   -- ASSUMPTIONS ABOUT INPUTS
+   -----------------------------
+
+   -- Require reset at startup.
+   f_reset : assume {rst_i};
+
+   -- Wishbone: request stable while stalled (CYC may be deasserted to abort)
+   f_slave_input_stable : assume always {s_cyc_i and s_stb_i and s_stall_o and not rst_i} |=>
+      {s_cyc_i = '0' or (stable(s_stb_i) and stable(s_addr_i) and stable(s_we_i) and
+       stable(s_wrdat_i) and stable(s_sel_i))};
+
+   -- AXI-Lite: a write response only after both AW and W, and a read response
+   -- only after AR, of the transaction in progress
+   f_master_b : assume always not m_bvalid_i or (f_busy and f_we and f_aw_done and f_w_done);
+   f_master_r : assume always not m_rvalid_i or (f_busy and not f_we and f_ar_done);
+
+
+   --------------------------------------------
+   -- COVER STATEMENTS TO VERIFY REACHABILITY
+   --------------------------------------------
+
+   f_cover_write : cover {rst_i = '0' and s_ack_o = '1' and f_we = '1'};
+   f_cover_read  : cover {rst_i = '0' and s_ack_o = '1' and f_we = '0'};
+
+   -- AW and W accepted in different cycles
+   f_cover_aw_before_w : cover {rst_i = '0' and f_aw_acc = '1' and m_wvalid_o = '1' and m_wready_i = '0'};
+
+   -- A request is aborted, its AXI-Lite transaction completes, and a new
+   -- request is accepted
+   f_cover_abort : cover {rst_i = '0' and f_busy = '1' and s_cyc_i = '0';
+                          [*];
+                          rst_i = '0' and (f_b_acc = '1' or f_r_acc = '1');
+                          [*];
+                          rst_i = '0' and f_s_acc = '1'};
+
+} -- vunit i_wbus_to_axil(wbus_to_axil(rtl))
