@@ -30,8 +30,9 @@
 --   * Returning narrow words are reassembled into s_readdata_o using s_read_pos
 --     as the sub-word index; s_readdatavalid_o pulses once per completed wide
 --     word.
---   * READ_DRAIN_ST blocks new requests if a new burst would overlap an in-
---     flight one, because the design has only one reassembly counter.
+--   * A new read may be issued while earlier read bursts are still returning
+--     data. Responses arrive in request order, and every narrow burst is a
+--     multiple of C_RATIO words, so a single reassembly counter suffices.
 --
 -- Assumptions on the downstream slave:
 --   * Avalon-MM compliant: read responses are returned in request order.
@@ -137,12 +138,9 @@ architecture rtl of avm_decrease is
   --                   WRITING_ST comments).
   --   WRITING_ST    : driving narrow write beats 0..C_RATIO-2 of the current
   --                   wide write.
-  --   READ_DRAIN_ST : holding off new requests until the currently in-flight
-  --                   read burst has been fully reassembled.
   type     state_type is (
     IDLE_ST,
-    WRITING_ST,
-    READ_DRAIN_ST
+    WRITING_ST
   );
   signal   state : state_type                                           := IDLE_ST;
 
@@ -191,8 +189,7 @@ begin
   --      clear on accepted beat).
   --   2. Read-response reassembly (independent of FSM state; uses s_read_pos
   --      as the destination slice index).
-  --   3. State machine (accepts new transactions, issues write beats,
-  --      drains overlapping read bursts).
+  --   3. State machine (accepts new transactions, issues write beats).
   --   4. Synchronous reset (last; overrides all of the above).
   --
   -- Note that step (1) and step (3) both assign to s_write/s_read. The later
@@ -263,13 +260,6 @@ begin
               -- Begin a new write burst at sub-word 0.
               s_write_pos <= 0;
               state       <= WRITING_ST;
-            elsif s_read_pos /= 0 or m_readdatavalid_i = '1' then
-              -- A previous read burst is still being reassembled
-              -- (s_read_pos has advanced past 0, or a response is
-              -- arriving on this very edge). Issue this new read
-              -- immediately, but block further requests until the
-              -- in-flight burst finishes so the two cannot interleave.
-              state <= READ_DRAIN_ST;
             end if;
           end if;
 
@@ -298,17 +288,6 @@ begin
             if s_write_pos = C_RATIO - 2 then
               state <= IDLE_ST;
             end if;
-          end if;
-
-        -- READ_DRAIN_ST: a new request was accepted while a previous read
-        -- burst was still in flight. Hold s_waitrequest_o = '1' (via the
-        -- assignment below the process) until the in-flight burst has
-        -- fully reassembled, i.e. s_read_pos has wrapped back to 0. This
-        -- avoids issuing two overlapping read bursts whose responses
-        -- would race into the same reassembly counter.
-        when READ_DRAIN_ST =>
-          if s_read_pos = 0 then
-            state <= IDLE_ST;
           end if;
 
       end case;
@@ -361,8 +340,7 @@ begin
   --     (s_write or s_read) is non-zero only when a transaction is
   --     in-flight on the master side; combined with m_waitrequest_i this
   --     stalls the slave port iff the master port is stalled mid-beat.
-  --   * In WRITING_ST and READ_DRAIN_ST, unconditionally backpressure
-  --     the upstream master.
+  --   * In WRITING_ST, unconditionally backpressure the upstream master.
   s_waitrequest_o <= ((s_write or s_read) and m_waitrequest_i) when state = IDLE_ST else
                      '1';
 
