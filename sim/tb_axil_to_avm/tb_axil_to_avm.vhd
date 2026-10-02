@@ -127,6 +127,7 @@ begin
   -- Instantiate AXI Lite Master for stimuli
   axil_master_sim_inst : entity work.axil_master_sim
     generic map (
+      G_RANDOM_WSTRB => true,
       G_OFFSET    => G_OFFSET,
       G_DEBUG     => G_DEBUG,
       G_RANDOM    => G_RANDOM,

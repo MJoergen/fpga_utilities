@@ -18,7 +18,8 @@ entity wbus_sim is
     G_OFFSET      : natural;
     G_LATENCY     : natural;
     G_ADDR_BITS   : natural;
-    G_DATA_BITS   : natural
+    G_DATA_BITS   : natural;
+    G_RANDOM_SEL  : boolean := false
   );
   port (
     clk_i     : in    std_logic;
@@ -60,6 +61,7 @@ begin
       G_DEBUG       => G_DEBUG,
       G_DO_ABORT    => G_DO_ABORT,
       G_OFFSET      => G_OFFSET,
+      G_RANDOM_SEL  => G_RANDOM_SEL,
       G_ADDR_BITS   => G_ADDR_BITS,
       G_DATA_BITS   => G_DATA_BITS
     )

@@ -18,7 +18,8 @@ entity axil_sim is
     G_RANDOM    : boolean;
     G_FAST      : boolean;
     G_ADDR_BITS : natural;
-    G_DATA_BITS : natural
+    G_DATA_BITS : natural;
+    G_RANDOM_WSTRB : boolean := false
   );
   port (
     clk_i       : in    std_logic;
@@ -76,7 +77,8 @@ begin
       G_RANDOM    => G_RANDOM,
       G_FAST      => G_FAST,
       G_ADDR_BITS => G_ADDR_BITS,
-      G_DATA_BITS => G_DATA_BITS
+      G_DATA_BITS => G_DATA_BITS,
+      G_RANDOM_WSTRB => G_RANDOM_WSTRB
     )
     port map (
       clk_i       => clk_i,

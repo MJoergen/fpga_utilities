@@ -220,6 +220,7 @@ begin
 
   axil_master_sim_0_inst : entity work.axil_master_sim
     generic map (
+      G_RANDOM_WSTRB => true,
       G_NAME      => "0",
       G_SEED      => X"1234567887654321",
       G_OFFSET    => 1234,
@@ -253,6 +254,7 @@ begin
 
   axil_master_sim_1_inst : entity work.axil_master_sim
     generic map (
+      G_RANDOM_WSTRB => true,
       G_NAME      => "1",
       G_SEED      => X"ABCDEFABCDEFABCD",
       G_OFFSET    => 4321,

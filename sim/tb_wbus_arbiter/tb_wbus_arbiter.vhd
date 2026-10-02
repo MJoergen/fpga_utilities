@@ -154,6 +154,7 @@ begin
 
   wbus_sim_0_inst : entity work.wbus_sim
     generic map (
+      G_RANDOM_SEL => true,
       G_SEED        => X"1234567812345678",
       G_NAME        => "0",
       G_TIMEOUT_MAX => 100,
@@ -189,6 +190,7 @@ begin
 
   wbus_sim_1_inst : entity work.wbus_sim
     generic map (
+      G_RANDOM_SEL => true,
       G_SEED        => X"1122334455667788",
       G_NAME        => "1",
       G_TIMEOUT_MAX => 100,

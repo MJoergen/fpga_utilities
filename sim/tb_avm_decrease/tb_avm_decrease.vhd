@@ -101,7 +101,7 @@ begin
     generic map (
       G_BURST_BITS        => G_BURST_BITS,
       G_MAX_BURST         => G_MAX_BURST,
-      G_RANDOM_BYTEENABLE => false,
+      G_RANDOM_BYTEENABLE => true,
       G_SEED              => X"DEADBEEFC007BABE",
       G_NAME              => "MASTER",
       G_DEBUG             => G_DEBUG,

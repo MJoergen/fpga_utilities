@@ -16,9 +16,11 @@
 --                  * The base expected pattern is
 --                        data = resize(address, G_DATA_BITS) + G_OFFSET.
 --                  * When G_RANDOM_BYTEENABLE = true, byte enables are randomised
---                    per beat (>=1 byte always enabled). The master records, for
---                    every address, which bytes were actually written and verifies
---                    only those bytes on read-back.
+--                    per beat (>=1 byte always enabled). Disabled lanes carry a
+--                    deliberately wrong value. The master records, for every
+--                    address, which bytes were actually written; on read-back it
+--                    verifies those bytes, and checks that the other bytes do not
+--                    hold the wrong value (i.e. were not written).
 --
 --                A PRNG instance decides, on each idle clock cycle, whether to
 --                issue a write burst, a read burst, or do nothing -- producing
@@ -197,6 +199,37 @@ architecture simulation of avm_master_sim is
   begin
     return resize(addr, G_DATA_BITS) + G_OFFSET;
   end function addr_to_data;
+
+  -- Value driven on a byte lane that is not enabled. It differs from the expected
+  -- byte, and is never zero, so it can be told apart both from the expected data and
+  -- from memory that was never written (zero or 'U').
+  pure function garbage_byte (
+    b : std_logic_vector(7 downto 0)
+  ) return std_logic_vector is
+    variable res_v : std_logic_vector(7 downto 0);
+  begin
+    res_v := b xor X"A5";
+    if res_v = X"00" then
+      res_v := X"5A";
+    end if;
+    return res_v;
+  end function garbage_byte;
+
+  -- Write data for a beat: the expected data on enabled lanes, and garbage elsewhere.
+  pure function be_data (
+    data : std_logic_vector;
+    be   : std_logic_vector
+  ) return std_logic_vector is
+    variable res_v : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  begin
+    res_v := data;
+    for b in 0 to G_DATA_BITS / 8 - 1 loop
+      if be(b) = '0' then
+        res_v(b * 8 + 7 downto b * 8) := garbage_byte(res_v(b * 8 + 7 downto b * 8));
+      end if;
+    end loop;
+    return res_v;
+  end function be_data;
 
   -- Pick a desired burst length in 1..G_MAX_BURST from PRNG bits.
   -- The caller is expected to pass at least 16 random bits.
@@ -394,7 +427,8 @@ begin
     -- Verify a read beat against the shadow memory:
     --   * for every byte lane whose mask bit is '1', compare against the
     --     stored expected byte;
-    --   * lanes whose mask bit is '0' are skipped (never written -> don't check).
+    --   * lanes whose mask bit is '0' were never enabled, so they must not
+    --     hold the garbage value that was driven on them.
 
     procedure verify_read_beat (
       addr : std_logic_vector;
@@ -416,6 +450,13 @@ begin
                    ", byte lane " & integer'image(b) &
                    ". Got " & to_hstring(data(b * 8 + 7 downto b * 8)) &
                    ", expected " & to_hstring(d_exp_v(b * 8 + 7 downto b * 8))
+            severity failure;
+        else
+          assert data(b * 8 + 7 downto b * 8) /= garbage_byte(addr_to_data(addr)(b * 8 + 7 downto b * 8))
+            report "Avalon MASTER " & G_NAME &
+                   ": Byte lane " & integer'image(b) & " of address " & to_hstring(addr) &
+                   " was written although BYTEENABLE was low. Got " &
+                   to_hstring(data(b * 8 + 7 downto b * 8))
             severity failure;
         end if;
       end loop;
@@ -440,7 +481,7 @@ begin
     begin
       m_write_o      <= '1';
       m_address_o    <= addr;
-      m_writedata_o  <= addr_to_data(addr);
+      m_writedata_o  <= be_data(addr_to_data(addr), be);
       m_byteenable_o <= be;
       cur_be_s       <= be;
       m_burstcount_o <= std_logic_vector(to_unsigned(len, G_BURST_BITS));
@@ -611,7 +652,7 @@ begin
               -- Present the next beat's data and a (possibly new) random BE.
               -- BE is randomised per beat for maximum partial-write stress.
               be_v           := pick_byteenable(random_s(47 downto 32));
-              m_writedata_o  <= addr_to_data(wr_ptr + 1);
+              m_writedata_o  <= be_data(addr_to_data(wr_ptr + 1), be_v);
               m_byteenable_o <= be_v;
               cur_be_s       <= be_v;
               if G_DEBUG then

@@ -86,6 +86,7 @@ begin
 
   avm_master_sim_0_inst : entity work.avm_master_sim
     generic map (
+      G_RANDOM_BYTEENABLE => true,
       G_NAME       => "0",
       G_BURST_BITS => G_BURST_BITS,
       G_ADDR_BITS  => G_ADDR_BITS,
@@ -112,6 +113,7 @@ begin
 
   avm_master_sim_1_inst : entity work.avm_master_sim
     generic map (
+      G_RANDOM_BYTEENABLE => true,
       G_NAME       => "1",
       G_BURST_BITS => G_BURST_BITS,
       G_ADDR_BITS  => G_ADDR_BITS,

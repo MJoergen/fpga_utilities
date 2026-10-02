@@ -97,6 +97,7 @@ begin
 
   avm_master_sim_inst : entity work.avm_master_sim
     generic map (
+      G_RANDOM_BYTEENABLE => true,
       G_BURST_BITS  => G_BURST_BITS,
       G_MAX_BURST   => G_MAX_BURST,
       G_SEED        => X"DEADBEEFC007BABE",

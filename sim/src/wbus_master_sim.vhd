@@ -3,6 +3,11 @@
 -- Reads, and verifies that the values returned from Read matches the corresponding values
 -- during Write.
 --
+-- With G_RANDOM_SEL = true, each write uses a random SEL (at least one lane selected).
+-- Lanes that are not selected carry a deliberately wrong value, and the read-back check
+-- verifies both that the selected lanes were written and that the unselected lanes were
+-- not.
+--
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
@@ -69,7 +74,52 @@ architecture simulation of wbus_master_sim is
   signal   req_active  : std_logic := '0';
   signal   timeout_cnt : natural range 0 to G_TIMEOUT_MAX;
 
+  constant C_SEL_BITS : natural := G_DATA_BITS / 8;
+
+  -- Bit-field selector within random_s used for a random SEL.
+  subtype  R_SEL is natural range 48 + C_SEL_BITS - 1 downto 48;
+
+  -- SEL used for the most recent write to each address.
+  type     sel_mem_type is array (natural range <>) of std_logic_vector(C_SEL_BITS - 1 downto 0);
+  signal   sel_mem : sel_mem_type(0 to 2 ** G_ADDR_BITS - 1);
+
+  -- Value driven on a byte lane that is not selected. It differs from the expected
+  -- byte, and is never zero, so it can be told apart both from the expected data and
+  -- from memory that was never written (zero or 'U').
+  pure function garbage_byte (
+    b : std_logic_vector(7 downto 0)
+  ) return std_logic_vector is
+    variable res_v : std_logic_vector(7 downto 0);
+  begin
+    res_v := b xor X"A5";
+    if res_v = X"00" then
+      res_v := X"5A";
+    end if;
+    return res_v;
+  end function garbage_byte;
+
+  -- Write data: the expected data on selected lanes, and garbage elsewhere.
+  pure function sel_data (
+    data : std_logic_vector(G_DATA_BITS - 1 downto 0);
+    sel  : std_logic_vector(C_SEL_BITS - 1 downto 0)
+  ) return std_logic_vector is
+    variable res_v : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  begin
+    for i in 0 to C_SEL_BITS - 1 loop
+      if sel(i) = '1' then
+        res_v(8 * i + 7 downto 8 * i) := data(8 * i + 7 downto 8 * i);
+      else
+        res_v(8 * i + 7 downto 8 * i) := garbage_byte(data(8 * i + 7 downto 8 * i));
+      end if;
+    end loop;
+    return res_v;
+  end function sel_data;
+
 begin
+
+  assert C_SEL_BITS <= 16
+    report C_REP_STR & ": G_DATA_BITS must be at most 128"
+    severity failure;
 
   wr_ptr_next <= wr_ptr + 1;
   rd_ptr_next <= rd_ptr + 1;
@@ -106,19 +156,57 @@ begin
     procedure issue_write (
       signal addr : in std_logic_vector
     ) is
+      variable sel_v : std_logic_vector(C_SEL_BITS - 1 downto 0);
     begin
-      m_cyc_o   <= '1';
-      m_stb_o   <= '1';
-      m_addr_o  <= addr;
-      m_we_o    <= '1';
-      m_wrdat_o <= addr_to_data(addr);
-      m_sel_o   <= (others => '1');
+      sel_v := (others => '1');
+      if G_RANDOM_SEL then
+        sel_v := random_s(R_SEL);
+        if sel_v = 0 then
+          sel_v(0) := '1';
+        end if;
+      end if;
+      m_cyc_o                     <= '1';
+      m_stb_o                     <= '1';
+      m_addr_o                    <= addr;
+      m_we_o                      <= '1';
+      m_wrdat_o                   <= sel_data(addr_to_data(addr), sel_v);
+      m_sel_o                     <= sel_v;
+      sel_mem(to_integer(addr))   <= sel_v;
       if G_DEBUG then
         report C_REP_STR &
                ": Write to address " & to_hstring(addr) &
-               " with data " & to_hstring(addr_to_data(addr));
+               " with data " & to_hstring(sel_data(addr_to_data(addr), sel_v)) &
+               " sel " & to_hstring(sel_v);
       end if;
     end procedure issue_write;
+
+    -- Verify read data: selected lanes of the last write must hold the expected
+    -- data, and the other lanes must not hold the garbage written to them.
+    procedure verify_read (
+      signal addr : in std_logic_vector;
+      data        : std_logic_vector
+    ) is
+      variable exp_v : std_logic_vector(G_DATA_BITS - 1 downto 0);
+      variable sel_v : std_logic_vector(C_SEL_BITS - 1 downto 0);
+    begin
+      exp_v := addr_to_data(addr);
+      sel_v := sel_mem(to_integer(addr));
+      for i in 0 to C_SEL_BITS - 1 loop
+        if sel_v(i) = '1' then
+          assert data(8 * i + 7 downto 8 * i) = exp_v(8 * i + 7 downto 8 * i)
+            report C_REP_STR &
+                   ": Read failure from address " & to_hstring(addr) &
+                   ". Got " & to_hstring(data) &
+                   ", expected " & to_hstring(exp_v) &
+                   " in byte lane " & integer'image(i);
+        else
+          assert data(8 * i + 7 downto 8 * i) /= garbage_byte(exp_v(8 * i + 7 downto 8 * i))
+            report C_REP_STR &
+                   ": Byte lane " & integer'image(i) & " of address " & to_hstring(addr) &
+                   " was written although SEL was low. Got " & to_hstring(data);
+        end if;
+      end loop;
+    end procedure verify_read;
 
     procedure issue_read (
       signal addr : in std_logic_vector
@@ -188,11 +276,7 @@ begin
 
         when READING_ST =>
           if m_ack_i = '1' then
-            assert m_rddat_i = addr_to_data(rd_ptr)
-              report C_REP_STR &
-                     ": Read failure from address " & to_hstring(rd_ptr) &
-                     ". Got " & to_hstring(m_rddat_i) &
-                     ", expected " & to_hstring(addr_to_data(rd_ptr));
+            verify_read(rd_ptr, m_rddat_i);
             rd_ptr <= rd_ptr + 1;
 
             if do_write = '1' then

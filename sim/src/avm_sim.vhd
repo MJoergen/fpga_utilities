@@ -16,7 +16,8 @@ entity avm_sim is
     G_PAUSE_SIZE  : natural;
     G_TIMEOUT_MAX : natural := 0;
     G_ADDR_BITS   : positive; -- Number of bits
-    G_DATA_BITS   : positive  -- Number of bits
+    G_DATA_BITS   : positive; -- Number of bits
+    G_RANDOM_BYTEENABLE : boolean := false
   );
   port (
     clk_i             : in    std_logic;
@@ -76,6 +77,7 @@ begin
     generic map (
       G_BURST_BITS => G_BURST_BITS,
       G_MAX_BURST   => G_MAX_BURST,
+      G_RANDOM_BYTEENABLE => G_RANDOM_BYTEENABLE,
       G_SEED        => X"DEADBEEFC007BABE",
       G_NAME        => "",
       G_DEBUG       => G_DEBUG,

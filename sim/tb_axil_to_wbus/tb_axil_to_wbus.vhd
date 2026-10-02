@@ -69,6 +69,7 @@ begin
 
   axil_master_sim_inst : entity work.axil_master_sim
     generic map (
+      G_RANDOM_WSTRB => true,
       G_DEBUG     => G_DEBUG,
       G_OFFSET    => 1234,
       G_RANDOM    => G_RANDOM,

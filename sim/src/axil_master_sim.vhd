@@ -4,6 +4,10 @@
 -- returned from Read matches the corresponding values during Write.  This module may
 -- generate simultaneous read and write requests, without first waiting for a response.
 --
+-- With G_RANDOM_WSTRB = true, each write uses a random WSTRB (at least one lane enabled).
+-- Lanes that are not enabled carry a deliberately wrong value, and the read-back check
+-- verifies both that the enabled lanes were written and that the other lanes were not.
+--
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
 
@@ -21,7 +25,8 @@ entity axil_master_sim is
     G_RANDOM    : boolean;
     G_FAST      : boolean;
     G_ADDR_BITS : natural;
-    G_DATA_BITS : natural
+    G_DATA_BITS : natural;
+    G_RANDOM_WSTRB : boolean := false
   );
   port (
     clk_i       : in    std_logic;
@@ -78,7 +83,52 @@ architecture simulation of axil_master_sim is
     G_DATA_BITS);
   end function addr_to_data;
 
+  constant C_STRB_BITS : natural := G_DATA_BITS / 8;
+
+  -- Bit-field selector within random_s used for a random WSTRB.
+  subtype  R_WSTRB is natural range 48 + C_STRB_BITS - 1 downto 48;
+
+  -- WSTRB used for the write to each address.
+  type     strb_mem_type is array (natural range <>) of std_logic_vector(C_STRB_BITS - 1 downto 0);
+  signal   strb_mem : strb_mem_type(0 to 2 ** G_ADDR_BITS - 1);
+
+  -- Value driven on a byte lane that is not enabled. It differs from the expected
+  -- byte, and is never zero, so it can be told apart both from the expected data and
+  -- from memory that was never written (zero or 'U').
+  pure function garbage_byte (
+    b : std_logic_vector(7 downto 0)
+  ) return std_logic_vector is
+    variable res_v : std_logic_vector(7 downto 0);
+  begin
+    res_v := b xor X"A5";
+    if res_v = X"00" then
+      res_v := X"5A";
+    end if;
+    return res_v;
+  end function garbage_byte;
+
+  -- Write data: the expected data on enabled lanes, and garbage elsewhere.
+  pure function strb_data (
+    data : std_logic_vector(G_DATA_BITS - 1 downto 0);
+    strb : std_logic_vector(C_STRB_BITS - 1 downto 0)
+  ) return std_logic_vector is
+    variable res_v : std_logic_vector(G_DATA_BITS - 1 downto 0);
+  begin
+    for i in 0 to C_STRB_BITS - 1 loop
+      if strb(i) = '1' then
+        res_v(8 * i + 7 downto 8 * i) := data(8 * i + 7 downto 8 * i);
+      else
+        res_v(8 * i + 7 downto 8 * i) := garbage_byte(data(8 * i + 7 downto 8 * i));
+      end if;
+    end loop;
+    return res_v;
+  end function strb_data;
+
 begin
+
+  assert C_STRB_BITS <= 16
+    report "AxiLite MASTER: " & G_NAME & " G_DATA_BITS must be at most 128"
+    severity failure;
 
   -----------------------------------------------
   -- Instantiate random number generator
@@ -112,6 +162,8 @@ begin
   stimuli_proc : process (clk_i)
     variable new_write_req_cnt_v : natural;
     variable new_read_req_cnt_v  : natural;
+    variable strb_v              : std_logic_vector(C_STRB_BITS - 1 downto 0);
+    variable exp_v               : std_logic_vector(G_DATA_BITS - 1 downto 0);
   begin
     if rising_edge(clk_i) then
       if m_awready_i = '1' then
@@ -135,16 +187,25 @@ begin
           report "AxiLite MASTER: " & G_NAME & " Test finished";
           stop;
         else
-          new_write_req_cnt_v := new_write_req_cnt_v + 1;
-          m_awvalid_o         <= '1';
-          m_awaddr_o          <= wr_ptr_stim;
-          m_wvalid_o          <= '1';
-          m_wdata_o           <= addr_to_data(wr_ptr_stim);
-          m_wstrb_o           <= (others => '1');
-          wr_ptr_stim         <= wr_ptr_stim + 1;
+          strb_v := (others => '1');
+          if G_RANDOM_WSTRB then
+            strb_v := random_s(R_WSTRB);
+            if strb_v = 0 then
+              strb_v(0) := '1';
+            end if;
+          end if;
+          new_write_req_cnt_v                := new_write_req_cnt_v + 1;
+          m_awvalid_o                        <= '1';
+          m_awaddr_o                         <= wr_ptr_stim;
+          m_wvalid_o                         <= '1';
+          m_wdata_o                          <= strb_data(addr_to_data(wr_ptr_stim), strb_v);
+          m_wstrb_o                          <= strb_v;
+          strb_mem(to_integer(wr_ptr_stim))  <= strb_v;
+          wr_ptr_stim                        <= wr_ptr_stim + 1;
           if G_DEBUG then
             report "AxiLite MASTER: " & G_NAME & " Write: " & to_hstring(wr_ptr_stim) &
-                   " <- " & to_hstring(addr_to_data(wr_ptr_stim));
+                   " <- " & to_hstring(strb_data(addr_to_data(wr_ptr_stim), strb_v)) &
+                   " strb " & to_hstring(strb_v);
           end if;
         end if;
       end if;
@@ -179,10 +240,24 @@ begin
         new_read_req_cnt_v := new_read_req_cnt_v - 1;
         assert m_rresp_i = "00"
           report "AxiLite MASTER: " & G_NAME & " Incorrect m_rresp_i";
-        assert m_rdata_i = addr_to_data(rd_ptr_resp)
-          report "AxiLite MASTER: " & G_NAME & " Read failure from address " & to_hstring(rd_ptr_resp) &
-                 ". Got " & to_hstring(m_rdata_i) &
-                 ", expected " & to_hstring(addr_to_data(rd_ptr_resp));
+        -- Enabled lanes must hold the expected data, and the other lanes must
+        -- not hold the garbage that was written to them.
+        exp_v  := addr_to_data(rd_ptr_resp);
+        strb_v := strb_mem(to_integer(rd_ptr_resp));
+        for i in 0 to C_STRB_BITS - 1 loop
+          if strb_v(i) = '1' then
+            assert m_rdata_i(8 * i + 7 downto 8 * i) = exp_v(8 * i + 7 downto 8 * i)
+              report "AxiLite MASTER: " & G_NAME & " Read failure from address " & to_hstring(rd_ptr_resp) &
+                     ". Got " & to_hstring(m_rdata_i) &
+                     ", expected " & to_hstring(exp_v) &
+                     " in byte lane " & integer'image(i);
+          else
+            assert m_rdata_i(8 * i + 7 downto 8 * i) /= garbage_byte(exp_v(8 * i + 7 downto 8 * i))
+              report "AxiLite MASTER: " & G_NAME & " Byte lane " & integer'image(i) &
+                     " of address " & to_hstring(rd_ptr_resp) &
+                     " was written although WSTRB was low. Got " & to_hstring(m_rdata_i);
+          end if;
+        end loop;
         rd_ptr_resp        <= rd_ptr_resp + 1;
       end if;
 

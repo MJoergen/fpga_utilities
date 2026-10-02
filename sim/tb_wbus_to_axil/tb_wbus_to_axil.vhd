@@ -173,6 +173,7 @@ begin
 
   wbus_master_sim_inst : entity work.wbus_master_sim
     generic map (
+      G_RANDOM_SEL => true,
       G_DEBUG     => false,
       G_OFFSET    => 1234,
       G_DO_ABORT  => G_DO_ABORT,

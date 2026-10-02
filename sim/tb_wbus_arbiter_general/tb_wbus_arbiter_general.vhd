@@ -115,6 +115,7 @@ begin
 
     wbus_master_sim_inst : entity work.wbus_master_sim
       generic map (
+        G_RANDOM_SEL => true,
         G_SEED        => std_logic_vector(to_unsigned(i + 1, 64)) xor X"DEADBEEFC007BABE",
         G_NAME        => integer'image(i),
         G_TIMEOUT_MAX => 200,

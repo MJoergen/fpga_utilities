@@ -62,6 +62,7 @@ begin
 
   avm_sim_inst : entity work.avm_sim
     generic map (
+      G_RANDOM_BYTEENABLE => true,
       G_BURST_BITS => G_BURST_BITS,
       G_MAX_BURST   => G_MAX_BURST,
       G_DEBUG       => G_DEBUG,

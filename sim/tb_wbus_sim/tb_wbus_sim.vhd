@@ -60,6 +60,7 @@ begin
 
   wbus_sim_inst : entity work.wbus_sim
     generic map (
+      G_RANDOM_SEL => true,
       G_DEBUG       => G_DEBUG,
       G_TIMEOUT_MAX => G_TIMEOUT_MAX,
       G_DO_ABORT    => G_DO_ABORT,

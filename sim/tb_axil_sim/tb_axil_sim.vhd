@@ -79,6 +79,7 @@ begin
 
   axil_sim_inst : entity work.axil_sim
     generic map (
+      G_RANDOM_WSTRB => true,
       G_SEED      => X"1234567887654321",
       G_OFFSET    => 1234,
       G_DEBUG     => G_DEBUG,

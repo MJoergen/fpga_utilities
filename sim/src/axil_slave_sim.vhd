@@ -1,6 +1,6 @@
 -- ---------------------------------------------------------------------------------------
 -- Description: This simulates an AXI lite slave.  It emulates a simple RAM and responds
--- to Write and Read requests.
+-- to Write and Read requests. Writes only update the byte lanes enabled by WSTRB.
 --
 -- SPDX-License-Identifier: MIT
 -- ---------------------------------------------------------------------------------------
@@ -105,9 +105,14 @@ begin
           if s_awvalid = '1' and s_wvalid = '1' and ((s_bready_i = '1' and G_FAST) or s_bvalid_o = '0') then
             state <= IDLE_ST;
             if G_DEBUG then
-              report "AxiLite SLAVE: Write " & to_hstring(s_wdata) & " to " & to_hstring(s_awaddr);
+              report "AxiLite SLAVE: Write " & to_hstring(s_wdata) & " strb " & to_hstring(s_wstrb) &
+                     " to " & to_hstring(s_awaddr);
             end if;
-            ram_v(to_integer(s_awaddr)) := s_wdata;
+            for i in s_wstrb'range loop
+              if s_wstrb(i) = '1' then
+                ram_v(to_integer(s_awaddr))(i * 8 + 7 downto i * 8) := s_wdata(i * 8 + 7 downto i * 8);
+              end if;
+            end loop;
             s_awvalid                   <= '0';
             s_wvalid                    <= '0';
             s_bvalid_o                  <= '1';
